@@ -1,0 +1,85 @@
+{
+  "agnidus_agate": {
+    "name": "Agnidus Agate",
+    "emoji": "Agnidus_Agate",
+    "icon": "Agnidus_Agate",
+    "tiers": {
+      "sliver": "Agnidus Agate Sliver",
+      "fragment": "Agnidus Agate Fragment",
+      "chunk": "Agnidus Agate Chunk",
+      "gemstone": "Agnidus Agate Gemstone"
+    }
+  },
+
+  "varunada_lazurite": {
+    "name": "Varunada Lazurite",
+    "emoji": "Varunada_Lazurite",
+    "icon": "Varunada_Lazurite",
+    "tiers": {
+      "sliver": "Varunada Lazurite Sliver",
+      "fragment": "Varunada Lazurite Fragment",
+      "chunk": "Varunada Lazurite Chunk",
+      "gemstone": "Varunada Lazurite Gemstone"
+    }
+  },
+
+  "vajrada_amethyst": {
+    "name": "Vajrada Amethyst",
+    "emoji": "Vajrada_Amethyst",
+    "icon": "Vajrada_Amethyst",
+    "tiers": {
+      "sliver": "Vajrada Amethyst Sliver",
+      "fragment": "Vajrada Amethyst Fragment",
+      "chunk": "Vajrada Amethyst Chunk",
+      "gemstone": "Vajrada Amethyst Gemstone"
+    }
+  },
+
+  "shivada_jade": {
+    "name": "Shivada Jade",
+    "emoji": "Shivada_Jade",
+    "icon": "Shivada_Jade",
+    "tiers": {
+      "sliver": "Shivada Jade Sliver",
+      "fragment": "Shivada Jade Fragment",
+      "chunk": "Shivada Jade Chunk",
+      "gemstone": "Shivada Jade Gemstone"
+    }
+  },
+
+  "nagadus_emerald": {
+    "name": "Nagadus Emerald",
+    "emoji": "Nagadus_Emerald",
+    "icon": "Nagadus_Emerald",
+    "tiers": {
+      "sliver": "Nagadus Emerald Sliver",
+      "fragment": "Nagadus Emerald Fragment",
+      "chunk": "Nagadus Emerald Chunk",
+      "gemstone": "Nagadus Emerald Gemstone"
+    }
+  },
+
+  "prithiva_topaz": {
+    "name": "Prithiva Topaz",
+    "emoji": "Prithiva_Topaz",
+    "icon": "Prithiva_Topaz",
+    "tiers": {
+      "sliver": "Prithiva Topaz Sliver",
+      "fragment": "Prithiva Topaz Fragment",
+      "chunk": "Prithiva Topaz Chunk",
+      "gemstone": "Prithiva Topaz Gemstone"
+    }
+  },
+
+  "vayuda_turquoise": {
+    "name": "Vayuda Turquoise",
+    "emoji": "Vayuda_Turquoise",
+    "icon": "Vayuda_Turquoise",
+    "tiers": {
+      "sliver": "Vayuda Turquoise Sliver",
+      "fragment": "Vayuda Turquoise Fragment",
+      "chunk": "Vayuda Turquoise Chunk",
+      "gemstone": "Vayuda Turquoise Gemstone"
+    }
+  }
+}

@@ -134,10 +134,10 @@
       ]
     }
   ],
-  "materials": {
+ "materials": {
     "ascension": {
-      "gemstones": {
-        "element": "hydro",
+      "gem": {
+        "id": "varunada_lazurite",
         "sliver": 1,
         "fragment": 9,
         "chunk": 9,
@@ -152,32 +152,34 @@
         "amount": 168
       },
       "common": {
-        "id": "sealed_scroll",
-        "amount": 18,
-        "green": 30,
-        "blue": 36
+        "id": "scroll",
+        "tier1": 18,
+        "tier2": 30,
+        "tier3": 36
       }
     },
     "talents": {
       "book": {
         "id": "freedom",
-        "green": 9,
-        "blue": 63,
-        "purple": 114
+        "teachings": 9,
+        "guide": 63,
+        "philosophies": 114
       },
       "common": {
-        "if": "sealed_scroll",
-        "amount": [
-          18,
-          66,
-          93
-        ]
+        "id": "scroll",
+        "tier1": 18,
+        "tier2": 66,
+        "tier3": 93
       },
       "weekly_boss": {
-        "id": "ring_of_boreas",
+        "id": "andrius",
+        "material": "ring_of_boreas",
         "amount": 18
       },
-      "crown": 3
+      "crown": {
+        "id": "crown_of_insight",
+        "amount": 3
+      }
     }
   }
 }

@@ -122,10 +122,10 @@
       ]
     }
   ],
-  "materials": {
+   "materials": {
     "ascension": {
-      "gemstones": {
-        "element": "cryo",
+      "gem": {
+        "id": "shivada_jade",
         "sliver": 1,
         "fragment": 9,
         "chunk": 9,
@@ -140,32 +140,34 @@
         "amount": 168
       },
       "common": {
-        "id": "damaged_mask",
-        "amount": 18,
-        "green": 30,
-        "blue": 36
+        "id": "mask",
+        "tier1": 18,
+        "tier2": 30,
+        "tier3": 36
       }
     },
     "talents": {
       "book": {
-        "id": "dilligence",
-        "green": 9,
-        "blue": 63,
-        "purple": 114
+        "id": "diligence",
+        "teachings": 9,
+        "guide": 63,
+        "philosophies": 114
       },
       "common": {
-        "if": "damaged_mask",
-        "amount": [
-          18,
-          66,
-          93
-        ]
+        "id": "mask",
+        "tier1": 18,
+        "tier2": 66,
+        "tier3": 93
       },
       "weekly_boss": {
-        "id": "dvalin's_sigh",
+        "id": "stormterror",
+        "material": "dvalins_sigh",
         "amount": 18
       },
-      "crown": 3
+      "crown": {
+        "id": "crown_of_insight",
+        "amount": 3
+      }
     }
   }
 }

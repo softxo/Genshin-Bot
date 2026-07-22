@@ -148,10 +148,10 @@
       ]
     }
   ],
-  "materials": {
+ "materials": {
     "ascension": {
-      "gemstones": {
-        "element": "pyro",
+      "gem": {
+        "id": "agnidus_agate",
         "sliver": 1,
         "fragment": 9,
         "chunk": 9,
@@ -166,32 +166,34 @@
         "amount": 168
       },
       "common": {
-        "id": "treasure_hoarder_insignia",
-        "amount": 18,
-        "green": 30,
-        "blue": 36
+        "id": "hoarder_insignia",
+        "tier1": 18,
+        "tier2": 30,
+        "tier3": 36
       }
     },
     "talents": {
       "book": {
         "id": "resistance",
-        "green": 9,
-        "blue": 63,
-        "purple": 114
+        "teachings": 9,
+        "guide": 63,
+        "philosophies": 114
       },
       "common": {
-        "if": "treasure_hoarder_insignia",
-        "amount": [
-          18,
-          66,
-          93
-        ]
+        "id": "hoarder_insignia",
+        "tier1": 18,
+        "tier2": 66,
+        "tier3": 93
       },
       "weekly_boss": {
-        "id": "dvalin's_plume",
+        "id": "stormterror",
+        "material": "dvalins_plume",
         "amount": 18
       },
-      "crown": 3
+      "crown": {
+        "id": "crown_of_insight",
+        "amount": 3
+      }
     }
   }
 }
