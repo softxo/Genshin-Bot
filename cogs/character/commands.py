@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+from utils.icons import get_character_icon, get_character_splash
 from utils.characters import get_character
 from utils.autocomplete import character_autocomplete
 from utils.constants import ELEMENT_EMOJIS, WEAPON_EMOJIS
@@ -29,12 +30,12 @@ class Character(commands.Cog):
             return
 
         icon = discord.File(
-            f"assets/characters/{data['id']}/{data['images']['icon']}",
+            get_character_icon(data["id"]),
             filename="icon.webp"
         )
 
         splash = discord.File(
-            f"assets/characters/{data['id']}/{data['images']['splash']}",
+            get_character_splash(data["id"]),
             filename="splash.png"
         )
 

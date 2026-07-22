@@ -86,7 +86,6 @@
     "elemental_skill": {
       "name": "Tidecaller",
       "icon": "Elemental_Skill.webp",
-      "cooldown": 15,
       "description": [
         "Nothing to worry about. Should anyone raise a hand against her or her men, she will avenge it ten-fold with sword and thunder."
       ],
@@ -103,8 +102,8 @@
             "Lifts her weapon up as a shield. Max DMG absorbed scales off Beidou's Max HP.",
             "Attacks using the energy stored within the greatsword upon release or once this ability's duration expires, dealing **Electro DMG**. DMG dealt scales with the number of times Beidou is attacked in the skill's duration. The greatest DMG Bonus will be attained once this effect is triggered twice.",
             "The shield possesses the following properties:",
-            "Has 250% **Electro DMG** Absorption Efficiency.",
-            "Applies the **Electro element** to Beidou upon activation."
+            "▸ Has 250% **Electro DMG** Absorption Efficiency.",
+            "▸ Applies the **Electro element** to Beidou upon activation."
           ]
         }
       ]
@@ -112,8 +111,6 @@
     "elemental_burst": {
       "name": "Stormbreaker",
       "icon": "Elemental_Burst.webp",
-      "energy_cost": 40,
-      "cooldown": 12,
       "description": [
         "Recalling her slaying of the great beast Haishan, Beidou calls upon that monstrous strength and the lightning to create a Thunderbeast's Targe around herself, dealing **Electro DMG** to nearby opponents."
       ],
@@ -121,8 +118,9 @@
         {
           "title": "Thunderbeast's Targe",
           "text": [
-            "When Normal and Charged Attacks hit, they create a lightning discharge that can jump between opponents, dealing **Electro DMG**.",
-            "Increases the character's resistance to interruption, and decreases DMG taken.",
+            "▸ When Normal and Charged Attacks hit, they create a lightning discharge that can jump between opponents, dealing **Electro DMG**.",
+            "▸ Increases the character's resistance to interruption, and decreases DMG taken.",
+            " ",
             "A maximum of 1 lightning discharge can be triggered per second."
           ]
         }
@@ -147,7 +145,7 @@
       ]
     },
     {
-      "unlock": "Passive",
+      "unlock": "Utility",
       "name": "Conqueror of Tides",
       "description": [
         "Decreases swimming Stamina consumption for your own party members by 20%.",

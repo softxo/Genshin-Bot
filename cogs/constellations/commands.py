@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from utils.data import CONSTELLATION_ICONS
+from utils.icons import get_character_icon, get_constellation_emoji
 from utils.characters import get_character
 from utils.autocomplete import character_autocomplete
 
@@ -28,20 +28,28 @@ class Constellations(commands.Cog):
             )
             return
 
-        image = discord.File(
-            f"assets/characters/{data['id']}/{data['images']['icon']}",
+        application_emojis = await self.bot.fetch_application_emojis()
+
+        thumbnail = discord.File(
+            get_character_icon(data["id"]),
             filename="character.png"
         )
 
         embed = discord.Embed(
-            title=f"{data['name']} | Constellations",
+            title=f"{data['name']} • Constellations",
             colour=discord.Colour.from_str(data["colour"])
         )
 
         embed.set_thumbnail(url="attachment://character.png")
 
         for i, constellation in enumerate(data["constellations"], start=1):
-            icon = CONSTELLATION_ICONS[data["id"]][i]
+            emoji = get_constellation_emoji(
+                application_emojis,
+                data["id"],
+                i
+            )
+
+            emoji_text = str(emoji) if emoji else "⭐"
 
             description = constellation["description"]
 
@@ -49,14 +57,14 @@ class Constellations(commands.Cog):
                 description = "\n".join(description)
 
             embed.add_field(
-                name=f"{icon} C{i} • **{constellation['name']}**",
-                value=description,
+                name=f"{emoji_text} C{i} • **{constellation['name']}**",
+                value=description + "\n\u200b",
                 inline=False
             )
 
         await interaction.response.send_message(
             embed=embed,
-            file=image
+            file=thumbnail
         )
 
 async def setup(bot):

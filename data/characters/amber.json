@@ -84,7 +84,6 @@
     "elemental_skill": {
       "name": "Explosive Puppet",
       "icon": "Elemental_Skill.webp",
-      "cooldown": 15,
       "description": [
         "The ever-reliable Baron Bunny takes the stage."
       ],
@@ -109,8 +108,6 @@
     "elemental_burst": {
       "name": "Fiery Rain",
       "icon": "Elemental_Burst.webp",
-      "energy_cost": 40,
-      "cooldown": 12,
       "description": [
         "Fires off a shower of arrows, dealing continuous **AoE Pyro DMG**."
       ]
@@ -132,7 +129,7 @@
       ]
     },
     {
-      "unlock": "Passive",
+      "unlock": "Utility",
       "name": "Gliding Champion",
       "description": [
         "Decreases gliding Stamina consumption for your own party members by 20%.",

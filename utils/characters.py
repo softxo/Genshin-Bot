@@ -1,4 +1,4 @@
-from utils.data import CHARACTERS
+from utils.loader import CHARACTERS
 
 def get_character(character_id: str):
     return CHARACTERS.get(character_id.lower())

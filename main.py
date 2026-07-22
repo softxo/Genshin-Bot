@@ -3,7 +3,7 @@ import asyncio
 import os
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.data import load_characters, CHARACTERS
+from utils.loader import load_characters, CHARACTERS
 
 load_characters()
 
