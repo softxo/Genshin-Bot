@@ -20,6 +20,11 @@ bot = commands.Bot(
     intents=intents
 )
 
+@bot.event
+async def setup_hook():
+    bot.application_emojis = await bot.fetch_application_emojis()
+    print(f"Loaded {len(bot.application_emojis)} application emojis")
+
 async def load_cogs():
     for folder in os.listdir("cogs"):
         path = os.path.join("cogs", folder)

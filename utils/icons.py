@@ -50,7 +50,11 @@ def get_material_emoji(
     emojis,
     emoji_name: str
 ) -> str:
-    emoji = discord.utils.get(emojis, name=emoji_name)
+    emoji = discord.utils.get(
+        emojis,
+        name=emoji_name
+    )
+
     return str(emoji) if emoji else ""
 
 ## ASSET Helpers
