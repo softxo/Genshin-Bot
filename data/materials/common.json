@@ -264,7 +264,7 @@
       },
       "tier3": {
         "name": "Saurian-Crowned Warrior's Golden Whistle",
-        "emoji": "Saurian_Crowned_Warriors_Golden_Whistle"
+        "emoji": "Saurian_Golden_Whistle"
       }
     }
   },
@@ -328,7 +328,7 @@
     "tiers": {
       "tier1": {
         "name": "Chimeric Core",
-        "emoji": "ChimericCore"
+        "emoji": "Chimeric_Core"
       },
       "tier2": {
         "name": "Symbiotic Chimeric Nucleus",

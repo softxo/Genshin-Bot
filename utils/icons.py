@@ -46,6 +46,13 @@ def get_talent_emoji(
         name=f"{get_emoji_character_name(character_id)}_{suffix}"
     )
 
+def get_material_emoji(
+    emojis,
+    emoji_name: str
+) -> str:
+    emoji = discord.utils.get(emojis, name=emoji_name)
+    return str(emoji) if emoji else ""
+
 ## ASSET Helpers
 
 def get_constellation_icons(character_id: str) -> list[Path]:

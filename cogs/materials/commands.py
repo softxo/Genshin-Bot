@@ -3,8 +3,8 @@ from discord.ext import commands
 from discord import app_commands
 from utils.characters import get_character
 from utils.autocomplete import character_autocomplete
-from utils.icons import get_character_icon
-from utils.materials import GEMS
+from utils.icons import get_character_icon, get_material_emoji
+from utils.constants import ASCENSION_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
 
 import json
 from pathlib import Path
@@ -26,8 +26,222 @@ COMMON = load_json("common.json")
 BOSSES = load_json("boss.json")
 WEEKLY = load_json("weekly.json")
 LOCAL_SPECIALTIES = load_json("local_specialty.json")
+MISC = load_json("miscellaneous.json")
+ASCENSION_MORA_TOTAL = sum(ASCENSION_MORA_COSTS)
+TALENT_MORA_TOTAL = 3 * sum(TALENT_MORA_COSTS)
 
 
+def get_ascension_text(data, emojis):
+    materials = data["materials"]
+    ascension = materials["ascension"]
+
+    gem = GEMS[ascension["gem"]["id"]]
+    boss = BOSSES[ascension["boss"]["id"]]
+    local = LOCAL_SPECIALTIES[ascension["local_specialty"]["id"]]
+    common = COMMON[ascension["common"]["id"]]
+
+    gem_emoji = get_material_emoji(emojis, gem["emoji"])
+    boss_emoji = get_material_emoji(emojis, boss["emoji"])
+    local_emoji = get_material_emoji(emojis, local["emoji"])
+
+    common_tier1_emoji = get_material_emoji(emojis, common["tiers"]["tier1"]["emoji"])
+    common_tier2_emoji = get_material_emoji(emojis, common["tiers"]["tier2"]["emoji"])
+    common_tier3_emoji = get_material_emoji(emojis, common["tiers"]["tier3"]["emoji"])
+
+    return (
+        f"{gem_emoji} {gem['tiers']['sliver']} ×{ascension['gem']['sliver']}\n"
+        f"{gem_emoji} {gem['tiers']['fragment']} ×{ascension['gem']['fragment']}\n"
+        f"{gem_emoji} {gem['tiers']['chunk']} ×{ascension['gem']['chunk']}\n"
+        f"{gem_emoji} {gem['tiers']['gemstone']} ×{ascension['gem']['gemstone']}\n\n"
+
+        f"{boss_emoji} {boss['name']} ×{ascension['boss']['amount']}\n"
+        f"{local_emoji} {local['name']} ×{ascension['local_specialty']['amount']}\n\n"
+
+        f"{common_tier1_emoji} {common['tiers']['tier1']['name']} ×{ascension['common']['tier1']}\n"
+        f"{common_tier2_emoji} {common['tiers']['tier2']['name']} ×{ascension['common']['tier2']}\n"
+        f"{common_tier3_emoji} {common['tiers']['tier3']['name']} ×{ascension['common']['tier3']}"
+    )
+
+def get_ascension_misc_text(emojis):
+    mora = MISC["mora"]
+    wit = MISC["heros_wit"]
+    adventure = MISC["adventurers_experience"]
+    wanderer = MISC["wanderers_advice"]
+
+    mora_emoji = get_material_emoji(emojis, mora["emoji"])
+    wit_emoji = get_material_emoji(emojis, wit["emoji"])
+    adventure_emoji = get_material_emoji(emojis, adventure["emoji"])
+    wanderer_emoji = get_material_emoji(emojis, wanderer["emoji"])
+
+    return (
+        f"{mora_emoji} {mora['name']} ×{ASCENSION_MORA_TOTAL:,}\n"
+        f"{wit_emoji} {wit['name']} ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
+        f"{adventure_emoji} {adventure['name']} ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
+        f"{wanderer_emoji} {wanderer['name']} ×{ASCENSION_EXP_COSTS['wanderers_advice']}"
+    )
+
+def build_ascension_embed(data, emojis):
+    embed = discord.Embed(
+        title=f"{data['name']} • Ascension Materials",
+        colour=discord.Colour.from_str(data["colour"])
+    )
+
+    embed.set_thumbnail(url="attachment://character.png")
+
+    embed.add_field(
+        name="Character Ascension",
+        value=get_ascension_text(data, emojis),
+        inline=False
+    )
+
+    embed.add_field(
+        name="Other Materials",
+        value=get_ascension_misc_text(emojis),
+        inline=False
+    )
+
+    return embed
+
+def get_talent_text(data, emojis):
+    materials = data["materials"]
+    talents = materials["talents"]
+
+    book = BOOKS[talents['book']['id']]
+    common = COMMON[talents['common']['id']]
+    weekly = WEEKLY[talents['weekly_boss']['id']]
+    weekly_drop = weekly["drops"][talents["weekly_boss"]["material"]]
+    crown = MISC[talents["crown"]["id"]]
+
+    book_tier1_emoji = get_material_emoji(emojis, book["tiers"]["teachings"]["emoji"])
+    book_tier2_emoji = get_material_emoji(emojis, book["tiers"]["guide"]["emoji"])
+    book_tier3_emoji = get_material_emoji(emojis, book["tiers"]["philosophies"]["emoji"])
+
+    common_tier1_emoji = get_material_emoji(emojis, common["tiers"]["tier1"]["emoji"])
+    common_tier2_emoji = get_material_emoji(emojis, common["tiers"]["tier2"]["emoji"])
+    common_tier3_emoji = get_material_emoji(emojis, common["tiers"]["tier3"]["emoji"])
+
+    weekly_emoji = get_material_emoji(emojis, weekly["emoji"])
+    weekly_drop_emoji = get_material_emoji(emojis, weekly_drop["emoji"])
+
+    crown_emoji = get_material_emoji(emojis, crown["emoji"])
+
+    return (
+        f"{book_tier1_emoji} {book['tiers']['teachings']['name']} ×{talents['book']['teachings']}\n"
+        f"{book_tier2_emoji} {book['tiers']['guide']['name']} ×{talents['book']['guide']}\n"
+        f"{book_tier3_emoji} {book['tiers']['philosophies']['name']} ×{talents['book']['philosophies']}\n\n"
+
+        f"{common_tier1_emoji} {common['tiers']['tier1']['name']} ×{talents['common']['tier1']}\n"
+        f"{common_tier2_emoji} {common['tiers']['tier2']['name']} ×{talents['common']['tier2']}\n"
+        f"{common_tier3_emoji} {common['tiers']['tier3']['name']} ×{talents['common']['tier3']}\n\n"
+
+        f"{weekly_drop_emoji} {weekly_drop['name']} ×{talents['weekly_boss']['amount']}\n"
+        f"{crown_emoji} {crown['name']} ×{talents['crown']['amount']}"
+    )
+
+def get_talent_misc_text(emojis):
+    mora = MISC["mora"]
+
+    mora_emoji = get_material_emoji(emojis, mora["emoji"])
+
+    return (
+        f"{mora_emoji} {mora['name']} ×{TALENT_MORA_TOTAL:,}"
+    )
+
+def build_talents_embed(data, emojis):
+    embed = discord.Embed(
+        title=f"{data['name']} • Talents Materials",
+        colour=discord.Colour.from_str(data["colour"])
+    )
+
+    embed.set_thumbnail(url="attachment://character.png")
+
+    embed.add_field(
+        name="Character Talents",
+        value=get_talent_text(data, emojis),
+        inline=False
+    )
+
+    embed.add_field(
+        name="Other Materials",
+        value=get_talent_misc_text(emojis),
+        inline=False
+    )
+
+    return embed
+
+def build_total_embed(data, emojis):
+    embed = discord.Embed(
+        title=f"{data['name']} • Total Materials",
+        colour=discord.Colour.from_str(data["colour"])
+    )
+
+    embed.set_thumbnail(url="attachment://character.png")
+
+    embed.add_field(
+        name="Character Ascension",
+        value=get_ascension_text(data, emojis),
+        inline=False
+    )
+
+    embed.add_field(
+        name="Character Talents",
+        value=get_talent_text(data, emojis),
+        inline=False
+    )
+
+    embed.add_field(
+        name="Ascension Extras",
+        value=get_ascension_misc_text(emojis),
+        inline=False
+    )
+
+    embed.add_field(
+        name="Talents Extras",
+        value=get_talent_misc_text(emojis),
+        inline=False
+    )
+    return embed
+
+class MaterialsView(discord.ui.View):
+    def __init__(self, data, emojis):
+        super().__init__(timeout=300)
+
+        self.ascension_embed = build_ascension_embed(data, emojis)
+        self.talent_embed = build_talents_embed(data, emojis)
+        self.total_embed = build_total_embed(data, emojis)
+
+    @discord.ui.button(label="Ascension", style=discord.ButtonStyle.primary)
+    async def ascension(
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
+    ):
+        await interaction.response.edit_message(
+            embed=self.ascension_embed,
+            view=self
+        )
+
+    @discord.ui.button(label="Talents", style=discord.ButtonStyle.primary)
+    async def talents(
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
+    ):
+        await interaction.response.edit_message(
+            embed=self.talent_embed,
+            view=self
+        )
+
+    @discord.ui.button(label="Total", style=discord.ButtonStyle.primary)
+    async def total(
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
+    ):
+        await interaction.response.edit_message(
+            embed=self.total_embed,
+            view=self
+        )
 
 class Materials(commands.Cog):
     def __init__(self, bot):
@@ -35,7 +249,7 @@ class Materials(commands.Cog):
 
     @app_commands.command(
         name="materials",
-        description="Shows a character's Ascension and Talent materials."
+        description="Shows a character's Ascension and Talents materials."
     )
     @app_commands.autocomplete(character=character_autocomplete)
     async def materials(
@@ -57,35 +271,12 @@ class Materials(commands.Cog):
             filename="character.png"
         )
 
-        embed = discord.Embed(
-            title=f"{data['name']} • Materials",
-            colour=discord.Colour.from_str(data["colour"])
-        )
-
-        embed.set_thumbnail(url="attachment://character.png")
-
-        materials = data["materials"]
-
-        ascension = materials["ascension"]
-
-        gem = GEMS[ascension["gem"]["id"]]
-
-        embed.add_field(
-            name="Character Ascension",
-            value=(
-                f"{gem['tiers']['sliver']} ×{ascension['gem']['sliver']}\n"
-                f"{gem['tiers']['fragment']} ×{ascension['gem']['fragment']}\n"
-                f"{gem['tiers']['chunk']} ×{ascension['gem']['chunk']}\n"
-                f"{gem['tiers']['gemstone']} ×{ascension['gem']['gemstone']}"
-            ),
-            inline=False
-        )
-
-        talents = materials["talents"]
+        view = MaterialsView(data, self.bot.emojis)
 
         await interaction.response.send_message(
-            embed=embed,
+            embed=view.ascension_embed,
             file=thumbnail,
+            view=view
         )
 
 async def setup(bot):

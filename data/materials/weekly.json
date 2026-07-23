@@ -96,7 +96,7 @@
 
   "magatsu_mitake_narukami_no_mikoto": {
     "name": "Magatsu Mitake Narukami no Mikoto",
-    "emoji": "Magatsu_Mitake_Narukami_no_Mikoto",
+    "emoji": "Magatsu_Mitake_NarukaminoMikoto",
     "drops": {
       "mudra_of_the_malefic_general": {
         "name": "Mudra of the Malefic General",
@@ -115,7 +115,7 @@
 
   "everlasting_lord_of_arcane_wisdom": {
     "name": "Everlasting Lord of Arcane Wisdom",
-    "emoji": "Everlasting_Lord_of_Arcane_Wisdom",
+    "emoji": "Lord_of_Arcane_Wisdom",
     "drops": {
       "puppet_strings": {
         "name": "Puppet Strings",
@@ -248,7 +248,7 @@
 
   "exalted_master_of_the_heretical_path": {
     "name": "Exalted Master of the Heretical Path",
-    "emoji": "Exalted_Master_of_the_Heretical_Path",
+    "emoji": "Master_of_the_Heretical_Path",
     "drops": {
       "counterfeit_resin": {
         "name": "Counterfeit Resin",
