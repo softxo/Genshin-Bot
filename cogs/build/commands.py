@@ -3,7 +3,7 @@ import json
 from discord.ext import commands
 from discord import app_commands
 from utils.characters import get_character
-from utils.autocomplete import character_autocomplete
+from utils.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon
 from pathlib import Path
 
@@ -17,8 +17,8 @@ def load_json(folder, filename):
     ) as f:
         return json.load(f)
 
-WEAPONS = load_json("weapons", "weapons.json")
-ARTIFACTS = load_json("artifacts", "artifacts.json")
+# WEAPONS = load_json("weapons", "weapons.json")
+# ARTIFACTS = load_json("artifacts", "artifacts.json")
 STATS = load_json("stats", "stats.json")
 
 def load_build(character_id):

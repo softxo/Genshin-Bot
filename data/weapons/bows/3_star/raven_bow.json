@@ -1,0 +1,56 @@
+{
+    "id": "raven_bow",
+    "name": "Raven Bow",
+    "emoji": "Raven_Bow",
+    "icon": "Raven_Bow",
+    "description": "Ravens are known to be the ferrymen of the dead. This bow's limb is decorated with raven feathers, which forebode the imminent death of its target.",
+    "weapon_type": "bow",
+    "max_level": 90,
+    "rarity": 3,
+    "main_stat": {
+      "type": "base_atk",
+      "value": 448
+    },
+    "secondary_stat": {
+      "type": "elemental_mastery",
+      "value": 94
+    },
+    "passive": {
+      "name": "Bane of Flame and Water",
+      "description": {
+        "r1": "Increases DMG against opponents affected by Hydro or Pyro by __12%__.",
+        "r2": "Increases DMG against opponents affected by Hydro or Pyro by __15%__.",
+        "r3": "Increases DMG against opponents affected by Hydro or Pyro by __18%__.",
+        "r4": "Increases DMG against opponents affected by Hydro or Pyro by __21%__.",
+        "r5": "Increases DMG against opponents affected by Hydro or Pyro by __24%__."
+      }
+    },
+    "materials": {
+      "weapon_material": {
+        "id": "decarabians",
+        "tier2": 2,
+        "tier3": 6,
+        "tier4": 6,
+        "tier5": 3
+      },
+      "common": {
+        "id": "arrowhead",
+        "tier1": 6,
+        "tier2": 10,
+        "tier3": 12
+      },
+      "elite": {
+        "id": "horn",
+        "tier2": 10,
+        "tier3": 12,
+        "tier4": 18
+      },
+      "mora": {
+        "id": "mora",
+        "amount": 105000
+      }
+    },
+    "obtain": [
+      "Any Wish Banner"
+    ]
+}

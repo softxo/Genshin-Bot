@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from utils.characters import get_character
-from utils.autocomplete import character_autocomplete
+from utils.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
 from utils.constants import ASCENSION_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
 

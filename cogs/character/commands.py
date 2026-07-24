@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 from utils.icons import get_character_icon, get_character_splash
 from utils.characters import get_character
-from utils.autocomplete import character_autocomplete
+from utils.character_autocomplete import character_autocomplete
 from utils.constants import ELEMENT_EMOJIS, WEAPON_EMOJIS
 
 class Character(commands.Cog):

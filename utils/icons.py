@@ -4,6 +4,7 @@ from discord import Emoji
 from typing import Optional
 
 CHARACTER_ASSETS = Path("assets/characters")
+WEAPON_ASSETS = Path("assets/weapons")
 
 TALENT_SUFFIXES = {
     "normal": "NA",
@@ -88,3 +89,11 @@ def get_character_splash(character_id: str) -> Path:
 
 def get_character_card(character_id: str) -> Path:
     return CHARACTER_ASSETS / character_id / "icons" / "card.png"
+
+def get_weapon_icon_path(data):
+    return (
+        WEAPON_ASSETS
+        / data["weapon_type"]
+        / f'{data["rarity"]}_star'
+        / f'{data["icon"]}.webp'
+    )

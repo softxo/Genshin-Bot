@@ -1,0 +1,43 @@
+{
+    "id": "hunters_bow",
+    "name": "Hunter's Bow",
+    "emoji": "Hunters_Bow",
+    "icon": "Hunters_Bow",
+    "description": "A hunter's music consists of but two sounds: the twang of the bowstring and the whoosh of soaring arrows.",
+    "weapon_type": "bow",
+    "max_level": 70,
+    "rarity": 1,
+    "main_stat": {
+      "type": "base_atk",
+      "value": 185
+    },
+    "secondary_stat": null,
+    "passive": null,
+    "materials": {
+      "weapon_material": {
+        "id": "boreal_wolfs",
+        "tier2": 1,
+        "tier3": 3,
+        "tier4": 1
+      },
+      "common": {
+        "id": "hoarder_insignia",
+        "tier1": 3,
+        "tier2": 5
+      },
+      "elite": {
+        "id": "ley_line",
+        "tier2": 5,
+        "tier3": 6
+      },
+      "mora": {
+        "id": "mora",
+        "amount": 20000
+      }
+    },
+    "obtain": [
+      "Chests",
+      "Investigation",
+      "Sold by Schulz (Mondstadt)"
+    ]
+}

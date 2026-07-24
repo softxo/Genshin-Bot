@@ -11,11 +11,11 @@ ELEMENT_EMOJIS = {
 }
 
 WEAPON_EMOJIS = {
-    "bow": "<:Bow:1529165007445561454>",
-    "sword": "<:Sword:1529164852529205350>",
-    "claymore": "<:Claymore:1529164849727410217>",
-    "polearm": "<:Polearm:1529164851157667851>",
-    "catalyst": "<:Catalyst:1529164848397816021>"
+    "bows": "<:Bow:1529165007445561454>",
+    "swords": "<:Sword:1529164852529205350>",
+    "claymores": "<:Claymore:1529164849727410217>",
+    "polearms": "<:Polearm:1529164851157667851>",
+    "catalysts": "<:Catalyst:1529164848397816021>"
 }
 
 ASCENSION_GEM_COSTS = {
@@ -99,6 +99,43 @@ TALENT_LEVELS = [
     "9 → 10",
 ]
 
+WEAPON_RARITY_COLOURS = {
+    1: 0x8E8E8E,
+    2: 0x4CAF50,
+    3: 0x3F51B5,
+    4: 0x9C27B0,
+    5: 0xF4B400,
+}
+
+STAT_NAMES = {
+    "base_atk": "Base ATK",
+    "hp_percent": "HP",
+    "atk_percent": "ATK",
+    "def_percent": "DEF",
+    "elemental_mastery": "Elemental Mastery",
+    "energy_recharge": "Energy Recharge",
+    "crit_rate": "CRIT Rate",
+    "crit_dmg": "CRIT DMG",
+    "physical_dmg_bonus": "Physical DMG Bonus",
+}
+
+PERCENT_STATS = {
+    "hp_percent",
+    "atk_percent",
+    "def_percent",
+    "crit_rate",
+    "crit_dmg",
+    "energy_recharge",
+    "healing_bonus",
+    "physical_dmg_bonus",
+    "pyro_dmg_bonus",
+    "hydro_dmg_bonus",
+    "cryo_dmg_bonus",
+    "electro_dmg_bonus",
+    "anemo_dmg_bonus",
+    "geo_dmg_bonus",
+    "dendro_dmg_bonus",
+}
 
 ### Colour Codes:
 # Pyro: #ef7a35

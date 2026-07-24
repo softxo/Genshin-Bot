@@ -4,8 +4,12 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 from utils.loader import load_characters, CHARACTERS
+from utils.weapons import load_weapons, get_weapon
 
 load_characters()
+load_weapons()
+
+print(get_weapon("raven_bow"))
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
