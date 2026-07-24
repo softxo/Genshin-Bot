@@ -11,7 +11,7 @@ ELEMENT_EMOJIS = {
 }
 
 WEAPON_EMOJIS = {
-    "bows": "<:Bow:1529165007445561454>",
+    "bow": "<:Bow:1529165007445561454>",
     "swords": "<:Sword:1529164852529205350>",
     "claymores": "<:Claymore:1529164849727410217>",
     "polearms": "<:Polearm:1529164851157667851>",

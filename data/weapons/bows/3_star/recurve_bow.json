@@ -18,11 +18,11 @@
     "passive": {
       "name": "Cull the Weak",
       "description": {
-        "r1": "Defeating an opponent restores __8%__ HP.",
-        "r2": "Defeating an opponent restores __10%__ HP.",
-        "r3": "Defeating an opponent restores __12%__ HP.",
-        "r4": "Defeating an opponent restores __14%__ HP.",
-        "r5": "Defeating an opponent restores __16%__ HP."
+        "r1": "Defeating an opponent restores **8%** HP.",
+        "r2": "Defeating an opponent restores **10%** HP.",
+        "r3": "Defeating an opponent restores **12%** HP.",
+        "r4": "Defeating an opponent restores **14%** HP.",
+        "r5": "Defeating an opponent restores **16%** HP."
       }
     },
     "materials": {
@@ -40,7 +40,7 @@
         "tier3": 12
       },
       "elite": {
-        "id": "chaos",
+        "id": "chaos_machine",
         "tier2": 10,
         "tier3": 12,
         "tier4": 18

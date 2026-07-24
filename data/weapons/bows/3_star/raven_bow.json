@@ -18,11 +18,11 @@
     "passive": {
       "name": "Bane of Flame and Water",
       "description": {
-        "r1": "Increases DMG against opponents affected by Hydro or Pyro by __12%__.",
-        "r2": "Increases DMG against opponents affected by Hydro or Pyro by __15%__.",
-        "r3": "Increases DMG against opponents affected by Hydro or Pyro by __18%__.",
-        "r4": "Increases DMG against opponents affected by Hydro or Pyro by __21%__.",
-        "r5": "Increases DMG against opponents affected by Hydro or Pyro by __24%__."
+        "r1": "Increases DMG against opponents affected by Hydro or Pyro by **12%**.",
+        "r2": "Increases DMG against opponents affected by Hydro or Pyro by **15%**.",
+        "r3": "Increases DMG against opponents affected by Hydro or Pyro by **18%**.",
+        "r4": "Increases DMG against opponents affected by Hydro or Pyro by **21%**.",
+        "r5": "Increases DMG against opponents affected by Hydro or Pyro by **24%**."
       }
     },
     "materials": {

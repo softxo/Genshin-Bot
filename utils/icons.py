@@ -90,10 +90,21 @@ def get_character_splash(character_id: str) -> Path:
 def get_character_card(character_id: str) -> Path:
     return CHARACTER_ASSETS / character_id / "icons" / "card.png"
 
-def get_weapon_icon_path(data):
+def get_weapon_icon(weapon: dict) -> Path:
     return (
         WEAPON_ASSETS
-        / data["weapon_type"]
-        / f'{data["rarity"]}_star'
-        / f'{data["icon"]}.webp'
+        / weapon["weapon_type"]
+        / f'{weapon["rarity"]}_star'
+        / f'{weapon["icon"]}.webp'
+    )
+
+def get_weapon_asset(
+    weapon: dict,
+    filename: str
+) -> Path:
+    return (
+        WEAPON_ASSETS
+        / weapon["weapon_type"]
+        / f'{weapon["rarity"]}_star'
+        / filename
     )

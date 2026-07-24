@@ -1,13 +1,14 @@
+import json
 import discord
+from pathlib import Path
 from discord.ext import commands
 from discord import app_commands
 from utils.characters import get_character
 from utils.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
 from utils.constants import ASCENSION_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
+from collections import defaultdict
 
-import json
-from pathlib import Path
 
 MATERIALS_PATH = Path("data/materials")
 
@@ -40,6 +41,7 @@ def get_ascension_text(data, emojis):
     boss = BOSSES[ascension["boss"]["id"]]
     local = LOCAL_SPECIALTIES[ascension["local_specialty"]["id"]]
     common = COMMON[ascension["common"]["id"]]
+    mora = MISC["mora"]
 
     gem_sliver_emoji = get_material_emoji(emojis, gem["tiers"]["sliver"]["emoji"])
     gem_fragment_emoji = get_material_emoji(emojis, gem["tiers"]["fragment"]["emoji"])
@@ -53,6 +55,8 @@ def get_ascension_text(data, emojis):
     common_tier2_emoji = get_material_emoji(emojis, common["tiers"]["tier2"]["emoji"])
     common_tier3_emoji = get_material_emoji(emojis, common["tiers"]["tier3"]["emoji"])
 
+    mora_emoji = get_material_emoji(emojis, mora["emoji"])
+
     return (
         f"{gem_sliver_emoji} **{gem['tiers']['sliver']['name']}** ×{ascension['gem']['sliver']}\n"
         f"{gem_fragment_emoji} **{gem['tiers']['fragment']['name']}** ×{ascension['gem']['fragment']}\n"
@@ -65,22 +69,21 @@ def get_ascension_text(data, emojis):
 
         f"{common_tier1_emoji} **{common['tiers']['tier1']['name']}** ×{ascension['common']['tier1']}\n"
         f"{common_tier2_emoji} **{common['tiers']['tier2']['name']}** ×{ascension['common']['tier2']}\n"
-        f"{common_tier3_emoji} **{common['tiers']['tier3']['name']}** ×{ascension['common']['tier3']}"
+        f"{common_tier3_emoji} **{common['tiers']['tier3']['name']}** ×{ascension['common']['tier3']}\n\n"
+        
+        f"{mora_emoji} **{mora['name']}** ×{ASCENSION_MORA_TOTAL:,}"
     )
 
 def get_ascension_misc_text(emojis):
-    mora = MISC["mora"]
     wit = MISC["heros_wit"]
     adventure = MISC["adventurers_experience"]
     wanderer = MISC["wanderers_advice"]
 
-    mora_emoji = get_material_emoji(emojis, mora["emoji"])
     wit_emoji = get_material_emoji(emojis, wit["emoji"])
     adventure_emoji = get_material_emoji(emojis, adventure["emoji"])
     wanderer_emoji = get_material_emoji(emojis, wanderer["emoji"])
 
     return (
-        f"{mora_emoji} **{mora['name']}** ×{ASCENSION_MORA_TOTAL:,}\n"
         f"{wit_emoji} **{wit['name']}** ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
         f"{adventure_emoji} **{adventure['name']}** ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
         f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}"
@@ -95,7 +98,7 @@ def build_ascension_embed(data, emojis):
     embed.set_thumbnail(url="attachment://character.png")
 
     embed.add_field(
-        name="Character Ascension (Lv. 1 → 90)",
+        name="Character Ascension • Lv. 1 → 90",
         value=get_ascension_text(data, emojis) + "\n\u200b",
         inline=False
     )
@@ -109,10 +112,11 @@ def build_ascension_embed(data, emojis):
     return embed
 
 
-def get_talent_text(data, emojis):
+def get_talent_text(data, emojis, talent_count=1):
     materials = data["materials"]
     talents = materials["talents"]
 
+    mora = MISC["mora"]
     book = BOOKS[talents['book']['id']]
     common = COMMON[talents['common']['id']]
     weekly = WEEKLY[talents['weekly_boss']['id']]
@@ -132,30 +136,25 @@ def get_talent_text(data, emojis):
 
     crown_emoji = get_material_emoji(emojis, crown["emoji"])
 
-    return (
-        f"{book_tier1_emoji} **{book['tiers']['teachings']['name']}** ×{talents['book']['teachings'] // 3}\n"
-        f"{book_tier2_emoji} **{book['tiers']['guide']['name']}** ×{talents['book']['guide'] // 3}\n"
-        f"{book_tier3_emoji} **{book['tiers']['philosophies']['name']}** ×{talents['book']['philosophies'] // 3}\n\n"
-
-        f"{common_tier1_emoji} **{common['tiers']['tier1']['name']}** ×{talents['common']['tier1'] // 3}\n"
-        f"{common_tier2_emoji} **{common['tiers']['tier2']['name']}** ×{talents['common']['tier2'] // 3}\n"
-        f"{common_tier3_emoji} **{common['tiers']['tier3']['name']}** ×{talents['common']['tier3'] // 3}\n\n"
-
-        f"{weekly_drop_emoji} **{weekly_drop['name']}** ×{talents['weekly_boss']['amount'] // 3}\n\n"
-        
-        f"{crown_emoji} **{crown['name']}** ×{talents['crown']['amount'] // 3}"
-    )
-
-def get_talent_misc_text(emojis):
-    mora = MISC["mora"]
-
     mora_emoji = get_material_emoji(emojis, mora["emoji"])
 
     return (
-        f"{mora_emoji} **{mora['name']}** ×{SINGLE_TALENT_MORA_TOTAL:,}"
+        f"{book_tier1_emoji} **{book['tiers']['teachings']['name']}** ×{talents['book']['teachings'] // 3 * talent_count}\n"
+        f"{book_tier2_emoji} **{book['tiers']['guide']['name']}** ×{talents['book']['guide'] // 3 * talent_count}\n"
+        f"{book_tier3_emoji} **{book['tiers']['philosophies']['name']}** ×{talents['book']['philosophies'] // 3 * talent_count}\n\n"
+
+        f"{common_tier1_emoji} **{common['tiers']['tier1']['name']}** ×{talents['common']['tier1'] // 3 * talent_count}\n"
+        f"{common_tier2_emoji} **{common['tiers']['tier2']['name']}** ×{talents['common']['tier2'] // 3 * talent_count}\n"
+        f"{common_tier3_emoji} **{common['tiers']['tier3']['name']}** ×{talents['common']['tier3'] // 3 * talent_count}\n\n"
+
+        f"{weekly_drop_emoji} **{weekly_drop['name']}** ×{talents['weekly_boss']['amount'] // 3 * talent_count}\n\n"
+        
+        f"{crown_emoji} **{crown['name']}** ×{talents['crown']['amount'] // 3 * talent_count}\n\n"
+
+        f"{mora_emoji} **{mora['name']}** ×{SINGLE_TALENT_MORA_TOTAL * talent_count:,}"
     )
 
-def build_talents_embed(data, emojis):
+def build_talents_embed(data, emojis, talent_count=1):
     embed = discord.Embed(
         title=f"{data['name']} • Talent Materials",
         colour=discord.Colour.from_str(data["colour"])
@@ -164,65 +163,211 @@ def build_talents_embed(data, emojis):
     embed.set_thumbnail(url="attachment://character.png")
 
     embed.add_field(
-        name="Cost per Talent (Lv. 1 → 10)",
-        value=get_talent_text(data, emojis) + "\n\u200b",
-        inline=False
-    )
-
-    embed.add_field(
-        name="Mora",
-        value=get_talent_misc_text(emojis),
+        name=f"{talent_count}/3 Max Talents • Lv. 1 → 10",
+        value=get_talent_text(data, emojis, talent_count),
         inline=False
     )
 
     return embed
 
+def get_total_materials(data, talent_count=1):
+    totals = defaultdict(int)
 
-def get_total_extras_text(emojis):
-    mora = MISC["mora"]
+    ascension = data["materials"]["ascension"]
+    talents = data["materials"]["talents"]
+
+    totals["mora"] += ASCENSION_MORA_TOTAL
+    totals["mora"] += SINGLE_TALENT_MORA_TOTAL * talent_count
+
+    totals["heros_wit"] += ASCENSION_EXP_COSTS["heros_wit"]
+    totals["adventurers_experience"] += ASCENSION_EXP_COSTS["adventurers_experience"]
+    totals["wanderers_advice"] += ASCENSION_EXP_COSTS["wanderers_advice"]
+
+    totals[(ascension["gem"]["id"], "sliver")] += ascension["gem"]["sliver"]
+    totals[(ascension["gem"]["id"], "fragment")] += ascension["gem"]["fragment"]
+    totals[(ascension["gem"]["id"], "chunk")] += ascension["gem"]["chunk"]
+    totals[(ascension["gem"]["id"], "gemstone")] += ascension["gem"]["gemstone"]
+
+    totals[ascension["boss"]["id"]] += ascension["boss"]["amount"]
+
+    totals[ascension["local_specialty"]["id"]] += ascension["local_specialty"]["amount"]
+
+    totals[(ascension["common"]["id"], "tier1")] += ascension["common"]["tier1"]
+    totals[(ascension["common"]["id"], "tier2")] += ascension["common"]["tier2"]
+    totals[(ascension["common"]["id"], "tier3")] += ascension["common"]["tier3"]
+
+    totals[(talents["book"]["id"], "teachings")] += talents["book"]["teachings"] // 3 * talent_count
+    totals[(talents["book"]["id"], "guide")] += talents["book"]["guide"] // 3 * talent_count
+    totals[(talents["book"]["id"], "philosophies")] += talents["book"]["philosophies"] // 3 * talent_count
+
+    totals[(talents["common"]["id"], "tier1")] += talents["common"]["tier1"] // 3 * talent_count
+    totals[(talents["common"]["id"], "tier2")] += talents["common"]["tier2"] // 3 * talent_count
+    totals[(talents["common"]["id"], "tier3")] += talents["common"]["tier3"] // 3 * talent_count
+
+    totals[(talents["weekly_boss"]["id"], talents["weekly_boss"]["material"])] += talents["weekly_boss"]["amount"] // 3 * talent_count
+
+    totals["crown_of_insight"] += talents["crown"]["amount"] // 3 * talent_count
+
+    return totals
+
+def format_total_materials(data, emojis, talent_count=1):
+    totals = get_total_materials(data, talent_count)
+    lines = []
+
+    gem_id = data["materials"]["ascension"]["gem"]["id"]
+    gem = GEMS[gem_id]
+
+    for tier in ("sliver", "fragment", "chunk", "gemstone"):
+        amount = totals[(gem_id, tier)]
+        emoji = get_material_emoji(emojis, gem["tiers"][tier]["emoji"])
+        name = gem["tiers"][tier]["name"]
+        lines.append(f"{emoji} **{name}** ×{amount}")
+
+    lines.append("")
+
+    boss_id = data["materials"]["ascension"]["boss"]["id"]
+    boss = BOSSES[boss_id]
+
+    boss_emoji = get_material_emoji(emojis, boss["emoji"])
+
+    lines.append(
+        f"{boss_emoji} **{boss['name']}** ×{totals[boss_id]}"
+    )
+
+    lines.append("")
+
+    local_id = data["materials"]["ascension"]["local_specialty"]["id"]
+    local = LOCAL_SPECIALTIES[local_id]
+
+    local_emoji = get_material_emoji(emojis, local["emoji"])
+
+    lines.append(
+        f"{local_emoji} **{local['name']}** ×{totals[local_id]}"
+    )
+
+    lines.append("")
+
+    common_id = data["materials"]["ascension"]["common"]["id"]
+    common = COMMON[common_id]
+
+    for tier in ("tier1", "tier2", "tier3"):
+        amount = totals[(common_id, tier)]
+        emoji = get_material_emoji(emojis, common["tiers"][tier]["emoji"])
+        name = common["tiers"][tier]["name"]
+
+        lines.append(f"{emoji} **{name}** ×{amount}")
+
+    lines.append("")
+
+    book_id = data["materials"]["talents"]["book"]["id"]
+    book = BOOKS[book_id]
+
+    for tier in ("teachings", "guide", "philosophies"):
+        amount = totals[(book_id, tier)]
+        emoji = get_material_emoji(emojis, book["tiers"][tier]["emoji"])
+        name = book["tiers"][tier]["name"]
+
+        lines.append(f"{emoji} **{name}** ×{amount}")
+
+    lines.append("")
+
+    weekly_id = data["materials"]["talents"]["weekly_boss"]["id"]
+    weekly = WEEKLY[weekly_id]
+
+    drop_id = data["materials"]["talents"]["weekly_boss"]["material"]
+    drop = weekly["drops"][drop_id]
+
+    weekly_emoji = get_material_emoji(emojis, drop["emoji"])
+
+    lines.append(
+        f"{weekly_emoji} **{drop['name']}** ×{totals[(weekly_id, drop_id)]}"
+    )
+
+    lines.append("")
+
+
     wit = MISC["heros_wit"]
     adventure = MISC["adventurers_experience"]
     wanderer = MISC["wanderers_advice"]
 
-    mora_emoji = get_material_emoji(emojis, mora["emoji"])
+    lines.append(
+        f"{get_material_emoji(emojis, wit['emoji'])} **{wit['name']}** ×{totals['heros_wit']}"
+    )
+
+    lines.append(
+        f"{get_material_emoji(emojis, adventure['emoji'])} **{adventure['name']}** ×{totals['adventurers_experience']}"
+    )
+
+    lines.append(
+        f"{get_material_emoji(emojis, wanderer['emoji'])} **{wanderer['name']}** ×{totals['wanderers_advice']}"
+    )
+
+    lines.append("")
+
+
+    crown = MISC["crown_of_insight"]
+
+    lines.append(
+        f"{get_material_emoji(emojis, crown['emoji'])} **{crown['name']}** ×{totals['crown_of_insight']}"
+    )
+
+    lines.append("")
+
+
+    mora = MISC["mora"]
+
+    lines.append(
+        f"{get_material_emoji(emojis, mora['emoji'])} **{mora['name']}** ×{totals['mora']:,}"
+    )
+
+    return "\n".join(lines)
+
+
+def get_total_extras_text(emojis):
+    wit = MISC["heros_wit"]
+    adventure = MISC["adventurers_experience"]
+    wanderer = MISC["wanderers_advice"]
+
     wit_emoji = get_material_emoji(emojis, wit["emoji"])
     adventure_emoji = get_material_emoji(emojis, adventure["emoji"])
     wanderer_emoji = get_material_emoji(emojis, wanderer["emoji"])
 
-    total_mora = ASCENSION_MORA_TOTAL + SINGLE_TALENT_MORA_TOTAL
-
     return (
-        f"{mora_emoji} **{mora['name']}** ×{total_mora:,}\n"
         f"{wit_emoji} **{wit['name']}** ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
         f"{adventure_emoji} **{adventure['name']}** ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
         f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}"
     )
 
-def build_total_embed(data, emojis):
+def build_total_embed(data, emojis, talent_count=1):
     embed = discord.Embed(
         title=f"{data['name']} • Total Materials",
         colour=discord.Colour.from_str(data["colour"])
     )
 
+    embed.add_field(
+        name=f"Character Lv. 90 • {talent_count}/3 Talents Lv. 10",
+        value="",
+        inline=False
+    )
+
     embed.set_thumbnail(url="attachment://character.png")
 
-    embed.add_field(
-        name="Character Ascension (Lv. 1 → 90)",
-        value=get_ascension_text(data, emojis) + "\n\u200b",
-        inline=False
+    totals = format_total_materials(data, emojis, talent_count)
+
+    sections = totals.split("\n\n")
+
+    for section in sections:
+        if section.strip():
+            embed.add_field(
+                name="\u200b",
+                value=section,
+                inline=False
+            )
+
+    embed.set_footer(
+        text="Talent materials scale with number of maxed talents"
     )
 
-    embed.add_field(
-        name="Cost per Talent (Lv. 1 → 10)",
-        value=get_talent_text(data, emojis) + "\n\u200b",
-        inline=False
-    )
-
-    embed.add_field(
-        name="Other Materials",
-        value=get_total_extras_text(emojis),
-        inline=False
-    )
     return embed
 
 class MaterialsView(discord.ui.View):
@@ -231,9 +376,16 @@ class MaterialsView(discord.ui.View):
 
         self.user_id = user_id
 
+        self.talent_page_count = 1
+        self.total_page_count = 1
+
         self.ascension_embed = build_ascension_embed(data, emojis)
-        self.talent_embed = build_talents_embed(data, emojis)
-        self.total_embed = build_total_embed(data, emojis)
+        self.talent_embed = build_talents_embed(data, emojis, self.talent_page_count)
+
+        self.data = data
+        self.emojis = emojis
+
+        self.total_embed = build_total_embed(data, emojis, self.total_page_count)
 
         self.ascension_button = discord.ui.Button(
             label="← Ascension",
@@ -262,6 +414,12 @@ class MaterialsView(discord.ui.View):
         )
 
     async def talents_callback(self, interaction):
+        self.talent_embed = build_talents_embed(
+            self.data,
+            self.emojis,
+            self.talent_page_count
+        )
+
         await self.change_page(
             interaction,
             self.talent_embed,
@@ -269,6 +427,12 @@ class MaterialsView(discord.ui.View):
         )
 
     async def total_callback(self, interaction):
+        self.total_embed = build_total_embed(
+            self.data,
+            self.emojis,
+            self.total_page_count
+        )
+
         await self.change_page(
             interaction,
             self.total_embed,
@@ -284,6 +448,38 @@ class MaterialsView(discord.ui.View):
             return False
 
         return True
+
+    async def update_talent(self, interaction, count):
+        self.talent_page_count = count
+
+        self.talent_embed = build_talents_embed(
+            self.data,
+            self.emojis,
+            self.talent_page_count
+        )
+
+        self.show_talent_buttons()
+
+        await interaction.response.edit_message(
+            embed=self.talent_embed,
+            view=self
+        )
+
+    async def update_total(self, interaction, count):
+        self.total_page_count = count
+
+        self.total_embed = build_total_embed(
+            self.data,
+            self.emojis,
+            self.total_page_count
+        )
+
+        self.show_total_buttons()
+
+        await interaction.response.edit_message(
+            embed=self.total_embed,
+            view=self
+        )
 
 
     def refresh_thumbnail(self, embed):
@@ -314,29 +510,112 @@ class MaterialsView(discord.ui.View):
             style=discord.ButtonStyle.secondary
         )
 
+        crown_emoji = get_material_emoji(
+            self.emojis,
+            MISC["crown_of_insight"]["emoji"]
+        )
+
+        talent1 = discord.ui.Button(
+            label="1 Talent",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.talent_page_count == 1
+                else discord.ButtonStyle.secondary
+            )
+        )
+
+        talent2 = discord.ui.Button(
+            label="2 Talents",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.talent_page_count == 2
+                else discord.ButtonStyle.secondary
+            )
+        )
+
+        talent3 = discord.ui.Button(
+            label="3 Talents",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.talent_page_count == 3
+                else discord.ButtonStyle.secondary
+            )
+        )
+
         total = discord.ui.Button(
             label="Total →",
             style=discord.ButtonStyle.secondary
         )
 
         ascension.callback = self.ascension_callback
+
+        talent1.callback = lambda i: self.update_talent(i, 1)
+        talent2.callback = lambda i: self.update_talent(i, 2)
+        talent3.callback = lambda i: self.update_talent(i, 3)
+
         total.callback = self.total_callback
 
         self.add_item(ascension)
+        self.add_item(talent1)
+        self.add_item(talent2)
+        self.add_item(talent3)
         self.add_item(total)
-
 
     def show_total_buttons(self):
         self.clear_items()
 
-        button = discord.ui.Button(
+        back = discord.ui.Button(
             label="← Talent",
             style=discord.ButtonStyle.secondary
         )
 
-        button.callback = self.talents_callback
+        crown_emoji = get_material_emoji(
+            self.emojis,
+            MISC["crown_of_insight"]["emoji"]
+        )
 
-        self.add_item(button)
+        talent1 = discord.ui.Button(
+            label="1 Talent",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.total_page_count == 1
+                else discord.ButtonStyle.secondary
+            )
+        )
+
+        talent2 = discord.ui.Button(
+            label="2 Talents",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.total_page_count == 2
+                else discord.ButtonStyle.secondary
+            )
+        )
+
+        talent3 = discord.ui.Button(
+            label="3 Talents",
+            emoji=crown_emoji,
+            style=(
+                discord.ButtonStyle.success
+                if self.total_page_count == 3
+                else discord.ButtonStyle.secondary
+            )
+        )
+
+        talent1.callback = lambda i: self.update_total(i, 1)
+        talent2.callback = lambda i: self.update_total(i, 2)
+        talent3.callback = lambda i: self.update_total(i, 3)
+        back.callback = self.talents_callback
+
+        self.add_item(back)
+        self.add_item(talent1)
+        self.add_item(talent2)
+        self.add_item(talent3)
 
 
     async def change_page(self, interaction, embed, page):

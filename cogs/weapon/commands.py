@@ -1,11 +1,12 @@
+from contextlib import nullcontext
+
 import discord
 from discord.ext import commands
 from discord import app_commands
 from utils.weapons import get_weapon
 from utils.weapon_autocomplete import weapon_autocomplete
-from utils.weapon_materials import get_weapon_material
 from utils.constants import WEAPON_RARITY_COLOURS, STAT_NAMES, PERCENT_STATS
-from utils.icons import get_weapon_icon_path, get_material_emoji
+from utils.icons import get_weapon_icon
 
 
 class Weapon(commands.Cog):
@@ -36,13 +37,13 @@ class Weapon(commands.Cog):
 
         embed = discord.Embed(
             title=data["name"],
-            description=data["description"],
+            description=data["description"] + "\n\u200b",
             colour=WEAPON_RARITY_COLOURS[data["rarity"]]
         )
 
         embed.add_field(
             name="Weapon Type",
-            value=data["weapon_type"].replace("_", " ").title() + "\n\u200b",
+            value=data["weapon_type"].replace("_", " ").title(),
             inline=True
         )
 
@@ -64,6 +65,12 @@ class Weapon(commands.Cog):
             inline=True
         )
 
+        embed.add_field(
+            name="\n\u200b",
+            value="\n\u200b",
+            inline=True
+        )
+
         secondary = data["secondary_stat"]
 
         if secondary is None:
@@ -80,8 +87,8 @@ class Weapon(commands.Cog):
 
         embed.add_field(
             name="Secondary Stat",
-            value=secondary_text,
-            inline=False
+            value=secondary_text + "\n\u200b",
+            inline=True
         )
 
         if data["passive"] is None:
@@ -94,49 +101,16 @@ class Weapon(commands.Cog):
             )
 
         embed.add_field(
-            name="Passive",
-            value=passive_text + "\n\u200b",
+            name="",
+            value=passive_text,
             inline=False
         )
-
-        materials = data.get("materials", {})
-
-        weapon_material = materials.get("weapon_material")
-
-        if weapon_material:
-            material_data = get_weapon_material(
-                weapon_material["id"]
-            )
-
-            if material_data:
-                text = ""
-
-                for tier, amount in weapon_material.items():
-                    if tier.startswith("tier"):
-                        material = material_data["tiers"][tier]
-
-                        emoji = get_material_emoji(
-                            self.bot.emojis,
-                            material["emoji"]
-                        )
-
-                        text += (
-                                f"{emoji} {material['name']} ×{amount}\n"
-                        )
-
-                embed.add_field(
-                    name="Weapon Ascension Materials",
-                    value=text,
-                    inline=False
-                )
 
         embed.set_footer(
             text=f"Refinement Rank {refinement} • Level {data['max_level']}"
         )
 
-        icon_path = get_weapon_icon_path(data)
-        print(icon_path)
-        print(icon_path.exists())
+        icon_path = get_weapon_icon(data)
 
         if icon_path.exists():
             file = discord.File(icon_path, filename="weapon.webp")

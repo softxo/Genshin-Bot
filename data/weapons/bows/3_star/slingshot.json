@@ -18,11 +18,11 @@
     "passive": {
       "name": "Slingshot",
       "description": {
-        "r1": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by __36%__. Otherwise, decreases DMG by 10%.",
-        "r2": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by __42%__. Otherwise, decreases DMG by 10%.",
-        "r3": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by __48%__. Otherwise, decreases DMG by 10%.",
-        "r4": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by __54%__. Otherwise, decreases DMG by 10%.",
-        "r5": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by __60%__. Otherwise, decreases DMG by 10%."
+        "r1": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by **36%**. Otherwise, decreases DMG by 10%.",
+        "r2": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by **42%**. Otherwise, decreases DMG by 10%.",
+        "r3": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by **48%**. Otherwise, decreases DMG by 10%.",
+        "r4": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by **54%**. Otherwise, decreases DMG by 10%.",
+        "r5": "If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by **60%**. Otherwise, decreases DMG by 10%."
       }
     },
     "materials": {

@@ -18,11 +18,11 @@
     "passive": {
       "name": "Precise",
       "description": {
-        "r1": "Increases DMG against weak spots by __24%__.",
-        "r2": "Increases DMG against weak spots by __30%__.",
-        "r3": "Increases DMG against weak spots by __36%__.",
-        "r4": "Increases DMG against weak spots by __42%__.",
-        "r5": "Increases DMG against weak spots by __48%__."
+        "r1": "Increases DMG against weak spots by **24%**.",
+        "r2": "Increases DMG against weak spots by **30%**.",
+        "r3": "Increases DMG against weak spots by **36%**.",
+        "r4": "Increases DMG against weak spots by **42%**.",
+        "r5": "Increases DMG against weak spots by **48%**."
       }
     },
     "materials": {

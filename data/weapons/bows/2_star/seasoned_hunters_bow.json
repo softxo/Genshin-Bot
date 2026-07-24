@@ -4,6 +4,7 @@
     "emoji": "Seasoned_Hunters_Bow",
     "icon": "Seasoned_Hunters_Bow",
     "description": "A bow that has been well-polished by time and meticulously cared for by its owner. It feels almost like an extension of the archer's arm.",
+    "weapon_type": "bow",
     "max_level": 70,
     "rarity": 2,
     "main_stat": {

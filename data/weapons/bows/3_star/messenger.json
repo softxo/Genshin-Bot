@@ -18,11 +18,11 @@
     "passive": {
       "name": "Archer's Message",
       "description": {
-        "r1": "Charged Attack hits on weak points deal an additional __100%__ ATK DMG as CRIT DMG. Can only occur once every 10s.",
-        "r2": "Charged Attack hits on weak points deal an additional __125%__ ATK DMG as CRIT DMG. Can only occur once every 10s.",
-        "r3": "Charged Attack hits on weak points deal an additional __150%__ ATK DMG as CRIT DMG. Can only occur once every 10s.",
-        "r4": "Charged Attack hits on weak points deal an additional __175%__ ATK DMG as CRIT DMG. Can only occur once every 10s.",
-        "r5": "Charged Attack hits on weak points deal an additional __200%__ ATK DMG as CRIT DMG. Can only occur once every 10s."
+        "r1": "Charged Attack hits on weak points deal an additional **100%** ATK DMG as CRIT DMG. Can only occur once every 10s.",
+        "r2": "Charged Attack hits on weak points deal an additional **125%** ATK DMG as CRIT DMG. Can only occur once every 10s.",
+        "r3": "Charged Attack hits on weak points deal an additional **150%** ATK DMG as CRIT DMG. Can only occur once every 10s.",
+        "r4": "Charged Attack hits on weak points deal an additional **175%** ATK DMG as CRIT DMG. Can only occur once every 10s.",
+        "r5": "Charged Attack hits on weak points deal an additional **200%** ATK DMG as CRIT DMG. Can only occur once every 10s."
       }
     },
     "materials": {
