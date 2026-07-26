@@ -2,51 +2,31 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from utils.icons import get_character_icon, get_character_splash
-from utils.characters import get_character
-from utils.character_autocomplete import character_autocomplete
+from utils.character.characters import get_character
+from utils.character.character_autocomplete import character_autocomplete
 from utils.constants import ELEMENT_EMOJIS, WEAPON_EMOJIS
 
 class Character(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="character",
-        description="Shows character information."
-    )
-    @app_commands.autocomplete(character=character_autocomplete)
-    async def character(
+    async def _send_character(
         self,
-        interaction: discord.Interaction,
+        destination,
         character: str
     ):
+        character = character.lower().replace(" ", "_")
+
         data = get_character(character)
 
-        if not data:
-            await interaction.response.send_message(
-                "Character not found.",
-                ephemeral=True
-            )
+        if data is None:
+            await destination.send("Character not found.")
             return
-
-        icon = discord.File(
-            get_character_icon(data["id"]),
-            filename="icon.webp"
-        )
-
-        splash = discord.File(
-            get_character_splash(data["id"]),
-            filename="splash.png"
-        )
 
         embed = discord.Embed(
             title=data["name"],
             description=data["description"],
             colour=discord.Colour.from_str(data["colour"])
-        )
-
-        embed.set_thumbnail(
-            url="attachment://icon.webp"
         )
 
         embed.add_field(
@@ -94,13 +74,54 @@ class Character(commands.Cog):
             value=data["birthday"]
         )
 
-        embed.set_image(
-            url="attachment://splash.png"
+        icon_path = get_character_icon(data["id"])
+        splash_path = get_character_splash(data["id"])
+
+        files = []
+
+        if icon_path.exists():
+            files.append(discord.File(icon_path, filename="icon.webp"))
+            embed.set_thumbnail(url="attachment://icon.webp")
+
+        if splash_path.exists():
+            files.append(discord.File(splash_path, filename="splash.png"))
+            embed.set_image(url="attachment://splash.png")
+
+        await destination.send(
+            embed=embed,
+            files=files
         )
 
-        await interaction.response.send_message(
-            embed=embed,
-            files=[icon, splash]
+    @app_commands.command(
+        name="character",
+        description="Shows character information."
+    )
+    @app_commands.autocomplete(character=character_autocomplete)
+    async def character(
+        self,
+        interaction: discord.Interaction,
+        character: str
+    ):
+        await interaction.response.defer()
+
+        await self._send_character(
+            interaction.followup,
+            character
+        )
+
+    @commands.command(
+        name="character",
+        aliases=["char", "c"]
+    )
+    async def character_prefix(
+            self,
+            ctx: commands.Context,
+            *,
+            character: str
+    ):
+        await self._send_character(
+            ctx,
+            character
         )
 
 async def setup(bot):

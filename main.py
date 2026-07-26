@@ -3,8 +3,8 @@ import asyncio
 import os
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.loader import load_characters, CHARACTERS
-from utils.weapons import load_weapons, get_weapon
+from utils.character.character_loader import load_characters, CHARACTERS
+from utils.weapon.weapons import load_weapons, get_weapon
 
 load_characters()
 load_weapons()
@@ -18,6 +18,7 @@ print(f"Loaded {len(CHARACTERS)} characters:")
 print(list(CHARACTERS.keys()))
 
 intents = discord.Intents.default()
+intents.message_content = True
 
 bot = commands.Bot(
     command_prefix="?",

@@ -1,3 +1,5 @@
+import discord
+
 ELEMENT_EMOJIS = {
     "pyro": "<:Pyro:1529166535070056518>",
     "hydro": "<:Hydro:1529166533086150888>",
@@ -10,12 +12,60 @@ ELEMENT_EMOJIS = {
     "dot": "<:Dot:1529398764161339482>"
 }
 
+ELEMENT_NAMES = {
+    "physical": "Physical",
+    "pyro": "Pyro",
+    "hydro": "Hydro",
+    "electro": "Electro",
+    "cryo": "Cryo",
+    "dendro": "Dendro",
+    "anemo": "Anemo",
+    "geo": "Geo",
+}
+
+SHIELD_EMOJIS = {
+    "elementless": "<:Shield:1530937059722924213>",
+    "void": "<:Shield_Void:1530937062646349834>",
+    "deepdark": "<:Shield_Deepdark:1530937061350047834>",
+}
+
+ENEMY_CATEGORY_NAMES = {
+    "common": "Common Enemy",
+    "elite": "Elite Enemy",
+    "boss": "Normal Boss",
+    "weekly": "Weekly Boss",
+}
+
+ENEMY_ELEMENT_COLOURS = {
+    "physical": discord.Colour.light_grey(),
+    "pyro": discord.Colour.orange(),
+    "hydro": discord.Colour.blue(),
+    "electro": discord.Colour.purple(),
+    "cryo": discord.Colour.from_rgb(130, 220, 255),
+    "dendro": discord.Colour.green(),
+    "anemo": discord.Colour.teal(),
+    "geo": discord.Colour.gold(),
+    "void": discord.Colour.dark_purple(),
+    "deepdark": discord.Colour.dark_theme(),
+}
+
 WEAPON_EMOJIS = {
     "bow": "<:Bow:1529165007445561454>",
-    "swords": "<:Sword:1529164852529205350>",
-    "claymores": "<:Claymore:1529164849727410217>",
-    "polearms": "<:Polearm:1529164851157667851>",
-    "catalysts": "<:Catalyst:1529164848397816021>"
+    "sword": "<:Sword:1529164852529205350>",
+    "claymore": "<:Claymore:1529164849727410217>",
+    "polearm": "<:Polearm:1529164851157667851>",
+    "catalyst": "<:Catalyst:1529164848397816021>"
+}
+
+COLOURED_ELEMENT_EMOJIS = {
+    "pyro": "<:Element_Pyro:1530806714675232768>",
+    "hydro": "<:Element_Hydro:1530806713244975246>",
+    "electro": "<:Element_Electro:1530806709952450630>",
+    "cryo": "<:Element_Cryo:1530806706504732703>",
+    "dendro": "<:Element_Dendro:1530806708266598490>",
+    "geo": "<:Element_Geo:1530806711617585232>",
+    "anemo": "<:Element_Anemo:1530806704814559243>",
+    "physical": "<:Element_Physical:1530823447041540156>"
 }
 
 ASCENSION_GEM_COSTS = {
@@ -72,10 +122,20 @@ ASCENSION_MORA_COSTS = [
     120000   # 80 → 90
 ]
 
+LEVEL_MORA_COSTS = [
+    24200,   # 1  → 20
+    115800,  # 20 → 40
+    116000,  # 40 → 50
+    171000,  # 50 → 60
+    239200,  # 60 → 70
+    322400,  # 70 → 80
+    684800   # 80 → 9
+]
+
 ASCENSION_EXP_COSTS = {
     "wanderers_advice": 12,
     "adventurers_experience": 11,
-    "heros_wit": 419
+    "heros_wit": 415
 }
 
 ASCENSION_PHASES = [
@@ -117,6 +177,19 @@ STAT_NAMES = {
     "crit_rate": "CRIT Rate",
     "crit_dmg": "CRIT DMG",
     "physical_dmg_bonus": "Physical DMG Bonus",
+}
+
+REFERENCE_NAMES = {
+    "max_hp": "Max HP",
+    "base_hp": "Base HP",
+    "max_atk": "Max ATK",
+    "base_atk": "Base ATK",
+    "max_def": "Max DEF",
+    "base_def": "Base DEF",
+}
+
+STAT_EMOJIS = {
+    "hp" : "<:HP:1530927836993552576>"
 }
 
 PERCENT_STATS = {

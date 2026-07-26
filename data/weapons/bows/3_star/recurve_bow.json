@@ -26,28 +26,42 @@
       }
     },
     "materials": {
-      "weapon_material": {
-        "id": "dandelion_gladiator",
-        "tier2": 2,
-        "tier3": 6,
-        "tier4": 6,
-        "tier5": 3
+      "ascension": {
+        "weapon_material": {
+          "id": "dandelion_gladiator",
+          "tier2": 2,
+          "tier3": 6,
+          "tier4": 6,
+          "tier5": 3
+        },
+        "common": {
+          "id": "scroll",
+          "tier1": 6,
+          "tier2": 10,
+          "tier3": 12
+        },
+        "elite": {
+          "id": "chaos_machine",
+          "tier2": 10,
+          "tier3": 12,
+          "tier4": 18
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 105000
+        }
       },
-      "common": {
-        "id": "scroll",
-        "tier1": 6,
-        "tier2": 10,
-        "tier3": 12
-      },
-      "elite": {
-        "id": "chaos_machine",
-        "tier2": 10,
-        "tier3": 12,
-        "tier4": 18
-      },
-      "mora": {
-        "id": "mora",
-        "amount": 105000
+      "level": {
+        "ores": {
+          "id": "enhancement_ore",
+          "tier1": 395,
+          "tier2": 18,
+          "tier3": 6
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 398880
+        }
       }
     },
     "obtain": [

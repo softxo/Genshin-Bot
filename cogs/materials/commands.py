@@ -3,10 +3,10 @@ import discord
 from pathlib import Path
 from discord.ext import commands
 from discord import app_commands
-from utils.characters import get_character
-from utils.character_autocomplete import character_autocomplete
+from utils.character.characters import get_character
+from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
-from utils.constants import ASCENSION_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
+from utils.constants import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
 from collections import defaultdict
 
 
@@ -23,14 +23,14 @@ def load_json(filename):
 
 GEMS = load_json("gems.json")
 BOOKS = load_json("books.json")
-COMMON = load_json("common.json")
-BOSSES = load_json("boss.json")
-WEEKLY = load_json("weekly.json")
+COMMON = load_json("common_drops.json")
+BOSSES = load_json("boss_drops.json")
+WEEKLY = load_json("weekly_drops.json")
 LOCAL_SPECIALTIES = load_json("local_specialties.json")
 MISC = load_json("miscellaneous.json")
 ASCENSION_MORA_TOTAL = sum(ASCENSION_MORA_COSTS)
+LEVEL_MORA_TOTAL = sum(LEVEL_MORA_COSTS)
 SINGLE_TALENT_MORA_TOTAL = sum(TALENT_MORA_COSTS)
-ALL_TALENTS_MORA_TOTAL = 3 * sum(TALENT_MORA_COSTS)
 
 
 def get_ascension_text(data, emojis):
@@ -78,16 +78,27 @@ def get_ascension_misc_text(emojis):
     wit = MISC["heros_wit"]
     adventure = MISC["adventurers_experience"]
     wanderer = MISC["wanderers_advice"]
+    mora = MISC["mora"]
 
     wit_emoji = get_material_emoji(emojis, wit["emoji"])
     adventure_emoji = get_material_emoji(emojis, adventure["emoji"])
     wanderer_emoji = get_material_emoji(emojis, wanderer["emoji"])
+    mora_emoji = get_material_emoji(emojis, mora["emoji"])
 
     return (
         f"{wit_emoji} **{wit['name']}** ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
         f"{adventure_emoji} **{adventure['name']}** ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
-        f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}"
+        f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}\n\n"
+        
+        f"{mora_emoji} **{mora['name']}** ×{LEVEL_MORA_TOTAL:,}"
     )
+
+def get_total_mora_ascension(emojis):
+    mora = MISC["mora"]
+
+    mora_emoji = get_material_emoji(emojis, mora["emoji"])
+
+    return (f"{mora_emoji} **{mora['name']}** ×{LEVEL_MORA_TOTAL+ASCENSION_MORA_TOTAL:,}")
 
 def build_ascension_embed(data, emojis):
     embed = discord.Embed(
@@ -104,8 +115,14 @@ def build_ascension_embed(data, emojis):
     )
 
     embed.add_field(
-        name="Character Levels",
-        value=get_ascension_misc_text(emojis),
+        name="Character Levels • Lv. 1 → 90",
+        value=get_ascension_misc_text(emojis) + "\n\u200b",
+        inline=False
+    )
+
+    embed.add_field(
+        name="Total Mora • Lv. 1 → 90",
+        value=get_total_mora_ascension(emojis),
         inline=False
     )
 
@@ -176,7 +193,7 @@ def get_total_materials(data, talent_count=1):
     ascension = data["materials"]["ascension"]
     talents = data["materials"]["talents"]
 
-    totals["mora"] += ASCENSION_MORA_TOTAL
+    totals["mora"] += ASCENSION_MORA_TOTAL + LEVEL_MORA_TOTAL
     totals["mora"] += SINGLE_TALENT_MORA_TOTAL * talent_count
 
     totals["heros_wit"] += ASCENSION_EXP_COSTS["heros_wit"]
@@ -322,22 +339,6 @@ def format_total_materials(data, emojis, talent_count=1):
 
     return "\n".join(lines)
 
-
-def get_total_extras_text(emojis):
-    wit = MISC["heros_wit"]
-    adventure = MISC["adventurers_experience"]
-    wanderer = MISC["wanderers_advice"]
-
-    wit_emoji = get_material_emoji(emojis, wit["emoji"])
-    adventure_emoji = get_material_emoji(emojis, adventure["emoji"])
-    wanderer_emoji = get_material_emoji(emojis, wanderer["emoji"])
-
-    return (
-        f"{wit_emoji} **{wit['name']}** ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
-        f"{adventure_emoji} **{adventure['name']}** ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
-        f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}"
-    )
-
 def build_total_embed(data, emojis, talent_count=1):
     embed = discord.Embed(
         title=f"{data['name']} • Total Materials",
@@ -387,57 +388,40 @@ class MaterialsView(discord.ui.View):
 
         self.total_embed = build_total_embed(data, emojis, self.total_page_count)
 
-        self.ascension_button = discord.ui.Button(
-            label="← Ascension",
-            style=discord.ButtonStyle.secondary
-        )
+    def refresh_embed(self, page: str) -> discord.Embed:
+        if page == "ascension":
+            self.ascension_embed = build_ascension_embed(
+                self.data,
+                self.emojis
+            )
+            return self.ascension_embed
 
-        self.talents_button = discord.ui.Button(
-            label="Talent →",
-            style=discord.ButtonStyle.secondary
-        )
+        if page == "talents":
+            self.talent_embed = build_talents_embed(
+                self.data,
+                self.emojis,
+                self.talent_page_count
+            )
+            return self.talent_embed
 
-        self.total_button = discord.ui.Button(
-            label="Total →",
-            style=discord.ButtonStyle.secondary
-        )
+        if page == "total":
+            self.total_embed = build_total_embed(
+                self.data,
+                self.emojis,
+                self.total_page_count
+            )
+            return self.total_embed
 
-        self.ascension_button.callback = self.ascension_callback
-        self.talents_button.callback = self.talents_callback
-        self.total_button.callback = self.total_callback
+        raise ValueError(f"Unknown page: {page}")
 
     async def ascension_callback(self, interaction):
-        await self.change_page(
-            interaction,
-            self.ascension_embed,
-            "ascension"
-        )
+        await self.change_page(interaction, "ascension")
 
     async def talents_callback(self, interaction):
-        self.talent_embed = build_talents_embed(
-            self.data,
-            self.emojis,
-            self.talent_page_count
-        )
-
-        await self.change_page(
-            interaction,
-            self.talent_embed,
-            "talents"
-        )
+        await self.change_page(interaction, "talents")
 
     async def total_callback(self, interaction):
-        self.total_embed = build_total_embed(
-            self.data,
-            self.emojis,
-            self.total_page_count
-        )
-
-        await self.change_page(
-            interaction,
-            self.total_embed,
-            "total"
-        )
+        await self.change_page(interaction, "total")
 
     async def interaction_check(self, interaction: discord.Interaction):
         if interaction.user.id != self.user_id:
@@ -452,41 +436,22 @@ class MaterialsView(discord.ui.View):
     async def update_talent(self, interaction, count):
         self.talent_page_count = count
 
-        self.talent_embed = build_talents_embed(
-            self.data,
-            self.emojis,
-            self.talent_page_count
-        )
-
         self.show_talent_buttons()
 
         await interaction.response.edit_message(
-            embed=self.talent_embed,
+            embed=self.refresh_embed("talents"),
             view=self
         )
 
     async def update_total(self, interaction, count):
         self.total_page_count = count
 
-        self.total_embed = build_total_embed(
-            self.data,
-            self.emojis,
-            self.total_page_count
-        )
-
         self.show_total_buttons()
 
         await interaction.response.edit_message(
-            embed=self.total_embed,
+            embed=self.refresh_embed("total"),
             view=self
         )
-
-
-    def refresh_thumbnail(self, embed):
-        embed.set_thumbnail(
-            url="attachment://character.png"
-        )
-        return embed
 
 
     def show_ascension_buttons(self):
@@ -617,19 +582,16 @@ class MaterialsView(discord.ui.View):
         self.add_item(talent2)
         self.add_item(talent3)
 
-
-    async def change_page(self, interaction, embed, page):
+    async def change_page(self, interaction, page):
         if page == "ascension":
             self.show_ascension_buttons()
-
         elif page == "talents":
             self.show_talent_buttons()
-
         elif page == "total":
             self.show_total_buttons()
 
         await interaction.response.edit_message(
-            embed=self.refresh_thumbnail(embed),
+            embed=self.refresh_embed(page),
             view=self
         )
 
@@ -639,23 +601,18 @@ class Materials(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="materials",
-        description="Shows a character's Ascension and Talent materials."
-    )
-    @app_commands.autocomplete(character=character_autocomplete)
-    async def materials(
-        self,
-        interaction: discord.Interaction,
-        character: str
+    async def _send_materials(
+            self,
+            destination,
+            user_id: int,
+            character: str
     ):
+        character = character.lower().replace(" ", "_")
+
         data = get_character(character)
 
-        if not data:
-            await interaction.response.send_message(
-                "Character not found.",
-                ephemeral=True
-            )
+        if data is None:
+            await destination.send("Character not found.")
             return
 
         thumbnail = discord.File(
@@ -666,15 +623,49 @@ class Materials(commands.Cog):
         view = MaterialsView(
             data,
             self.bot.application_emojis,
-            interaction.user.id
+            user_id
         )
 
         view.show_ascension_buttons()
 
-        await interaction.response.send_message(
+        await destination.send(
             embed=view.ascension_embed,
             file=thumbnail,
             view=view
+        )
+
+    @app_commands.command(
+        name="materials",
+        description="Shows a character's Ascension and Talent materials."
+    )
+    @app_commands.autocomplete(character=character_autocomplete)
+    async def materials_slash(
+        self,
+        interaction: discord.Interaction,
+        character: str
+    ):
+        await interaction.response.defer()
+
+        await self._send_materials(
+            interaction.followup,
+            interaction.user.id,
+            character
+        )
+
+    @commands.command(
+        name="materials",
+        aliases=["mats"]
+    )
+    async def materials(
+        self,
+        ctx: commands.Context,
+        *,
+        character: str
+    ):
+        await self._send_materials(
+            ctx,
+            ctx.author.id,
+            character
         )
 
 async def setup(bot):

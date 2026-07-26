@@ -5,6 +5,7 @@ from typing import Optional
 
 CHARACTER_ASSETS = Path("assets/characters")
 WEAPON_ASSETS = Path("assets/weapons")
+ENEMY_ASSETS = Path("assets/enemies")
 
 TALENT_SUFFIXES = {
     "normal": "NA",
@@ -107,4 +108,20 @@ def get_weapon_asset(
         / weapon["weapon_type"]
         / f'{weapon["rarity"]}_star'
         / filename
+    )
+
+def get_enemy_icon(enemy_data, category):
+    return (
+        ENEMY_ASSETS
+        / category
+        / "icons"
+        / f"{enemy_data['emoji']}.webp"
+    )
+
+def get_enemy_splash(enemy_data, category):
+    return (
+        ENEMY_ASSETS
+        / category
+        / "splash"
+        / f"{enemy_data['emoji']}.png"
     )

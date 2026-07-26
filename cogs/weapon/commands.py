@@ -1,10 +1,8 @@
-from contextlib import nullcontext
-
 import discord
 from discord.ext import commands
 from discord import app_commands
-from utils.weapons import get_weapon
-from utils.weapon_autocomplete import weapon_autocomplete
+from utils.weapon.weapons import get_weapon
+from utils.weapon.weapon_autocomplete import weapon_autocomplete
 from utils.constants import WEAPON_RARITY_COLOURS, STAT_NAMES, PERCENT_STATS
 from utils.icons import get_weapon_icon
 
@@ -13,26 +11,18 @@ class Weapon(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="weapon",
-        description="Shows information about a weapon."
-    )
-    @app_commands.autocomplete(
-        weapon=weapon_autocomplete
-    )
-    async def weapon(
-        self,
-        interaction: discord.Interaction,
-        weapon: str,
-        refinement: app_commands.Range[int, 1, 5] = 1
-    ):
+    async def _send_weapon(
+            self,
+            destination,
+            weapon: str,
+            refinement: int = 1
+        ):
+        weapon = weapon.lower().replace(" ", "_")
+
         data = get_weapon(weapon)
 
         if data is None:
-            await interaction.response.send_message(
-                "Weapon not found.",
-                ephemeral=True
-            )
+            await destination.send("Weapon not found.")
             return
 
         embed = discord.Embed(
@@ -113,17 +103,68 @@ class Weapon(commands.Cog):
         icon_path = get_weapon_icon(data)
 
         if icon_path.exists():
-            file = discord.File(icon_path, filename="weapon.webp")
+            file = discord.File(
+                icon_path,
+                filename="weapon.webp"
+            )
             embed.set_thumbnail(url="attachment://weapon.webp")
 
-            await interaction.response.send_message(
+            await destination.send(
                 embed=embed,
                 file=file
             )
         else:
-            await interaction.response.send_message(
+            await destination.send(
                 embed=embed
             )
+
+
+    @app_commands.command(
+        name="weapon",
+        description="Shows information about a weapon."
+    )
+    @app_commands.autocomplete(
+        weapon=weapon_autocomplete
+    )
+    async def weapon(
+        self,
+        interaction: discord.Interaction,
+        weapon: str,
+        refinement: app_commands.Range[int, 1, 5] = 1
+    ):
+        await interaction.response.defer()
+        await self._send_weapon(
+            interaction.followup,
+            weapon,
+            refinement
+        )
+
+    @commands.command(
+            name="weapon",
+            aliases=["w"]
+    )
+    async def weapon_prefix(
+            self,
+            ctx: commands.Context,
+            *,
+            weapon: str
+    ):
+        refinement = 1
+
+        parts = weapon.split()
+
+        if parts[-1].isdigit():
+            value = int(parts[-1])
+
+            if 1 <= value <= 5:
+                refinement = value
+                weapon = " ".join(parts[:-1])
+
+        await self._send_weapon(
+            ctx,
+            weapon,
+            refinement
+        )
 
 
 async def setup(bot):

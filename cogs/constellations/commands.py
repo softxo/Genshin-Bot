@@ -2,45 +2,32 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from utils.icons import get_character_icon, get_constellation_emoji
-from utils.characters import get_character
-from utils.character_autocomplete import character_autocomplete
+from utils.character.characters import get_character
+from utils.character.character_autocomplete import character_autocomplete
 
 class Constellations(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="constellations",
-        description="Shows a character's constellations."
-    )
-    @app_commands.autocomplete(character=character_autocomplete)
-    async def constellations(
+    async def _send_constellations(
             self,
-            interaction: discord.Interaction,
+            destination,
             character: str
     ):
+        character = character.lower().replace(" ", "_")
+
         data = get_character(character)
 
-        if not data:
-            await interaction.response.send_message(
-                "Character not found.",
-                ephemeral=True
-            )
+        if data is None:
+            await destination.send("Character not found.")
             return
 
-        application_emojis = await self.bot.fetch_application_emojis()
-
-        thumbnail = discord.File(
-            get_character_icon(data["id"]),
-            filename="character.png"
-        )
+        application_emojis = self.bot.application_emojis
 
         embed = discord.Embed(
             title=f"{data['name']} • Constellations",
             colour=discord.Colour.from_str(data["colour"])
         )
-
-        embed.set_thumbnail(url="attachment://character.png")
 
         for i, constellation in enumerate(data["constellations"], start=1):
             emoji = get_constellation_emoji(
@@ -62,9 +49,57 @@ class Constellations(commands.Cog):
                 inline=False
             )
 
-        await interaction.response.send_message(
-            embed=embed,
-            file=thumbnail
+        icon_path = get_character_icon(data["id"])
+
+        if icon_path.exists():
+            file = discord.File(
+                icon_path,
+                filename="character.png"
+            )
+
+            embed.set_thumbnail(
+                url="attachment://character.png"
+            )
+
+            await destination.send(
+                embed=embed,
+                file=file
+            )
+        else:
+            await destination.send(
+                embed=embed
+            )
+
+    @app_commands.command(
+        name="constellations",
+        description="Shows a character's constellations."
+    )
+    @app_commands.autocomplete(character=character_autocomplete)
+    async def constellations(
+            self,
+            interaction: discord.Interaction,
+            character: str
+    ):
+        await interaction.response.defer()
+
+        await self._send_constellations(
+            interaction.followup,
+            character
+        )
+
+    @commands.command(
+        name="constellations",
+        aliases=["cons", "const", "con"]
+    )
+    async def constellations_prefix(
+            self,
+            ctx: commands.Context,
+            *,
+            character: str
+    ):
+        await self._send_constellations(
+            ctx,
+            character
         )
 
 async def setup(bot):

@@ -26,28 +26,42 @@
       }
     },
     "materials": {
-      "weapon_material": {
-        "id": "guyun",
-        "tier2": 2,
-        "tier3": 6,
-        "tier4": 6,
-        "tier5": 3
+      "ascension": {
+        "weapon_material": {
+          "id": "guyun",
+          "tier2": 2,
+          "tier3": 6,
+          "tier4": 6,
+          "tier5": 3
+        },
+        "common": {
+          "id": "mask",
+          "tier1": 6,
+          "tier2": 10,
+          "tier3": 12
+        },
+        "elite": {
+          "id": "sacrificial_knife",
+          "tier2": 10,
+          "tier3": 12,
+          "tier4": 18
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 105000
+        }
       },
-      "common": {
-        "id": "mask",
-        "tier1": 6,
-        "tier2": 10,
-        "tier3": 12
-      },
-      "elite": {
-        "id": "sacrificial_knife",
-        "tier2": 10,
-        "tier3": 12,
-        "tier4": 18
-      },
-      "mora": {
-        "id": "mora",
-        "amount": 105000
+      "level": {
+        "ores": {
+          "id": "enhancement_ore",
+          "tier1": 395,
+          "tier2": 18,
+          "tier3": 6
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 398880
+        }
       }
     },
     "obtain": [

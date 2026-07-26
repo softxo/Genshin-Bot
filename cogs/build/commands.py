@@ -2,8 +2,8 @@ import discord
 import json
 from discord.ext import commands
 from discord import app_commands
-from utils.characters import get_character
-from utils.character_autocomplete import character_autocomplete
+from utils.character.characters import get_character
+from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon
 from pathlib import Path
 

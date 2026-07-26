@@ -1,21 +1,21 @@
 {
-  "descarabian": {
+  "decarabians": {
     "tiers": {
       "tier2": {
         "name": "Tile of Descarabian's Tower",
-        "emoji": "Descarabians_2"
+        "emoji": "Decarabians_2"
       },
       "tier3": {
         "name": "Debris of Descarabian's City",
-        "emoji": "Descarabians_3"
+        "emoji": "Decarabians_3"
       },
       "tier4": {
         "name": "Fragment of Descarabian's Epic",
-        "emoji": "Descarabians_4"
+        "emoji": "Decarabians_4"
       },
       "tier5": {
         "name": "Scattered Piece of Descarabian's Dream",
-        "emoji": "Descarabians_5"
+        "emoji": "Decarabians_5"
       }
     },
     "location": {

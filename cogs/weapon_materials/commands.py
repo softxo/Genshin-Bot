@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from utils.weapons import get_weapon
-from utils.weapon_autocomplete import weapon_autocomplete
-from utils.weapon_materials_format import build_weapon_materials_embed
+from utils.weapon.weapons import get_weapon
+from utils.weapon.weapon_autocomplete import weapon_autocomplete
+from utils.weapon.weapon_materials_format import build_ascension_materials_embed
 from utils.icons import get_weapon_icon
 
 class Weapons(commands.Cog):
@@ -38,7 +38,7 @@ class Weapons(commands.Cog):
             )
             return
 
-        embed = build_weapon_materials_embed(
+        embed = build_ascension_materials_embed(
             data,
             self.bot.application_emojis
         )
@@ -59,6 +59,43 @@ class Weapons(commands.Cog):
             await interaction.response.send_message(
                 embed=embed
             )
+
+    @commands.command(
+        name="weaponmaterials",
+        aliases=["wm"]
+    )
+    async def weaponmaterials_prefix(
+            self,
+            ctx: commands.Context,
+            *,
+            weapon: str
+    ):
+        data = get_weapon(weapon)
+
+        if data is None:
+            await ctx.send("Weapon not found.")
+            return
+
+        print(data)
+        embed = build_ascension_materials_embed(
+            data,
+            self.bot.application_emojis
+        )
+
+        icon_path = get_weapon_icon(data)
+
+        if icon_path.exists():
+            file = discord.File(
+                icon_path,
+                filename="weapon.webp"
+            )
+
+            await ctx.send(
+                embed=embed,
+                file=file
+            )
+        else:
+            await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Weapons(bot))

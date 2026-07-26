@@ -26,31 +26,46 @@
       }
     },
     "materials": {
-      "weapon_material": {
-        "id": "mist_veiled",
-        "tier2": 2,
-        "tier3": 6,
-        "tier4": 6,
-        "tier5": 3
+      "ascension": {
+        "weapon_material": {
+          "id": "mist_veiled",
+          "tier2": 2,
+          "tier3": 6,
+          "tier4": 6,
+          "tier5": 3
+        },
+        "common": {
+          "id": "hoarder_insignia",
+          "tier1": 6,
+          "tier2": 10,
+          "tier3": 12
+        },
+        "elite": {
+          "id": "mist_grass",
+          "tier2": 10,
+          "tier3": 12,
+          "tier4": 18
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 105000
+        }
       },
-      "common": {
-        "id": "hoarder_insignia",
-        "tier1": 6,
-        "tier2": 10,
-        "tier3": 12
-      },
-      "elite": {
-        "id": "mist_grass",
-        "tier2": 10,
-        "tier3": 12,
-        "tier4": 18
-      },
-      "mora": {
-        "id": "mora",
-        "amount": 105000
+      "level": {
+        "ores": {
+          "id": "enhancement_ore",
+          "tier1": 395,
+          "tier2": 18,
+          "tier3": 6
+        },
+        "mora": {
+          "id": "mora",
+          "amount": 398880
+        }
       }
     },
     "obtain": [
       "Chests"
     ]
 }
+
