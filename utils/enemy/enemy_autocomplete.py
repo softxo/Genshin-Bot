@@ -1,24 +1,27 @@
+from utils.enemy.enemies import ENEMIES, normalise
 from discord import app_commands
-from utils.enemy.enemies import ENEMIES
-
 
 async def enemy_autocomplete(
     interaction,
     current: str
 ):
-    current = current.lower()
+    current = normalise(current)
 
     results = []
 
     for enemy_id, data in ENEMIES.items():
 
-        name = data["name"]
-
-        if current in enemy_id.lower() or current in name.lower():
-
+        if (
+            current in normalise(enemy_id)
+            or current in normalise(data["name"])
+            or any (
+                current in normalise(alias)
+                for alias in data.get("aliases", [])
+            )
+        ):
             results.append(
                 app_commands.Choice(
-                    name=name,
+                    name=data["name"],
                     value=enemy_id
                 )
             )

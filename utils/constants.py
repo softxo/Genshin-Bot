@@ -8,8 +8,6 @@ ELEMENT_EMOJIS = {
     "dendro": "<:Dendro:1529166528749113534>",
     "geo": "<:Geo:1529166532096037016>",
     "anemo": "<:Anemo:1529166524907258007>",
-    "arrow": "<:Arrow:1529398125251526756>",
-    "dot": "<:Dot:1529398764161339482>"
 }
 
 ELEMENT_NAMES = {
@@ -21,12 +19,6 @@ ELEMENT_NAMES = {
     "dendro": "Dendro",
     "anemo": "Anemo",
     "geo": "Geo",
-}
-
-SHIELD_EMOJIS = {
-    "elementless": "<:Shield:1530937059722924213>",
-    "void": "<:Shield_Void:1530937062646349834>",
-    "deepdark": "<:Shield_Deepdark:1530937061350047834>",
 }
 
 ENEMY_CATEGORY_NAMES = {
@@ -45,8 +37,31 @@ ENEMY_ELEMENT_COLOURS = {
     "dendro": discord.Colour.green(),
     "anemo": discord.Colour.teal(),
     "geo": discord.Colour.gold(),
-    "void": discord.Colour.dark_purple(),
-    "deepdark": discord.Colour.dark_theme(),
+}
+
+SHIELD_EMOJIS = {
+    "elementless": "<:Shield:1530937059722924213>",
+    "void": "<:Shield_Void:1530937062646349834>",
+    "deepdark": "<:Shield_Deepdark:1530937061350047834>",
+
+    "nightsoul_aligned_attacks": "",
+    "lunar_charged": "<:Lunar_Charged:1531803193649135786>",
+    "lunar_bloom": "<:Lunar_Bloom:1531803140909699132>",
+    "lunar_crystallize": "<:Lunar_Crystallize:1531803056222765208>",
+    "burning_reaction": "<:Burning_Reaction:1531803227417477262>"
+}
+
+SHIELD_COLOURS = {
+    "pyro": discord.Colour.orange(),
+    "hydro": discord.Colour.blue(),
+    "electro": discord.Colour.purple(),
+    "cryo": discord.Colour.from_rgb(130, 220, 255),
+    "dendro": discord.Colour.green(),
+    "anemo": discord.Colour.teal(),
+    "geo": discord.Colour.gold(),
+    "elementless": 0xFFFFFF,
+    "void": 0x5A2DA6,
+    "deepdark": 0x2B0F3F
 }
 
 WEAPON_EMOJIS = {

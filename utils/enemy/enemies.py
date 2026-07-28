@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 
@@ -22,8 +23,27 @@ def load_enemies():
     return enemies
 
 
+def normalise(text: str) -> str:
+    return re.sub(r"[\s_-]", "", text.casefold())
+
 ENEMIES = load_enemies()
 
 
-def get_enemy(enemy_id):
-    return ENEMIES.get(enemy_id)
+def get_enemy(query: str):
+    query = normalise(query)
+
+    for enemy_id, enemy in ENEMIES.items():
+
+        if normalise(enemy_id) == query:
+            return enemy
+
+        if normalise(enemy["name"]) == query:
+            return enemy
+
+        if any(
+            normalise(alias) == query
+            for alias in enemy.get("aliases", [])
+        ):
+            return enemy
+
+    return None

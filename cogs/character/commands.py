@@ -25,13 +25,13 @@ class Character(commands.Cog):
 
         embed = discord.Embed(
             title=data["name"],
-            description=data["description"],
+            description=data["description"] + "\n\u200b",
             colour=discord.Colour.from_str(data["colour"])
         )
 
         embed.add_field(
             name="Title",
-            value=data["title"]
+            value=data["title"] + "\n\u200b"
         )
 
         embed.add_field(
@@ -46,7 +46,7 @@ class Character(commands.Cog):
 
         embed.add_field(
             name="Rarity",
-            value="★" * data["rarity"]
+            value="★" * data["rarity"] + "\n\u200b"
         )
 
         embed.add_field(

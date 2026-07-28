@@ -14,24 +14,23 @@ class Enemy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(
-        name="enemy",
-        description="Shows enemy information."
-    )
-    @app_commands.autocomplete(enemy=enemy_autocomplete)
-    async def enemy(
-        self,
-        interaction: discord.Interaction,
-        enemy: str
+    async def _send_enemy(
+            self,
+            destination: discord.Interaction | commands.Context,
+            enemy: str
     ):
-
+        """Builds and sends an enemy embed."""
+        
         data = get_enemy(enemy.lower())
 
         if not data:
-            await interaction.response.send_message(
-                "Enemy not found.",
-                ephemeral=True
-            )
+            if isinstance(destination, discord.Interaction):
+                await destination.response.send_message(
+                    "Enemy not found.",
+                    ephemeral=True
+                )
+            else:
+                await destination.send("Enemy not found.")
             return
 
         colour = ENEMY_ELEMENT_COLOURS.get(
@@ -40,7 +39,7 @@ class Enemy(commands.Cog):
         )
 
         embed = discord.Embed(
-            title=f"{data["name"]} • {ENEMY_CATEGORY_NAMES[data['category']]}",
+            title=f"{data['name']}\n• {ENEMY_CATEGORY_NAMES[data['category']]}",
             colour=colour
         )
 
@@ -70,8 +69,10 @@ class Enemy(commands.Cog):
             )
 
         states = list(data["res"].values())
-
         base = states[0]["resistance_values"]
+
+        embed.add_field(name="**RES**", value="", inline=False)
+
         embed.add_field(
             name="Element",
             value=format_elements(base) + "\n\u200b",
@@ -97,7 +98,6 @@ class Enemy(commands.Cog):
                 inline=True
             )
 
-
         if "shield" in data:
             embed.add_field(
                 name="Shield",
@@ -105,12 +105,41 @@ class Enemy(commands.Cog):
                 inline=False
             )
 
+        if isinstance(destination, discord.Interaction):
+            await destination.response.send_message(
+                embed=embed,
+                files=[icon, splash]
+            )
+        else:
+            await destination.send(
+                embed=embed,
+                files=[icon, splash]
+            )
 
-        await interaction.response.send_message(
-            embed=embed,
-            files=[icon, splash]
-        )
 
+    @app_commands.command(
+        name="enemy",
+        description="Shows enemy information."
+    )
+    @app_commands.autocomplete(enemy=enemy_autocomplete)
+    async def enemy(
+        self,
+        interaction: discord.Interaction,
+        enemy: str
+    ):
+        await self._send_enemy(interaction, enemy)
+
+    @commands.command(
+        name="enemy",
+        aliases=["e"]
+    )
+    async def enemy_prefix(
+            self,
+            ctx: commands.Context,
+            *,
+            enemy: str
+    ):
+        await self._send_enemy(ctx, enemy)
 
 async def setup(bot):
     await bot.add_cog(Enemy(bot))
