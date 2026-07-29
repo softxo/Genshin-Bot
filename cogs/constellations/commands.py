@@ -70,6 +70,15 @@ class Constellations(commands.Cog):
                 embed=embed
             )
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="constellations",
         description="Shows a character's constellations."

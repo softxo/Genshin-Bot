@@ -10,6 +10,15 @@ class Weapons(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="weaponmaterials",
         description="Shows a weapon's ascension materials."
@@ -76,7 +85,6 @@ class Weapons(commands.Cog):
             await ctx.send("Weapon not found.")
             return
 
-        print(data)
         embed = build_ascension_materials_embed(
             data,
             self.bot.application_emojis

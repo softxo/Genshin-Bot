@@ -1,4 +1,5 @@
-from utils.constants import COLOURED_ELEMENT_EMOJIS, SHIELD_EMOJIS, REFERENCE_NAMES, STAT_EMOJIS
+from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS, STAT_EMOJIS
+from utils.constants.stats import REFERENCE_NAMES
 
 TYPE_NAMES = {
     "physical": "Physical",
@@ -14,19 +15,19 @@ TYPE_NAMES = {
 }
 
 
-def format_shields(shields):
+def format_wards(wards):
 
-    if not shields:
+    if not wards:
         return "None"
 
     text = []
 
-    for shield in shields:
+    for ward in wards:
 
-        if shield["type"] == "elementless":
-            emoji = SHIELD_EMOJIS.get(shield["type"], "")
+        if ward["type"] == "elementless":
+            emoji = WARD_EMOJIS.get(ward["type"], "")
 
-            hp = shield["hp"]
+            hp = ward["hp"]
             hp_emoji = STAT_EMOJIS.get("hp", "")
 
             percent = hp["multiplier"] * 100
@@ -37,33 +38,33 @@ def format_shields(shields):
             )
 
             text.append(
-                f"{emoji} **Elementless Shield**\n"
+                f"{emoji} **Elementless Ward**\n"
                 f"{hp_emoji} **HP**: {percent:.0f}% of **{reference}**"
             )
 
 
-        elif shield["type"] == "elemental":
+        elif ward["type"] == "elemental":
             emoji = COLOURED_ELEMENT_EMOJIS.get(
-                shield["element"],
+                ward["element"],
                 ""
             )
 
             element = TYPE_NAMES.get(
-                shield["element"],
-                shield["element"].replace("_", " ").title()
+                ward["element"],
+                ward["element"].replace("_", " ").title()
             )
 
-            if "gauge" in shield:
+            if "gauge" in ward:
 
                 text.append(
-                    f"{emoji} **{element} Shield**\n"
-                    f"**Gauge:** {shield['gauge']['value']}U"
+                    f"{emoji} **{element} Ward**\n"
+                    f"**Gauge:** {ward['gauge']['value']}U"
                 )
 
 
-            elif "hp" in shield:
+            elif "hp" in ward:
 
-                hp = shield["hp"]
+                hp = ward["hp"]
                 hp_emoji = STAT_EMOJIS.get("hp", "")
 
                 percent = hp["multiplier"] * 100
@@ -74,16 +75,16 @@ def format_shields(shields):
                 )
 
                 text.append(
-                    f"{emoji} **{element} Shield**\n"
+                    f"{emoji} **{element} Ward**\n"
                     f"{hp_emoji} **HP:** {percent:.0f}% of **{reference}**"
                 )
 
-        elif shield["type"] in ("void", "deepdark"):
-            emoji = SHIELD_EMOJIS.get(shield["type"], "")
+        elif ward["type"] in ("void", "deepdark"):
+            emoji = WARD_EMOJIS.get(ward["type"], "")
 
-            shield_type = TYPE_NAMES[shield["type"]]
+            ward_type = TYPE_NAMES[ward["type"]]
 
-            hp = shield["hp"]
+            hp = ward["hp"]
             hp_emoji = STAT_EMOJIS.get("hp", "")
 
             percent = hp["multiplier"] * 100
@@ -94,7 +95,7 @@ def format_shields(shields):
             )
 
             text.append(
-                f"{emoji} **{shield_type} Shield**\n"
+                f"{emoji} **{ward_type} Ward**\n"
                 f"{hp_emoji} **HP:** {percent:.0f}% of **{reference}**"
             )
 

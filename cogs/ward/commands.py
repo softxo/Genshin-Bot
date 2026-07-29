@@ -1,45 +1,60 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from utils.shield.shields import get_shield
-from utils.shield.shield_autocomplete import shield_autocomplete
-from utils.constants import SHIELD_COLOURS, COLOURED_ELEMENT_EMOJIS, SHIELD_EMOJIS
-from utils.icons import get_shield_icon
+from utils.shield.wards import get_ward
+from utils.shield.ward_autocomplete import ward_autocomplete
+from utils.constants.colours import WARD_COLOURS
+from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS
+from utils.icons import get_ward_icon
 
 
-class Shield(commands.Cog):
+class Ward(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     def format_element(self, element: str) -> str:
-        special = {
-            "all_elements": "All Elements",
-            "nightsoul": "Nightsoul",
-            "lunar": "Lunar Reactions"
-        }
-
-        if element in special:
-            return special[element]
-
-        emoji_key = (
+        lookup = (
             element.lower()
             .replace("-", "_")
             .replace(" ", "_")
         )
 
-        emoji = SHIELD_EMOJIS.get(emoji_key) or COLOURED_ELEMENT_EMOJIS.get(emoji_key)
+        special = {
+            "all_elements": ("all_elements", "Elemental Damage"),
+            "elemental_damage": ("all_elements", "Elemental Damage"),
 
-        return f"{emoji} {element}" if emoji else element
+            "physical_damage": ("physical_damage", "Physical Damage"),
 
-    def _build_shield_embed(self, shield_id: str):
-        data = get_shield(shield_id)
+            "nightsoul": ("nightsoul", "Nightsoul"),
+            "nightsoul_aligned_attacks": ("nightsoul", "Nightsoul"),
+
+            "lunar": ("lunar", "Lunar Reactions"),
+
+            "phec_+_geo_(crystallize)": (
+                "crystallize_reaction",
+                "PHEC + Geo (Crystallize)"
+            ),
+        }
+
+        if lookup in special:
+            emoji_key, display = special[lookup]
+        else:
+            emoji_key = lookup
+            display = element.replace("_", " ").title()
+
+        emoji = WARD_EMOJIS.get(emoji_key) or COLOURED_ELEMENT_EMOJIS.get(emoji_key)
+
+        return f"{emoji} {display}" if emoji else display
+
+    def _build_ward_embed(self, ward_id: str):
+        data = get_ward(ward_id)
 
         if data is None:
             return None
 
         embed = discord.Embed(
             title=data["name"],
-            colour=SHIELD_COLOURS[data["colour"]]
+            colour=WARD_COLOURS[data["colour"]]
         )
 
         effective = data.get("effective", {})
@@ -100,13 +115,13 @@ class Shield(commands.Cog):
         )
 
         embed.add_field(
-            name="Element",
+            name="Source",
             value="\n".join(elements) + "\n\u200b",
             inline=True
         )
 
         embed.add_field(
-            name="Shield Consumption",
+            name="Ward Consumption",
             value="\n".join(values),
             inline=True
         )
@@ -135,46 +150,48 @@ class Shield(commands.Cog):
             )
 
         icon = discord.File(
-            get_shield_icon(data["emoji"]),
-            filename="shield.png"
+            get_ward_icon(data["emoji"]),
+            filename="ward.png"
         )
 
         embed.set_image(
-            url=f"attachment://shield.png"
+            url=f"attachment://ward.png"
         )
 
         return embed, icon
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
-        name="shield",
-        description="Shows information about a shield."
+        name="ward",
+        description="Shows information about a ward."
     )
     @app_commands.describe(
-        shield="The shield to view."
+        ward="The ward to view."
     )
-    @app_commands.autocomplete(shield=shield_autocomplete)
-    async def shield(
+    @app_commands.autocomplete(ward=ward_autocomplete)
+    async def ward(
             self,
             interaction: discord.Interaction,
-            shield: str
+            ward: str
     ):
-        result = self._build_shield_embed(shield.lower())
+        result = self._build_ward_embed(ward.lower())
 
         if result is None:
             await interaction.response.send_message(
-                "Shield not found.",
+                "Ward not found.",
                 ephemeral=True
             )
             return
 
         embed, icon = result
-
-        if embed is None:
-            await interaction.response.send_message(
-                "Shield not found.",
-                ephemeral=True
-            )
-            return
 
         await interaction.response.send_message(
             embed=embed,
@@ -182,27 +199,23 @@ class Shield(commands.Cog):
         )
 
     @commands.command(
-        name="shield",
-        aliases=["sh"]
+        name="ward",
+        aliases=["wd"]
     )
-    async def shield_prefix(self, ctx, shield: str):
-        if shield is None:
+    async def ward_prefix(self, ctx, *, ward: str | None = None):
+        if ward is None:
             await ctx.send(
-                "Please specify a shield.\nExample: `?shield pyro`"
+                "Please specify a ward.\nExample: `?ward pyro`"
             )
             return
 
-        result = self._build_shield_embed(shield.lower())
+        result = self._build_ward_embed(ward.lower())
 
         if result is None:
-            await ctx.send("Shield not found.")
+            await ctx.send("Ward not found.")
             return
 
         embed, icon = result
-
-        if embed is None:
-            await ctx.send("Shield not found.")
-            return
 
         await ctx.send(
             embed=embed,
@@ -211,4 +224,4 @@ class Shield(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Shield(bot))
+    await bot.add_cog(Ward(bot))

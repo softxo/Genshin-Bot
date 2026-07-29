@@ -6,7 +6,7 @@ from typing import Optional
 CHARACTER_ASSETS = Path("assets/characters")
 WEAPON_ASSETS = Path("assets/weapons")
 ENEMY_ASSETS = Path("assets/enemies")
-SHIELD_ASSETS = Path("assets/shields")
+WARD_ASSETS = Path("assets/shields")
 
 TALENT_SUFFIXES = {
     "normal": "NA",
@@ -127,5 +127,5 @@ def get_enemy_splash(enemy_data, category):
         / f"{enemy_data['emoji']}.png"
     )
 
-def get_shield_icon(shield: str):
-    return SHIELD_ASSETS / f"{shield}.png"
+def get_ward_icon(shield: str):
+    return WARD_ASSETS / f"{shield}.png"

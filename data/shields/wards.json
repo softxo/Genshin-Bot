@@ -1,6 +1,6 @@
 {
   "pyro": {
-    "name": "Pyro Shield",
+    "name": "Pyro Ward",
     "emoji": "Pyro",
     "colour": "pyro",
     "coefficient": {
@@ -25,12 +25,12 @@
       "Dendro"
     ],
     "notes": [
-      "▸ **Hydro** is the fastest way to remove this shield, as every 1U of Hydro removes 2U of Pyro.",
+      "▸ **Hydro** is the fastest way to remove this ward, as every 1U of Hydro removes 2U of Pyro.",
       "▸ Secondly, **Electro** is also okay, removing 1U of Pyro for every 1U of Electro."
     ]
   },
   "hydro": {
-    "name": "Hydro Shield",
+    "name": "Hydro Ward",
     "emoji": "Hydro",
     "colour": "hydro",
     "coefficient": {
@@ -54,13 +54,13 @@
       "Hydro"
     ],
     "notes": [
-      "▸ **Dendro** is the fastest way to remove this shield, as every 1U of Dendro removes 2U of Hydro.",
+      "▸ **Dendro** is the fastest way to remove this ward, as every 1U of Dendro removes 2U of Hydro.",
       "▸ Secondly, **Cryo** is also okay, removing 1U of Hydro for every 1U of Cryo.",
       "▸ Alternatively, **Electro** also works well, as it has a 0.4U per second DoT, which, while usually worse, can outperform teams that struggle to consistently apply Cryo, or rarely, Dendro."
     ]
   },
   "electro": {
-    "name": "Electro Shield",
+    "name": "Electro Ward",
     "emoji": "Electro",
     "colour": "electro",
     "coefficient": {
@@ -86,13 +86,13 @@
       "Electro"
     ],
     "notes": [
-      "▸ For this shield, **Pyro**, **Cryo** and **Dendro** all remove the same 1U of Electro for every 1U of their element.",
+      "▸ For this ward, **Pyro**, **Cryo** and **Dendro** all remove the same 1U of Electro for every 1U of their element.",
       "▸ Alternatively, **Hydro** also works well, as it has a 0.4U per second DoT, which, while usually worse, can outperform teams that struggle to consistently apply Pyro, Cryo or Dendro.",
-      "▸ Since Electro shields have no reaction that removes more than 1U of Electro per 1U applied, they are theoretically more difficult to break than Hydro shields, which makes Hydro a better alternative."
+      "▸ Since Electro wards have no reaction that removes more than 1U of Electro per 1U applied, they are theoretically more difficult to break than Hydro wards, which makes Hydro a better alternative."
     ]
   },
   "cryo": {
-    "name": "Cryo Shield",
+    "name": "Cryo Ward",
     "emoji": "Cryo",
     "colour": "cryo",
     "coefficient": {
@@ -118,12 +118,12 @@
       "Dendro"
     ],
     "notes": [
-      "▸ **Pyro** is the fastest way to remove this shield, as every 1U of Pyro removes 2U of Cryo.",
+      "▸ **Pyro** is the fastest way to remove this ward, as every 1U of Pyro removes 2U of Cryo.",
       "▸ Secondly, **Electro** is also okay, removing 1U of Cryo for every 1U of Electro."
     ]
   },
   "dendro": {
-    "name": "Dendro Shield",
+    "name": "Dendro Ward",
     "emoji": "Dendro",
     "colour": "dendro",
     "coefficient": {
@@ -151,13 +151,13 @@
       "Geo"
     ],
     "notes": [
-      "▸ **Electro** is the best direct counter to remove this shield, as every 1U of Electro removes 1U of Dendro.",
+      "▸ **Electro** is the best direct counter to remove this ward, as every 1U of Electro removes 1U of Dendro.",
       "▸ However, **Pyro** (Burning) can sometimes outperform Electro, if the team struggles to apply Electro consistently.",
-      "▸ Alternatively, **Hydro** is the next best direct counter, as it's the only element left that removes any Dendro shield durability, with Hydro removing 0.5U of Dendro for every 1U of Hydro."
+      "▸ Alternatively, **Hydro** is the next best direct counter, as it's the only element left that removes any Dendro ward durability, with Hydro removing 0.5U of Dendro for every 1U of Hydro."
     ]
   },
   "geo": {
-    "name": "Geo Shield",
+    "name": "Geo Ward",
     "emoji": "Geo",
     "colour": "geo",
     "coefficient": {
@@ -182,8 +182,8 @@
       "Anemo"
     ],
     "notes": [
-      "▸ For Geo shields, the most effective way to remove one is to use **Blunt** attacks and **Geo** characters. Blunt attacks include: **Claymore attacks**, most **Plunge attacks**, **Geo attacks**, **Overload** explosions",
-      "▸ Due to Geo shields having a slightly different mechanic, applying a PHEC (Pyro, Hydro, Electro, Cryo) element alone will **not** remove any durability.",
+      "▸ For Geo wards, the most effective way to remove one is to use **Blunt** attacks and **Geo** characters. Blunt attacks include: **Claymore attacks**, most **Plunge attacks**, **Geo attacks**, **Overload** explosions",
+      "▸ Due to Geo wards having a slightly different mechanic, applying a PHEC (Pyro, Hydro, Electro, Cryo) element alone will **not** remove any durability.",
       "▸ In order to remove durability with a PHEC element, you must first apply the element, and then apply **Geo**, in order to trigger **Crystallize**.",
       "▸ If an enemy has a permanent Geo aura, you **cannot** reduce durability by just applying a PHEC element.",
       "▸ The reaction itself is the one that consumes durability, and the amount is based on the remaining **aura** at the time of triggering Crystallize.",
@@ -192,7 +192,7 @@
     ]
   },
   "elementless": {
-    "name": "Elementless Shield",
+    "name": "Elementless Ward",
     "emoji": "Elementless",
     "colour": "elementless",
     "coefficient": {
@@ -217,7 +217,7 @@
     ]
   },
   "void": {
-    "name": "Void Shield",
+    "name": "Void Ward",
     "emoji": "Void",
     "colour": "void",
     "coefficient": {
@@ -236,14 +236,14 @@
       "Physical damage"
     ],
     "notes": [
-      "▸ **Void** shields are unique, as all elemental attacks consume their durability equally.",
+      "▸ **Void** wards are unique, as all elemental attacks consume their durability equally.",
       "▸ However, while all elemental attacks consume durability equally, **Nightsoul**-aligned attacks are **3 times** more efficient.",
       "▸ Nightsoul-aligned attacks are attacks from **Natlan** characters, **while being inside the Nightsoul's Blessing State**.",
-      "▸ As the second-best option after any Nightsoul-aligned attacks, **Burning** is a great choice, as every **tick** of Burning damages the shield."
+      "▸ As the second-best option after any Nightsoul-aligned attack, **Burning** is a great choice, as every **tick** of Burning damages the ward."
     ]
   },
   "deepdark": {
-    "name": "Deepdark Shield",
+    "name": "Deepdark Ward",
     "emoji": "Deepdark",
     "colour": "deepdark",
     "coefficient": {
@@ -255,15 +255,18 @@
         "Lunar-Charged",
         "Lunar-Bloom",
         "Lunar-Crystallize"
+      ],
+      "good": [
+        "Elemental Damage"
       ]
     },
     "ineffective": [
       "Physical damage"
     ],
     "notes": [
-      "▸ **Deepdark** shields are unique, as they scale based off the enemy's **Max HP**.",
-      "▸ The shield takes equal amounts of damage from every type of elemental attack, however **Lunar Reaction** damage is multiplied by 300%.",
-      "▸ Lunar Reaction damage is the easiest way to break this shield, due to the multiplier it provides, however this shield isn't a check and can be broken by any character, as it only requires damage."
+      "▸ **Deepdark** wards are unique, as they scale based off the enemy's **Max HP**.",
+      "▸ The ward takes equal amounts of damage from every type of elemental attack, however **Lunar Reaction** damage is multiplied by 300%.",
+      "▸ Lunar Reaction damage is the easiest way to break this ward, due to the multiplier it provides, however this ward isn't a check and can be broken by any character, as it only requires damage."
     ]
   }
 }

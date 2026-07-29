@@ -3,7 +3,8 @@ from discord.ext import commands
 from discord import app_commands
 from utils.weapon.weapons import get_weapon
 from utils.weapon.weapon_autocomplete import weapon_autocomplete
-from utils.constants import WEAPON_RARITY_COLOURS, STAT_NAMES, PERCENT_STATS
+from utils.constants.colours import WEAPON_RARITY_COLOURS
+from utils.constants.stats import STAT_NAMES, PERCENT_STATS
 from utils.icons import get_weapon_icon
 
 
@@ -118,7 +119,15 @@ class Weapon(commands.Cog):
                 embed=embed
             )
 
-
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="weapon",
         description="Shows information about a weapon."

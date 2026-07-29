@@ -1,6 +1,8 @@
 import discord
 import asyncio
 import os
+import traceback
+from pathlib import Path
 from discord.ext import commands
 from dotenv import load_dotenv
 from utils.character.character_loader import load_characters, CHARACTERS
@@ -29,20 +31,30 @@ bot = commands.Bot(
 async def setup_hook():
     bot.application_emojis = await bot.fetch_application_emojis()
     print(f"Loaded {len(bot.application_emojis)} application emojis")
-async def load_cogs():
-    for folder in os.listdir("cogs"):
-        path = os.path.join("cogs", folder)
 
-        if os.path.isdir(path) and not folder.startswith("__"):
-            try:
-                await bot.load_extension(f"cogs.{folder}.commands")
-                print(f"Loaded cog: {folder}")
-            except Exception as e:
-                print(f"Failed to load cog {folder}: {e}")
+async def load_cogs():
+    for commands_file in Path("cogs").rglob("commands.py"):
+        module = ".".join(commands_file.with_suffix("").parts)
+
+        try:
+            await bot.load_extension(module)
+            print(f"Loaded cog: {module}")
+        except Exception as e:
+            print(f"Failed to load cog: {module}: {e}")
+            traceback.print_exc()
+
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.listening,
+            name="I could really use a wish right now"
+        )
+    )
+
     print(f"Logged in as {bot.user}")
+
 
     for cmd in bot.tree.get_commands():
         print("COMMAND:", cmd.name)
@@ -66,7 +78,6 @@ async def main():
 
 @bot.tree.error
 async def on_app_command_error(interaction, error):
-    import traceback
     traceback.print_exception(type(error), error, error.__traceback__)
 
 if __name__ == "__main__":

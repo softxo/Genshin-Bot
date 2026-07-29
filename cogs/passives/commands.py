@@ -4,7 +4,7 @@ from discord import app_commands
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_talent_emoji
-from utils.talents_format import format_description
+from utils.talents.talents_format import format_description
 
 class Passives(commands.Cog):
     def __init__(self, bot):
@@ -50,6 +50,15 @@ class Passives(commands.Cog):
             file=thumbnail
         )
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="passives",
         description="Shows a character's passive talents."

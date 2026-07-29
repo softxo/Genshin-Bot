@@ -4,7 +4,7 @@ from discord import app_commands
 from utils.icons import get_character_icon, get_character_splash
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
-from utils.constants import ELEMENT_EMOJIS, WEAPON_EMOJIS
+from utils.constants.emojis import ELEMENT_EMOJIS, WEAPON_EMOJIS
 
 class Character(commands.Cog):
     def __init__(self, bot):
@@ -92,6 +92,15 @@ class Character(commands.Cog):
             files=files
         )
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="character",
         description="Shows character information."

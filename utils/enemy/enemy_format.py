@@ -1,4 +1,4 @@
-from utils.constants import COLOURED_ELEMENT_EMOJIS
+from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
 
 ELEMENT_NAMES = {
     "physical": "Physical",

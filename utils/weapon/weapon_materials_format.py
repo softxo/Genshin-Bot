@@ -3,7 +3,7 @@ from utils.materials.materials_data import MISC
 from utils.icons import get_material_emoji
 from utils.materials.materials_format import format_materials
 from utils.weapon.weapon_materials import (get_weapon_material, get_common_material, get_elite_material)
-from utils.constants import WEAPON_RARITY_COLOURS
+from utils.constants.colours import WEAPON_RARITY_COLOURS
 
 def get_weapon_material_text(data, emojis):
     materials = data["materials"]["ascension"]

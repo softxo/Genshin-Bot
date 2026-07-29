@@ -4,7 +4,7 @@ from discord import app_commands
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_talent_emoji
-from utils.talents_format import format_description, format_sections
+from utils.talents.talents_format import format_description, format_sections
 
 class Skills(commands.Cog):
     def __init__(self, bot):

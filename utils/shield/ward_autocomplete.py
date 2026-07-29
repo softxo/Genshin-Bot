@@ -1,6 +1,6 @@
 from discord import app_commands
 
-SHIELD_CHOICES = [
+WARD_CHOICES = [
     "Pyro",
     "Hydro",
     "Electro",
@@ -11,12 +11,12 @@ SHIELD_CHOICES = [
     "Deepdark"
 ]
 
-async def shield_autocomplete(
+async def ward_autocomplete(
     interaction,
     current: str
 ):
     return [
-        app_commands.Choice(name=shield, value=shield.lower())
-        for shield in SHIELD_CHOICES
-        if current.lower() in shield.lower()
+        app_commands.Choice(name=ward, value=ward.lower())
+        for ward in WARD_CHOICES
+        if current.lower() in ward.lower()
     ][:25]

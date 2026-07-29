@@ -6,7 +6,7 @@ from discord import app_commands
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
-from utils.constants import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
+from utils.constants.costs import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
 from collections import defaultdict
 
 
@@ -634,6 +634,15 @@ class Materials(commands.Cog):
             view=view
         )
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="materials",
         description="Shows a character's Ascension and Talent materials."

@@ -1,12 +1,15 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
+from utils.icons import get_enemy_icon, get_enemy_splash
 from utils.enemy.enemies import get_enemy
 from utils.enemy.enemy_autocomplete import enemy_autocomplete
 from utils.enemy.enemy_format import format_elements, format_values
-from utils.enemy.shield_format import format_shields
-from utils.icons import get_enemy_icon, get_enemy_splash
-from utils.constants import ENEMY_ELEMENT_COLOURS, COLOURED_ELEMENT_EMOJIS, ELEMENT_NAMES, ENEMY_CATEGORY_NAMES
+from utils.enemy.ward_format import format_wards
+from utils.constants.colours import ENEMY_ELEMENT_COLOURS
+from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
+from utils.constants.elements import ELEMENT_NAMES
+from utils.constants.enemies import ENEMY_CATEGORY_NAMES
 
 
 class Enemy(commands.Cog):
@@ -98,10 +101,10 @@ class Enemy(commands.Cog):
                 inline=True
             )
 
-        if "shield" in data:
+        if "ward" in data:
             embed.add_field(
-                name="Shield",
-                value=format_shields(data["shield"]),
+                name="Ward",
+                value=format_wards(data["ward"]),
                 inline=False
             )
 
@@ -116,7 +119,15 @@ class Enemy(commands.Cog):
                 files=[icon, splash]
             )
 
-
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
         name="enemy",
         description="Shows enemy information."
