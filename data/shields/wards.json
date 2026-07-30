@@ -182,12 +182,16 @@
       "Anemo"
     ],
     "notes": [
-      "▸ For Geo wards, the most effective way to remove one is to use **Blunt** attacks and **Geo** characters. Blunt attacks include: **Claymore attacks**, most **Plunge attacks**, **Geo attacks**, **Overload** explosions",
-      "▸ Due to Geo wards having a slightly different mechanic, applying a PHEC (Pyro, Hydro, Electro, Cryo) element alone will **not** remove any durability.",
-      "▸ In order to remove durability with a PHEC element, you must first apply the element, and then apply **Geo**, in order to trigger **Crystallize**.",
-      "▸ If an enemy has a permanent Geo aura, you **cannot** reduce durability by just applying a PHEC element.",
-      "▸ The reaction itself is the one that consumes durability, and the amount is based on the remaining **aura** at the time of triggering Crystallize.",
-      "▸ Example: `Applied 2U of Pyro → 1 second passes → Applied Geo → Crystallize occurs`, will **not** consume 2U due to elemental aura decay rate.",
+      "▸ For Geo wards, the most effective way to remove one is to use **Blunt attacks** and **Geo attacks**. Blunt attacks include **Claymore attacks**, most **Plunging Attacks**, **Overload** explosions, and most **Geo attacks**.",
+      "▸ Geo wards can also be depleted through **Poise Damage**, a hidden value carried by attacks that produce physical impact.",
+      "▸ Every attack has a hidden Poise Damage value. Geo wards use this value instead of damage dealt, to determine durability consumption.",
+      "▸ Blunt attacks receive a 7× multiplier to their Poise Damage against Geo wards, making Claymores, most Plunging Attacks, Geo attacks, and Overload explosions extremely effective.",
+      "▸ Internally, 500 effective Poise Damage removes 1U of Geo ward durability. Because Blunt attacks receive a 7× multiplier, they only require about 71.4 base Poise Damage to remove the same amount.",
+      "▸ Due to Geo wards having a slightly different mechanic, applying a **PHEC** element (Pyro, Hydro, Electro, or Cryo) by itself does **not** reduce Geo ward durability.",
+      "▸ Geo ward durability is only reduced when **Crystallize** is triggered. Simply applying a PHEC element without triggering Crystallize has no effect.",
+      "▸ If an enemy has a permanent Geo aura, repeatedly applying PHEC elements alone will never consume Geo ward durability, because you're not triggering Crystallize.",
+      "▸ The durability consumed by **Crystallize** depends on the amount of elemental aura remaining when the reaction is triggered.",
+      "▸ Example: `Applied 2U of Pyro → 1 second passes → Applied Geo → Crystallize occurs`, will consume **less* than 2U due to elemental aura decay rate.",
       "▸ For more info on how decay rate works, do `/theory theory:elemental gauge theory section:aura decay rate`"
     ]
   },
