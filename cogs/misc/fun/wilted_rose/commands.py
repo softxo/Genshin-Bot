@@ -6,7 +6,10 @@ class Rose(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="wilted_rose")
+    @commands.command(
+        name="wilted_rose",
+        aliases=["wilted"]
+    )
     async def love_prefix(self, ctx):
         await ctx.send(":wilted_rose:")
 
@@ -25,7 +28,7 @@ class Rose(commands.Cog):
     )
     async def love_slash(self, interaction):
         await interaction.response.send_message(
-            ":wilted_rose:."
+            ":wilted_rose:"
         )
 
 
