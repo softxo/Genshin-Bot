@@ -5,127 +5,132 @@ from utils.shield.wards import get_ward
 from utils.shield.ward_autocomplete import ward_autocomplete
 from utils.constants.colours import WARD_COLOURS
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS
-from utils.icons import get_ward_icon
 
 
-class Ward(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+def get_ward_url(emoji: str) -> str:
+    return (
+        "https://raw.githubusercontent.com/"
+        f"softxo/Genshin-Bot/main/assets/wards/{emoji}.png"
+    )
 
-    def format_element(self, element: str) -> str:
-        lookup = (
-            element.lower()
-            .replace("-", "_")
-            .replace(" ", "_")
+def format_element(element: str) -> str:
+    lookup = (
+        element.lower()
+        .replace("-", "_")
+        .replace(" ", "_")
+    )
+
+    special = {
+        "all_elements": ("all_elements", "Elemental Damage"),
+        "elemental_damage": ("all_elements", "Elemental Damage"),
+
+        "physical_damage": ("physical_damage", "Physical Damage"),
+
+        "blunt_attacks": ("blunt_attacks", "Blunt Attacks"),
+        "geo_attacks": ("geo_attacks", "Geo Attacks"),
+
+        "nightsoul": ("nightsoul", "Nightsoul"),
+        "nightsoul_aligned_attacks": ("nightsoul", "Nightsoul"),
+
+        "lunar": ("lunar", "Lunar Reactions"),
+
+        "phec_+_geo_(crystallize)": (
+            "crystallize_reaction",
+            "PHEC + Geo (Crystallize)"
+        ),
+    }
+
+    if lookup in special:
+        emoji_key, display = special[lookup]
+    else:
+        emoji_key = lookup
+        display = element.replace("_", " ").title()
+
+    emoji = WARD_EMOJIS.get(emoji_key) or COLOURED_ELEMENT_EMOJIS.get(emoji_key)
+
+    return f"{emoji} {display}" if emoji else display
+
+def build_main_embed(ward_id: str):
+    data = get_ward(ward_id)
+
+    if data is None:
+        return None
+
+    embed = discord.Embed(
+        title=data["name"],
+        colour=WARD_COLOURS[data["colour"]]
+    )
+
+    effective = data.get("effective", {})
+
+    embed.add_field(
+        name="**Effectiveness**",
+        value=" ",
+        inline=False
+    )
+
+    if effective.get("best"):
+        embed.add_field(
+            name="Best",
+            value="\n".join(
+                f"**{format_element(item)}**"
+                for item in effective["best"]
+            ) + "\n",
+            inline=False
         )
 
-        special = {
-            "all_elements": ("all_elements", "Elemental Damage"),
-            "elemental_damage": ("all_elements", "Elemental Damage"),
+    if effective.get("good"):
+        embed.add_field(
+            name="Good",
+            value="\n".join(
+                f"**{format_element(item)}**"
+                for item in effective["good"]
+            ) + "\n",
+            inline=False
+        )
 
-            "physical_damage": ("physical_damage", "Physical Damage"),
+    if data.get("ineffective"):
+        embed.add_field(
+            name="Ineffective",
+            value="\n".join(
+                f"**{format_element(item)}**"
+                for item in data["ineffective"]
+            ) + "\n\u200b",
+            inline=False
+        )
 
-            "nightsoul": ("nightsoul", "Nightsoul"),
-            "nightsoul_aligned_attacks": ("nightsoul", "Nightsoul"),
+    elements = []
+    values = []
 
-            "lunar": ("lunar", "Lunar Reactions"),
+    for element, value in data["coefficient"].items():
+        elements.append(f"**{format_element(element)}**")
 
-            "phec_+_geo_(crystallize)": (
-                "crystallize_reaction",
-                "PHEC + Geo (Crystallize)"
-            ),
-        }
-
-        if lookup in special:
-            emoji_key, display = special[lookup]
+        if value is None:
+            values.append("—")
+        elif isinstance(value, (int, float)):
+            values.append(f"×**{value}U**")
         else:
-            emoji_key = lookup
-            display = element.replace("_", " ").title()
+            values.append(str(value))
 
-        emoji = WARD_EMOJIS.get(emoji_key) or COLOURED_ELEMENT_EMOJIS.get(emoji_key)
+    embed.add_field(
+        name="**Values**",
+        value=" ",
+        inline=False
+    )
 
-        return f"{emoji} {display}" if emoji else display
+    embed.add_field(
+        name="Source",
+        value="\n".join(elements) + "\n\u200b",
+        inline=True
+    )
 
-    def _build_ward_embed(self, ward_id: str):
-        data = get_ward(ward_id)
+    embed.add_field(
+        name="Ward Consumption",
+        value="\n".join(values),
+        inline=True
+    )
 
-        if data is None:
-            return None
-
-        embed = discord.Embed(
-            title=data["name"],
-            colour=WARD_COLOURS[data["colour"]]
-        )
-
-        effective = data.get("effective", {})
-
-        embed.add_field(
-            name="**Effectiveness**",
-            value=" ",
-            inline=False
-        )
-
-        if effective.get("best"):
-            embed.add_field(
-                name="Best",
-                value="\n".join(
-                    f"**{self.format_element(item)}**"
-                    for item in effective["best"]
-                ) + "\n",
-                inline=False
-            )
-
-        if effective.get("good"):
-            embed.add_field(
-                name="Good",
-                value="\n".join(
-                    f"**{self.format_element(item)}**"
-                    for item in effective["good"]
-                ) + "\n",
-                inline=False
-            )
-
-        if data.get("ineffective"):
-            embed.add_field(
-                name="Ineffective",
-                value="\n".join(
-                    f"**{self.format_element(item)}**"
-                    for item in data["ineffective"]
-                ) + "\n\u200b",
-                inline=False
-            )
-
-        elements = []
-        values = []
-
-        for element, value in data["coefficient"].items():
-            elements.append(f"**{self.format_element(element)}**")
-
-            if value is None:
-                values.append("—")
-            elif isinstance(value, (int, float)):
-                values.append(f"×**{value}U**")
-            else:
-                values.append(str(value))
-
-        embed.add_field(
-            name="**Values**",
-            value=" ",
-            inline=False
-        )
-
-        embed.add_field(
-            name="Source",
-            value="\n".join(elements) + "\n\u200b",
-            inline=True
-        )
-
-        embed.add_field(
-            name="Ward Consumption",
-            value="\n".join(values),
-            inline=True
-        )
-
+    if ward_id != "geo":
         notes = "\n".join(data["notes"])
 
         if len(notes) <= 1024:
@@ -149,16 +154,64 @@ class Ward(commands.Cog):
                 inline=False
             )
 
-        icon = discord.File(
-            get_ward_icon(data["emoji"]),
-            filename="ward.png"
+    embed.set_image(url=get_ward_url(data["emoji"]))
+
+    return embed, data
+
+def build_notes_embed(data):
+    embed = discord.Embed(
+        title=f"{data['name']} • Notes",
+        description="\n".join(data["notes"]),
+        colour=WARD_COLOURS[data["colour"]]
+    )
+
+    embed.set_image(url=get_ward_url(data["emoji"]))
+
+    return embed
+
+class WardView(discord.ui.View):
+    def __init__(self, ward_id, ward_data):
+        super().__init__(timeout=None)
+        self.ward_id = ward_id
+        self.ward_data = ward_data
+
+    @discord.ui.button(
+        label="Notes →",
+        style=discord.ButtonStyle.secondary
+    )
+    async def notes(self, interaction, button):
+        embed = build_notes_embed(self.ward_data)
+
+        await interaction.response.edit_message(
+            embed=embed,
+            view=WardNotesView(self.ward_id, self.ward_data)
         )
 
-        embed.set_image(
-            url=f"attachment://ward.png"
+
+class WardNotesView(discord.ui.View):
+    def __init__(self, ward_id, ward_data):
+        super().__init__(timeout=None)
+        self.ward_id = ward_id
+        self.ward_data = ward_data
+
+    @discord.ui.button(
+        label="← Back",
+        style=discord.ButtonStyle.secondary
+    )
+    async def back(self, interaction, button):
+        embed, _ = build_main_embed(self.ward_id)
+
+        await interaction.response.edit_message(
+            embed=embed,
+            view=WardView(self.ward_id, self.ward_data)
         )
 
-        return embed, icon
+
+
+class Ward(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
 
     @app_commands.allowed_installs(
         users=True,
@@ -182,7 +235,7 @@ class Ward(commands.Cog):
             interaction: discord.Interaction,
             ward: str
     ):
-        result = self._build_ward_embed(ward.lower())
+        result = build_main_embed(ward.lower())
 
         if result is None:
             await interaction.response.send_message(
@@ -191,11 +244,13 @@ class Ward(commands.Cog):
             )
             return
 
-        embed, icon = result
+        embed, data = result
+
+        view = WardView(ward.lower(), data) if data["emoji"] == "Geo" else None
 
         await interaction.response.send_message(
             embed=embed,
-            file=icon
+            view=view
         )
 
     @commands.command(
@@ -209,17 +264,19 @@ class Ward(commands.Cog):
             )
             return
 
-        result = self._build_ward_embed(ward.lower())
+        result = build_main_embed(ward.lower())
 
         if result is None:
             await ctx.send("Ward not found.")
             return
 
-        embed, icon = result
+        embed, data = result
+
+        view = WardView(ward.lower(), data) if data["emoji"] == "Geo" else None
 
         await ctx.send(
             embed=embed,
-            file=icon
+            view=view
         )
 
 

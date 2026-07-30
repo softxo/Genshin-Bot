@@ -6,18 +6,22 @@ from pathlib import Path
 from discord.ext import commands
 from dotenv import load_dotenv
 from utils.character.character_loader import load_characters, CHARACTERS
-from utils.weapon.weapons import load_weapons, get_weapon
+from utils.weapon.weapons import load_weapons, WEAPONS
 
 load_characters()
 load_weapons()
 
-print(get_weapon("raven_bow"))
-
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-print(f"Loaded {len(CHARACTERS)} characters:")
-print(list(CHARACTERS.keys()))
+
+print("========== Data ==========")
+print(f"Loaded {len(CHARACTERS)} character(s):")
+print(f"  {', '.join(CHARACTERS)}")
+
+print(f"Loaded {len(WEAPONS)} weapon(s):")
+print(f"  {', '.join(WEAPONS)}")
+print()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -30,19 +34,25 @@ bot = commands.Bot(
 @bot.event
 async def setup_hook():
     bot.application_emojis = await bot.fetch_application_emojis()
+
+    print("========= Discord =========")
     print(f"Loaded {len(bot.application_emojis)} application emojis")
+    print()
 
 async def load_cogs():
+    print("========== Cogs ==========")
+
     for commands_file in Path("cogs").rglob("commands.py"):
         module = ".".join(commands_file.with_suffix("").parts)
 
         try:
             await bot.load_extension(module)
-            print(f"Loaded cog: {module}")
-        except Exception as e:
-            print(f"Failed to load cog: {module}: {e}")
+            print(f"✓ {module}")
+        except Exception:
+            print(f"✗ {module}")
             traceback.print_exc()
 
+    print()
 
 @bot.event
 async def on_ready():
@@ -53,7 +63,11 @@ async def on_ready():
         )
     )
 
+    print("========= Ready =========")
     print(f"Logged in as {bot.user}")
+    print(f"Guilds: {len(bot.guilds)}")
+    print(f"Server Emojis: {len(bot.emojis)}")
+    print()
 
 
     for cmd in bot.tree.get_commands():
@@ -74,7 +88,10 @@ async def on_ready():
 async def main():
     async with bot:
         await load_cogs()
+        if TOKEN is None:
+            raise RuntimeError("DISCORD_TOKEN is not set.")
         await bot.start(TOKEN)
+
 
 @bot.tree.error
 async def on_app_command_error(interaction, error):

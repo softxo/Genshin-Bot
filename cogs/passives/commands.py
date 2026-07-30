@@ -24,7 +24,7 @@ class Passives(commands.Cog):
             filename="character.png"
         )
 
-        emojis = self.bot.application_emojis
+        emojis = self.bot.emojis
 
         embed = discord.Embed(
             title=f"{data['name']} • Passives",
@@ -78,7 +78,7 @@ class Passives(commands.Cog):
 
     @commands.command(
         name="passives",
-        aliases=["passive"]
+        aliases=["passive", "p"]
     )
     async def passives(
         self,

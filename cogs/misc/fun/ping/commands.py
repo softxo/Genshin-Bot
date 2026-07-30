@@ -16,6 +16,8 @@ class Ping(commands.Cog):
         response = round((time.perf_counter() - start) * 1000)
         gateway = round(self.bot.latency * 1000)
 
+        processing_start = time.perf_counter()
+
         embed = discord.Embed(
             title="🏓 Pong!",
             colour=discord.Colour.green()
@@ -28,8 +30,16 @@ class Ping(commands.Cog):
         )
 
         embed.add_field(
-            name="Response",
+            name="API Response",
             value=f"`{response} ms`",
+            inline=True
+        )
+
+        processing = (time.perf_counter() - processing_start) * 1000
+
+        embed.add_field(
+            name="Processing",
+            value=f"`{processing:.3f} ms`",
             inline=True
         )
 

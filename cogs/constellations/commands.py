@@ -22,7 +22,7 @@ class Constellations(commands.Cog):
             await destination.send("Character not found.")
             return
 
-        application_emojis = self.bot.application_emojis
+        emojis = self.bot.emojis
 
         embed = discord.Embed(
             title=f"{data['name']} • Constellations",
@@ -31,7 +31,7 @@ class Constellations(commands.Cog):
 
         for i, constellation in enumerate(data["constellations"], start=1):
             emoji = get_constellation_emoji(
-                application_emojis,
+                emojis,
                 data["id"],
                 i
             )

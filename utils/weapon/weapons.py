@@ -21,8 +21,6 @@ def load_weapons():
 
         WEAPONS[weapon["id"]] = weapon
 
-    print(f"Loaded {len(WEAPONS)} weapon(s).")
-
 
 def get_weapon(query):
     """Return a weapon by its ID."""

@@ -41,7 +41,9 @@ WARD_EMOJIS = {
     "overload_reaction": "<:Overload:1532044901322199190>",
     "crystallize_reaction": "<:Crystallize:1532043751617335337>",
     "all_elements": "<:Elements:1532046611461701693>",
-    "physical_damage": "<:Physical_Damage:1532047833350537489>"
+    "physical_damage": "<:Physical_Damage:1532047833350537489>",
+    "blunt_attacks": "<:Blunt_Attacks:1532475500315021414>",
+    "geo_attacks": "<:Element_Geo:1530806711617585232>"
 }
 
 STAT_EMOJIS = {

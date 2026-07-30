@@ -6,7 +6,7 @@ from typing import Optional
 CHARACTER_ASSETS = Path("assets/characters")
 WEAPON_ASSETS = Path("assets/weapons")
 ENEMY_ASSETS = Path("assets/enemies")
-WARD_ASSETS = Path("assets/shields")
+WARD_ASSETS = Path("assets/wards")
 
 TALENT_SUFFIXES = {
     "normal": "NA",
@@ -71,7 +71,7 @@ def get_constellation_icons(character_id: str) -> list[Path]:
     ]
 
 def get_talent_images(character_id: str) -> dict[str, Path]:
-    folder = CHARACTER_ASSETS / character_id / "skills"
+    folder = CHARACTER_ASSETS / character_id / "talents"
 
     return {
         "normal": folder / "Normal_Attack.webp",

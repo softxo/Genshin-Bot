@@ -24,10 +24,10 @@ class Skills(commands.Cog):
             filename="character.png"
         )
 
-        emojis = self.bot.application_emojis
+        emojis = self.bot.emojis
 
         embed = discord.Embed(
-            title=f"{data['name']} • Skills",
+            title=f"{data['name']} • Talents",
             colour=discord.Colour.from_str(data["colour"])
         )
 
@@ -83,9 +83,18 @@ class Skills(commands.Cog):
             file=thumbnail
         )
 
+    @app_commands.allowed_installs(
+        users=True,
+        guilds=True
+    )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True,
+        private_channels=True
+    )
     @app_commands.command(
-        name="skills",
-        description="Shows a character's Normal, Skill and Burst skills."
+        name="talents",
+        description="Shows a character's Normal, Skill and Burst talents."
     )
     @app_commands.autocomplete(character=character_autocomplete)
     async def skills_slash(
@@ -101,8 +110,8 @@ class Skills(commands.Cog):
         )
 
     @commands.command(
-        name="skills",
-        aliases=["skill"]
+        name="talents",
+        aliases=["skill", "skills", "t"]
     )
     async def skills(
         self,
