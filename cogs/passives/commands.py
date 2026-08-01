@@ -27,7 +27,7 @@ class Passives(commands.Cog):
         emojis = self.bot.emojis
 
         embed = discord.Embed(
-            title=f"{data['name']} • Passives",
+            title=f"Passives • {data['name']}",
             colour=discord.Colour.from_str(data["colour"])
         )
 

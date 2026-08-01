@@ -1,5 +1,5 @@
 import discord
-from utils.materials.materials_data import MISC
+from utils.materials.materials import MISC
 from utils.icons import get_material_emoji
 from utils.materials.materials_format import format_materials
 from utils.weapon.weapon_materials import (get_weapon_material, get_common_material, get_elite_material)
@@ -108,7 +108,7 @@ def get_total_mora_text(data, emojis):
 
 def build_ascension_materials_embed(data, emojis):
     embed = discord.Embed(
-        title=f"{data['name']} • Ascension Materials",
+        title=f"Ascension Materials • {data['name']}",
         colour=WEAPON_RARITY_COLOURS[data["rarity"]]
     )
 

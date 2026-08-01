@@ -27,7 +27,7 @@ class Skills(commands.Cog):
         emojis = self.bot.emojis
 
         embed = discord.Embed(
-            title=f"{data['name']} • Talents",
+            title=f"Talents • {data['name']}",
             colour=discord.Colour.from_str(data["colour"])
         )
 

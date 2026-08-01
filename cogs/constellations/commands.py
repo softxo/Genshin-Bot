@@ -25,7 +25,7 @@ class Constellations(commands.Cog):
         emojis = self.bot.emojis
 
         embed = discord.Embed(
-            title=f"{data['name']} • Constellations",
+            title=f"Constellations • {data['name']}",
             colour=discord.Colour.from_str(data["colour"])
         )
 

@@ -42,7 +42,7 @@ class Enemy(commands.Cog):
         )
 
         embed = discord.Embed(
-            title=f"{data['name']}\n• {ENEMY_CATEGORY_NAMES[data['category']]}",
+            title=f"{ENEMY_CATEGORY_NAMES[data['category']]}\n • {data['name']}",
             colour=colour
         )
 

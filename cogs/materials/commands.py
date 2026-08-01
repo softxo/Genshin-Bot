@@ -6,7 +6,7 @@ from discord import app_commands
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
-from utils.constants.costs import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, ASCENSION_EXP_COSTS, TALENT_MORA_COSTS
+from utils.constants.costs import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, LEVEL_EXP_COSTS, TALENT_MORA_COSTS
 from collections import defaultdict
 
 
@@ -86,9 +86,9 @@ def get_ascension_misc_text(emojis):
     mora_emoji = get_material_emoji(emojis, mora["emoji"])
 
     return (
-        f"{wit_emoji} **{wit['name']}** ×{ASCENSION_EXP_COSTS['heros_wit']:,}\n"
-        f"{adventure_emoji} **{adventure['name']}** ×{ASCENSION_EXP_COSTS['adventurers_experience']}\n"
-        f"{wanderer_emoji} **{wanderer['name']}** ×{ASCENSION_EXP_COSTS['wanderers_advice']}\n\n"
+        f"{wit_emoji} **{wit['name']}** ×{LEVEL_EXP_COSTS['heros_wit']:,}\n"
+        f"{adventure_emoji} **{adventure['name']}** ×{LEVEL_EXP_COSTS['adventurers_experience']}\n"
+        f"{wanderer_emoji} **{wanderer['name']}** ×{LEVEL_EXP_COSTS['wanderers_advice']}\n\n"
         
         f"{mora_emoji} **{mora['name']}** ×{LEVEL_MORA_TOTAL:,}"
     )
@@ -102,7 +102,7 @@ def get_total_mora_ascension(emojis):
 
 def build_ascension_embed(data, emojis):
     embed = discord.Embed(
-        title=f"{data['name']} • Ascension Materials",
+        title=f"Ascension Materials • {data['name']}",
         colour=discord.Colour.from_str(data["colour"])
     )
 
@@ -173,7 +173,7 @@ def get_talent_text(data, emojis, talent_count=1):
 
 def build_talents_embed(data, emojis, talent_count=1):
     embed = discord.Embed(
-        title=f"{data['name']} • Talent Materials",
+        title=f"Talent Materials • {data['name']}",
         colour=discord.Colour.from_str(data["colour"])
     )
 
@@ -196,9 +196,9 @@ def get_total_materials(data, talent_count=1):
     totals["mora"] += ASCENSION_MORA_TOTAL + LEVEL_MORA_TOTAL
     totals["mora"] += SINGLE_TALENT_MORA_TOTAL * talent_count
 
-    totals["heros_wit"] += ASCENSION_EXP_COSTS["heros_wit"]
-    totals["adventurers_experience"] += ASCENSION_EXP_COSTS["adventurers_experience"]
-    totals["wanderers_advice"] += ASCENSION_EXP_COSTS["wanderers_advice"]
+    totals["heros_wit"] += LEVEL_EXP_COSTS["heros_wit"]
+    totals["adventurers_experience"] += LEVEL_EXP_COSTS["adventurers_experience"]
+    totals["wanderers_advice"] += LEVEL_EXP_COSTS["wanderers_advice"]
 
     totals[(ascension["gem"]["id"], "sliver")] += ascension["gem"]["sliver"]
     totals[(ascension["gem"]["id"], "fragment")] += ascension["gem"]["fragment"]
@@ -341,7 +341,7 @@ def format_total_materials(data, emojis, talent_count=1):
 
 def build_total_embed(data, emojis, talent_count=1):
     embed = discord.Embed(
-        title=f"{data['name']} • Total Materials",
+        title=f"Total Materials • {data['name']}",
         colour=discord.Colour.from_str(data["colour"])
     )
 

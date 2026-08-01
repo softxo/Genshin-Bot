@@ -20,3 +20,6 @@ with open(MATERIALS_PATH / "weekly_drops.json", encoding="utf-8") as f:
 
 with open(MATERIALS_PATH / "local_specialties.json", encoding="utf-8") as f:
     LOCAL_SPECIALTIES = json.load(f)
+
+with open(MATERIALS_PATH / "miscellaneous.json", encoding="utf-8") as f:
+    MISC = json.load(f)

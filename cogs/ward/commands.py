@@ -75,7 +75,7 @@ def build_main_embed(ward_id: str):
         return None
 
     embed = discord.Embed(
-        title=data["name"],
+        title=f"Wards • {data["name"]}",
         colour=WARD_COLOURS[data["colour"]]
     )
 
@@ -181,7 +181,7 @@ def build_main_embed(ward_id: str):
 
 def build_notes_embed(data):
     embed = discord.Embed(
-        title=f"{data['name']} • Notes",
+        title=f"Notes • {data['name']}",
         description=format_notes(data["notes"]),
         colour=WARD_COLOURS[data["colour"]]
     )
