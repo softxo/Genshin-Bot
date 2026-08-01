@@ -49,3 +49,8 @@ WARD_EMOJIS = {
 STAT_EMOJIS = {
     "hp" : "<:HP:1530927836993552576>"
 }
+
+MISC_EMOJIS = {
+    "info": "<:info:1532802335393321080>",
+    "important": "<:important:1532802333908668446>"
+}

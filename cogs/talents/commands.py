@@ -111,7 +111,7 @@ class Skills(commands.Cog):
 
     @commands.command(
         name="talents",
-        aliases=["skill", "skills", "t"]
+        aliases=["skill", "skills", "t", "talent"]
     )
     async def skills(
         self,

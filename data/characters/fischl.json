@@ -99,9 +99,9 @@
       "description": [
         "Summons Oz to spread his twin wings of twilight and defend Fischl.",
         "Has the following properties during the ability's duration:",
-        "▸ Fischl takes on Oz's form, greatly increasing her Movement Speed.",
-        "▸ Strikes nearby opponents with lightning, dealing **Electro DMG** to opponents she comes into contact with. Each opponent can only be struck once.",
-        "▸ Once this ability's effects end, Oz will remain on the battlefield and attack his Prinzessin's foes. If Oz is already on the field, then this will reset the duration of his presence."
+        "- Fischl takes on Oz's form, greatly increasing her Movement Speed.",
+        "- Strikes nearby opponents with lightning, dealing **Electro DMG** to opponents she comes into contact with. Each opponent can only be struck once.",
+        "- Once this ability's effects end, Oz will remain on the battlefield and attack his Prinzessin's foes. If Oz is already on the field, then this will reset the duration of his presence."
       ]
     }
   },
@@ -136,8 +136,8 @@
         "**Hexerei: Secret Rite**",
         "Hark, Prince Nachtraben, Ozvaldo Hrafnavins, he who has witnessed the fall of countless worlds. Sing now the starry septet for your sovereign, for this is the moment of deepest sin, when the gathered souls at the end of causality shatter the darkness of fate.",
         "Additionally, when Oz is on the field, party members will gain additional buff effects:",
-        "▸ After a nearby party member triggers an Overloaded reaction, Fischl and other nearby active party members have their ATK increased by 22.5% for 10s.",
-        "▸ After a nearby party member triggers an Electro-Charged or Lunar-Charged reaction, Fischl and other nearby active party members have their Elemental Mastery increased by 90 for 10s."
+        "- After a nearby party member triggers an Overloaded reaction, Fischl and other nearby active party members have their ATK increased by 22.5% for 10s.",
+        "- After a nearby party member triggers an Electro-Charged or Lunar-Charged reaction, Fischl and other nearby active party members have their Elemental Mastery increased by 90 for 10s."
 
       ]
     }

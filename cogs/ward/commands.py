@@ -4,7 +4,7 @@ from discord import app_commands
 from utils.shield.wards import get_ward
 from utils.shield.ward_autocomplete import ward_autocomplete
 from utils.constants.colours import WARD_COLOURS
-from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS
+from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS, MISC_EMOJIS
 
 
 def get_ward_url(emoji: str) -> str:
@@ -12,6 +12,24 @@ def get_ward_url(emoji: str) -> str:
         "https://raw.githubusercontent.com/"
         f"softxo/Genshin-Bot/main/assets/wards/{emoji}.png"
     )
+
+def format_notes(notes: list[str]) -> str:
+    prefixes = {
+        "!": MISC_EMOJIS["important"],
+        "?": MISC_EMOJIS["info"],
+    }
+
+    formatted = []
+
+    for note in notes:
+        emoji = prefixes.get(note[:1])
+
+        if emoji:
+            note = f"{emoji}{note[1:]}"
+
+        formatted.append(note)
+
+    return "\n".join(formatted)
 
 def format_element(element: str) -> str:
     lookup = (
@@ -131,7 +149,7 @@ def build_main_embed(ward_id: str):
     )
 
     if ward_id != "geo":
-        notes = "\n".join(data["notes"])
+        notes = format_notes(data["notes"])
 
         if len(notes) <= 1024:
             embed.add_field(
@@ -141,6 +159,9 @@ def build_main_embed(ward_id: str):
             )
         else:
             split = notes.rfind("\n", 0, 1024)
+
+            if split == -1:
+                split = 1024
 
             embed.add_field(
                 name="**Notes**",
@@ -161,7 +182,7 @@ def build_main_embed(ward_id: str):
 def build_notes_embed(data):
     embed = discord.Embed(
         title=f"{data['name']} • Notes",
-        description="\n".join(data["notes"]),
+        description=format_notes(data["notes"]),
         colour=WARD_COLOURS[data["colour"]]
     )
 

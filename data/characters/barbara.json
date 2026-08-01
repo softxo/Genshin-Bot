@@ -61,8 +61,8 @@
       "name": "Dedicating Everything to You",
       "description": [
         "When Barbara is in the party but not on the field, and one of your own party members falls:",
-        "▸ Automatically revives the fallen character.",
-        "▸ Fully restores the revived character's HP to 100%.",
+        "- Automatically revives the fallen character.",
+        "- Fully restores the revived character's HP to 100%.",
         "This effect can only occur once every 15 mins."
       ],
       "icon": "C6.webp"
@@ -94,10 +94,10 @@
         {
           "title": "Melody Loop",
           "text": [
-            "▸ On hit, Barbara's Normal Attacks heal your own party members and nearby teammates for a certain amount of HP, which scales with Barbara's Max HP.",
-            "▸ On hit, Barbara's Charged Attack generates 4 times the amount of healing.",
-            "▸ Periodically regenerates your own active character's HP.",
-            "▸ Applies the **Wet** status to the character and to opponents who come in contact with them."
+            "- On hit, Barbara's Normal Attacks heal your own party members and nearby teammates for a certain amount of HP, which scales with Barbara's Max HP.",
+            "- On hit, Barbara's Charged Attack generates 4 times the amount of healing.",
+            "- Periodically regenerates your own active character's HP.",
+            "- Applies the **Wet** status to the character and to opponents who come in contact with them."
           ]
         }
       ]

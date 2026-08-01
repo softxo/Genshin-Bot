@@ -7,12 +7,14 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from utils.character.character_loader import load_characters, CHARACTERS
 from utils.weapon.weapons import load_weapons, WEAPONS
+from utils.settings.prefix import get_prefix
 
 load_characters()
 load_weapons()
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 
 print("========== Data ==========")
@@ -27,9 +29,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(
-    command_prefix="?",
-    intents=intents
+    command_prefix=lambda bot, message: get_prefix(
+        message.guild.id if message.guild else None
+    ),
+    intents=intents,
 )
+
 
 @bot.event
 async def setup_hook():
@@ -42,7 +47,10 @@ async def setup_hook():
 async def load_cogs():
     print("========== Cogs ==========")
 
-    for commands_file in Path("cogs").rglob("commands.py"):
+    for commands_file in Path("cogs").rglob("*.py"):
+        if commands_file.name == "__init__.py":
+            continue
+
         module = ".".join(commands_file.with_suffix("").parts)
 
         try:

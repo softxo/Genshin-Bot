@@ -108,8 +108,8 @@
         {
           "title":"Dandelion Field",
           "text": [
-            "▸ Continuously regenerates HP of characters within the AoE and continuously imbues them with **Anemo**.",
-            "▸ Deals **Anemo DMG** to opponents entering or exiting the Dandelion Field."
+            "- Continuously regenerates HP of characters within the AoE and continuously imbues them with **Anemo**.",
+            "- Deals **Anemo DMG** to opponents entering or exiting the Dandelion Field."
           ]
         }
       ]
