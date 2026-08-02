@@ -2,9 +2,8 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from utils.character.characters import get_character
-from utils.resource_calculator import calculate_character_resources
+from utils.resource_calculator.character_resource_calculator import calculate_character_resources
 from utils.character.character_autocomplete import character_autocomplete
-from utils.weapon.weapon_autocomplete import weapon_autocomplete
 from utils.icons import get_material_emoji, get_character_icon, get_character_splash
 from utils.materials.materials import GEMS, BOSSES, LOCAL_SPECIALTIES, COMMON, MISC
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
@@ -197,7 +196,7 @@ def format_resource_embed(
         value=(
             f"{mora_emoji} **{mora_data['name']}** ×{mora['levelling']:,} → **Level**\n\u200b"
             f"{mora_emoji} **{mora_data['name']}** ×{mora['ascension']:,} → **Ascension**\n\u200b"
-            f"{mora_emoji} **{mora_data['name']}** ×{mora['total']:,} →**Total**"
+            f"{mora_emoji} **{mora_data['name']}** ×{mora['total']:,} → **Total**"
         ),
         inline=False
     )
@@ -218,49 +217,18 @@ def format_resource_embed(
     return embed, character_icon, character_splash
 
 
-async def resource_name_autocomplete(
-        interaction: discord.Interaction,
-        current: str,
-):
-    category = interaction.namespace.category
-
-    if isinstance(category, app_commands.Choice):
-        category = category.value
-
-    if category == "character":
-        return await character_autocomplete(
-            interaction,
-            current
-        )
-
-    if category == "weapon":
-        return await weapon_autocomplete(
-            interaction,
-            current
-        )
-
-    return []
-
-
-class CalculateResources(commands.Cog):
+class CharacterResourceCalculator(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="calculateresources",
-        description="Calculate resources needed to level a character or weapon."
+        name="characterresources",
+        description="Calculate resources needed to level a character."
     )
-    @app_commands.choices(
-        category=[
-            app_commands.Choice(name="Character", value="character"),
-            app_commands.Choice(name="Weapon", value="weapon"),
-        ]
-    )
-    @app_commands.autocomplete(name=resource_name_autocomplete)
-    async def calculate_resources(
+    @app_commands.autocomplete(name=character_autocomplete)
+    async def character_resources(
         self,
         interaction: discord.Interaction,
-        category: app_commands.Choice[str],
         name: str,
         starting_level: app_commands.Range[int, 1, 90],
         end_level: app_commands.Range[int, 1, 90],
@@ -269,13 +237,6 @@ class CalculateResources(commands.Cog):
         if starting_level >= end_level:
             await interaction.response.send_message(
                 "The starting level must be lower than the end level.",
-                ephemeral=True
-            )
-            return
-
-        if category.value == "weapon":
-            await interaction.response.send_message(
-                "Weapon resource calculation isn't implemented yet.",
                 ephemeral=True
             )
             return
@@ -307,13 +268,12 @@ class CalculateResources(commands.Cog):
         )
 
     @commands.command(
-        name="calculateresources",
-        aliases=["cr"]
+        name="characterresources",
+        aliases=["charresources", "cresources", "cr"]
     )
-    async def calculate_resources_prefix(
+    async def character_resources_prefix(
             self,
             ctx,
-            category: str,
             name: str,
             starting_level: int,
             end_level: int,
@@ -327,18 +287,6 @@ class CalculateResources(commands.Cog):
         if starting_level >= end_level:
             await ctx.send(
                 "The starting level must be lower than the end level."
-            )
-            return
-
-        if category.lower() == "weapon":
-            await ctx.send(
-                "Weapon resource calculation isn't implemented yet."
-            )
-            return
-
-        if category.lower() != "character":
-            await ctx.send(
-                "Category must be `Character` or `Weapon`."
             )
             return
 
@@ -368,4 +316,4 @@ class CalculateResources(commands.Cog):
         )
 
 async def setup(bot):
-    await bot.add_cog(CalculateResources(bot))
+    await bot.add_cog(CharacterResourceCalculator(bot))

@@ -7,6 +7,7 @@
     "weapon_type": "bow",
     "max_level": 70,
     "rarity": 1,
+    "colour": "#8A8A8A",
     "main_stat": {
       "type": "base_atk",
       "value": 185
@@ -39,9 +40,9 @@
       "level": {
         "ores": {
           "id": "enhancement_ore",
-          "tier1": 70,
+          "tier1": 5,
           "tier2": 9,
-          "tier3": 5
+          "tier3": 70
         },
         "mora": {
           "id": "mora",
