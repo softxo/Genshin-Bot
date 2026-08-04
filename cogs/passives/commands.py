@@ -5,18 +5,42 @@ from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_talent_emoji
 from utils.talents.talents_format import format_description
+from utils.errors.error_handler import send_interaction_error, send_not_found
 
 class Passives(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def _send_passives(self, destination, character: str):
+    async def _send_passives(
+            self,
+            destination,
+            character: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
+    ):
+        original_character = character
+
         character = character.lower().replace(" ", "_")
 
         data = get_character(character)
 
         if data is None:
-            await destination.send("Character not found.")
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Character Not Found.",
+                    f"The character `{original_character}` could not be found.",
+                    "not_found",
+                )
+            else:
+                assert ctx is not None
+
+                await send_not_found(
+                    ctx,
+                    f"The character `{original_character}` could not be found.",
+                )
+
             return
 
         thumbnail = discord.File(
@@ -73,7 +97,8 @@ class Passives(commands.Cog):
 
         await self._send_passives(
             interaction.followup,
-            character
+            character,
+            interaction=interaction
         )
 
     @commands.command(
@@ -88,7 +113,8 @@ class Passives(commands.Cog):
     ):
         await self._send_passives(
             ctx,
-            character
+            character,
+            ctx=ctx
         )
 
 async def setup(bot):

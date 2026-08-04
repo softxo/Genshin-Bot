@@ -7,6 +7,7 @@ from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_material_emoji, get_character_icon, get_character_splash
 from utils.materials.materials import GEMS, BOSSES, LOCAL_SPECIALTIES, COMMON, MISC
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
+from utils.errors.error_handler import send_interaction_error, send_invalid_input, send_not_found
 
 
 def format_resource_embed(
@@ -103,8 +104,9 @@ def format_resource_embed(
         inline=False
     )
 
-    ascension_lines = []
+    ascension_sections = []
 
+    gem_lines = []
     gem_id = ascension["gem"]["id"]
     gem = GEMS[gem_id]
 
@@ -124,39 +126,48 @@ def format_resource_embed(
             gem["tiers"][tier]["emoji"]
         )
 
-        ascension_lines.append(
+        gem_lines.append(
             f"{emoji} **{gem['tiers'][tier]['name']}** ×{amount}"
         )
 
-    ascension_lines.append("")
+    if gem_lines:
+        ascension_sections.append(
+            "\n".join(gem_lines)
+        )
+
 
     boss_id = ascension["boss"]["id"]
     boss = BOSSES[boss_id]
 
-    boss_emoji = get_material_emoji(
-        emojis,
-        boss["emoji"]
-    )
+    boss_amount = ascension["boss"]["amount"]
 
-    ascension_lines.append(
-        f"{boss_emoji} **{boss['name']}** ×{ascension['boss']['amount']}"
-    )
+    if boss_amount > 0:
+        boss_emoji = get_material_emoji(
+            emojis,
+            boss["emoji"]
+        )
 
-    ascension_lines.append("")
+        ascension_sections.append(
+            f"{boss_emoji} **{boss['name']}** ×{boss_amount}"
+        )
+
 
     local_id = ascension["local_specialty"]["id"]
     local = LOCAL_SPECIALTIES[local_id]
 
-    local_emoji = get_material_emoji(
-        emojis,
-        local["emoji"]
-    )
+    local_amount = ascension["local_specialty"]["amount"]
 
-    ascension_lines.append(
-        f"{local_emoji} **{local['name']}** ×{ascension['local_specialty']['amount']}"
-    )
+    if local_amount > 0:
+        local_emoji = get_material_emoji(
+            emojis,
+            local["emoji"]
+        )
 
-    ascension_lines.append("")
+        ascension_sections.append(
+            f"{local_emoji} **{local['name']}** ×{local_amount}"
+        )
+
+    common_lines = []
 
     common_id = ascension["common"]["id"]
     common = COMMON[common_id]
@@ -176,15 +187,21 @@ def format_resource_embed(
             common["tiers"][tier]["emoji"]
         )
 
-        ascension_lines.append(
+        common_lines.append(
             f"{emoji} **{common['tiers'][tier]['name']}** ×{amount}"
         )
 
-    embed.add_field(
-        name="Ascension Materials",
-        value="\n".join(ascension_lines) + "\n\u200b",
-        inline=False
-    )
+    if common_lines:
+        ascension_sections.append(
+            "\n".join(common_lines)
+        )
+
+    if ascension_sections:
+        embed.add_field(
+            name="Ascension Materials",
+            value="\n\n".join(ascension_sections) + "\n\u200b",
+            inline=False
+        )
 
     mora_emoji = get_material_emoji(
         emojis,
@@ -235,18 +252,24 @@ class CharacterResourceCalculator(commands.Cog):
     ):
 
         if starting_level >= end_level:
-            await interaction.response.send_message(
-                "The starting level must be lower than the end level.",
-                ephemeral=True
+            await send_interaction_error(
+                interaction,
+                "Invalid Levels",
+                (
+                    "The **starting level** must be **lower** than the **target level**."
+                ),
+                "invalid_input"
             )
             return
 
         character = get_character(name)
 
         if character is None:
-            await interaction.response.send_message(
-                f"Character `{name}` could not be found.",
-                ephemeral=True
+            await send_interaction_error(
+                interaction,
+                "Character Not Found",
+                f"The character `{name}` could not be found.",
+                "not_found"
             )
             return
 
@@ -278,23 +301,28 @@ class CharacterResourceCalculator(commands.Cog):
             starting_level: int,
             end_level: int,
     ):
-        if starting_level < 1 or end_level > 90:
-            await ctx.send(
-                "Levels must be between 1 and 90."
+        if not 1 <= starting_level <= 90 or not 1 <= end_level <= 90:
+            await send_invalid_input(
+                ctx,
+                "Character levels must be between **1** and **90**."
             )
             return
 
         if starting_level >= end_level:
-            await ctx.send(
-                "The starting level must be lower than the end level."
+            await send_invalid_input(
+                ctx,
+                (
+                    "The **starting level** must be **lower** than the **target level**."
+                )
             )
             return
 
         character = get_character(name)
 
         if character is None:
-            await ctx.send(
-                f"Character `{name}` could not be found."
+            await send_not_found(
+                ctx,
+                f"The character `{name}` could not be found."
             )
             return
 

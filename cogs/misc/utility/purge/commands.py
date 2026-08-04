@@ -2,8 +2,14 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from utils.errors.error_handler import (
+    send_interaction_error,
+    send_context_error,
+)
+
 
 class Utility(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -11,12 +17,41 @@ class Utility(commands.Cog):
         name="purge",
         description="Deletes a number of messages."
     )
-    @commands.has_permissions(manage_messages=True)
-    @app_commands.checks.has_permissions(manage_messages=True)
-    @commands.bot_has_permissions(manage_messages=True)
-    async def purge(self, ctx, amount: int):
+    @commands.has_permissions(
+        manage_messages=True
+    )
+    @app_commands.checks.has_permissions(
+        manage_messages=True
+    )
+    @commands.bot_has_permissions(
+        manage_messages=True
+    )
+    async def purge(
+            self,
+            ctx: commands.Context,
+            amount: int
+    ):
+        raise RuntimeError("TEST ERROR")
         if not 1 <= amount <= 100:
-            await ctx.send("Amount must be between **1** and **100**.")
+            description = (
+                "The amount must be between **1** and **100**."
+            )
+
+            if ctx.interaction is not None:
+                await send_interaction_error(
+                    ctx.interaction,
+                    "Invalid Amount",
+                    description,
+                    "invalid_input",
+                )
+            else:
+                await send_context_error(
+                    ctx,
+                    "Invalid Amount",
+                    description,
+                    "invalid_input",
+                )
+
             return
 
         embed = discord.Embed(
@@ -35,24 +70,13 @@ class Utility(commands.Cog):
         )
 
         embed = discord.Embed(
+            title="<:Success:1534168168027783278> Success",
             description=f"Deleted **{len(deleted)}** message(s).",
-            colour=discord.Colour.green()
+            colour=discord.Colour.from_str("0x34e100")
         )
 
         await status.edit(embed=embed)
-        await status.delete(delay=3)
-
-    @purge.error
-    async def purge_error(self, ctx, error):
-        if isinstance(error, commands.MissingPermissions):
-            await ctx.send("You don't have permission to use this command.")
-        elif isinstance(error, commands.BotMissingPermissions):
-            await ctx.send("I need the **Manage Messages** permission.")
-        elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage: `?purge <amount>`")
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("The amount must be a whole number.")
-
+        await status.delete(delay=5)
 
 
 async def setup(bot):

@@ -5,22 +5,43 @@ from utils.icons import get_character_icon, get_character_splash
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
 from utils.constants.emojis import ELEMENT_EMOJIS, WEAPON_EMOJIS
+from utils.errors.error_handler import send_interaction_error, send_not_found
+
 
 class Character(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     async def _send_character(
-        self,
-        destination,
-        character: str
+            self,
+            destination,
+            character: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
     ):
+        original_character = character
+
         character = character.lower().replace(" ", "_")
 
         data = get_character(character)
 
         if data is None:
-            await destination.send("Character not found.")
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Character Not Found",
+                    f"The character `{original_character}` could not be found.",
+                    "not_found",
+                )
+            else:
+                assert ctx is not None
+
+                await send_not_found(
+                    ctx,
+                    f"The character `{original_character}` could not be found.",
+                )
+
             return
 
         embed = discord.Embed(
@@ -115,7 +136,8 @@ class Character(commands.Cog):
 
         await self._send_character(
             interaction.followup,
-            character
+            character,
+            interaction=interaction
         )
 
     @commands.command(
@@ -130,7 +152,8 @@ class Character(commands.Cog):
     ):
         await self._send_character(
             ctx,
-            character
+            character,
+            ctx=ctx
         )
 
 async def setup(bot):

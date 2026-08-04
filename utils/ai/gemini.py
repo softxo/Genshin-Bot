@@ -44,4 +44,4 @@ def generate_response(channel_id: int, prompt: str) -> str:
 
     except Exception:
         logger.exception("Gemini request failed")
-        return "I'm sorry, I didn't quite catch that."
+        raise

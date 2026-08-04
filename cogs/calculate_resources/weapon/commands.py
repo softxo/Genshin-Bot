@@ -7,6 +7,7 @@ from utils.resource_calculator.weapon_resource_calculator import calculate_weapo
 from utils.icons import get_material_emoji, get_weapon_icon
 from utils.weapon.weapon_materials import get_weapon_material, get_common_material, get_elite_material
 from utils.materials.materials import MISC
+from utils.errors.error_handler import send_missing_argument, send_invalid_input, send_not_found, send_interaction_error
 
 
 def format_weapon_resource_embed(
@@ -49,12 +50,12 @@ def format_weapon_resource_embed(
         inline=False,
     )
 
-    exp_emoji = get_material_emoji(
+    weapon_exp_emoji = get_material_emoji(
         emojis,
         "Weapon_EXP",
     )
 
-    wasted_exp_emoji = get_material_emoji(
+    wasted_weapon_exp_emoji = get_material_emoji(
         emojis,
         "Wasted_Weapon_EXP",
     )
@@ -62,8 +63,8 @@ def format_weapon_resource_embed(
     embed.add_field(
         name="EXP",
         value=(
-            f"{exp_emoji} **Required:** {exp['required']:,}\n"
-            f"{wasted_exp_emoji} **Wasted:** {exp['wasted']:,}"
+            f"{weapon_exp_emoji} **Required:** {exp['required']:,}\n"
+            f"{wasted_weapon_exp_emoji} **Wasted:** {exp['wasted']:,}"
         ) + "\n\u200b",
         inline=False,
     )
@@ -104,7 +105,9 @@ def format_weapon_resource_embed(
         inline=False,
     )
 
-    ascension_lines = []
+    ascension_sections = []
+
+    weapon_lines = []
 
     weapon_material_id = ascension["weapon_material"]["id"]
     weapon_material = get_weapon_material(weapon_material_id)
@@ -128,11 +131,16 @@ def format_weapon_resource_embed(
                 tier_data["emoji"],
             )
 
-            ascension_lines.append(
+            weapon_lines.append(
                 f"{emoji} **{tier_data['name']}** ×{amount}"
             )
 
-    ascension_lines.append("")
+    if weapon_lines:
+        ascension_sections.append(
+            "\n".join(weapon_lines)
+        )
+
+    common_lines = []
 
     common_id = ascension["common"]["id"]
     common_material = get_common_material(common_id)
@@ -155,11 +163,16 @@ def format_weapon_resource_embed(
                 tier_data["emoji"],
             )
 
-            ascension_lines.append(
+            common_lines.append(
                 f"{emoji} **{tier_data['name']}** ×{amount}"
             )
 
-    ascension_lines.append("")
+    if common_lines:
+        ascension_sections.append(
+            "\n".join(common_lines)
+        )
+
+    elite_lines = []
 
     elite_id = ascension["elite"]["id"]
     elite_material = get_elite_material(elite_id)
@@ -182,15 +195,21 @@ def format_weapon_resource_embed(
                 tier_data["emoji"],
             )
 
-            ascension_lines.append(
+            elite_lines.append(
                 f"{emoji} **{tier_data['name']}** ×{amount}"
             )
 
-    embed.add_field(
-        name="Ascension Materials",
-        value="\n".join(ascension_lines) + "\n\u200b",
-        inline=False,
-    )
+    if elite_lines:
+        ascension_sections.append(
+            "\n".join(elite_lines)
+        )
+
+    if ascension_sections:
+        embed.add_field(
+            name="Ascension Materials",
+            value="\n\n".join(ascension_sections) + "\n\u200b",
+            inline=False,
+        )
 
     mora_data = MISC["mora"]
 
@@ -242,18 +261,22 @@ class WeaponResourceCalculator(commands.Cog):
     ):
 
         if starting_level >= end_level:
-            await interaction.response.send_message(
-                "The starting level must be lower than the end level.",
-                ephemeral=True
+            await send_interaction_error(
+                interaction,
+                "Invalid Input",
+                "The **starting level** must be **lower** than the **target level**.",
+                "invalid_input"
             )
             return
 
         weapon = get_weapon(name)
 
         if weapon is None:
-            await interaction.response.send_message(
-                f"Weapon `{name}` could not be found.",
-                ephemeral=True
+            await send_interaction_error(
+                interaction,
+                "Not Found",
+                f"The weapon `{name}` could not be found.",
+                "not_found"
             )
             return
 
@@ -281,28 +304,54 @@ class WeaponResourceCalculator(commands.Cog):
     async def weapon_resources_prefix(
         self,
         ctx,
-        name: str,
-        starting_level: int,
-        end_level: int,
+        *,
+        arguments: str
     ):
+        parts = arguments.rsplit(maxsplit=2)
 
-        if starting_level < 1 or end_level > 90:
-            await ctx.send(
-                "Levels must be between 1 and 90."
+        if len(parts) != 3:
+            await send_missing_argument(
+                ctx,
+                f"{ctx.prefix}wr <weapon> <starting level> <target level>"
+            )
+            return
+
+        name, starting_level, end_level = parts
+
+        try:
+            starting_level = int(starting_level)
+            end_level = int(end_level)
+
+        except ValueError:
+            await send_invalid_input(
+                ctx,
+                (
+                    "Starting and target levels must be **whole numbers**.\n\n"
+                    f"**Usage:** `{ctx.prefix}wr <weapon> <starting level> <target level>`"
+                )
+            )
+            return
+
+        if not 1 <= starting_level <= 90 or not 1 <= end_level <= 90:
+            await send_invalid_input(
+                ctx,
+                "Weapon levels must be between **1** and **90**.",
             )
             return
 
         if starting_level >= end_level:
-            await ctx.send(
-                "The starting level must be lower than the end level."
+            await send_invalid_input(
+                ctx,
+                "The **starting level** must be **lower** than the **target level**.",
             )
             return
 
         weapon = get_weapon(name)
 
         if weapon is None:
-            await ctx.send(
-                f"Weapon `{name}` could not be found."
+            await send_not_found(
+                ctx,
+                f"The weapon `{name}` could not be found.",
             )
             return
 

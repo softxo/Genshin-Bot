@@ -54,3 +54,20 @@ MISC_EMOJIS = {
     "info": "<:info:1532802335393321080>",
     "important": "<:important:1532802333908668446>"
 }
+
+ERROR_EMOJIS = {
+    "error": "<:Error:1534168169865023580>",
+    "warning": "<:Warning:1534254848546181212>",
+    "info": "<:Info:1534158852268753007>",
+    "success": "<:Success:1534168168027783278>"
+}
+
+ERROR_TYPE_EMOJIS = {
+    "permission": "<:No_Perms:1534168171605528606>",
+    "bot_permission": "<:Bot_No_Perms:1534168173027393638>",
+    "cooldown": "<:Cooldown:1534168162558410802>",
+    "not_found": "<:Not_Found:1534168160616579172>",
+    "invalid_input": "<:Error:1534168169865023580>",
+    "missing_argument": "<:Missing_Arg:1534168164269555843>",
+    "unexpected": "<:Unexpected_Error:1534254583449387191>",
+}

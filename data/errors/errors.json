@@ -1,0 +1,24 @@
+{
+    "2211CA": {
+        "error_id": "2211CA",
+        "type": "RuntimeError",
+        "message": "TEST ERROR",
+        "command": "purge",
+        "user_id": 465610916873109504,
+        "guild_id": 1434490874871676990,
+        "channel_id": 1528511349003387122,
+        "timestamp": "2026-08-04T21:59:10.460824+00:00",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\silen\\OneDrive\\Documents\\GitHub\\Genshin-Bot\\.venv\\Lib\\site-packages\\discord\\ext\\commands\\core.py\", line 266, in wrapped\n    ret = await coro(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\silen\\OneDrive\\Documents\\GitHub\\Genshin-Bot\\cogs\\misc\\utility\\purge\\commands.py\", line 34, in purge\n    raise RuntimeError(\"TEST ERROR\")\nRuntimeError: TEST ERROR\n"
+    },
+    "E849D3": {
+        "error_id": "E849D3",
+        "type": "RuntimeError",
+        "message": "TEST ERROR",
+        "command": "purge",
+        "user_id": 465610916873109504,
+        "guild_id": 1434490874871676990,
+        "channel_id": 1528511349003387122,
+        "timestamp": "2026-08-04T22:25:30.862963+00:00",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\silen\\OneDrive\\Documents\\GitHub\\Genshin-Bot\\.venv\\Lib\\site-packages\\discord\\ext\\commands\\core.py\", line 266, in wrapped\n    ret = await coro(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\silen\\OneDrive\\Documents\\GitHub\\Genshin-Bot\\cogs\\misc\\utility\\purge\\commands.py\", line 34, in purge\n    raise RuntimeError(\"TEST ERROR\")\nRuntimeError: TEST ERROR\n"
+    }
+}

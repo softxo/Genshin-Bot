@@ -10,6 +10,7 @@ from utils.constants.colours import ENEMY_ELEMENT_COLOURS
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
 from utils.constants.elements import ELEMENT_NAMES
 from utils.constants.enemies import ENEMY_CATEGORY_NAMES
+from utils.errors.error_handler import send_interaction_error, send_not_found
 
 
 class Enemy(commands.Cog):
@@ -20,20 +21,35 @@ class Enemy(commands.Cog):
     async def _send_enemy(
             self,
             destination: discord.Interaction | commands.Context,
-            enemy: str
+            enemy: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
     ):
         """Builds and sends an enemy embed."""
-        
-        data = get_enemy(enemy.lower())
+
+        original_enemy = enemy
+
+        enemy = enemy.lower()
+
+        data = get_enemy(enemy)
 
         if not data:
-            if isinstance(destination, discord.Interaction):
-                await destination.response.send_message(
-                    "Enemy not found.",
-                    ephemeral=True
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Enemy Not Found.",
+                    f"The enemy `{original_enemy}` could not be found.",
+                    "not_found",
                 )
             else:
-                await destination.send("Enemy not found.")
+                assert ctx is not None
+
+                await send_not_found(
+                    ctx,
+                    f"The enemy `{original_enemy}` could not be found.",
+                )
+
             return
 
         colour = ENEMY_ELEMENT_COLOURS.get(
@@ -61,7 +77,8 @@ class Enemy(commands.Cog):
 
         if "element" in data:
             elements = ", ".join(
-                f"{COLOURED_ELEMENT_EMOJIS.get(element, '')} **{ELEMENT_NAMES.get(element, element.title())}**"
+                f"{COLOURED_ELEMENT_EMOJIS.get(element, '')} "
+                f"**{ELEMENT_NAMES.get(element, element.title())}**"
                 for element in data["element"]
             )
 
@@ -74,7 +91,11 @@ class Enemy(commands.Cog):
         states = list(data["res"].values())
         base = states[0]["resistance_values"]
 
-        embed.add_field(name="**RES**", value="", inline=False)
+        embed.add_field(
+            name="**RES**",
+            value="",
+            inline=False
+        )
 
         embed.add_field(
             name="Element",
@@ -138,7 +159,11 @@ class Enemy(commands.Cog):
         interaction: discord.Interaction,
         enemy: str
     ):
-        await self._send_enemy(interaction, enemy)
+        await self._send_enemy(
+            interaction,
+            enemy,
+            interaction=interaction
+        )
 
     @commands.command(
         name="enemy",
@@ -150,7 +175,12 @@ class Enemy(commands.Cog):
             *,
             enemy: str
     ):
-        await self._send_enemy(ctx, enemy)
+        await self._send_enemy(
+            ctx,
+            enemy,
+            ctx=ctx
+        )
+
 
 async def setup(bot):
     await bot.add_cog(Enemy(bot))

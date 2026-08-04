@@ -226,8 +226,7 @@ def calculate_weapon_exp_materials(
 
     if starting_level < 1 or end_level > max_level:
         raise ValueError(
-            f"{rarity}-star weapons can only be levelled "
-            f"between 1 and {max_level}."
+            f"{rarity}-star weapons can only be levelled between 1 and {max_level}."
         )
 
     if starting_level >= end_level:
@@ -277,11 +276,13 @@ def calculate_weapon_exp_materials(
         )
 
         total["required"] += exp_required
-        total["wasted"] += ores["waste"]
 
         total["ores"]["tier1"] += ores["tier1"]
         total["ores"]["tier2"] += ores["tier2"]
         total["ores"]["tier3"] += ores["tier3"]
+
+        if segment_end == next_cap:
+            total["wasted"] += ores["waste"]
 
         current_level = segment_end
 
@@ -371,23 +372,3 @@ def calculate_weapon_resources(
             ),
         },
     }
-
-
-if __name__ == "__main__":
-    import json
-    from pathlib import Path
-
-    project_root = Path(__file__).resolve().parents[2]
-
-    weapon_path = project_root / "data" / "weapons" / "bows" / "3_star" / "raven_bow.json"
-
-    with open(weapon_path, "r", encoding="utf-8") as file:
-        weapon = json.load(file)
-
-    resources = calculate_weapon_resources(
-        weapon,
-        6,
-        73
-    )
-
-    print(resources)

@@ -8,6 +8,7 @@ from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
 from utils.constants.costs import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, LEVEL_EXP_COSTS, TALENT_MORA_COSTS
 from collections import defaultdict
+from utils.errors.error_handler import send_interaction_error, send_not_found
 
 
 MATERIALS_PATH = Path("data/materials")
@@ -605,14 +606,31 @@ class Materials(commands.Cog):
             self,
             destination,
             user_id: int,
-            character: str
+            character: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
     ):
+        original_character = character
+
         character = character.lower().replace(" ", "_")
 
         data = get_character(character)
 
         if data is None:
-            await destination.send("Character not found.")
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Character Not Found.",
+                    f"The character `{original_character}` could not be found.",
+                    "not_found",
+                )
+            elif ctx is not None:
+                await send_not_found(
+                    ctx,
+                    f"The character `{original_character}` could not be found.",
+                )
+
             return
 
         thumbnail = discord.File(
@@ -658,7 +676,8 @@ class Materials(commands.Cog):
         await self._send_materials(
             interaction.followup,
             interaction.user.id,
-            character
+            character,
+            interaction=interaction
         )
 
     @commands.command(
@@ -674,7 +693,8 @@ class Materials(commands.Cog):
         await self._send_materials(
             ctx,
             ctx.author.id,
-            character
+            character,
+            ctx=ctx
         )
 
 async def setup(bot):

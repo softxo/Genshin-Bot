@@ -6,6 +6,7 @@ from utils.weapon.weapon_autocomplete import weapon_autocomplete
 from utils.constants.colours import WEAPON_RARITY_COLOURS
 from utils.constants.stats import STAT_NAMES, PERCENT_STATS
 from utils.icons import get_weapon_icon
+from utils.errors.error_handler import send_interaction_error, send_not_found, send_missing_argument
 
 
 class Weapon(commands.Cog):
@@ -16,14 +17,33 @@ class Weapon(commands.Cog):
             self,
             destination,
             weapon: str,
-            refinement: int = 1
-        ):
+            refinement: int = 1,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
+    ):
+        original_weapon = weapon
+
         weapon = weapon.lower().replace(" ", "_")
 
         data = get_weapon(weapon)
 
         if data is None:
-            await destination.send("Weapon not found.")
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Weapon Not Found.",
+                    f"The weapon `{original_weapon}` could not be found.",
+                    "not_found",
+                )
+            else:
+                assert ctx is not None
+
+                await send_not_found(
+                    ctx,
+                    f"The weapon `{original_weapon}` could not be found.",
+                )
+
             return
 
         embed = discord.Embed(
@@ -145,7 +165,8 @@ class Weapon(commands.Cog):
         await self._send_weapon(
             interaction.followup,
             weapon,
-            refinement
+            refinement,
+            interaction=interaction
         )
 
     @commands.command(
@@ -169,10 +190,19 @@ class Weapon(commands.Cog):
                 refinement = value
                 weapon = " ".join(parts[:-1])
 
+        if not weapon.strip():
+            await send_missing_argument(
+                ctx,
+                f"{ctx.prefix}w <weapon> [refinement]",
+                "weapon"
+            )
+            return
+
         await self._send_weapon(
             ctx,
             weapon,
-            refinement
+            refinement,
+            ctx=ctx
         )
 
 

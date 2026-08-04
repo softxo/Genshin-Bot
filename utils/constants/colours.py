@@ -32,6 +32,24 @@ WEAPON_RARITY_COLOURS = {
     5: 0xF4B400,
 }
 
+ERROR_COLOURS = {
+    "error": 0x820505,
+    "warning": 0xF1C40F,
+    "info": 0x3498DB,
+    "success": 0x34E100
+}
+
+ERROR_TYPE_COLOURS = {
+    "permission": 0x820505,
+    "bot_permission": 0x820505,
+    "cooldown": 0xF1C40F,
+    "not_found": 0xF1C40F,
+    "invalid_input": 0x820505,
+    "missing_argument": 0xF1C40F,
+    "unexpected": 0x820505
+}
+
+
 ### Colour Codes:
 # Pyro: #ef7a35
 # Hydro: #54b7f0

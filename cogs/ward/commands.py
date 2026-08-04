@@ -5,6 +5,7 @@ from utils.shield.wards import get_ward
 from utils.shield.ward_autocomplete import ward_autocomplete
 from utils.constants.colours import WARD_COLOURS
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS, MISC_EMOJIS
+from utils.errors.error_handler import send_interaction_error, send_not_found, send_missing_argument
 
 
 def get_ward_url(emoji: str) -> str:
@@ -256,18 +257,26 @@ class Ward(commands.Cog):
             interaction: discord.Interaction,
             ward: str
     ):
+        original_ward = ward
+
         result = build_main_embed(ward.lower())
 
         if result is None:
-            await interaction.response.send_message(
-                "Ward not found.",
-                ephemeral=True
+            await send_interaction_error(
+                interaction,
+                "Ward Not Found.",
+                f"The ward `{original_ward}` could not be found.",
+                "not_found"
             )
             return
 
         embed, data = result
 
-        view = WardView(ward.lower(), data) if data["emoji"] == "Geo" else None
+        view = (
+            WardView(ward.lower(), data)
+            if data["emoji"] == "Geo"
+            else None
+        )
 
         await interaction.response.send_message(
             embed=embed,
@@ -278,22 +287,38 @@ class Ward(commands.Cog):
         name="ward",
         aliases=["wd"]
     )
-    async def ward_prefix(self, ctx, *, ward: str | None = None):
+    async def ward_prefix(
+            self,
+            ctx,
+            *,
+            ward: str | None = None
+    ):
         if ward is None:
-            await ctx.send(
-                "Please specify a ward.\nExample: `?ward pyro`"
+            await send_missing_argument(
+                ctx,
+                f"{ctx.prefix}ward <ward>",
+                "ward"
             )
             return
+
+        original_ward = ward
 
         result = build_main_embed(ward.lower())
 
         if result is None:
-            await ctx.send("Ward not found.")
+            await send_not_found(
+                ctx,
+                f"The ward `{original_ward}` could not be found."
+            )
             return
 
         embed, data = result
 
-        view = WardView(ward.lower(), data) if data["emoji"] == "Geo" else None
+        view = (
+            WardView(ward.lower(), data)
+            if data["emoji"] == "Geo"
+            else None
+        )
 
         await ctx.send(
             embed=embed,

@@ -4,10 +4,14 @@ import os
 import traceback
 from pathlib import Path
 from discord.ext import commands
+from discord import app_commands
 from dotenv import load_dotenv
 from utils.character.character_loader import load_characters, CHARACTERS
 from utils.weapon.weapons import load_weapons, WEAPONS
 from utils.settings.prefix import get_prefix
+from utils.errors.error_handler import handle_app_command_error, handle_prefix_command_error
+from utils.errors.error_database import initialise_database
+
 
 load_characters()
 load_weapons()
@@ -94,16 +98,30 @@ async def on_ready():
     print(f"Synced {len(synced)} command(s).")
 
 async def main():
+    initialise_database()
+
     async with bot:
         await load_cogs()
+
         if TOKEN is None:
             raise RuntimeError("DISCORD_TOKEN is not set.")
+
         await bot.start(TOKEN)
 
 
 @bot.tree.error
-async def on_app_command_error(interaction, error):
-    traceback.print_exception(type(error), error, error.__traceback__)
+async def on_app_command_error(
+        interaction: discord.Interaction,
+        error: app_commands.AppCommandError
+):
+    await handle_app_command_error(interaction, error)
+
+@bot.event
+async def on_command_error(
+        ctx: commands.Context,
+        error: commands.CommandError
+):
+    await handle_prefix_command_error(ctx, error)
 
 if __name__ == "__main__":
     asyncio.run(main())

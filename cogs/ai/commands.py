@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from discord.ext import commands
 from discord import app_commands
 from utils.ai.gemini import generate_response
@@ -31,8 +32,9 @@ class AI(commands.Cog):
     ):
         await interaction.response.defer(thinking=True)
 
-        response = generate_response(
-            interaction.channel.id,
+        response = await asyncio.to_thread(
+            generate_response,
+            interaction.channel_id,
             prompt
         )
 
@@ -44,12 +46,13 @@ class AI(commands.Cog):
     )
     async def ai(self, ctx, *, prompt: str):
         async with ctx.typing():
-            response = generate_response(
+            response = await asyncio.to_thread(
+                generate_response,
                 ctx.channel.id,
-                prompt
+                prompt,
             )
 
-        await ctx.send(response)
+        await ctx.send(response[:2000])
 
 
 async def setup(bot):

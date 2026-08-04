@@ -4,8 +4,8 @@ from utils.character.character_loader import CHARACTERS
 
 
 async def character_autocomplete(
-    interaction,
-    current: str
+        interaction,
+        current: str
 ):
     choices = []
 

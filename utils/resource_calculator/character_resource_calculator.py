@@ -284,25 +284,3 @@ def calculate_character_resources(
             "total": levelling_mora + ascension["mora"]
         }
     }
-
-if __name__ == "__main__":
-    import json
-    from pathlib import Path
-
-    start = 7
-    end = 68
-
-    project_root = Path(__file__).resolve().parent.parent
-    amber_path = project_root / "data" / "characters" / "amber.json"
-
-    with open(amber_path, "r", encoding="utf-8") as file:
-        amber = json.load(file)
-
-    resources = calculate_character_resources(
-        amber,
-        start,
-        end
-    )
-
-    print(f"=== {start} → {end} ===")
-    print(resources)

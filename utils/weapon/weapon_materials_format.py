@@ -63,7 +63,6 @@ def get_level_material_text(data, emojis):
     ores = data["materials"]["level"]["ores"]
     mora = data["materials"]["level"]["mora"]
 
-    ore_data = MISC[ores["id"]]
     mora_data = MISC[mora["id"]]
 
     text = []
@@ -74,9 +73,17 @@ def get_level_material_text(data, emojis):
         "tier3": "Mystic Enhancement Ore",
     }
 
+    ore_ids = {
+        "tier1": "enhancement_ore",
+        "tier2": "fine_enhancement_ore",
+        "tier3": "mystic_enhancement_ore"
+    }
+
     for tier, amount in ores.items():
         if tier == "id":
             continue
+
+        ore_data = MISC[ore_ids[tier]]
 
         text.append(
             f"{get_material_emoji(emojis, ore_data['emoji'])} "

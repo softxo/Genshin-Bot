@@ -4,6 +4,7 @@ from discord import app_commands
 from utils.icons import get_character_icon, get_constellation_emoji
 from utils.character.characters import get_character
 from utils.character.character_autocomplete import character_autocomplete
+from utils.errors.error_handler import send_interaction_error, send_not_found
 
 class Constellations(commands.Cog):
     def __init__(self, bot):
@@ -12,14 +13,33 @@ class Constellations(commands.Cog):
     async def _send_constellations(
             self,
             destination,
-            character: str
+            character: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
     ):
+        original_character = character
+
         character = character.lower().replace(" ", "_")
 
         data = get_character(character)
 
         if data is None:
-            await destination.send("Character not found.")
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Character Not Found.",
+                    f"The character `{original_character}` could not be found.",
+                    "not_found",
+                )
+            else:
+                assert ctx is not None
+
+                await send_not_found(
+                    ctx,
+                    f"The character `{original_character}` could not be found.",
+                )
+
             return
 
         emojis = self.bot.emojis
@@ -93,7 +113,8 @@ class Constellations(commands.Cog):
 
         await self._send_constellations(
             interaction.followup,
-            character
+            character,
+            interaction=interaction
         )
 
     @commands.command(
@@ -108,7 +129,8 @@ class Constellations(commands.Cog):
     ):
         await self._send_constellations(
             ctx,
-            character
+            character,
+            ctx=ctx
         )
 
 async def setup(bot):

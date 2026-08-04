@@ -1,47 +1,121 @@
 import discord
-import logging
 from discord.ext import commands
 from discord import app_commands
+
 from utils.settings.prefix import get_prefix, set_prefix
+from utils.errors.error_handler import (
+    send_interaction_error,
+    send_context_error,
+)
 
-
-logger = logging.getLogger(__name__)
 
 class Prefix(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
-    def update_prefix(self, guild_id: int, new_prefix: str):
-        if not 1 <= len(new_prefix) <= 5:
-            return discord.Embed(
-                title="Prefix Error",
-                description="Prefix must be between **1** and **5** characters.",
-                colour=discord.Colour.red()
-            )
+    async def _send_prefix(
+            self,
+            destination: discord.Interaction | commands.Context,
+            new_prefix: str,
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None
+    ):
+        """Validates, updates, and sends the prefix response."""
 
-        if " " in new_prefix:
-            return discord.Embed(
-                title="Prefix Error",
-                description="The prefix cannot contain spaces.",
-                colour=discord.Colour.red()
-            )
+        guild_id = (
+            interaction.guild.id
+            if interaction is not None
+            else ctx.guild.id
+        )
 
         old_prefix = get_prefix(guild_id)
 
-        if new_prefix == old_prefix:
-            return discord.Embed(
-                title="Prefix Error",
-                description=f"The prefix is already `{new_prefix}`.",
-                colour=discord.Colour.orange()
+        if not 1 <= len(new_prefix) <= 5:
+            description = (
+                "The prefix must be between **1** and **5** characters."
             )
+
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Invalid Prefix",
+                    description,
+                    "invalid_input",
+                )
+            else:
+                await send_context_error(
+                    ctx,
+                    "Invalid Prefix",
+                    description,
+                    "invalid_input",
+                )
+
+            return
+
+        if " " in new_prefix:
+            description = (
+                "The prefix cannot contain spaces."
+            )
+
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Invalid Prefix",
+                    description,
+                    "invalid_input",
+                )
+            else:
+                await send_context_error(
+                    ctx,
+                    "Invalid Prefix",
+                    description,
+                    "invalid_input",
+                )
+
+            return
+
+        if new_prefix == old_prefix:
+            description = (
+                f"The prefix is already `{new_prefix}`."
+            )
+
+            if interaction is not None:
+                await send_interaction_error(
+                    interaction,
+                    "Prefix Unchanged",
+                    description,
+                    "invalid_input",
+                )
+            else:
+                await send_context_error(
+                    ctx,
+                    "Prefix Unchanged",
+                    description,
+                    "invalid_input",
+                )
+
+            return
 
         set_prefix(guild_id, new_prefix)
 
-        return discord.Embed(
-            title="Prefix Updated",
-            description=f"**`{old_prefix}`** \u200b → \u200b **`{new_prefix}`**",
-            colour=discord.Colour.green()
+        embed = discord.Embed(
+            title="<:Success:1534168168027783278> Prefix Updated",
+            description=(
+                f"**`{old_prefix}`** \u200b → \u200b **`{new_prefix}`**"
+            ),
+            colour=discord.Colour.from_str("0x34E100")
         )
+
+        if interaction is not None:
+            await interaction.response.send_message(
+                embed=embed
+            )
+        else:
+            await ctx.send(
+                embed=embed
+            )
 
     @app_commands.command(
         name="prefix",
@@ -50,7 +124,9 @@ class Prefix(commands.Cog):
     @app_commands.describe(
         new_prefix="The new prefix to use."
     )
-    @app_commands.checks.has_permissions(administrator=True)
+    @app_commands.checks.has_permissions(
+        administrator=True
+    )
     @app_commands.allowed_installs(
         users=True,
         guilds=True
@@ -63,13 +139,10 @@ class Prefix(commands.Cog):
             interaction: discord.Interaction,
             new_prefix: str
     ):
-        embed = self.update_prefix(
-            interaction.guild.id,
-            new_prefix
-        )
-
-        await interaction.response.send_message(
-            embed=embed
+        await self._send_prefix(
+            interaction,
+            new_prefix,
+            interaction=interaction
         )
 
     @commands.command(
@@ -77,85 +150,19 @@ class Prefix(commands.Cog):
         aliases=["setprefix"]
     )
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
-    async def prefix(self, ctx, new_prefix: str):
-        embed = self.update_prefix(
-            ctx.guild.id,
-            new_prefix
-        )
-        await ctx.send(embed=embed)
-
-    @prefix.error
-    async def prefix_error(self, ctx, error):
-        if isinstance(error, commands.MissingPermissions):
-            embed = discord.Embed(
-                title="Missing Permissions",
-                description="You must be an **Administrator** to change the prefix.",
-                colour=discord.Colour.red()
-            )
-
-            await ctx.send(embed=embed)
-
-        elif isinstance(error, commands.MissingRequiredArgument):
-            embed = discord.Embed(
-                title="Missing Argument",
-                description=f"Usage: `{get_prefix(ctx.guild.id)}prefix <new prefix>`",
-                colour=discord.Colour.red()
-            )
-
-            await ctx.send(embed=embed)
-
-        elif isinstance(error, commands.NoPrivateMessage):
-            embed = discord.Embed(
-                title="Guild Only",
-                description="This command can only be used in a server.",
-                colour=discord.Colour.red()
-            )
-
-            await ctx.send(embed=embed)
-
-        else:
-            logger.exception("Unexpected error in prefix command")
-
-            embed = discord.Embed(
-                title="Unexpected Error",
-                description="An unexpected error occurred while executing this command.",
-                colour=discord.Colour.red()
-            )
-
-            await ctx.send(embed=embed)
-
-    @prefix_slash.error
-    async def prefix_slash_error(
+    @commands.has_permissions(
+        administrator=True
+    )
+    async def prefix(
             self,
-            interaction: discord.Interaction,
-            error: app_commands.AppCommandError
+            ctx: commands.Context,
+            new_prefix: str
     ):
-        if isinstance(error, app_commands.MissingPermissions):
-            embed = discord.Embed(
-                title="Missing Permissions",
-                description="You must be an **Administrator** to change the prefix.",
-                colour=discord.Colour.red()
-            )
-
-            await interaction.response.send_message(
-                embed=embed,
-                ephemeral=True
-            )
-
-        else:
-            logger.exception("Unexpected error in slash prefix command")
-
-            embed = discord.Embed(
-                title="Unexpected Error",
-                description="An unexpected error occurred while executing this command.",
-                colour=discord.Colour.red()
-            )
-
-            if interaction.response.is_done():
-                await interaction.followup.send(embed=embed, ephemeral=True)
-            else:
-                await interaction.response.send_message(embed=embed, ephemeral=True)
+        await self._send_prefix(
+            ctx,
+            new_prefix,
+            ctx=ctx
+        )
 
 
 async def setup(bot):
