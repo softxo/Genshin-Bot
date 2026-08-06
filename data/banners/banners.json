@@ -1,0 +1,21 @@
+{
+  "version": "6.7",
+  "phase": "Second Half",
+
+  "duration": {
+    "start": "2026-07-21T18:00:00+01:00",
+    "end": "2026-08-11T14:59:00+01:00"
+  },
+
+  "characters": {
+    "5_star": [
+      "columbina",
+      "raiden"
+    ],
+    "4_star": [
+      "jahoda",
+      "ororon",
+      "sethos"
+    ]
+  }
+}

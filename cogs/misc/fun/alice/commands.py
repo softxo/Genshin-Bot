@@ -8,7 +8,7 @@ class Love(commands.Cog):
 
     @commands.command(name="love")
     async def love_prefix(self, ctx):
-        await ctx.send("I love you, Alice")
+        await ctx.send("I love you, Alice (Everly loves you too! Very very much).")
 
     @app_commands.command(
         name="love",

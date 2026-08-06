@@ -31,7 +31,6 @@ class Utility(commands.Cog):
             ctx: commands.Context,
             amount: int
     ):
-        raise RuntimeError("TEST ERROR")
         if not 1 <= amount <= 100:
             description = (
                 "The amount must be between **1** and **100**."
