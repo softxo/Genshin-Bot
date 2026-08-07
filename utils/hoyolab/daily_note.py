@@ -41,6 +41,21 @@ def get_expeditions(
         []
     )
 
+def format_expedition_time(
+        seconds: int
+) -> str:
+    seconds = max(0, int(seconds))
+
+    if seconds == 0:
+        return "Finished"
+
+    hours, remainder = divmod(seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+
+    if hours:
+        return f"{hours}h{minutes}m"
+
+    return f"{minutes}m"
 
 def get_home_coin(
     response: dict

@@ -53,18 +53,7 @@ def save_error(
         guild_id: int | None = None,
         channel_id: int | None = None
 ):
-    print(
-        f"[ERROR DB] Saving {error_id}..."
-    )
-
-    print(
-        f"[ERROR DB] Database path: "
-        f"{DATABASE_PATH.resolve()}"
-    )
-
     with get_connection() as connection:
-
-        print("[ERROR DB] Connection opened.")
 
         connection.execute(
             """
@@ -94,15 +83,7 @@ def save_error(
             )
         )
 
-        print("[ERROR DB] INSERT executed.")
-
         connection.commit()
-
-        print("[ERROR DB] COMMIT completed.")
-
-    print(
-        f"[ERROR DB] Successfully saved {error_id}."
-    )
 
 
 def get_error(error_id: str) -> dict | None:

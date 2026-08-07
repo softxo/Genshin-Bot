@@ -1,35 +1,14 @@
 import discord
 import time
-from pathlib import Path
 from discord import app_commands
 from discord.ext import commands
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.database import get_accounts
-from utils.hoyolab.daily_note import get_resin
+from utils.hoyolab.daily_note import get_expeditions
 from utils.errors.error_handler import create_error_embed
 
 
-def format_duration(seconds: int) -> str:
-    seconds = max(0, int(seconds))
-
-    hours, remainder = divmod(seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
-    parts = []
-
-    if hours:
-        parts.append(f"{hours}h")
-
-    if minutes:
-        parts.append(f"{minutes}m")
-
-    if seconds or not parts:
-        parts.append(f"{seconds}s")
-
-    return " ".join(parts)
-
-
-async def _send_resin(
+async def _send_expeditions(
     user_id: int,
     account: dict,
     *,
@@ -68,39 +47,14 @@ async def _send_resin(
                 client.genshin_server
             )
 
-        current_resin, max_resin, recovery = get_resin(
+        expeditions = get_expeditions(
             response
         )
 
-        if current_resin >= max_resin:
-            replenished_in = "Now"
-            fully_replenished = "Now"
-        else:
-            remaining_resin = max_resin - current_resin
-
-            fully_replenished_seconds = recovery
-
-            next_resin_seconds = (
-                    fully_replenished_seconds
-                    - ((remaining_resin - 1) * 480)
-            )
-
-            next_resin_timestamp = int(time.time()) + next_resin_seconds
-
-            replenished_in = (
-                f"<t:{next_resin_timestamp}:R>"
-            )
-
-            fully_replenished_timestamp = int(time.time()) + fully_replenished_seconds
-
-            fully_replenished = (
-                f"<t:{fully_replenished_timestamp}:R>"
-            )
-
     except Exception:
         embed = create_error_embed(
-            "Failed to Retrieve Resin",
-            "Cyrene couldn't retrieve your Genshin Resin data from HoYoLab.",
+            "Failed to Retrieve Expeditions",
+            "Cyrene couldn't retrieve your Expedition data from HoYoLab.",
             "error"
         )
 
@@ -110,26 +64,62 @@ async def _send_resin(
                 ephemeral=ephemeral
             )
         else:
-            await ctx.send(embed=embed)
+            await ctx.send(
+                embed=embed
+            )
 
         return
 
-    resin_image = Path(
-        "assets/hoyolab/daily/Original_Resin.webp"
+    finished = sum(
+        expedition.get("status") == "Finished"
+        for expedition in expeditions
     )
 
-    file = discord.File(
-        resin_image,
-        filename="Original_Resin.webp"
+    ongoing = sum(
+        expedition.get("status") == "Ongoing"
+        for expedition in expeditions
     )
+
+    expedition_lines = []
+
+    for index, expedition in enumerate(
+        expeditions,
+        start=1
+    ):
+        status = expedition.get(
+            "status",
+            "Unknown"
+        )
+
+        expedition_timestamp = int(time.time()) + int(
+            expedition.get("remained_time", 0)
+        )
+
+        remaining_time = f"<t:{expedition_timestamp}:R>"
+
+        if status == "Finished":
+            expedition_lines.append(
+                f"**{index}.** Finished"
+            )
+
+        elif status == "Ongoing":
+            expedition_lines.append(
+                f"**{index}.** {remaining_time}"
+            )
+
+        else:
+            expedition_lines.append(
+                f"**{index}.** {status}"
+            )
+
+    if not expedition_lines:
+        expedition_lines.append(
+            "No expedition data available."
+        )
 
     embed = discord.Embed(
-        title="Resin",
+        title="Expeditions",
         color=discord.Color.blurple()
-    )
-
-    embed.set_thumbnail(
-        url="attachment://Original_Resin.webp"
     )
 
     embed.add_field(
@@ -143,11 +133,11 @@ async def _send_resin(
     )
 
     embed.add_field(
-        name="Resin",
+        name="Expeditions",
         value=(
-            f"- **Current:** {current_resin}/{max_resin}\n"
-            f"- **Replenished:** {replenished_in}\n"
-            f"- **Fully Replenished:** {fully_replenished}"
+            f"- **Finished:** {finished}/{len(expeditions)}\n"
+            f"- **Ongoing:** {ongoing}/{len(expeditions)}\n\n"
+            + "\n".join(expedition_lines)
         ),
         inline=False
     )
@@ -155,172 +145,15 @@ async def _send_resin(
     if interaction:
         await interaction.followup.send(
             embed=embed,
-            file=file,
             ephemeral=ephemeral
         )
     else:
         await ctx.send(
-            embed=embed,
-            file=file
+            embed=embed
         )
 
 
-class Resin(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @app_commands.command(
-        name="resin",
-        description="Check your Resin."
-    )
-    async def resin(
-        self,
-        interaction: discord.Interaction
-    ):
-        await interaction.response.defer(
-            ephemeral=True
-        )
-
-        accounts = get_accounts(
-            interaction.user.id
-        )
-
-        if not accounts:
-            embed = create_error_embed(
-                "No HoYoLab Account Linked",
-                (
-                    "You don't currently have a Genshin account linked to Cyrene.\n\n"
-                    "Use `/accounts` to link one."
-                ),
-                "not_found"
-            )
-
-            await interaction.followup.send(
-                embed=embed,
-                ephemeral=True
-            )
-
-            return
-
-        if len(accounts) == 1:
-            await _send_resin(
-                interaction.user.id,
-                accounts[0],
-                interaction=interaction,
-                ephemeral=True
-            )
-
-            return
-
-        options = []
-
-        for account in accounts:
-            options.append(
-                discord.SelectOption(
-                    label=account.get("nickname") or account["genshin_uid"],
-                    description=(
-                            f"UID: {account['genshin_uid']}"
-                            + (
-                                f" • AR: {account['level']}"
-                                if account.get("level") is not None
-                                else ""
-                            )
-                    ),
-                    value=account["genshin_uid"]
-                )
-            )
-
-        embed = discord.Embed(
-            title="Select a Genshin Account",
-            description=(
-                "You have multiple linked Genshin accounts.\n"
-                "Select the account you want to check."
-            ),
-            color=discord.Color.blurple()
-        )
-
-        await interaction.followup.send(
-            embed=embed,
-            view=ResinAccountView(
-                interaction.user.id,
-                options
-            ),
-            ephemeral=True
-        )
-
-    @commands.command(
-        name="resin"
-    )
-    async def resin_prefix(
-            self,
-            ctx: commands.Context
-    ):
-        accounts = get_accounts(
-            ctx.author.id
-        )
-
-        if not accounts:
-            embed = create_error_embed(
-                "No HoYoLab Account Linked",
-                (
-                    "You don't currently have a Genshin account linked to Cyrene.\n\n"
-                    "Use `/accounts` to link one."
-                ),
-                "not_found"
-            )
-
-            await ctx.send(
-                embed=embed
-            )
-
-            return
-
-        if len(accounts) == 1:
-            await _send_resin(
-                ctx.author.id,
-                accounts[0],
-                ctx=ctx
-            )
-
-            return
-
-        options = []
-
-        for account in accounts:
-            options.append(
-                discord.SelectOption(
-                    label=account.get("nickname") or account["genshin_uid"],
-                    description=(
-                            f"UID: {account['genshin_uid']}"
-                            + (
-                                f" • AR: {account['level']}"
-                                if account.get("level") is not None
-                                else ""
-                            )
-                    ),
-                    value=account["genshin_uid"]
-                )
-            )
-
-        embed = discord.Embed(
-            title="Select a Genshin Account",
-            description=(
-                "You have multiple linked Genshin accounts.\n"
-                "Select the account you want to check."
-            ),
-            color=discord.Color.blurple()
-        )
-
-        await ctx.send(
-            embed=embed,
-            view=ResinAccountView(
-                ctx.author.id,
-                options
-            )
-        )
-
-
-class ResinAccountSelect(discord.ui.Select):
+class ExpeditionsAccountSelect(discord.ui.Select):
     def __init__(
         self,
         discord_user_id: int,
@@ -373,7 +206,7 @@ class ResinAccountSelect(discord.ui.Select):
             ephemeral=self.ephemeral
         )
 
-        await _send_resin(
+        await _send_expeditions(
             self.discord_user_id,
             account,
             interaction=interaction,
@@ -381,7 +214,7 @@ class ResinAccountSelect(discord.ui.Select):
         )
 
 
-class ResinAccountView(discord.ui.View):
+class ExpeditionsAccountView(discord.ui.View):
     def __init__(
         self,
         discord_user_id: int,
@@ -394,7 +227,7 @@ class ResinAccountView(discord.ui.View):
         )
 
         self.add_item(
-            ResinAccountSelect(
+            ExpeditionsAccountSelect(
                 discord_user_id,
                 options,
                 ephemeral=ephemeral
@@ -402,5 +235,169 @@ class ResinAccountView(discord.ui.View):
         )
 
 
+class Expeditions(commands.Cog):
+    def __init__(
+        self,
+        bot
+    ):
+        self.bot = bot
+
+    @app_commands.command(
+        name="expeditions",
+        description="Check your Genshin Expeditions."
+    )
+    async def expeditions(
+        self,
+        interaction: discord.Interaction
+    ):
+        await interaction.response.defer(
+            ephemeral=True
+        )
+
+        accounts = get_accounts(
+            interaction.user.id
+        )
+
+        if not accounts:
+            embed = create_error_embed(
+                "No HoYoLab Account Linked",
+                (
+                    "You don't currently have a Genshin account linked to Cyrene.\n\n"
+                    "Use `/accounts` to link one."
+                ),
+                "not_found"
+            )
+
+            await interaction.followup.send(
+                embed=embed,
+                ephemeral=True
+            )
+
+            return
+
+        if len(accounts) == 1:
+            await _send_expeditions(
+                interaction.user.id,
+                accounts[0],
+                interaction=interaction,
+                ephemeral=True
+            )
+
+            return
+
+        options = []
+
+        for account in accounts:
+            options.append(
+                discord.SelectOption(
+                    label=(
+                        account.get("nickname")
+                        or account["genshin_uid"]
+                    ),
+                    description=(
+                        f"UID: {account['genshin_uid']}"
+                        + (
+                            f" • AR: {account['level']}"
+                            if account.get("level") is not None
+                            else ""
+                        )
+                    ),
+                    value=account["genshin_uid"]
+                )
+            )
+
+        embed = discord.Embed(
+            title="Select a Genshin Account",
+            description=(
+                "You have multiple linked Genshin accounts.\n"
+                "Select the account you want to check."
+            ),
+            color=discord.Color.blurple()
+        )
+
+        await interaction.followup.send(
+            embed=embed,
+            view=ExpeditionsAccountView(
+                interaction.user.id,
+                options
+            ),
+            ephemeral=True
+        )
+
+    @commands.command(
+        name="expeditions"
+    )
+    async def expeditions_prefix(
+        self,
+        ctx: commands.Context
+    ):
+        accounts = get_accounts(
+            ctx.author.id
+        )
+
+        if not accounts:
+            embed = create_error_embed(
+                "No HoYoLab Account Linked",
+                (
+                    "You don't currently have a Genshin account linked to Cyrene.\n\n"
+                    "Use `/accounts` to link one."
+                ),
+                "not_found"
+            )
+
+            await ctx.send(
+                embed=embed
+            )
+
+            return
+
+        if len(accounts) == 1:
+            await _send_expeditions(
+                ctx.author.id,
+                accounts[0],
+                ctx=ctx
+            )
+
+            return
+
+        options = []
+
+        for account in accounts:
+            options.append(
+                discord.SelectOption(
+                    label=(
+                        account.get("nickname")
+                        or account["genshin_uid"]
+                    ),
+                    description=(
+                        f"UID: {account['genshin_uid']}"
+                        + (
+                            f" • AR: {account['level']}"
+                            if account.get("level") is not None
+                            else ""
+                        )
+                    ),
+                    value=account["genshin_uid"]
+                )
+            )
+
+        embed = discord.Embed(
+            title="Select a Genshin Account",
+            description=(
+                "You have multiple linked Genshin accounts.\n"
+                "Select the account you want to check."
+            ),
+            color=discord.Color.blurple()
+        )
+
+        await ctx.send(
+            embed=embed,
+            view=ExpeditionsAccountView(
+                ctx.author.id,
+                options
+            )
+        )
+
+
 async def setup(bot):
-    await bot.add_cog(Resin(bot))
+    await bot.add_cog(Expeditions(bot))
