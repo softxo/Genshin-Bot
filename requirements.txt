@@ -1,3 +1,6 @@
 discord
 python-dotenv
 google-genai
+cryptography
+genshin
+rsa

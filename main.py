@@ -10,7 +10,8 @@ from utils.character.character_loader import load_characters, CHARACTERS
 from utils.weapon.weapons import load_weapons, WEAPONS
 from utils.settings.prefix import get_prefix
 from utils.errors.error_handler import handle_app_command_error, handle_prefix_command_error
-from utils.errors.error_database import initialise_database
+from utils.errors.error_database import initialise_database as initialise_error_database
+from utils.hoyolab.database import initialise_database as initialise_hoyolab_database
 
 
 load_characters()
@@ -98,7 +99,8 @@ async def on_ready():
     print(f"Synced {len(synced)} command(s).")
 
 async def main():
-    initialise_database()
+    initialise_error_database()
+    initialise_hoyolab_database()
 
     async with bot:
         await load_cogs()

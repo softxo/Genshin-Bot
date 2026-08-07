@@ -2,8 +2,8 @@ import uuid
 import discord
 from discord.ext import commands
 from discord import app_commands
-from utils.constants.emojis import ERROR_TYPE_EMOJIS
-from utils.constants.colours import ERROR_TYPE_COLOURS
+from utils.constants.emojis import ERROR_EMOJIS, ERROR_TYPE_EMOJIS
+from utils.constants.colours import ERROR_COLOURS, ERROR_TYPE_COLOURS
 from utils.errors.error_logger import log_error
 
 
@@ -13,8 +13,17 @@ def create_error_embed(
         error_type: str,
 ) -> discord.Embed:
 
-    emoji = ERROR_TYPE_EMOJIS[error_type]
-    colour = discord.Colour(ERROR_TYPE_COLOURS[error_type])
+    emoji = ERROR_TYPE_EMOJIS.get(
+        error_type,
+        ERROR_EMOJIS["error"]
+    )
+
+    colour = discord.Colour(
+        ERROR_TYPE_COLOURS.get(
+            error_type,
+            ERROR_COLOURS["error"]
+        )
+    )
 
     embed = discord.Embed(
         title=f"{emoji} {title}",

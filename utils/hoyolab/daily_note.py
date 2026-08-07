@@ -1,0 +1,87 @@
+def get_daily_note_data(
+    response: dict
+) -> dict:
+    if response.get("retcode") != 0:
+        raise RuntimeError(
+            response.get(
+                "message",
+                "Failed to retrieve Genshin daily note."
+            )
+        )
+
+    data = response.get("data")
+
+    if not data:
+        raise RuntimeError(
+            "Genshin daily note data is unavailable."
+        )
+
+    return data
+
+
+def get_resin(
+    response: dict
+) -> tuple[int, int, int]:
+    data = get_daily_note_data(response)
+
+    return (
+        data["current_resin"],
+        data["max_resin"],
+        int(data["resin_recovery_time"])
+    )
+
+
+def get_expeditions(
+    response: dict
+) -> list[dict]:
+    data = get_daily_note_data(response)
+
+    return data.get(
+        "expeditions",
+        []
+    )
+
+
+def get_home_coin(
+    response: dict
+) -> tuple[int, int, int]:
+    data = get_daily_note_data(response)
+
+    return (
+        data["current_home_coin"],
+        data["max_home_coin"],
+        int(data["home_coin_recovery_time"])
+    )
+
+
+def get_daily_tasks(
+    response: dict
+) -> dict:
+    data = get_daily_note_data(response)
+
+    return data.get(
+        "daily_task",
+        {}
+    )
+
+
+def get_transformer(
+    response: dict
+) -> dict:
+    data = get_daily_note_data(response)
+
+    return data.get(
+        "transformer",
+        {}
+    )
+
+
+def get_weekly_progress(
+    response: dict
+) -> dict:
+    data = get_daily_note_data(response)
+
+    return data.get(
+        "week_active_progress",
+        {}
+    )
