@@ -6,3 +6,4 @@ genshin
 rsa
 fastapi
 uvicorn
+psycopg[binary]

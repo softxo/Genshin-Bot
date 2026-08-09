@@ -1,27 +1,25 @@
-import sqlite3
+import os
+import psycopg
+from psycopg.rows import dict_row
 from datetime import datetime, timezone
-from pathlib import Path
 
 from .auth import HoYoLABCredentials
 from .crypto import HoYoLABCrypto
 
 
-DATABASE_PATH = Path("data/hoyolab/hoyolab.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
-def get_connection() -> sqlite3.Connection:
-    DATABASE_PATH.parent.mkdir(
-        parents=True,
-        exist_ok=True
+def get_connection():
+    if not DATABASE_URL:
+        raise RuntimeError(
+            "DATABASE_URL is not configured."
+        )
+
+    return psycopg.connect(
+        DATABASE_URL,
+        row_factory=dict_row
     )
-
-    connection = sqlite3.connect(
-        DATABASE_PATH
-    )
-
-    connection.row_factory = sqlite3.Row
-
-    return connection
 
 
 def initialise_database() -> None:
@@ -29,13 +27,13 @@ def initialise_database() -> None:
         connection.execute(
             """
             CREATE TABLE IF NOT EXISTS accounts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-                discord_user_id INTEGER NOT NULL,
+                discord_user_id BIGINT NOT NULL,
                 discord_username TEXT,
                 discord_display_name TEXT,
 
-                discord_guild_id INTEGER,
+                discord_guild_id BIGINT,
                 discord_guild_name TEXT,
 
                 nickname TEXT,
@@ -58,7 +56,7 @@ def initialise_database() -> None:
 
                 ltuid TEXT,
                 ltoken TEXT,
-                
+
                 UNIQUE(discord_user_id, genshin_uid)
             )
             """
@@ -147,68 +145,68 @@ def save_account(
                 discord_user_id,
                 discord_username,
                 discord_display_name,
-            
+
                 discord_guild_id,
                 discord_guild_name,
-            
+
                 nickname,
                 cyrene_nickname,
                 level,
-            
+
                 genshin_uid,
                 genshin_server,
-            
+
                 created_at,
                 updated_at,
-            
+
                 ltuid_v2,
                 ltoken_v2,
                 ltmid_v2,
-            
+
                 cookie_token_v2,
                 account_mid_v2,
                 account_id_v2,
-            
+
                 ltuid,
                 ltoken
             )
             VALUES (
-                ?, ?, ?,
-                ?, ?,
-                ?, ?, ?,
-                ?, ?,
-                ?, ?,
-                ?, ?, ?,
-                ?, ?, ?,
-                ?, ?
+                %s, %s, %s,
+                %s, %s,
+                %s, %s, %s,
+                %s, %s,
+                %s, %s,
+                %s, %s, %s,
+                %s, %s, %s,
+                %s, %s
             )
 
-            ON CONFLICT(discord_user_id, genshin_uid)
+            ON CONFLICT (discord_user_id, genshin_uid)
             DO UPDATE SET
-                discord_username = excluded.discord_username,
-                discord_display_name = excluded.discord_display_name,
-            
-                discord_guild_id = excluded.discord_guild_id,
-                discord_guild_name = excluded.discord_guild_name,
-            
-                nickname = excluded.nickname,
-                cyrene_nickname = excluded.cyrene_nickname,
-                level = excluded.level,
-            
-                genshin_server = excluded.genshin_server,
-            
-                updated_at = excluded.updated_at,
-            
-                ltuid_v2 = excluded.ltuid_v2,
-                ltoken_v2 = excluded.ltoken_v2,
-                ltmid_v2 = excluded.ltmid_v2,
-            
-                cookie_token_v2 = excluded.cookie_token_v2,
-                account_mid_v2 = excluded.account_mid_v2,
-                account_id_v2 = excluded.account_id_v2,
-            
-                ltuid = excluded.ltuid,
-                ltoken = excluded.ltoken
+                discord_username = EXCLUDED.discord_username,
+                discord_display_name = EXCLUDED.discord_display_name,
+
+                discord_guild_id = EXCLUDED.discord_guild_id,
+                discord_guild_name = EXCLUDED.discord_guild_name,
+
+                nickname = EXCLUDED.nickname,
+                cyrene_nickname = EXCLUDED.cyrene_nickname,
+                level = EXCLUDED.level,
+
+                genshin_server = EXCLUDED.genshin_server,
+
+                updated_at = EXCLUDED.updated_at,
+
+                ltuid_v2 = EXCLUDED.ltuid_v2,
+                ltoken_v2 = EXCLUDED.ltoken_v2,
+                ltmid_v2 = EXCLUDED.ltmid_v2,
+
+                cookie_token_v2 = EXCLUDED.cookie_token_v2,
+                account_mid_v2 = EXCLUDED.account_mid_v2,
+                account_id_v2 = EXCLUDED.account_id_v2,
+
+                ltuid = EXCLUDED.ltuid,
+                ltoken = EXCLUDED.ltoken
             """,
             (
                 discord_user_id,
@@ -254,7 +252,7 @@ def get_accounts(
             """
             SELECT *
             FROM accounts
-            WHERE discord_user_id = ?
+            WHERE discord_user_id = %s
             ORDER BY created_at ASC
             """,
             (discord_user_id,)
@@ -344,8 +342,8 @@ def get_account(
             """
             SELECT *
             FROM accounts
-            WHERE discord_user_id = ?
-            AND genshin_uid = ?
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
             LIMIT 1
             """,
             (
@@ -431,7 +429,7 @@ def get_account_count(
             """
             SELECT COUNT(*) AS count
             FROM accounts
-            WHERE discord_user_id = ?
+            WHERE discord_user_id = %s
             """,
             (discord_user_id,)
         ).fetchone()
@@ -448,8 +446,8 @@ def account_exists(
             """
             SELECT 1
             FROM accounts
-            WHERE discord_user_id = ?
-            AND genshin_uid = ?
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
             LIMIT 1
             """,
             (
@@ -469,8 +467,8 @@ def delete_account(
         cursor = connection.execute(
             """
             DELETE FROM accounts
-            WHERE discord_user_id = ?
-            AND genshin_uid = ?
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
             """,
             (
                 discord_user_id,
@@ -493,12 +491,12 @@ def update_discord_user(
             """
             UPDATE accounts
             SET
-                discord_username = ?,
-                discord_display_name = ?
-            WHERE discord_user_id = ?
+                discord_username = %s,
+                discord_display_name = %s
+            WHERE discord_user_id = %s
             AND (
-                discord_username IS NOT ?
-                OR discord_display_name IS NOT ?
+                discord_username IS DISTINCT FROM %s
+                OR discord_display_name IS DISTINCT FROM %s
             )
             """,
             (
@@ -525,12 +523,12 @@ def update_discord_server(
             """
             UPDATE accounts
             SET
-                discord_guild_id = ?,
-                discord_guild_name = ?
-            WHERE discord_user_id = ?
+                discord_guild_id = %s,
+                discord_guild_name = %s
+            WHERE discord_user_id = %s
             AND (
-                discord_guild_id IS NOT ?
-                OR discord_guild_name IS NOT ?
+                discord_guild_id IS DISTINCT FROM %s
+                OR discord_guild_name IS DISTINCT FROM %s
             )
             """,
             (
@@ -556,9 +554,9 @@ def update_account_nickname(
         cursor = connection.execute(
             """
             UPDATE accounts
-            SET cyrene_nickname = ?
-            WHERE discord_user_id = ?
-            AND genshin_uid = ?
+            SET cyrene_nickname = %s
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
             """,
             (
                 cyrene_nickname,
