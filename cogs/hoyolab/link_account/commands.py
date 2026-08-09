@@ -228,7 +228,7 @@ async def notify_captcha(
             "Click the button below to open the CAPTCHA page and complete the verification.\n\n"
             "Once completed, Cyrene will automatically continue the authentication process."
         ),
-        colour=ERROR_TYPE_COLOURS["warning"]
+        colour=ERROR_COLOURS["warning"]
     )
 
     view = discord.ui.View()

@@ -17,7 +17,7 @@ from utils.web.sessions import (
 )
 
 
-WEB_BASE_URL = "http://localhost:8000"
+WEB_BASE_URL = "https://cyrene.apps.bot-hosting.cloud"
 
 
 async def login_with_password(
