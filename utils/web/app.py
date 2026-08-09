@@ -66,6 +66,11 @@ async def challenge(token: str):
 
     mmt = session.mmt
 
+    print("===== GEETEST MMT =====")
+    print(mmt)
+    print(mmt.model_dump())
+    print("=======================")
+
     return HTMLResponse(
         content=f"""
         <!DOCTYPE html>
@@ -154,7 +159,8 @@ async def challenge(token: str):
                             }})
                             : undefined,
                         product: "bind",
-                        language: "en"
+                        language: "eng"
+                        protocol: "https://"
                     }},
                     (captcha) => {{
 
@@ -218,8 +224,14 @@ async def challenge(token: str):
                                 </div>
                             `;
                         }});
-                    }}
-                );
+                        
+                        captcha.onError((error) => {{
+                        console.error("==== GEETEST ERROR ====");
+                        console.error(error);
+                        console.error("=======================");
+                    }});
+                }}
+            );
             </script>
         </body>
         </html>
