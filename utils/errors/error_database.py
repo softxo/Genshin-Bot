@@ -1,39 +1,43 @@
-import sqlite3
+import os
 from datetime import datetime, timezone
-from pathlib import Path
+
+import psycopg
+from psycopg.rows import dict_row
 
 
-DATABASE_PATH = Path("data/errors/errors.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
-def get_connection() -> sqlite3.Connection:
-    DATABASE_PATH.parent.mkdir(
-        parents=True,
-        exist_ok=True
+def get_connection():
+    if not DATABASE_URL:
+        raise RuntimeError(
+            "DATABASE_URL is not configured."
+        )
+
+    return psycopg.connect(
+        DATABASE_URL,
+        row_factory=dict_row
     )
 
-    connection = sqlite3.connect(
-        DATABASE_PATH
-    )
 
-    connection.row_factory = sqlite3.Row
-
-    return connection
-
-
-def initialise_database():
+def initialise_database() -> None:
     with get_connection() as connection:
         connection.execute(
             """
             CREATE TABLE IF NOT EXISTS errors (
                 error_id TEXT PRIMARY KEY,
+
                 type TEXT NOT NULL,
                 message TEXT,
+
                 command TEXT,
-                user_id INTEGER,
-                guild_id INTEGER,
-                channel_id INTEGER,
+
+                user_id BIGINT,
+                guild_id BIGINT,
+                channel_id BIGINT,
+
                 timestamp TEXT NOT NULL,
+
                 traceback TEXT
             )
             """
@@ -43,21 +47,21 @@ def initialise_database():
 
 
 def save_error(
-        error_id: str,
-        error_type: str,
-        message: str,
-        traceback_text: str,
-        *,
-        command: str | None = None,
-        user_id: int | None = None,
-        guild_id: int | None = None,
-        channel_id: int | None = None
-):
-    with get_connection() as connection:
+    error_id: str,
+    error_type: str,
+    message: str,
+    traceback_text: str,
+    *,
+    command: str | None = None,
+    user_id: int | None = None,
+    guild_id: int | None = None,
+    channel_id: int | None = None
+) -> None:
 
+    with get_connection() as connection:
         connection.execute(
             """
-            INSERT OR REPLACE INTO errors (
+            INSERT INTO errors (
                 error_id,
                 type,
                 message,
@@ -68,10 +72,25 @@ def save_error(
                 timestamp,
                 traceback
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (
+                %s, %s, %s, %s,
+                %s, %s, %s,
+                %s, %s
+            )
+
+            ON CONFLICT (error_id)
+            DO UPDATE SET
+                type = EXCLUDED.type,
+                message = EXCLUDED.message,
+                command = EXCLUDED.command,
+                user_id = EXCLUDED.user_id,
+                guild_id = EXCLUDED.guild_id,
+                channel_id = EXCLUDED.channel_id,
+                timestamp = EXCLUDED.timestamp,
+                traceback = EXCLUDED.traceback
             """,
             (
-                error_id,
+                error_id.upper(),
                 error_type,
                 message,
                 command,
@@ -86,15 +105,20 @@ def save_error(
         connection.commit()
 
 
-def get_error(error_id: str) -> dict | None:
+def get_error(
+    error_id: str
+) -> dict | None:
+
     with get_connection() as connection:
         row = connection.execute(
             """
             SELECT *
             FROM errors
-            WHERE error_id = ?
+            WHERE error_id = %s
             """,
-            (error_id.upper(),)
+            (
+                error_id.upper(),
+            )
         ).fetchone()
 
     if row is None:
@@ -103,14 +127,19 @@ def get_error(error_id: str) -> dict | None:
     return dict(row)
 
 
-def delete_error(error_id: str) -> bool:
+def delete_error(
+    error_id: str
+) -> bool:
+
     with get_connection() as connection:
         cursor = connection.execute(
             """
             DELETE FROM errors
-            WHERE error_id = ?
+            WHERE error_id = %s
             """,
-            (error_id.upper(),)
+            (
+                error_id.upper(),
+            )
         )
 
         connection.commit()
