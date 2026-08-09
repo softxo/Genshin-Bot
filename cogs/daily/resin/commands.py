@@ -100,7 +100,7 @@ async def _send_resin(
     except Exception:
         embed = create_error_embed(
             "Failed to Retrieve Resin",
-            "Cyrene couldn't retrieve your Genshin Resin data from HoYoLab.",
+            "Cyrene couldn't retrieve your Genshin Resin data from HoYoLAB.",
             "error"
         )
 
@@ -125,7 +125,7 @@ async def _send_resin(
 
     embed = discord.Embed(
         title="Resin",
-        color=discord.Color.blurple()
+        colour=discord.Colour.blurple()
     )
 
     embed.set_thumbnail(
@@ -187,7 +187,7 @@ class Resin(commands.Cog):
 
         if not accounts:
             embed = create_error_embed(
-                "No HoYoLab Account Linked",
+                "No HoYoLAB Account Linked",
                 (
                     "You don't currently have a Genshin account linked to Cyrene.\n\n"
                     "Use `/accounts` to link one."
@@ -236,14 +236,15 @@ class Resin(commands.Cog):
                 "You have multiple linked Genshin accounts.\n"
                 "Select the account you want to check."
             ),
-            color=discord.Color.blurple()
+            colour=discord.Colour.blurple()
         )
 
         await interaction.followup.send(
             embed=embed,
             view=ResinAccountView(
                 interaction.user.id,
-                options
+                options,
+                ephemeral=True
             ),
             ephemeral=True
         )
@@ -261,7 +262,7 @@ class Resin(commands.Cog):
 
         if not accounts:
             embed = create_error_embed(
-                "No HoYoLab Account Linked",
+                "No HoYoLAB Account Linked",
                 (
                     "You don't currently have a Genshin account linked to Cyrene.\n\n"
                     "Use `/accounts` to link one."
@@ -279,7 +280,8 @@ class Resin(commands.Cog):
             await _send_resin(
                 ctx.author.id,
                 accounts[0],
-                ctx=ctx
+                ctx=ctx,
+                ephemeral=False
             )
 
             return
@@ -308,14 +310,15 @@ class Resin(commands.Cog):
                 "You have multiple linked Genshin accounts.\n"
                 "Select the account you want to check."
             ),
-            color=discord.Color.blurple()
+            colour=discord.Colour.blurple()
         )
 
         await ctx.send(
             embed=embed,
             view=ResinAccountView(
                 ctx.author.id,
-                options
+                options,
+                ephemeral=False
             )
         )
 
@@ -390,7 +393,7 @@ class ResinAccountView(discord.ui.View):
         ephemeral: bool = True
     ):
         super().__init__(
-            timeout=300
+            timeout=600
         )
 
         self.add_item(

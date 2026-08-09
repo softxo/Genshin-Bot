@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class HoYoLabCredentials:
+class HoYoLABCredentials:
     ltuid: str | None = None
     ltoken: str | None = None
 
@@ -42,3 +42,16 @@ class HoYoLabCredentials:
             cookies["account_id_v2"] = self.account_id_v2
 
         return cookies
+
+
+def credentials_from_web_login(
+        result
+) -> HoYoLABCredentials:
+    return HoYoLABCredentials(
+        ltuid_v2=result.ltuid_v2,
+        ltoken_v2=result.ltoken_v2,
+        ltmid_v2=result.ltmid_v2,
+        cookie_token_v2=result.cookie_token_v2,
+        account_mid_v2=result.account_mid_v2,
+        account_id_v2=result.account_id_v2
+    )

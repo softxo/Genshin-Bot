@@ -20,16 +20,6 @@ def log_error(
         )
     )
 
-    print()
-    print("=" * 60)
-    print(f"ERROR ID: {error_id}")
-    print(f"ERROR TYPE: {type(error).__name__}")
-    print("=" * 60)
-    print(traceback_text, end="")
-    print("=" * 60)
-
-    print("[ERROR LOGGER] Calling database save...")
-
     save_error(
         error_id,
         type(error).__name__,
@@ -40,6 +30,3 @@ def log_error(
         guild_id=guild_id,
         channel_id=channel_id
     )
-
-    print("[ERROR LOGGER] Database save completed.")
-    print()

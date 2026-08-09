@@ -2,7 +2,7 @@ import os
 from cryptography.fernet import Fernet
 
 
-class HoYoLabCrypto:
+class HoYoLABCrypto:
     def __init__(self):
         key = os.getenv("HOYOLAB_ENCRYPTION_KEY")
 

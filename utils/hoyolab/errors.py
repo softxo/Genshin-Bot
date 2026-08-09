@@ -3,48 +3,56 @@ from utils.constants.emojis import ERROR_EMOJIS, ERROR_TYPE_EMOJIS
 from utils.constants.colours import ERROR_COLOURS, ERROR_TYPE_COLOURS
 
 
-class HoYoLabError(Exception):
-    """Base exception for HoYoLab-related errors."""
+class HoYoLABError(Exception):
+    """Base exception for HoYoLAB-related errors."""
 
 
-class HoYoLabAuthenticationError(HoYoLabError):
-    """HoYoLab credentials were rejected."""
+class HoYoLABAuthenticationError(HoYoLABError):
+    """HoYoLAB credentials were rejected."""
 
 
-class HoYoLabAccountNotFoundError(HoYoLabError):
-    """The HoYoLab account could not be found."""
+class HoYoLABAccountNotFoundError(HoYoLABError):
+    """The HoYoLAB account could not be found."""
 
 
-class HoYoLabAccountLockedError(HoYoLabError):
-    """The HoYoLab account is locked."""
+class HoYoLABAccountLockedError(HoYoLABError):
+    """The HoYoLAB account is locked."""
 
 
-class HoYoLabAccountMutedError(HoYoLabError):
-    """The HoYoLab account is restricted."""
+class HoYoLABAccountMutedError(HoYoLABError):
+    """The HoYoLAB account is restricted."""
 
 
-class HoYoLabVerificationError(HoYoLabError):
-    """HoYoLab verification failed or was rate-limited."""
+class HoYoLABVerificationError(HoYoLABError):
+    """HoYoLAB verification failed or was rate-limited."""
 
 
-class HoYoLabCaptchaError(HoYoLabError):
-    """HoYoLab CAPTCHA verification failed or is required."""
+class HoYoLABCaptchaError(HoYoLABError):
+    """HoYoLAB CAPTCHA verification failed or is required."""
+
+    def __init__(
+            self,
+            mmt: dict
+    ):
+        self.mmt = mmt
+
+        super().__init__()
 
 
-class HoYoLabRateLimitError(HoYoLabError):
-    """HoYoLab rate-limited the request."""
+class HoYoLABRateLimitError(HoYoLABError):
+    """HoYoLAB rate-limited the request."""
 
 
-class HoYoLabCookieError(HoYoLabError):
-    """The HoYoLab cookies are invalid."""
+class HoYoLABCookieError(HoYoLABError):
+    """The HoYoLAB cookies are invalid."""
 
 
-class HoYoLabConnectionError(HoYoLabError):
-    """A connection to HoYoLab could not be established."""
+class HoYoLABConnectionError(HoYoLABError):
+    """A connection to HoYoLAB could not be established."""
 
 
-class HoYoLabUnexpectedError(HoYoLabError):
-    """An unexpected HoYoLab error occurred."""
+class HoYoLABUnexpectedError(HoYoLABError):
+    """An unexpected HoYoLAB error occurred."""
 
 
 def build_hoyolab_error_embed(
@@ -66,5 +74,5 @@ def build_hoyolab_error_embed(
     return discord.Embed(
         title=f"{emoji} {title}",
         description=description,
-        color=colour
+        colour=colour
     )

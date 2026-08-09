@@ -1,11 +1,11 @@
 from .database import get_account
-from .client import HoYoLabClient
+from .client import HoYoLABClient
 
 
 def get_account_client(
     discord_user_id: int,
     genshin_uid: str
-) -> HoYoLabClient | None:
+) -> HoYoLABClient | None:
     account = get_account(
         discord_user_id,
         genshin_uid
@@ -14,7 +14,7 @@ def get_account_client(
     if account is None:
         return None
 
-    client = HoYoLabClient(
+    client = HoYoLABClient(
         account["credentials"]
     )
 

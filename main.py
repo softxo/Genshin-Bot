@@ -2,6 +2,7 @@ import discord
 import asyncio
 import os
 import traceback
+import uvicorn
 from pathlib import Path
 from discord.ext import commands
 from discord import app_commands
@@ -11,7 +12,8 @@ from utils.weapon.weapons import load_weapons, WEAPONS
 from utils.settings.prefix import get_prefix
 from utils.errors.error_handler import handle_app_command_error, handle_prefix_command_error
 from utils.errors.error_database import initialise_database as initialise_error_database
-from utils.hoyolab.database import initialise_database as initialise_hoyolab_database
+from utils.hoyolab.database import initialise_database as initialise_hoyolab_database, update_discord_user, update_discord_server
+from utils.web.app import app as web_app
 
 
 load_characters()
@@ -39,6 +41,47 @@ bot = commands.Bot(
     ),
     intents=intents,
 )
+
+
+@bot.tree.interaction_check
+async def update_slash_user(
+    interaction: discord.Interaction
+) -> bool:
+    user = interaction.user
+
+    update_discord_user(
+        discord_user_id=user.id,
+        discord_username=user.name,
+        discord_display_name=user.display_name
+    )
+
+    if interaction.guild:
+        update_discord_server(
+            discord_user_id=user.id,
+            discord_guild_id=interaction.guild.id,
+            discord_guild_name=interaction.guild.name
+        )
+
+    return True
+
+@bot.before_invoke
+async def update_prefix_user(
+    ctx: commands.Context
+):
+    user = ctx.author
+
+    update_discord_user(
+        discord_user_id=user.id,
+        discord_username=user.name,
+        discord_display_name=user.display_name
+    )
+
+    if ctx.guild:
+        update_discord_server(
+            discord_user_id=user.id,
+            discord_guild_id=ctx.guild.id,
+            discord_guild_name=ctx.guild.name
+        )
 
 
 @bot.event
@@ -102,13 +145,25 @@ async def main():
     initialise_error_database()
     initialise_hoyolab_database()
 
+    if TOKEN is None:
+        raise RuntimeError("DISCORD_TOKEN is not set.")
+
+    config = uvicorn.Config(
+        web_app,
+        host="0.0.0.0",
+        port=26199,
+        log_level="info",
+    )
+
+    web_server = uvicorn.Server(config)
+
     async with bot:
         await load_cogs()
 
-        if TOKEN is None:
-            raise RuntimeError("DISCORD_TOKEN is not set.")
-
-        await bot.start(TOKEN)
+        await asyncio.gather(
+            bot.start(TOKEN),
+            web_server.serve(),
+        )
 
 
 @bot.tree.error

@@ -75,7 +75,7 @@ class Weapons(commands.Cog):
         private_channels=True
     )
     @app_commands.command(
-        name="weaponmaterials",
+        name="weapon-materials",
         description="Shows a weapon's misc materials."
     )
     @app_commands.autocomplete(

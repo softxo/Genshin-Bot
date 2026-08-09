@@ -1,75 +1,113 @@
 import genshin
+import inspect
+from .auth import credentials_from_web_login
 from .errors import (
-    HoYoLabAuthenticationError,
-    HoYoLabAccountNotFoundError,
-    HoYoLabAccountLockedError,
-    HoYoLabAccountMutedError,
-    HoYoLabVerificationError,
-    HoYoLabCaptchaError,
-    HoYoLabRateLimitError,
-    HoYoLabUnexpectedError,
+    HoYoLABAuthenticationError,
+    HoYoLABAccountNotFoundError,
+    HoYoLABAccountLockedError,
+    HoYoLABAccountMutedError,
+    HoYoLABVerificationError,
+    HoYoLABCaptchaError,
+    HoYoLABRateLimitError,
+    HoYoLABUnexpectedError,
 )
+from utils.web.sessions import (
+    create_challenge_session,
+    delete_challenge_session,
+)
+
+
+WEB_BASE_URL = "http://localhost:8000"
 
 
 async def login_with_password(
     account: str,
-    password: str
+    password: str,
+    *,
+    user_id: int,
+    notify,
 ):
     client = genshin.Client()
 
-    try:
-        result = await client.login_with_password(
-            account,
-            password
+    async def geetest_solver(mmt):
+        session = create_challenge_session(
+            user_id=user_id,
+            mmt=mmt,
         )
 
-        return client, result
+        challenge_url = (
+            f"{WEB_BASE_URL}/challenge/{session.token}"
+        )
+
+        print("===== CAPTCHA CHALLENGE CREATED =====")
+        print(f"User ID: {user_id}")
+        print(f"URL: {challenge_url}")
+        print("=====================================")
+
+        await notify(challenge_url)
+
+        try:
+            await session.completion_event.wait()
+
+            if session.result is None:
+                raise HoYoLABCaptchaError(mmt)
+
+            return session.result
+
+        finally:
+            delete_challenge_session(session.token)
+
+    try:
+        print("===== GENSHIN LOGIN SIGNATURE =====")
+        print(inspect.signature(client.login_with_password))
+        print("===================================")
+
+        result = await client.login_with_password(
+            account,
+            password,
+            geetest_solver=geetest_solver,
+        )
+
+        credentials = credentials_from_web_login(
+            result
+        )
+
+        return client, credentials
 
     except genshin.errors.AccountDoesNotExist as error:
-        raise HoYoLabAccountNotFoundError from error
+        raise HoYoLABAccountNotFoundError from error
 
     except genshin.errors.AccountLoginFail as error:
-        raise HoYoLabAuthenticationError from error
+        raise HoYoLABAuthenticationError from error
 
     except genshin.errors.AccountHasLocked as error:
-        raise HoYoLabAccountLockedError from error
+        raise HoYoLABAccountLockedError from error
 
     except genshin.errors.AccountMuted as error:
-        raise HoYoLabAccountMutedError from error
+        raise HoYoLABAccountMutedError from error
 
     except (
         genshin.errors.WrongOTP,
         genshin.errors.VerificationCodeRateLimited,
         genshin.errors.OTPRateLimited,
     ) as error:
-        raise HoYoLabVerificationError from error
-
-    except (
-        genshin.errors.DailyGeetestTriggered,
-        genshin.errors.GeetestError,
-        genshin.errors.GeetestFailed,
-    ) as error:
-        raise HoYoLabCaptchaError from error
+        raise HoYoLABVerificationError from error
 
     except genshin.errors.TooManyRequests as error:
-        raise HoYoLabRateLimitError from error
-
+        raise HoYoLABRateLimitError from error
 
     except genshin.errors.GenshinException as error:
-        print("===== HOYOLAB LOGIN ERROR =====")
-        print(f"Type: {type(error).__name__}")
-        print(f"Error: {error}")
-        print("==============================")
-
         if "[-3006]" in str(error):
-            raise HoYoLabRateLimitError from error
+            raise HoYoLABRateLimitError from error
 
-        raise HoYoLabUnexpectedError from error
+        raise HoYoLABUnexpectedError from error
 
     except Exception as error:
-        print("===== UNEXPECTED LOGIN ERROR =====")
+        print("===== HOYOLAB LOGIN EXCEPTION =====")
         print(f"Type: {type(error).__name__}")
+        print(f"Module: {type(error).__module__}")
         print(f"Error: {error}")
-        print("==============================")
+        print(f"Attributes: {vars(error)}")
+        print("===================================")
 
-        raise HoYoLabUnexpectedError from error
+        raise HoYoLABUnexpectedError from error

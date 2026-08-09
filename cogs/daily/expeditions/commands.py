@@ -54,7 +54,7 @@ async def _send_expeditions(
     except Exception:
         embed = create_error_embed(
             "Failed to Retrieve Expeditions",
-            "Cyrene couldn't retrieve your Expedition data from HoYoLab.",
+            "Cyrene couldn't retrieve your Expedition data from HoYoLAB.",
             "error"
         )
 
@@ -119,7 +119,7 @@ async def _send_expeditions(
 
     embed = discord.Embed(
         title="Expeditions",
-        color=discord.Color.blurple()
+        colour=discord.Colour.blurple()
     )
 
     embed.add_field(
@@ -260,7 +260,7 @@ class Expeditions(commands.Cog):
 
         if not accounts:
             embed = create_error_embed(
-                "No HoYoLab Account Linked",
+                "No HoYoLAB Account Linked",
                 (
                     "You don't currently have a Genshin account linked to Cyrene.\n\n"
                     "Use `/accounts` to link one."
@@ -312,14 +312,15 @@ class Expeditions(commands.Cog):
                 "You have multiple linked Genshin accounts.\n"
                 "Select the account you want to check."
             ),
-            color=discord.Color.blurple()
+            colour=discord.Colour.blurple()
         )
 
         await interaction.followup.send(
             embed=embed,
             view=ExpeditionsAccountView(
                 interaction.user.id,
-                options
+                options,
+                ephemeral=True
             ),
             ephemeral=True
         )
@@ -337,7 +338,7 @@ class Expeditions(commands.Cog):
 
         if not accounts:
             embed = create_error_embed(
-                "No HoYoLab Account Linked",
+                "No HoYoLAB Account Linked",
                 (
                     "You don't currently have a Genshin account linked to Cyrene.\n\n"
                     "Use `/accounts` to link one."
@@ -355,7 +356,8 @@ class Expeditions(commands.Cog):
             await _send_expeditions(
                 ctx.author.id,
                 accounts[0],
-                ctx=ctx
+                ctx=ctx,
+                ephemeral=False
             )
 
             return
@@ -387,14 +389,15 @@ class Expeditions(commands.Cog):
                 "You have multiple linked Genshin accounts.\n"
                 "Select the account you want to check."
             ),
-            color=discord.Color.blurple()
+            colour=discord.Colour.blurple()
         )
 
         await ctx.send(
             embed=embed,
             view=ExpeditionsAccountView(
                 ctx.author.id,
-                options
+                options,
+                ephemeral=False
             )
         )
 

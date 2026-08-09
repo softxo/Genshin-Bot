@@ -239,7 +239,7 @@ class CharacterResourceCalculator(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="characterresources",
+        name="character-resources",
         description="Calculate resources needed to level a character."
     )
     @app_commands.autocomplete(name=character_autocomplete)

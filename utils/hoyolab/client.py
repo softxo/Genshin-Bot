@@ -1,11 +1,11 @@
 import aiohttp
-from .auth import HoYoLabCredentials
+from .auth import HoYoLABCredentials
 
 
-class HoYoLabClient:
+class HoYoLABClient:
     BASE_URL = "https://bbs-api-os.hoyolab.com"
 
-    def __init__(self, credentials: HoYoLabCredentials):
+    def __init__(self, credentials: HoYoLABCredentials):
         self.credentials = credentials
         self.session: aiohttp.ClientSession | None = None
 
@@ -34,7 +34,7 @@ class HoYoLabClient:
     async def get_game_roles(self) -> dict:
         if self.session is None:
             raise RuntimeError(
-                "HoYoLabClient must be used with 'async with'."
+                "HoYoLABClient must be used with 'async with'."
             )
 
         url = (
@@ -52,7 +52,7 @@ class HoYoLabClient:
     ) -> dict:
         if self.session is None:
             raise RuntimeError(
-                "HoYoLabClient must be used with 'async with'."
+                "HoYoLABClient must be used with 'async with'."
             )
 
         url = (

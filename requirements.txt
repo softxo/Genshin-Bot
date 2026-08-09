@@ -4,3 +4,5 @@ google-genai
 cryptography
 genshin
 rsa
+fastapi
+uvicorn

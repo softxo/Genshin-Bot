@@ -248,7 +248,7 @@ class WeaponResourceCalculator(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
-        name="weaponresources",
+        name="weapon-resources",
         description="Calculate resources needed to level a weapon."
     )
     @app_commands.autocomplete(name=weapon_autocomplete)

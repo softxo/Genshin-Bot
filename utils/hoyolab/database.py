@@ -1,8 +1,9 @@
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
-from .auth import HoYoLabCredentials
-from .crypto import HoYoLabCrypto
+
+from .auth import HoYoLABCredentials
+from .crypto import HoYoLABCrypto
 
 
 DATABASE_PATH = Path("data/hoyolab/hoyolab.db")
@@ -23,7 +24,7 @@ def get_connection() -> sqlite3.Connection:
     return connection
 
 
-def initialise_database():
+def initialise_database() -> None:
     with get_connection() as connection:
         connection.execute(
             """
@@ -31,17 +32,15 @@ def initialise_database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
 
                 discord_user_id INTEGER NOT NULL,
+                discord_username TEXT,
+                discord_display_name TEXT,
 
-                ltuid TEXT,
-                ltoken TEXT,
+                discord_guild_id INTEGER,
+                discord_guild_name TEXT,
 
-                ltuid_v2 TEXT,
-                ltoken_v2 TEXT,
-                ltmid_v2 TEXT,
-                
-                cookie_token_v2 TEXT,
-                account_mid_v2 TEXT,
-                account_id_v2 TEXT,
+                nickname TEXT,
+                cyrene_nickname TEXT,
+                level INTEGER,
 
                 genshin_uid TEXT NOT NULL,
                 genshin_server TEXT NOT NULL,
@@ -49,39 +48,26 @@ def initialise_database():
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL,
 
+                ltuid_v2 TEXT,
+                ltoken_v2 TEXT,
+                ltmid_v2 TEXT,
+
+                cookie_token_v2 TEXT,
+                account_mid_v2 TEXT,
+                account_id_v2 TEXT,
+
+                ltuid TEXT,
+                ltoken TEXT,
+                
                 UNIQUE(discord_user_id, genshin_uid)
             )
             """
         )
 
-        existing_columns = {
-            row["name"]
-            for row in connection.execute(
-                "PRAGMA table_info(accounts)"
-            ).fetchall()
-        }
-
-        new_columns = {
-            "cookie_token_v2": "TEXT",
-            "account_mid_v2": "TEXT",
-            "account_id_v2": "TEXT",
-            "nickname": "TEXT",
-            "level": "INTEGER"
-        }
-
-        for column, column_type in new_columns.items():
-            if column not in existing_columns:
-                connection.execute(
-                    f"""
-                    ALTER TABLE accounts
-                    ADD COLUMN {column} {column_type}
-                    """
-                )
-
         connection.execute(
             """
             CREATE INDEX IF NOT EXISTS idx_accounts_discord_user
-            ON accounts(discord_user_id)
+                ON accounts(discord_user_id)
             """
         )
 
@@ -90,26 +76,19 @@ def initialise_database():
 
 def save_account(
     discord_user_id: int,
-    credentials: HoYoLabCredentials,
+    credentials: HoYoLABCredentials,
     *,
+    discord_username: str | None = None,
+    discord_display_name: str | None = None,
+    discord_guild_id: int | None = None,
+    discord_guild_name: str | None = None,
     genshin_uid: str,
     genshin_server: str,
     nickname: str | None = None,
+    cyrene_nickname: str | None = None,
     level: int | None = None
-):
-    crypto = HoYoLabCrypto()
-
-    encrypted_ltuid = (
-        crypto.encrypt(credentials.ltuid)
-        if credentials.ltuid
-        else None
-    )
-
-    encrypted_ltoken = (
-        crypto.encrypt(credentials.ltoken)
-        if credentials.ltoken
-        else None
-    )
+) -> None:
+    crypto = HoYoLABCrypto()
 
     encrypted_ltuid_v2 = (
         crypto.encrypt(credentials.ltuid_v2)
@@ -147,6 +126,18 @@ def save_account(
         else None
     )
 
+    encrypted_ltuid = (
+        crypto.encrypt(credentials.ltuid)
+        if credentials.ltuid
+        else None
+    )
+
+    encrypted_ltoken = (
+        crypto.encrypt(credentials.ltoken)
+        if credentials.ltoken
+        else None
+    )
+
     now = datetime.now(timezone.utc).isoformat()
 
     with get_connection() as connection:
@@ -154,34 +145,60 @@ def save_account(
             """
             INSERT INTO accounts (
                 discord_user_id,
-                
-                ltuid,
-                ltoken,
-                
+                discord_username,
+                discord_display_name,
+            
+                discord_guild_id,
+                discord_guild_name,
+            
+                nickname,
+                cyrene_nickname,
+                level,
+            
+                genshin_uid,
+                genshin_server,
+            
+                created_at,
+                updated_at,
+            
                 ltuid_v2,
                 ltoken_v2,
                 ltmid_v2,
-                
+            
                 cookie_token_v2,
                 account_mid_v2,
                 account_id_v2,
-                
-                genshin_uid,
-                genshin_server,
-                
-                nickname,
-                level,
-                
-                created_at,
-                updated_at
+            
+                ltuid,
+                ltoken
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (
+                ?, ?, ?,
+                ?, ?,
+                ?, ?, ?,
+                ?, ?,
+                ?, ?,
+                ?, ?, ?,
+                ?, ?, ?,
+                ?, ?
+            )
 
             ON CONFLICT(discord_user_id, genshin_uid)
             DO UPDATE SET
-                ltuid = excluded.ltuid,
-                ltoken = excluded.ltoken,
-
+                discord_username = excluded.discord_username,
+                discord_display_name = excluded.discord_display_name,
+            
+                discord_guild_id = excluded.discord_guild_id,
+                discord_guild_name = excluded.discord_guild_name,
+            
+                nickname = excluded.nickname,
+                cyrene_nickname = excluded.cyrene_nickname,
+                level = excluded.level,
+            
+                genshin_server = excluded.genshin_server,
+            
+                updated_at = excluded.updated_at,
+            
                 ltuid_v2 = excluded.ltuid_v2,
                 ltoken_v2 = excluded.ltoken_v2,
                 ltmid_v2 = excluded.ltmid_v2,
@@ -190,17 +207,26 @@ def save_account(
                 account_mid_v2 = excluded.account_mid_v2,
                 account_id_v2 = excluded.account_id_v2,
             
-                genshin_server = excluded.genshin_server,
-                nickname = excluded.nickname,
-                level = excluded.level,
-                
-                updated_at = excluded.updated_at
+                ltuid = excluded.ltuid,
+                ltoken = excluded.ltoken
             """,
             (
                 discord_user_id,
+                discord_username,
+                discord_display_name,
 
-                encrypted_ltuid,
-                encrypted_ltoken,
+                discord_guild_id,
+                discord_guild_name,
+
+                nickname,
+                cyrene_nickname,
+                level,
+
+                genshin_uid,
+                genshin_server,
+
+                now,
+                now,
 
                 encrypted_ltuid_v2,
                 encrypted_ltoken_v2,
@@ -210,14 +236,8 @@ def save_account(
                 encrypted_account_mid_v2,
                 encrypted_account_id_v2,
 
-                genshin_uid,
-                genshin_server,
-
-                nickname,
-                level,
-
-                now,
-                now
+                encrypted_ltuid,
+                encrypted_ltoken
             )
         )
 
@@ -227,7 +247,7 @@ def save_account(
 def get_accounts(
     discord_user_id: int
 ) -> list[dict]:
-    crypto = HoYoLabCrypto()
+    crypto = HoYoLABCrypto()
 
     with get_connection() as connection:
         rows = connection.execute(
@@ -243,17 +263,7 @@ def get_accounts(
     accounts = []
 
     for row in rows:
-        credentials = HoYoLabCredentials(
-            ltuid=(
-                crypto.decrypt(row["ltuid"])
-                if row["ltuid"]
-                else None
-            ),
-            ltoken=(
-                crypto.decrypt(row["ltoken"])
-                if row["ltoken"]
-                else None
-            ),
+        credentials = HoYoLABCredentials(
             ltuid_v2=(
                 crypto.decrypt(row["ltuid_v2"])
                 if row["ltuid_v2"]
@@ -283,17 +293,38 @@ def get_accounts(
                 crypto.decrypt(row["account_id_v2"])
                 if row["account_id_v2"]
                 else None
+            ),
+            ltuid=(
+                crypto.decrypt(row["ltuid"])
+                if row["ltuid"]
+                else None
+            ),
+            ltoken=(
+                crypto.decrypt(row["ltoken"])
+                if row["ltoken"]
+                else None
             )
         )
 
         accounts.append(
             {
                 "id": row["id"],
+
+                "discord_user_id": row["discord_user_id"],
+                "discord_username": row["discord_username"],
+                "discord_display_name": row["discord_display_name"],
+
+                "discord_guild_id": row["discord_guild_id"],
+                "discord_guild_name": row["discord_guild_name"],
+
                 "credentials": credentials,
+
                 "genshin_uid": row["genshin_uid"],
                 "genshin_server": row["genshin_server"],
                 "nickname": row["nickname"],
+                "cyrene_nickname": row["cyrene_nickname"],
                 "level": row["level"],
+
                 "created_at": row["created_at"],
                 "updated_at": row["updated_at"]
             }
@@ -301,11 +332,12 @@ def get_accounts(
 
     return accounts
 
+
 def get_account(
     discord_user_id: int,
     genshin_uid: str
 ) -> dict | None:
-    crypto = HoYoLabCrypto()
+    crypto = HoYoLABCrypto()
 
     with get_connection() as connection:
         row = connection.execute(
@@ -325,17 +357,7 @@ def get_account(
     if row is None:
         return None
 
-    credentials = HoYoLabCredentials(
-        ltuid=(
-            crypto.decrypt(row["ltuid"])
-            if row["ltuid"]
-            else None
-        ),
-        ltoken=(
-            crypto.decrypt(row["ltoken"])
-            if row["ltoken"]
-            else None
-        ),
+    credentials = HoYoLABCredentials(
         ltuid_v2=(
             crypto.decrypt(row["ltuid_v2"])
             if row["ltuid_v2"]
@@ -365,16 +387,37 @@ def get_account(
             crypto.decrypt(row["account_id_v2"])
             if row["account_id_v2"]
             else None
+        ),
+        ltuid=(
+            crypto.decrypt(row["ltuid"])
+            if row["ltuid"]
+            else None
+        ),
+        ltoken=(
+            crypto.decrypt(row["ltoken"])
+            if row["ltoken"]
+            else None
         )
     )
 
     return {
         "id": row["id"],
+
+        "discord_user_id": row["discord_user_id"],
+        "discord_username": row["discord_username"],
+        "discord_display_name": row["discord_display_name"],
+
+        "discord_guild_id": row["discord_guild_id"],
+        "discord_guild_name": row["discord_guild_name"],
+
         "credentials": credentials,
+
         "genshin_uid": row["genshin_uid"],
         "genshin_server": row["genshin_server"],
         "nickname": row["nickname"],
+        "cyrene_nickname": row["cyrene_nickname"],
         "level": row["level"],
+
         "created_at": row["created_at"],
         "updated_at": row["updated_at"]
     }
@@ -430,6 +473,95 @@ def delete_account(
             AND genshin_uid = ?
             """,
             (
+                discord_user_id,
+                genshin_uid
+            )
+        )
+
+        connection.commit()
+
+    return cursor.rowcount > 0
+
+
+def update_discord_user(
+    discord_user_id: int,
+    discord_username: str,
+    discord_display_name: str,
+) -> bool:
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            UPDATE accounts
+            SET
+                discord_username = ?,
+                discord_display_name = ?
+            WHERE discord_user_id = ?
+            AND (
+                discord_username IS NOT ?
+                OR discord_display_name IS NOT ?
+            )
+            """,
+            (
+                discord_username,
+                discord_display_name,
+                discord_user_id,
+                discord_username,
+                discord_display_name
+            )
+        )
+
+        connection.commit()
+
+    return cursor.rowcount > 0
+
+
+def update_discord_server(
+    discord_user_id: int,
+    discord_guild_id: int,
+    discord_guild_name: str,
+) -> bool:
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            UPDATE accounts
+            SET
+                discord_guild_id = ?,
+                discord_guild_name = ?
+            WHERE discord_user_id = ?
+            AND (
+                discord_guild_id IS NOT ?
+                OR discord_guild_name IS NOT ?
+            )
+            """,
+            (
+                discord_guild_id,
+                discord_guild_name,
+                discord_user_id,
+                discord_guild_id,
+                discord_guild_name
+            )
+        )
+
+        connection.commit()
+
+    return cursor.rowcount > 0
+
+
+def update_account_nickname(
+    discord_user_id: int,
+    genshin_uid: str,
+    cyrene_nickname: str | None
+) -> bool:
+    with get_connection() as connection:
+        cursor = connection.execute(
+            """
+            UPDATE accounts
+            SET cyrene_nickname = ?
+            WHERE discord_user_id = ?
+            AND genshin_uid = ?
+            """,
+            (
+                cyrene_nickname,
                 discord_user_id,
                 genshin_uid
             )
