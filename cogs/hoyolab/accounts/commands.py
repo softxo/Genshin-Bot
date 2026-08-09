@@ -8,12 +8,14 @@ from utils.hoyolab.database import (
 )
 from cogs.hoyolab.link_account.commands import HoYoLABAccountsView
 
+
 def get_account_name(account: dict) -> str:
     return (
-        account["cyrene_nickname"]
-        or account["nickname"]
-        or f"UID {account['genshin_uid']}"
+            account["cyrene_nickname"]
+            or account["nickname"]
+            or f"UID {account['genshin_uid']}"
     )
+
 
 def get_active_account_name(account: dict) -> str:
     cyrene_nickname = account["cyrene_nickname"]
@@ -22,54 +24,69 @@ def get_active_account_name(account: dict) -> str:
     if cyrene_nickname and account_nickname:
         return f"{cyrene_nickname} [{account_nickname}]"
 
-    return cyrene_nickname or account_nickname or f"UID {account['genshin_uid']}"
+    return (
+            cyrene_nickname
+            or account_nickname
+            or f"UID {account['genshin_uid']}"
+    )
 
 
 def create_accounts_embed(
-    accounts: list[dict],
-    selected_index: int
+        accounts: list[dict],
+        selected_index: int = 0
 ) -> discord.Embed:
-    account = accounts[selected_index]
-
-    account_name = get_active_account_name(account)
-    uid = account["genshin_uid"]
-    level = account["level"] or "Unknown"
 
     embed = discord.Embed(
         title="Accounts Management",
         description=(
-            "Welcome to the Account(s) Management page!\n"
-            "Link a HoYoLAB account to Cyrene.\n"
-            'If you haven\'t done so, or want to add multiple accounts, press "**Add Account**".'
-        ) + "\n\u200b",
+                        "Welcome to the Account(s) Management page!\n"
+                        "Link a HoYoLAB account to Cyrene.\n"
+                        'If you haven\'t done so, or want to add multiple accounts, press "**Add Account**".'
+                    ) + "\n\u200b",
         colour=discord.Colour.blurple()
     )
 
-    embed.add_field(
-        name=" ",
-        value=(
+    if accounts:
+        account = accounts[selected_index]
+
+        account_name = get_active_account_name(account)
+        uid = account["genshin_uid"]
+        level = account["level"] or "Unknown"
+
+        active_account = (
             f"**Active Account**: {account_name}\n"
             f"**UID**: {uid}\n"
             f"**AR**: {level}"
-        ) + "\n\u200b",
+        )
+
+    else:
+        active_account = (
+            "**Active Account**: No Linked Account\n"
+            "**UID**: No Linked Account\n"
+            "**AR**: No Linked Account"
+        )
+
+    embed.add_field(
+        name=" ",
+        value=active_account + "\n\u200b",
         inline=False
     )
 
     embed.add_field(
         name="UID",
-        value="idk for now",
+        value="No Linked Account" if not accounts else "idk for now",
         inline=True
     )
 
     embed.add_field(
         name="HoYoLAB Account",
-        value="idk for now",
+        value="No Linked Account" if not accounts else "idk for now",
         inline=True
     )
 
     embed.add_field(
         name="Wish History",
-        value="idk for now",
+        value="No Linked Account" if not accounts else "idk for now",
         inline=True
     )
 
@@ -78,9 +95,9 @@ def create_accounts_embed(
 
 class AccountSelect(discord.ui.Select):
     def __init__(
-        self,
-        view: "AccountsView",
-        accounts: list[dict]
+            self,
+            view: "AccountsView",
+            accounts: list[dict]
     ):
         self.accounts_view = view
 
@@ -107,25 +124,13 @@ class AccountSelect(discord.ui.Select):
             options=options
         )
 
-    async def callback(
-        self,
-        interaction: discord.Interaction
-    ):
-        self.accounts_view.selected_index = int(
-            self.values[0]
-        )
-
-        await self.accounts_view.refresh(
-            interaction
-        )
-
 
 class AccountsView(discord.ui.View):
     def __init__(
-        self,
-        user_id: int,
-        accounts: list[dict],
-        selected_index: int = 0
+            self,
+            user_id: int,
+            accounts: list[dict],
+            selected_index: int = 0
     ):
         super().__init__(timeout=300)
 
@@ -138,20 +143,25 @@ class AccountsView(discord.ui.View):
     def rebuild_components(self):
         self.clear_items()
 
-        self.select = AccountSelect(
-            self,
-            self.accounts
-        )
+        if self.accounts:
+            self.select = AccountSelect(
+                self,
+                self.accounts
+            )
 
-        self.add_item(self.select)
+            self.add_item(self.select)
 
         self.add_item(self.add_account)
+
+        self.remove_account.disabled = not self.accounts
+        self.edit_nickname.disabled = not self.accounts
+
         self.add_item(self.remove_account)
         self.add_item(self.edit_nickname)
 
     async def interaction_check(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ) -> bool:
         if interaction.user.id != self.user_id:
             await interaction.response.send_message(
@@ -163,22 +173,14 @@ class AccountsView(discord.ui.View):
         return True
 
     async def refresh(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
         self.accounts = get_accounts(
             self.user_id
         )
 
-        if not self.accounts:
-            await interaction.response.edit_message(
-                content="You don't have any linked accounts.",
-                embed=None,
-                view=None
-            )
-            return
-
-        if self.selected_index >= len(self.accounts):
+        if self.accounts and self.selected_index >= len(self.accounts):
             self.selected_index = 0
 
         self.rebuild_components()
@@ -199,9 +201,9 @@ class AccountsView(discord.ui.View):
         style=discord.ButtonStyle.secondary
     )
     async def add_account(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
     ):
         embed = discord.Embed(
             title="<:Link:1535081027108741201> Link HoYoLAB Account(s)",
@@ -235,10 +237,17 @@ class AccountsView(discord.ui.View):
         style=discord.ButtonStyle.secondary
     )
     async def remove_account(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
     ):
+        if not self.accounts:
+            await interaction.response.send_message(
+                "There are no linked accounts to remove.",
+                ephemeral=True
+            )
+            return
+
         account = self.accounts[self.selected_index]
 
         deleted = delete_account(
@@ -257,18 +266,11 @@ class AccountsView(discord.ui.View):
             interaction.user.id
         )
 
-        if not self.accounts:
-            await interaction.response.edit_message(
-                content="You don't have any linked accounts.",
-                embed=None,
-                view=None
+        if self.accounts:
+            self.selected_index = min(
+                self.selected_index,
+                len(self.accounts) - 1
             )
-            return
-
-        self.selected_index = min(
-            self.selected_index,
-            len(self.accounts) - 1
-        )
 
         self.rebuild_components()
 
@@ -288,10 +290,17 @@ class AccountsView(discord.ui.View):
         style=discord.ButtonStyle.secondary
     )
     async def edit_nickname(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
     ):
+        if not self.accounts:
+            await interaction.response.send_message(
+                "There are no linked accounts to edit.",
+                ephemeral=True
+            )
+            return
+
         account = self.accounts[self.selected_index]
 
         await interaction.response.send_modal(
@@ -304,9 +313,9 @@ class AccountsView(discord.ui.View):
 
 class EditNicknameModal(discord.ui.Modal):
     def __init__(
-        self,
-        accounts_view: AccountsView,
-        account: dict
+            self,
+            accounts_view: AccountsView,
+            account: dict
     ):
         super().__init__(
             title="Edit Account Nickname"
@@ -328,8 +337,8 @@ class EditNicknameModal(discord.ui.Modal):
         self.add_item(self.nickname)
 
     async def on_submit(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
         nickname = self.nickname.value.strip()
 
@@ -351,7 +360,7 @@ class EditNicknameModal(discord.ui.Modal):
         )
 
         for index, account in enumerate(
-            self.accounts_view.accounts
+                self.accounts_view.accounts
         ):
             if account["genshin_uid"] == self.account["genshin_uid"]:
                 self.accounts_view.selected_index = index
@@ -379,30 +388,12 @@ class Accounts(commands.Cog):
         description="Manage your linked Genshin accounts."
     )
     async def accounts_slash(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
         accounts = get_accounts(
             interaction.user.id
         )
-
-        if not accounts:
-            embed = discord.Embed(
-                title="Accounts Management",
-                description=(
-                    "Welcome to the Account(s) Management page!\n\n"
-                    "You don't have any linked accounts yet.\n\n"
-                    "Use `/link-accounts` to link a HoYoLAB account "
-                    "to Cyrene."
-                ),
-                colour=discord.Colour.blurple()
-            )
-
-            await interaction.response.send_message(
-                embed=embed,
-                ephemeral=True
-            )
-            return
 
         view = AccountsView(
             interaction.user.id,

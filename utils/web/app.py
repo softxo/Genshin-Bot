@@ -1,7 +1,12 @@
 import typing
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
-from genshin.models.auth.geetest import SessionMMTResult, SessionMMT
+from genshin.models.auth.geetest import (
+    SessionMMT,
+    SessionMMTv4,
+    SessionMMTResult,
+    SessionMMTv4Result,
+)
 from utils.web.sessions import (
     get_challenge_session,
     complete_challenge,
@@ -69,7 +74,171 @@ async def challenge(token: str):
     print("===== GEETEST MMT =====")
     print(mmt)
     print(mmt.model_dump())
+    print(f"Type: {type(mmt).__name__}")
     print("=======================")
+
+    is_v4 = isinstance(mmt, SessionMMTv4)
+
+    if is_v4:
+        gt_url = "https://static.geetest.com/v4/gt4.js"
+
+        captcha_script = f"""
+        const mmt = {mmt.model_dump_json()};
+
+        const initParams = {{
+            captchaId: mmt.captcha_id ?? mmt.gt,
+            riskType: mmt.risk_type,
+            userInfo: mmt.session_id
+                ? JSON.stringify({{
+                    mmt_key: mmt.session_id
+                }})
+                : undefined,
+            apiServers: ["api-na.geetest.com"],
+            product: "bind",
+            language: "en"
+        }};
+
+        console.log("===== GEETEST INIT =====");
+        console.log(initParams);
+        console.log("========================");
+
+        initGeetest4(
+            initParams,
+            (captcha) => {{
+
+                captcha.onReady(() => {{
+                    console.log("Geetest v4 ready");
+                    captcha.showCaptcha();
+                }});
+
+                captcha.onSuccess(async () => {{
+
+                    const result = captcha.getValidate();
+
+                    console.log("===== GEETEST RESULT =====");
+                    console.log(result);
+                    console.log("==========================");
+
+                    const response = await fetch(
+                        "/challenge/{token}/send-data",
+                        {{
+                            method: "POST",
+
+                            headers: {{
+                                "Content-Type": "application/json"
+                            }},
+
+                            body: JSON.stringify({{
+                                ...(mmt.session_id && {{
+                                    session_id: mmt.session_id
+                                }}),
+
+                                ...(mmt.check_id && {{
+                                    check_id: mmt.check_id
+                                }}),
+
+                                ...result
+                            }})
+                        }}
+                    );
+
+                    if (!response.ok) {{
+                        console.error(
+                            "Failed to submit CAPTCHA:",
+                            await response.text()
+                        );
+                        return;
+                    }}
+
+                    showSuccess();
+                }});
+
+                captcha.onError((error) => {{
+                    console.error("==== GEETEST ERROR ====");
+                    console.error(error);
+                    console.error("======================");
+                }});
+            }}
+        );
+        """
+
+    else:
+        gt_url = "https://static.geetest.com/static/js/gt.0.5.0.js"
+
+        captcha_script = f"""
+        const mmt = {mmt.model_dump_json()};
+
+        const initParams = {{
+            gt: mmt.gt,
+            challenge: mmt.challenge,
+            new_captcha: mmt.new_captcha,
+            api_server: "api-na.geetest.com",
+            https: /^https/i.test(window.location.protocol),
+            product: "bind",
+            lang: "en"
+        }};
+
+        console.log("===== GEETEST INIT =====");
+        console.log(initParams);
+        console.log("========================");
+
+        initGeetest(
+            initParams,
+            (captcha) => {{
+
+                captcha.onReady(() => {{
+                    console.log("Geetest v3 ready");
+                    captcha.verify();
+                }});
+
+                captcha.onSuccess(async () => {{
+
+                    const result = captcha.getValidate();
+
+                    console.log("===== GEETEST RESULT =====");
+                    console.log(result);
+                    console.log("==========================");
+
+                    const response = await fetch(
+                        "/challenge/{token}/send-data",
+                        {{
+                            method: "POST",
+
+                            headers: {{
+                                "Content-Type": "application/json"
+                            }},
+
+                            body: JSON.stringify({{
+                                session_id: mmt.session_id,
+                                geetest_challenge:
+                                    result.geetest_challenge,
+                                geetest_validate:
+                                    result.geetest_validate,
+                                geetest_seccode:
+                                    result.geetest_seccode
+                            }})
+                        }}
+                    );
+
+                    if (!response.ok) {{
+                        console.error(
+                            "Failed to submit CAPTCHA:",
+                            await response.text()
+                        );
+                        return;
+                    }}
+
+                    showSuccess();
+                }});
+
+                captcha.onError((error) => {{
+                    console.error("==== GEETEST ERROR ====");
+                    console.error(error);
+                    console.error("======================");
+                }});
+            }}
+        );
+        """
 
     return HTMLResponse(
         content=f"""
@@ -83,9 +252,14 @@ async def challenge(token: str):
                 content="width=device-width, initial-scale=1.0"
             >
 
+            <meta
+                name="referrer"
+                content="no-referrer"
+            >
+
             <title>Cyrene • HoYoLAB Verification</title>
 
-            <script src="{GT_V4_URL}"></script>
+            <script src="{gt_url}"></script>
 
             <style>
                 body {{
@@ -147,93 +321,36 @@ async def challenge(token: str):
             </div>
 
             <script>
-            const mmt = {mmt.model_dump_json()};
 
-            initGeetest(
-                {{
-                    gt: mmt.gt,
-                    challenge: mmt.challenge,
-                    new_captcha: mmt.new_captcha,
-                    product: "popup",
-                    offline: false,
-                }},
-                (captcha) => {{
+                function showSuccess() {{
+                    document.body.innerHTML = `
+                        <div
+                            style="
+                                min-height:100vh;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                background:#0f1117;
+                                color:white;
+                                font-family:Arial,sans-serif;
+                                text-align:center;
+                            "
+                        >
+                            <div>
+                                <h1>✓ Verification Complete</h1>
 
-                    captcha.onReady(() => {{
-                        captcha.showCaptcha();
-                    }});
-
-                    captcha.onSuccess(async () => {{
-
-                        const result = captcha.getValidate();
-
-                        console.log("===== GEETEST RESULT =====");
-                        console.log(result);
-                        console.log("==========================");
-
-                        const response = await fetch(
-                            "/challenge/{token}/send-data",
-                            {{
-                                method: "POST",
-
-                                headers: {{
-                                    "Content-Type":
-                                        "application/json"
-                                }},
-
-                                body: JSON.stringify({{
-                                    session_id: mmt.session_id,
-                                    geetest_challenge:
-                                        result.geetest_challenge,
-                                    geetest_validate:
-                                        result.geetest_validate,
-                                    geetest_seccode:
-                                        result.geetest_seccode
-                                }})
-                            }}
-                        );
-
-                        if (!response.ok) {{
-                            console.error(
-                                "Failed to submit CAPTCHA:",
-                                await response.text()
-                            );
-                            return;
-                        }}
-
-                        document.body.innerHTML = `
-                            <div
-                                style="
-                                    min-height:100vh;
-                                    display:flex;
-                                    align-items:center;
-                                    justify-content:center;
-                                    background:#0f1117;
-                                    color:white;
-                                    font-family:Arial,sans-serif;
-                                    text-align:center;
-                                "
-                            >
-                                <div>
-                                    <h1>✓ Verification Complete</h1>
-
-                                    <p>
-                                        You may now return to Discord.
-                                        Cyrene will continue automatically.
-                                    </p>
-                                </div>
+                                <p>
+                                    You may now return to Discord.
+                                    Cyrene will continue automatically.
+                                </p>
                             </div>
-                        `;
-                    }});
-
-                    captcha.onError((error) => {{
-                        console.error("==== GEETEST ERROR ====");
-                        console.error(error);
-                        console.error("=======================");
-                    }});
+                        </div>
+                    `;
                 }}
-            );
-        </script>
+
+                {captcha_script}
+
+            </script>
         </body>
         </html>
         """,
@@ -262,9 +379,18 @@ async def challenge_send_data(
         )
 
     try:
-        result = SessionMMTResult(**data)
+        if isinstance(session.mmt, SessionMMTv4):
+            result = SessionMMTv4Result(**data)
+        else:
+            result = SessionMMTResult(**data)
 
     except Exception as error:
+        print("===== CAPTCHA RESULT ERROR =====")
+        print(f"Type: {type(error).__name__}")
+        print(f"Error: {error}")
+        print(f"Data: {data}")
+        print("================================")
+
         raise HTTPException(
             status_code=400,
             detail="Invalid CAPTCHA result.",

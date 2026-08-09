@@ -1,5 +1,4 @@
 import genshin
-import inspect
 from .auth import credentials_from_web_login
 from .errors import (
     HoYoLABAuthenticationError,
@@ -58,10 +57,6 @@ async def login_with_password(
             delete_challenge_session(session.token)
 
     try:
-        print("===== GENSHIN LOGIN SIGNATURE =====")
-        print(inspect.signature(client.login_with_password))
-        print("===================================")
-
         result = await client.login_with_password(
             account,
             password,
