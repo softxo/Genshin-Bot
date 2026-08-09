@@ -14,7 +14,7 @@ app = FastAPI(
 )
 
 
-GT_V4_URL = "https://static.geetest.com/v4/gt4.js"
+GT_V3_URL = "https://static.geetest.com/static/js/gt.0.5.0.js"
 
 
 @app.get(
@@ -147,92 +147,93 @@ async def challenge(token: str):
             </div>
 
             <script>
-                const mmt = {mmt.model_dump_json()};
+            const mmt = {mmt.model_dump_json()};
 
-                const captcha = initGeetest4(
-                    {{
-                        captchaId: mmt.captcha_id ?? mmt.gt,
-                        riskType: mmt.risk_type,
-                        userInfo: mmt.session_id
-                            ? JSON.stringify({{
-                                mmt_key: mmt.session_id
-                            }})
-                            : undefined,
-                        product: "bind",
-                        language: "eng"
-                        protocol: "https://"
-                    }},
-                    (captcha) => {{
+            initGeetest(
+                {{
+                    gt: mmt.gt,
+                    challenge: mmt.challenge,
+                    new_captcha: mmt.new_captcha,
+                    product: "popup",
+                    offline: false,
+                }},
+                (captcha) => {{
 
-                        captcha.onReady(() => {{
-                            captcha.showCaptcha();
-                        }});
+                    captcha.onReady(() => {{
+                        captcha.showCaptcha();
+                    }});
 
-                        captcha.onSuccess(async () => {{
+                    captcha.onSuccess(async () => {{
 
-                            const result = captcha.getValidate();
+                        const result = captcha.getValidate();
 
-                            await fetch(
-                                "/challenge/{token}/send-data",
-                                {{
-                                    method: "POST",
+                        console.log("===== GEETEST RESULT =====");
+                        console.log(result);
+                        console.log("==========================");
 
-                                    headers: {{
-                                        "Content-Type":
-                                            "application/json"
-                                    }},
+                        const response = await fetch(
+                            "/challenge/{token}/send-data",
+                            {{
+                                method: "POST",
 
-                                    body: JSON.stringify({{
-                                        ...(mmt.session_id && {{
-                                            session_id:
-                                                mmt.session_id
-                                        }}),
+                                headers: {{
+                                    "Content-Type":
+                                        "application/json"
+                                }},
 
-                                        ...(mmt.check_id && {{
-                                            check_id:
-                                                mmt.check_id
-                                        }}),
+                                body: JSON.stringify({{
+                                    session_id: mmt.session_id,
+                                    geetest_challenge:
+                                        result.geetest_challenge,
+                                    geetest_validate:
+                                        result.geetest_validate,
+                                    geetest_seccode:
+                                        result.geetest_seccode
+                                }})
+                            }}
+                        );
 
-                                        ...result
-                                    }})
-                                }}
+                        if (!response.ok) {{
+                            console.error(
+                                "Failed to submit CAPTCHA:",
+                                await response.text()
                             );
+                            return;
+                        }}
 
-                            document.body.innerHTML = `
-                                <div
-                                    style="
-                                        min-height:100vh;
-                                        display:flex;
-                                        align-items:center;
-                                        justify-content:center;
-                                        background:#0f1117;
-                                        color:white;
-                                        font-family:Arial,sans-serif;
-                                        text-align:center;
-                                    "
-                                >
-                                    <div>
-                                        <h1>
-                                            ✓ Verification Complete
-                                        </h1>
+                        document.body.innerHTML = `
+                            <div
+                                style="
+                                    min-height:100vh;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    background:#0f1117;
+                                    color:white;
+                                    font-family:Arial,sans-serif;
+                                    text-align:center;
+                                "
+                            >
+                                <div>
+                                    <h1>✓ Verification Complete</h1>
 
-                                        <p>
-                                            You may now return to Discord.
-                                            Cyrene will continue automatically.
-                                        </p>
-                                    </div>
+                                    <p>
+                                        You may now return to Discord.
+                                        Cyrene will continue automatically.
+                                    </p>
                                 </div>
-                            `;
-                        }});
-                        
-                        captcha.onError((error) => {{
+                            </div>
+                        `;
+                    }});
+
+                    captcha.onError((error) => {{
                         console.error("==== GEETEST ERROR ====");
                         console.error(error);
                         console.error("=======================");
                     }});
                 }}
             );
-            </script>
+        </script>
         </body>
         </html>
         """,
