@@ -103,8 +103,6 @@ async def _send_expeditions(
             .removesuffix(".png")
         )
 
-        print("EXPEDITION HASH:", icon_hash)
-
         character_name = EXPEDITION_ICONS.get(
             icon_hash
         )
