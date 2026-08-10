@@ -71,3 +71,25 @@ ERROR_TYPE_EMOJIS = {
     "missing_argument": "<:Missing_Arg:1534168164269555843>",
     "unexpected": "<:Unexpected_Error:1534254583449387191>",
 }
+
+MUSIC_EMOJIS = {
+    "success": "<:musicsuccess:1536391805795303555>",
+    "error": "<:musicerror:1536391807456518204>",
+    "neutral": "<:musicneutral:1536391809540825190>",
+    "musicduration": "<:musicduration:1536417698936786985>",
+    "musicuploader": "<:musicuploader:1536414582699073768>",
+    "musicstatus": "<:musicstatus:1536414584301166601>",
+    "musicloop": "<:musicloop:1536426157249921075>",
+    "musicmode": "<:musicmode:1536426155413078168>",
+    "musicqueue": "<:musicqueue:1536426153949270036>",
+    "musicviews": "<:musicviews:1536426150706937908>",
+    "musiclikes": "<:musiclikes:1536426149402378290>",
+    "musicrequester": "<:musicrequester:1536426148089569393>",
+    "musicprogress": "<:musicprogress:1536426146495729714>",
+    "musicautoplay": "<:musicautoplay:1536426144331472926>",
+    "musicbassboost": "<:musicbassboost:1536426136278536344>",
+    "musicpauseresume": "<:musicpause:1536426141416554496>",
+    "musicskip": "<:musicskip:1536426140015661127>",
+    "musicstop": "<:musicstop:1536428845391941786>",
+    "musiclyrics": "<:musiclyrics:1536426134579974184>"
+}

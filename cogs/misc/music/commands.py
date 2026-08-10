@@ -8,11 +8,12 @@ import aiohttp
 import os
 import base64
 import random
+import urllib.parse
 from io import BytesIO
 from typing import Any, cast, Optional
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.emojis import EMOJIS
+from utils.constants.emojis import MUSIC_EMOJIS as EMOJIS
 from PIL import Image
 
 load_dotenv()
@@ -25,7 +26,7 @@ ytdl_format_options: dict[str, Any] = {
     "quiet": True,
     "default_search": "auto",
     "js_runtimes": {
-        "node": {}
+        "deno": {}
     },
 }
 
@@ -37,7 +38,7 @@ ffmpeg_options = {
         "-reconnect_on_http_error 4xx,5xx "
         "-reconnect_delay_max 10"
     ),
-    "options": "-vn"
+    "options": "-vn",
 }
 
 ytdl = youtube_dl.YoutubeDL(cast(Any, ytdl_format_options))
@@ -845,6 +846,34 @@ class Music(commands.Cog):
             "source_platform": "spotify",
         }
 
+    def get_youtube_thumbnail(self, url: str | None) -> str | None:
+        if not url:
+            return None
+
+        parsed = urllib.parse.urlparse(url)
+
+        video_id = None
+
+        if parsed.hostname in {"youtu.be", "www.youtu.be"}:
+            video_id = parsed.path.strip("/").split("/")[0]
+
+        elif parsed.hostname in {
+            "youtube.com",
+            "www.youtube.com",
+            "m.youtube.com",
+            "music.youtube.com",
+        }:
+            query = urllib.parse.parse_qs(parsed.query)
+            video_id = query.get("v", [None])[0]
+
+            if not video_id and parsed.path.startswith("/shorts/"):
+                video_id = parsed.path.split("/shorts/", 1)[1].split("/", 1)[0]
+
+        if not video_id:
+            return None
+
+        return f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
+
     async def get_song_info(self, query: str) -> dict[str, Any]:
         loop = asyncio.get_running_loop()
 
@@ -870,7 +899,7 @@ class Music(commands.Cog):
             "webpage_url": webpage_url,
             "audio_url": info.get("url"),
             "duration": info.get("duration") or 0,
-            "thumbnail": info.get("thumbnail"),
+            "thumbnail": self.get_youtube_thumbnail(webpage_url) or info.get("thumbnail"),
             "uploader": info.get("uploader") or info.get("channel") or "Unknown",
             "views": info.get("view_count"),
             "likes": info.get("like_count"),
@@ -887,26 +916,33 @@ class Music(commands.Cog):
         queries = []
 
         if artist and track:
-            queries.extend([
-                f"ytsearch15:{artist} topic",
-                f"ytsearch15:{artist} songs",
-                f"ytsearch15:{artist} music",
-                f"ytsearch15:{artist} - {track}",
-                f"ytsearch15:{artist}",
-            ])
+            queries.extend(
+                [
+                    f"ytsearch15:{artist} topic",
+                    f"ytsearch15:{artist} songs",
+                    f"ytsearch15:{artist} music",
+                    f"ytsearch15:{artist} - {track}",
+                    f"ytsearch15:{artist}",
+                ]
+            )
         elif artist:
-            queries.extend([
-                f"ytsearch15:{artist} songs",
-                f"ytsearch15:{artist} music",
-                f"ytsearch15:{artist}",
-            ])
+            queries.extend(
+                [
+                    f"ytsearch15:{artist} songs",
+                    f"ytsearch15:{artist} music",
+                    f"ytsearch15:{artist}",
+                ]
+            )
         else:
             title = (seed_song.get("title") or "").strip()
+
             if title:
-                queries.extend([
-                    f"ytsearch15:{title}",
-                    f"ytsearch15:{title} music",
-                ])
+                queries.extend(
+                    [
+                        f"ytsearch15:{title}",
+                        f"ytsearch15:{title} music",
+                    ]
+                )
 
         if not queries:
             return None
@@ -917,21 +953,28 @@ class Music(commands.Cog):
         queued_urls = {
             song.get("webpage_url") or song.get("url")
             for song in state.song_queue
+            if isinstance(song, dict)
         }
 
         queued_signatures = {
             self.build_track_signature(song)
             for song in state.song_queue
+            if isinstance(song, dict)
         }
 
         recent_signatures = set(state.autoplay_history)
 
         preloaded_url = None
         preloaded_signature = None
+
         if state.preloaded:
             preloaded_song = state.preloaded.get("queued_song")
+
             if isinstance(preloaded_song, dict):
-                preloaded_url = preloaded_song.get("webpage_url") or preloaded_song.get("url")
+                preloaded_url = (
+                        preloaded_song.get("webpage_url")
+                        or preloaded_song.get("url")
+                )
                 preloaded_signature = self.build_track_signature(preloaded_song)
 
         loop = asyncio.get_running_loop()
@@ -947,7 +990,13 @@ class Music(commands.Cog):
                 print(f"Autoplay query failed for {query}: {e}")
                 continue
 
-            info = cast(dict[str, Any], info)
+            if not isinstance(info, dict):
+                print(
+                    f"Autoplay query returned invalid data for {query}: "
+                    f"{type(info).__name__}"
+                )
+                continue
+
             entries = info.get("entries")
 
             if not isinstance(entries, list) or not entries:
@@ -959,17 +1008,28 @@ class Music(commands.Cog):
                 if not isinstance(entry, dict):
                     continue
 
-                webpage_url = entry.get("webpage_url") or entry.get("original_url")
+                webpage_url = (
+                        entry.get("webpage_url")
+                        or entry.get("original_url")
+                )
+
                 if not webpage_url:
                     continue
 
                 candidate = {
                     "url": webpage_url,
-                    "title": entry.get("title", "Unknown"),
+                    "title": entry.get("title") or "Unknown",
                     "webpage_url": webpage_url,
-                    "thumbnail": entry.get("thumbnail"),
+                    "thumbnail": (
+                            self.get_youtube_thumbnail(webpage_url)
+                            or entry.get("thumbnail")
+                    ),
                     "duration": entry.get("duration") or 0,
-                    "uploader": entry.get("uploader") or entry.get("channel") or "Unknown",
+                    "uploader": (
+                            entry.get("uploader")
+                            or entry.get("channel")
+                            or "Unknown"
+                    ),
                     "views": entry.get("view_count"),
                     "likes": entry.get("like_count"),
                     "requester": requester,
@@ -993,13 +1053,20 @@ class Music(commands.Cog):
                 if self.is_same_track(candidate, seed_song):
                     continue
 
-                if duplicate_in_queue := any(self.is_same_track(candidate, song) for song in state.song_queue):
+                if any(
+                        isinstance(song, dict)
+                        and self.is_same_track(candidate, song)
+                                for song in state.song_queue
+                ):
                     continue
 
                 if (
                         candidate_signature not in queued_signatures
                         and candidate_signature not in recent_signatures
-                        and (not preloaded_signature or candidate_signature != preloaded_signature)
+                        and (
+                        not preloaded_signature
+                        or candidate_signature != preloaded_signature
+                )
                 ):
                     return candidate
 
@@ -1167,7 +1234,7 @@ class Music(commands.Cog):
         if thumbnail:
             embed.set_image(url=thumbnail)
 
-        footer_text = "Use ;queue to view upcoming songs."
+        footer_text = "Use ?queue to view upcoming songs."
         if source_platform == "spotify":
             footer_text += " • Resolved from Spotify"
 
@@ -1323,7 +1390,7 @@ class Music(commands.Cog):
             elif mode in ("off", "false", "no", "0"):
                 state.autoplay_mode = False
             else:
-                return await ctx.send(embed=self.warning_embed("Use `;autoplay`, `;autoplay on`, or `;autoplay off`.", title="Invalid Usage"))
+                return await ctx.send(embed=self.warning_embed("Use `?autoplay`, `?autoplay on`, or `?autoplay off`.", title="Invalid Usage"))
 
         await ctx.send(
             embed=self.info_embed(
@@ -1736,7 +1803,7 @@ class Music(commands.Cog):
             else:
                 return await ctx.send(
                     embed=self.warning_embed(
-                        "Use `;queue loop`, `;queue loop on`, or `;queue loop off`.",
+                        "Use `?queue loop`, `?queue loop on`, or `?queue loop off`.",
                         title="Invalid Usage"
                     )
                 )
@@ -1834,7 +1901,7 @@ class Music(commands.Cog):
             elif mode in ("off", "false", "no", "0"):
                 state.loop_song = False
             else:
-                return await ctx.send(embed=self.warning_embed("Use `;loop`, `;loop on`, or `;loop off`.", title="Invalid Usage"))
+                return await ctx.send(embed=self.warning_embed("Use `?loop`, `?loop on`, or `?loop off`.", title="Invalid Usage"))
 
         await ctx.send(embed=self.info_embed(f"Loop is now **{'ON' if state.loop_song else 'OFF'}**.", title="Loop Updated"))
         await self.update_now_playing_embed(ctx.guild.id)
@@ -1885,7 +1952,7 @@ class Music(commands.Cog):
             else:
                 return await ctx.send(
                     embed=self.warning_embed(
-                        "Use `;slowed`, `;slowed on`, or `;slowed off`.",
+                        "Use `?slowed`, `?slowed on`, or `?slowed off`.",
                         title="Invalid Usage"
                     )
                 )
@@ -1930,7 +1997,7 @@ class Music(commands.Cog):
             else:
                 return await ctx.send(
                     embed=self.warning_embed(
-                        "Use `;sped`, `;sped on`, or `;sped off`.",
+                        "Use `?sped`, `?sped on`, or `?sped off`.",
                         title="Invalid Usage"
                     )
                 )
@@ -1975,7 +2042,7 @@ class Music(commands.Cog):
             else:
                 return await ctx.send(
                     embed=self.warning_embed(
-                        "Use `;bassboost`, `;bassboost on`, or `;bassboost off`.",
+                        "Use `?bassboost`, `?bassboost on`, or `?bassboost off`.",
                         title="Invalid Usage"
                     )
                 )

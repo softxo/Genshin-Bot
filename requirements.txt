@@ -2,7 +2,8 @@ discord
 python-dotenv
 google-genai
 aiohttp
-yt-dlp
+yt-dlp[default]
+ffmpeg
 PyNaCl
 Pillow
 davey
