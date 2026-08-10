@@ -2,15 +2,14 @@ import os
 import psycopg
 from psycopg.rows import dict_row
 from datetime import datetime, timezone
-
 from .auth import HoYoLABCredentials
 from .crypto import HoYoLABCrypto
 
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
 
 def get_connection():
+    DATABASE_URL = os.getenv("DATABASE_URL")
+
     if not DATABASE_URL:
         raise RuntimeError(
             "DATABASE_URL is not configured."

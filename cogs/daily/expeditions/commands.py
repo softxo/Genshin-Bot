@@ -6,15 +6,17 @@ from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.database import get_accounts
 from utils.hoyolab.daily_note import get_expeditions
 from utils.errors.error_handler import create_error_embed
+from utils.hoyolab.expedition_icons import EXPEDITION_ICONS
 
 
 async def _send_expeditions(
-    user_id: int,
-    account: dict,
-    *,
-    interaction: discord.Interaction | None = None,
-    ctx: commands.Context | None = None,
-    ephemeral: bool = True
+        bot,
+        user_id: int,
+        account: dict,
+        *,
+        interaction: discord.Interaction | None = None,
+        ctx: commands.Context | None = None,
+        ephemeral: bool = True
 ):
     try:
         client = get_account_client(
@@ -51,6 +53,7 @@ async def _send_expeditions(
             response
         )
 
+
     except Exception:
         embed = create_error_embed(
             "Failed to Retrieve Expeditions",
@@ -82,34 +85,67 @@ async def _send_expeditions(
 
     expedition_lines = []
 
-    for index, expedition in enumerate(
-        expeditions,
-        start=1
-    ):
+    for expedition in expeditions:
         status = expedition.get(
             "status",
             "Unknown"
         )
 
-        expedition_timestamp = int(time.time()) + int(
-            expedition.get("remained_time", 0)
+        icon_url = expedition.get(
+            "avatar_side_icon",
+            ""
         )
 
-        remaining_time = f"<t:{expedition_timestamp}:R>"
+        icon_hash = (
+            icon_url
+            .rstrip("/")
+            .split("/")[-1]
+            .removesuffix(".png")
+        )
+
+        print("EXPEDITION HASH:", icon_hash)
+
+        character_name = EXPEDITION_ICONS.get(
+            icon_hash
+        )
+
+        emoji = None
+
+        if character_name:
+            normalized_name = character_name.lower().replace(" ", "_")
+
+            for server_emoji in bot.emojis:
+                emoji_name = server_emoji.name.lower().replace(" ", "_")
+
+                if emoji_name == normalized_name:
+                    emoji = server_emoji
+                    break
+
+        character_display = (
+            str(emoji)
+            if emoji
+            else character_name or "Unknown"
+        )
 
         if status == "Finished":
             expedition_lines.append(
-                f"**{index}.** Finished"
+                f"{character_display} Finished"
             )
 
         elif status == "Ongoing":
+            expedition_timestamp = int(time.time()) + int(
+                expedition.get("remained_time", 0)
+            )
+
+            remaining_time = f"<t:{expedition_timestamp}:R>"
+
             expedition_lines.append(
-                f"**{index}.** {remaining_time}"
+                f"{character_display} Finishes {remaining_time}"
             )
 
         else:
             expedition_lines.append(
-                f"**{index}.** {status}"
+                f"{character_display} {status}"
             )
 
     if not expedition_lines:
@@ -155,17 +191,19 @@ async def _send_expeditions(
 
 class ExpeditionsAccountSelect(discord.ui.Select):
     def __init__(
-        self,
-        discord_user_id: int,
-        options: list[discord.SelectOption],
-        *,
-        ephemeral: bool = True
+            self,
+            bot,
+            discord_user_id: int,
+            options: list[discord.SelectOption],
+            *,
+            ephemeral: bool = True
     ):
         super().__init__(
             placeholder="Select a Genshin Account...",
             options=options
         )
 
+        self.bot = bot
         self.discord_user_id = discord_user_id
         self.ephemeral = ephemeral
 
@@ -207,6 +245,7 @@ class ExpeditionsAccountSelect(discord.ui.Select):
         )
 
         await _send_expeditions(
+            self.bot,
             self.discord_user_id,
             account,
             interaction=interaction,
@@ -216,11 +255,12 @@ class ExpeditionsAccountSelect(discord.ui.Select):
 
 class ExpeditionsAccountView(discord.ui.View):
     def __init__(
-        self,
-        discord_user_id: int,
-        options: list[discord.SelectOption],
-        *,
-        ephemeral: bool = True
+            self,
+            bot,
+            discord_user_id: int,
+            options: list[discord.SelectOption],
+            *,
+            ephemeral: bool = True
     ):
         super().__init__(
             timeout=300
@@ -228,6 +268,7 @@ class ExpeditionsAccountView(discord.ui.View):
 
         self.add_item(
             ExpeditionsAccountSelect(
+                bot,
                 discord_user_id,
                 options,
                 ephemeral=ephemeral
@@ -237,8 +278,8 @@ class ExpeditionsAccountView(discord.ui.View):
 
 class Expeditions(commands.Cog):
     def __init__(
-        self,
-        bot
+            self,
+            bot
     ):
         self.bot = bot
 
@@ -277,6 +318,7 @@ class Expeditions(commands.Cog):
 
         if len(accounts) == 1:
             await _send_expeditions(
+                self.bot,
                 interaction.user.id,
                 accounts[0],
                 interaction=interaction,
@@ -318,6 +360,7 @@ class Expeditions(commands.Cog):
         await interaction.followup.send(
             embed=embed,
             view=ExpeditionsAccountView(
+                self.bot,
                 interaction.user.id,
                 options,
                 ephemeral=True
@@ -354,6 +397,7 @@ class Expeditions(commands.Cog):
 
         if len(accounts) == 1:
             await _send_expeditions(
+                self.bot,
                 ctx.author.id,
                 accounts[0],
                 ctx=ctx,
@@ -395,6 +439,7 @@ class Expeditions(commands.Cog):
         await ctx.send(
             embed=embed,
             view=ExpeditionsAccountView(
+                self.bot,
                 ctx.author.id,
                 options,
                 ephemeral=False

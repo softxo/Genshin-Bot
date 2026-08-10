@@ -7,21 +7,38 @@ from pathlib import Path
 from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
-from utils.character.character_loader import load_characters, CHARACTERS
-from utils.weapon.weapons import load_weapons, WEAPONS
+from utils.character.character_loader import (
+    load_characters,
+    CHARACTERS
+)
+from utils.weapon.weapons import (
+    load_weapons,
+    WEAPONS
+)
 from utils.settings.prefix import get_prefix
-from utils.errors.error_handler import handle_app_command_error, handle_prefix_command_error
+from utils.errors.error_handler import (
+    handle_app_command_error,
+    handle_prefix_command_error
+)
 from utils.errors.error_database import initialise_database as initialise_error_database
-from utils.hoyolab.database import initialise_database as initialise_hoyolab_database, update_discord_user, update_discord_server
+from utils.hoyolab.database import (
+    initialise_database as initialise_hoyolab_database,
+    update_discord_user,
+    update_discord_server
+)
 from utils.web.app import app as web_app
+
+
+
+load_dotenv()
+
+TOKEN = os.getenv("DISCORD_TOKEN")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 
 load_characters()
 load_weapons()
 
-load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 
 print("========== Data ==========")
@@ -31,6 +48,7 @@ print(f"  {', '.join(CHARACTERS)}")
 print(f"Loaded {len(WEAPONS)} weapon(s):")
 print(f"  {', '.join(WEAPONS)}")
 print()
+
 
 intents = discord.Intents.default()
 intents.message_content = True
