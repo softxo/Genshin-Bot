@@ -1139,10 +1139,10 @@ class Music(commands.Cog):
 
         if slowed:
             filters.extend([
-                "atempo=0.92",
-                "asetrate=48000*0.92",
+                "atempo=0.94",
+                "asetrate=48000*0.94",
                 "aresample=48000",
-                "aecho=0.7:0.75:30:0.05",
+                "aecho=0.8:0.85:30:0.05",
             ])
         elif sped:
             filters.extend([
@@ -1157,7 +1157,7 @@ class Music(commands.Cog):
         if bassboost:
             filters.extend([
                 "bass=g=2.5:f=90:width_type=o:width=1.2:m=0.35",
-                "volume=0.90"
+                "volume=0.94"
             ])
 
         options = f'-vn -filter:a "{",".join(filters)}"' if filters else "-vn"
