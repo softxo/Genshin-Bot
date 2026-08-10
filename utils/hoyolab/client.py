@@ -9,8 +9,8 @@ class HoYoLABClient:
         self.credentials = credentials
         self.session: aiohttp.ClientSession | None = None
 
-
     async def __aenter__(self):
+
         self.session = aiohttp.ClientSession(
             cookies=self.credentials.as_cookies(),
             headers={
@@ -68,5 +68,9 @@ class HoYoLABClient:
                 url,
                 params=params
         ) as response:
+
             response.raise_for_status()
-            return await response.json()
+
+            data = await response.json()
+
+            return data

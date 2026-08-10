@@ -211,7 +211,7 @@ class ExpeditionsAccountSelect(discord.ui.Select):
     ):
         genshin_uid = self.values[0]
 
-        accounts = get_accounts(
+        accounts = await get_accounts(
             self.discord_user_id
         )
 
@@ -293,7 +293,7 @@ class Expeditions(commands.Cog):
             ephemeral=True
         )
 
-        accounts = get_accounts(
+        accounts = await get_accounts(
             interaction.user.id
         )
 
@@ -373,7 +373,7 @@ class Expeditions(commands.Cog):
         self,
         ctx: commands.Context
     ):
-        accounts = get_accounts(
+        accounts = await get_accounts(
             ctx.author.id
         )
 

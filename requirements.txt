@@ -1,9 +1,15 @@
 discord
 python-dotenv
 google-genai
+aiohttp
+yt-dlp
+PyNaCl
+Pillow
+davey
 cryptography
 genshin
 rsa
 fastapi
 uvicorn
 psycopg[binary]
+psycopg[pool]

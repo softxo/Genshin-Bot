@@ -9,32 +9,12 @@ from utils.hoyolab.daily_note import get_resin
 from utils.errors.error_handler import create_error_embed
 
 
-def format_duration(seconds: int) -> str:
-    seconds = max(0, int(seconds))
-
-    hours, remainder = divmod(seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
-    parts = []
-
-    if hours:
-        parts.append(f"{hours}h")
-
-    if minutes:
-        parts.append(f"{minutes}m")
-
-    if seconds or not parts:
-        parts.append(f"{seconds}s")
-
-    return " ".join(parts)
-
-
 async def _get_resin_message(
     user_id: int,
     account: dict
 ):
     try:
-        client = get_account_client(
+        client = await get_account_client(
             user_id,
             account["genshin_uid"]
         )
@@ -90,6 +70,9 @@ async def _get_resin_message(
             )
 
     except Exception:
+        import traceback
+        traceback.print_exc()
+
         embed = create_error_embed(
             "Failed to Retrieve Resin",
             "Cyrene couldn't retrieve your Genshin Resin data from HoYoLAB.",
@@ -168,9 +151,10 @@ def create_account_options(
 
 class ResinAccountSelect(discord.ui.Select):
     def __init__(
-        self,
-        discord_user_id: int,
-        options: list[discord.SelectOption]
+            self,
+            discord_user_id: int,
+            options: list[discord.SelectOption],
+            view: "ResinAccountView"
     ):
         super().__init__(
             placeholder="Select a Genshin Account...",
@@ -178,14 +162,17 @@ class ResinAccountSelect(discord.ui.Select):
         )
 
         self.discord_user_id = discord_user_id
+        self.account_view = view
 
     async def callback(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
+        await interaction.response.defer()
+
         genshin_uid = self.values[0]
 
-        accounts = get_accounts(
+        accounts = await get_accounts(
             self.discord_user_id
         )
 
@@ -205,14 +192,13 @@ class ResinAccountSelect(discord.ui.Select):
                 "not_found"
             )
 
-            await interaction.response.send_message(
+            await interaction.edit_original_response(
                 embed=embed,
-                ephemeral=True
+                attachments=[],
+                view=self.account_view
             )
 
             return
-
-        await interaction.response.defer()
 
         embed, file = await _get_resin_message(
             self.discord_user_id,
@@ -222,12 +208,14 @@ class ResinAccountSelect(discord.ui.Select):
         if file is not None:
             await interaction.edit_original_response(
                 embed=embed,
-                attachments=[file]
+                attachments=[file],
+                view=self.account_view
             )
         else:
             await interaction.edit_original_response(
                 embed=embed,
-                attachments=[]
+                attachments=[],
+                view=self.account_view
             )
 
 
@@ -244,7 +232,8 @@ class ResinAccountView(discord.ui.View):
         self.add_item(
             ResinAccountSelect(
                 discord_user_id,
-                options
+                options,
+                self
             )
         )
 
@@ -254,21 +243,14 @@ class Resin(commands.Cog):
         self.bot = bot
 
     async def _show_resin(
-        self,
-        user_id: int,
-        accounts: list[dict],
-        *,
-        interaction: discord.Interaction | None = None,
-        ctx: commands.Context | None = None,
-        ephemeral: bool = True
+            self,
+            user_id: int,
+            accounts: list[dict],
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None,
+            ephemeral: bool = True
     ):
-        account = accounts[0]
-
-        embed, file = await _get_resin_message(
-            user_id,
-            account
-        )
-
         view = None
 
         if len(accounts) > 1:
@@ -277,6 +259,13 @@ class Resin(commands.Cog):
                 create_account_options(accounts)
             )
 
+        account = accounts[0]
+
+        embed, file = await _get_resin_message(
+            user_id,
+            account
+        )
+
         if interaction:
             await interaction.followup.send(
                 embed=embed,
@@ -284,7 +273,6 @@ class Resin(commands.Cog):
                 view=view,
                 ephemeral=ephemeral
             )
-
         else:
             await ctx.send(
                 embed=embed,
@@ -297,14 +285,10 @@ class Resin(commands.Cog):
         description="Check your Resin."
     )
     async def resin(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
-        await interaction.response.defer(
-            ephemeral=True
-        )
-
-        accounts = get_accounts(
+        accounts = await get_accounts(
             interaction.user.id
         )
 
@@ -318,19 +302,35 @@ class Resin(commands.Cog):
                 "not_found"
             )
 
-            await interaction.followup.send(
+            await interaction.response.send_message(
                 embed=embed,
                 ephemeral=True
             )
 
             return
 
-        await self._show_resin(
+        account = accounts[0]
+
+        view = None
+
+        if len(accounts) > 1:
+            view = ResinAccountView(
+                interaction.user.id,
+                create_account_options(accounts)
+            )
+
+        embed, file = await _get_resin_message(
             interaction.user.id,
-            accounts,
-            interaction=interaction,
+            account
+        )
+
+        await interaction.response.send_message(
+            embed=embed,
+            file=file,
+            view=view,
             ephemeral=True
         )
+
 
     @commands.command(
         name="resin"
@@ -339,7 +339,7 @@ class Resin(commands.Cog):
         self,
         ctx: commands.Context
     ):
-        accounts = get_accounts(
+        accounts = await get_accounts(
             ctx.author.id
         )
 

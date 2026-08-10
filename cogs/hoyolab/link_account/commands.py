@@ -105,7 +105,7 @@ class GenshinAccountSelect(discord.ui.Select):
             return
 
 
-        if account_exists(
+        if await account_exists(
                 self.discord_user_id,
                 selected_uid
         ):
@@ -125,7 +125,7 @@ class GenshinAccountSelect(discord.ui.Select):
             return
 
 
-        account_count = get_account_count(
+        account_count = await get_account_count(
             self.discord_user_id
         )
 
@@ -715,7 +715,7 @@ class LinkAccounts(commands.Cog):
             interaction: discord.Interaction,
             genshin_uid: str
     ):
-        account = get_account(
+        account = await get_account(
             interaction.user.id,
             genshin_uid
         )
@@ -736,7 +736,7 @@ class LinkAccounts(commands.Cog):
 
             return
 
-        deleted = delete_account(
+        deleted = await delete_account(
             interaction.user.id,
             genshin_uid
         )

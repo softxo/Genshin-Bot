@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import os
+import selectors
 import traceback
 import uvicorn
 from pathlib import Path
@@ -23,6 +24,7 @@ from utils.errors.error_handler import (
 from utils.errors.error_database import initialise_database as initialise_error_database
 from utils.hoyolab.database import (
     initialise_database as initialise_hoyolab_database,
+    close_database as close_hoyolab_database,
     update_discord_user,
     update_discord_server
 )
@@ -67,14 +69,14 @@ async def update_slash_user(
 ) -> bool:
     user = interaction.user
 
-    update_discord_user(
+    await update_discord_user(
         discord_user_id=user.id,
         discord_username=user.name,
         discord_display_name=user.display_name
     )
 
     if interaction.guild:
-        update_discord_server(
+        await update_discord_server(
             discord_user_id=user.id,
             discord_guild_id=interaction.guild.id,
             discord_guild_name=interaction.guild.name
@@ -88,14 +90,14 @@ async def update_prefix_user(
 ):
     user = ctx.author
 
-    update_discord_user(
+    await update_discord_user(
         discord_user_id=user.id,
         discord_username=user.name,
         discord_display_name=user.display_name
     )
 
     if ctx.guild:
-        update_discord_server(
+        await update_discord_server(
             discord_user_id=user.id,
             discord_guild_id=ctx.guild.id,
             discord_guild_name=ctx.guild.name
@@ -161,7 +163,7 @@ async def on_ready():
 
 async def main():
     initialise_error_database()
-    initialise_hoyolab_database()
+    await initialise_hoyolab_database()
 
     if TOKEN is None:
         raise RuntimeError("DISCORD_TOKEN is not set.")
@@ -175,13 +177,17 @@ async def main():
 
     web_server = uvicorn.Server(config)
 
-    async with bot:
-        await load_cogs()
+    try:
+        async with bot:
+            await load_cogs()
 
-        await asyncio.gather(
-            bot.start(TOKEN),
-            web_server.serve(),
-        )
+            await asyncio.gather(
+                bot.start(TOKEN),
+                web_server.serve(),
+            )
+
+    finally:
+        await close_hoyolab_database()
 
 
 @bot.tree.error
@@ -199,4 +205,12 @@ async def on_command_error(
     await handle_prefix_command_error(ctx, error)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    if os.name == "nt":
+        asyncio.run(
+            main(),
+            loop_factory=lambda: asyncio.SelectorEventLoop(
+                selectors.SelectSelector()
+            )
+        )
+    else:
+        asyncio.run(main())

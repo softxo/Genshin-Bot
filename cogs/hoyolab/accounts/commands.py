@@ -124,6 +124,26 @@ class AccountSelect(discord.ui.Select):
             options=options
         )
 
+    async def callback(
+            self,
+            interaction: discord.Interaction
+    ):
+        selected_index = int(self.values[0])
+
+        self.accounts_view.selected_index = selected_index
+
+        embed = create_accounts_embed(
+            self.accounts_view.accounts,
+            self.accounts_view.selected_index
+        )
+
+        self.accounts_view.rebuild_components()
+
+        await interaction.response.edit_message(
+            embed=embed,
+            view=self.accounts_view
+        )
+
 
 class AccountsView(discord.ui.View):
     def __init__(
@@ -176,7 +196,7 @@ class AccountsView(discord.ui.View):
             self,
             interaction: discord.Interaction
     ):
-        self.accounts = get_accounts(
+        self.accounts = await get_accounts(
             self.user_id
         )
 
@@ -250,7 +270,7 @@ class AccountsView(discord.ui.View):
 
         account = self.accounts[self.selected_index]
 
-        deleted = delete_account(
+        deleted = await delete_account(
             interaction.user.id,
             account["genshin_uid"]
         )
@@ -262,7 +282,7 @@ class AccountsView(discord.ui.View):
             )
             return
 
-        self.accounts = get_accounts(
+        self.accounts = await get_accounts(
             interaction.user.id
         )
 
@@ -342,7 +362,7 @@ class EditNicknameModal(discord.ui.Modal):
     ):
         nickname = self.nickname.value.strip()
 
-        updated = update_account_nickname(
+        updated = await update_account_nickname(
             interaction.user.id,
             self.account["genshin_uid"],
             nickname or None
@@ -355,7 +375,7 @@ class EditNicknameModal(discord.ui.Modal):
             )
             return
 
-        self.accounts_view.accounts = get_accounts(
+        self.accounts_view.accounts = await get_accounts(
             interaction.user.id
         )
 
@@ -391,7 +411,7 @@ class Accounts(commands.Cog):
             self,
             interaction: discord.Interaction
     ):
-        accounts = get_accounts(
+        accounts = await get_accounts(
             interaction.user.id
         )
 

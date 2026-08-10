@@ -1,29 +1,43 @@
 import os
-import psycopg
 from psycopg.rows import dict_row
+from psycopg_pool import AsyncConnectionPool
 from datetime import datetime, timezone
 from .auth import HoYoLABCredentials
 from .crypto import HoYoLABCrypto
 
 
+_pool: AsyncConnectionPool | None = None
 
-def get_connection():
-    DATABASE_URL = os.getenv("DATABASE_URL")
 
-    if not DATABASE_URL:
+def get_database_url() -> str:
+    database_url = os.getenv("DATABASE_URL")
+
+    if not database_url:
         raise RuntimeError(
             "DATABASE_URL is not configured."
         )
 
-    return psycopg.connect(
-        DATABASE_URL,
-        row_factory=dict_row
-    )
+    return database_url
 
 
-def initialise_database() -> None:
-    with get_connection() as connection:
-        connection.execute(
+async def initialise_database() -> None:
+    global _pool
+
+    if _pool is None:
+        _pool = AsyncConnectionPool(
+            conninfo=get_database_url(),
+            min_size=1,
+            max_size=10,
+            open=False,
+            kwargs={
+                "row_factory": dict_row
+            }
+        )
+
+        await _pool.open()
+
+    async with _pool.connection() as connection:
+        await connection.execute(
             """
             CREATE TABLE IF NOT EXISTS accounts (
                 id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -61,17 +75,32 @@ def initialise_database() -> None:
             """
         )
 
-        connection.execute(
+        await connection.execute(
             """
             CREATE INDEX IF NOT EXISTS idx_accounts_discord_user
                 ON accounts(discord_user_id)
             """
         )
 
-        connection.commit()
+
+def get_pool() -> AsyncConnectionPool:
+    if _pool is None:
+        raise RuntimeError(
+            "HoYoLAB database pool has not been initialised."
+        )
+
+    return _pool
 
 
-def save_account(
+async def close_database() -> None:
+    global _pool
+
+    if _pool is not None:
+        await _pool.close()
+        _pool = None
+
+
+async def save_account(
     discord_user_id: int,
     credentials: HoYoLABCredentials,
     *,
@@ -137,8 +166,8 @@ def save_account(
 
     now = datetime.now(timezone.utc).isoformat()
 
-    with get_connection() as connection:
-        connection.execute(
+    async with get_pool().connection() as connection:
+        await connection.execute(
             """
             INSERT INTO accounts (
                 discord_user_id,
@@ -238,16 +267,159 @@ def save_account(
             )
         )
 
-        connection.commit()
+
+async def get_account_count(
+    discord_user_id: int
+) -> int:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT COUNT(*) AS count
+            FROM accounts
+            WHERE discord_user_id = %s
+            """,
+            (discord_user_id,)
+        )
+
+        row = await result.fetchone()
+
+    return row["count"]
 
 
-def get_accounts(
+async def account_exists(
+    discord_user_id: int,
+    genshin_uid: str
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT 1
+            FROM accounts
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
+            LIMIT 1
+            """,
+            (
+                discord_user_id,
+                genshin_uid
+            )
+        )
+
+        row = await result.fetchone()
+
+    return row is not None
+
+
+async def delete_account(
+    discord_user_id: int,
+    genshin_uid: str
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            DELETE FROM accounts
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
+            """,
+            (
+                discord_user_id,
+                genshin_uid
+            )
+        )
+
+    return result.rowcount > 0
+
+
+async def update_discord_user(
+    discord_user_id: int,
+    discord_username: str,
+    discord_display_name: str,
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            UPDATE accounts
+            SET
+                discord_username = %s,
+                discord_display_name = %s
+            WHERE discord_user_id = %s
+            AND (
+                discord_username IS DISTINCT FROM %s
+                OR discord_display_name IS DISTINCT FROM %s
+            )
+            """,
+            (
+                discord_username,
+                discord_display_name,
+                discord_user_id,
+                discord_username,
+                discord_display_name
+            )
+        )
+
+    return result.rowcount > 0
+
+
+async def update_discord_server(
+    discord_user_id: int,
+    discord_guild_id: int,
+    discord_guild_name: str,
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            UPDATE accounts
+            SET
+                discord_guild_id = %s,
+                discord_guild_name = %s
+            WHERE discord_user_id = %s
+            AND (
+                discord_guild_id IS DISTINCT FROM %s
+                OR discord_guild_name IS DISTINCT FROM %s
+            )
+            """,
+            (
+                discord_guild_id,
+                discord_guild_name,
+                discord_user_id,
+                discord_guild_id,
+                discord_guild_name
+            )
+        )
+
+    return result.rowcount > 0
+
+
+async def update_account_nickname(
+    discord_user_id: int,
+    genshin_uid: str,
+    cyrene_nickname: str | None
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            UPDATE accounts
+            SET cyrene_nickname = %s
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
+            """,
+            (
+                cyrene_nickname,
+                discord_user_id,
+                genshin_uid
+            )
+        )
+
+    return result.rowcount > 0
+
+
+async def get_accounts(
     discord_user_id: int
 ) -> list[dict]:
     crypto = HoYoLABCrypto()
 
-    with get_connection() as connection:
-        rows = connection.execute(
+    async with get_pool().connection() as connection:
+        rows = await connection.execute(
             """
             SELECT *
             FROM accounts
@@ -255,7 +427,9 @@ def get_accounts(
             ORDER BY created_at ASC
             """,
             (discord_user_id,)
-        ).fetchall()
+        )
+
+        rows = await rows.fetchall()
 
     accounts = []
 
@@ -306,22 +480,17 @@ def get_accounts(
         accounts.append(
             {
                 "id": row["id"],
-
                 "discord_user_id": row["discord_user_id"],
                 "discord_username": row["discord_username"],
                 "discord_display_name": row["discord_display_name"],
-
                 "discord_guild_id": row["discord_guild_id"],
                 "discord_guild_name": row["discord_guild_name"],
-
                 "credentials": credentials,
-
                 "genshin_uid": row["genshin_uid"],
                 "genshin_server": row["genshin_server"],
                 "nickname": row["nickname"],
                 "cyrene_nickname": row["cyrene_nickname"],
                 "level": row["level"],
-
                 "created_at": row["created_at"],
                 "updated_at": row["updated_at"]
             }
@@ -330,14 +499,14 @@ def get_accounts(
     return accounts
 
 
-def get_account(
+async def get_account(
     discord_user_id: int,
     genshin_uid: str
 ) -> dict | None:
     crypto = HoYoLABCrypto()
 
-    with get_connection() as connection:
-        row = connection.execute(
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
             """
             SELECT *
             FROM accounts
@@ -349,7 +518,9 @@ def get_account(
                 discord_user_id,
                 genshin_uid
             )
-        ).fetchone()
+        )
+
+        row = await result.fetchone()
 
     if row is None:
         return None
@@ -418,152 +589,3 @@ def get_account(
         "created_at": row["created_at"],
         "updated_at": row["updated_at"]
     }
-
-
-def get_account_count(
-    discord_user_id: int
-) -> int:
-    with get_connection() as connection:
-        row = connection.execute(
-            """
-            SELECT COUNT(*) AS count
-            FROM accounts
-            WHERE discord_user_id = %s
-            """,
-            (discord_user_id,)
-        ).fetchone()
-
-    return row["count"]
-
-
-def account_exists(
-    discord_user_id: int,
-    genshin_uid: str
-) -> bool:
-    with get_connection() as connection:
-        row = connection.execute(
-            """
-            SELECT 1
-            FROM accounts
-            WHERE discord_user_id = %s
-            AND genshin_uid = %s
-            LIMIT 1
-            """,
-            (
-                discord_user_id,
-                genshin_uid
-            )
-        ).fetchone()
-
-    return row is not None
-
-
-def delete_account(
-    discord_user_id: int,
-    genshin_uid: str
-) -> bool:
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            DELETE FROM accounts
-            WHERE discord_user_id = %s
-            AND genshin_uid = %s
-            """,
-            (
-                discord_user_id,
-                genshin_uid
-            )
-        )
-
-        connection.commit()
-
-    return cursor.rowcount > 0
-
-
-def update_discord_user(
-    discord_user_id: int,
-    discord_username: str,
-    discord_display_name: str,
-) -> bool:
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            UPDATE accounts
-            SET
-                discord_username = %s,
-                discord_display_name = %s
-            WHERE discord_user_id = %s
-            AND (
-                discord_username IS DISTINCT FROM %s
-                OR discord_display_name IS DISTINCT FROM %s
-            )
-            """,
-            (
-                discord_username,
-                discord_display_name,
-                discord_user_id,
-                discord_username,
-                discord_display_name
-            )
-        )
-
-        connection.commit()
-
-    return cursor.rowcount > 0
-
-
-def update_discord_server(
-    discord_user_id: int,
-    discord_guild_id: int,
-    discord_guild_name: str,
-) -> bool:
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            UPDATE accounts
-            SET
-                discord_guild_id = %s,
-                discord_guild_name = %s
-            WHERE discord_user_id = %s
-            AND (
-                discord_guild_id IS DISTINCT FROM %s
-                OR discord_guild_name IS DISTINCT FROM %s
-            )
-            """,
-            (
-                discord_guild_id,
-                discord_guild_name,
-                discord_user_id,
-                discord_guild_id,
-                discord_guild_name
-            )
-        )
-
-        connection.commit()
-
-    return cursor.rowcount > 0
-
-
-def update_account_nickname(
-    discord_user_id: int,
-    genshin_uid: str,
-    cyrene_nickname: str | None
-) -> bool:
-    with get_connection() as connection:
-        cursor = connection.execute(
-            """
-            UPDATE accounts
-            SET cyrene_nickname = %s
-            WHERE discord_user_id = %s
-            AND genshin_uid = %s
-            """,
-            (
-                cyrene_nickname,
-                discord_user_id,
-                genshin_uid
-            )
-        )
-
-        connection.commit()
-
-    return cursor.rowcount > 0
