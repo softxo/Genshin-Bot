@@ -28,7 +28,22 @@ ytdl_format_options: dict[str, Any] = {
     "js_runtimes": {
         "deno": {}
     },
+    "cookiefile": "/home/container/cookies.txt",
 }
+
+search_ytdl_options: dict[str, Any] = {
+    "quiet": True,
+    "extract_flat": "in_playlist",
+    "noplaylist": True,
+    "default_search": "auto",
+    "js_runtimes": {
+        "deno": {}
+    },
+}
+
+search_ytdl = youtube_dl.YoutubeDL(
+    cast(Any, search_ytdl_options)
+)
 
 ffmpeg_options = {
     "before_options": (
@@ -417,20 +432,34 @@ class Music(commands.Cog):
         self.bot = bot
         self.guild_states = {}
 
-    def get_autoplay_search_terms(self, song: dict[str, Any]) -> tuple[str, str]:
+    def get_autoplay_search_terms(
+            self,
+            song: dict[str, Any],
+    ) -> tuple[str, str]:
         raw_title = (song.get("title") or "").strip()
-        uploader = (song.get("uploader") or "").replace(" - Topic", "").replace("VEVO", "").strip()
+
+        artist = (
+                song.get("artist")
+                or song.get("creator")
+                or song.get("channel")
+                or ""
+        ).strip()
 
         cleaned_title = self.clean_lyrics_title(raw_title)
 
-        if " - " in cleaned_title:
-            artist, track = cleaned_title.split(" - ", 1)
-            artist = artist.strip()
-            track = track.strip()
-            if artist and track:
-                return artist, track
+        if artist and cleaned_title:
+            return artist, cleaned_title
 
-        return uploader, cleaned_title
+        if " - " in cleaned_title:
+            parsed_artist, track = cleaned_title.split(" - ", 1)
+
+            parsed_artist = parsed_artist.strip()
+            track = track.strip()
+
+            if parsed_artist and track:
+                return parsed_artist, track
+
+        return "", cleaned_title
 
     def remember_autoplay_track(self, state: GuildMusicState, song: dict[str, Any], max_items: int = 20):
         signature = self.build_track_signature(song)
@@ -879,28 +908,49 @@ class Music(commands.Cog):
 
         info = await loop.run_in_executor(
             None,
-            lambda: ytdl.extract_info(query, download=False)
+            lambda q=query: ytdl.extract_info(
+                q,
+                download=False,
+                process=True,
+            )
         )
 
         info = cast(dict[str, Any], info)
 
         entries = info.get("entries")
+
         if isinstance(entries, list) and entries:
             first = entries[0]
+
             if isinstance(first, dict):
                 info = cast(dict[str, Any], first)
 
-        webpage_url = info.get("webpage_url") or info.get("original_url") or query
+        webpage_url = (
+                info.get("webpage_url")
+                or info.get("original_url")
+                or query
+        )
+
+        audio_url = info.get("url")
 
         return {
             "query": query,
             "url": webpage_url,
             "title": info.get("title", "Unknown"),
             "webpage_url": webpage_url,
-            "audio_url": info.get("url"),
+            "audio_url": audio_url,
             "duration": info.get("duration") or 0,
-            "thumbnail": self.get_youtube_thumbnail(webpage_url) or info.get("thumbnail"),
-            "uploader": info.get("uploader") or info.get("channel") or "Unknown",
+            "thumbnail": (
+                    self.get_youtube_thumbnail(webpage_url)
+                    or info.get("thumbnail")
+            ),
+            "uploader": (
+                    info.get("uploader")
+                    or info.get("channel")
+                    or "Unknown"
+            ),
+            "artist": info.get("artist"),
+            "creator": info.get("creator"),
             "views": info.get("view_count"),
             "likes": info.get("like_count"),
         }
@@ -982,10 +1032,19 @@ class Music(commands.Cog):
 
         for query in queries:
             try:
-                info = await loop.run_in_executor(
-                    None,
-                    lambda q=query: ytdl.extract_info(q, download=False)
+                info = await asyncio.wait_for(
+                    loop.run_in_executor(
+                        None,
+                        lambda q=query: search_ytdl.extract_info(
+                            q,
+                            download=False,
+                        )
+                    ),
+                    timeout=8,
                 )
+            except asyncio.TimeoutError:
+                print(f"Autoplay query timed out: {query}")
+                continue
             except Exception as e:
                 print(f"Autoplay query failed for {query}: {e}")
                 continue
@@ -997,9 +1056,25 @@ class Music(commands.Cog):
                 )
                 continue
 
+            print(
+                f"Autoplay search: {query} | "
+                f"entries={len(info.get('entries') or [])}"
+            )
+
             entries = info.get("entries")
 
-            if not isinstance(entries, list) or not entries:
+            if not entries:
+                print(f"Autoplay search returned no entries for: {query}")
+                continue
+
+            entries = [
+                entry
+                for entry in entries
+                if isinstance(entry, dict)
+            ]
+
+            if not entries:
+                print(f"Autoplay search contained no valid entries for: {query}")
                 continue
 
             random.shuffle(entries)
@@ -1011,7 +1086,11 @@ class Music(commands.Cog):
                 webpage_url = (
                         entry.get("webpage_url")
                         or entry.get("original_url")
+                        or entry.get("url")
                 )
+
+                if webpage_url and not webpage_url.startswith("http"):
+                    webpage_url = f"https://www.youtube.com/watch?v={webpage_url}"
 
                 if not webpage_url:
                     continue
@@ -1030,6 +1109,8 @@ class Music(commands.Cog):
                             or entry.get("channel")
                             or "Unknown"
                     ),
+                    "artist": entry.get("artist"),
+                    "creator": entry.get("creator"),
                     "views": entry.get("view_count"),
                     "likes": entry.get("like_count"),
                     "requester": requester,
@@ -1142,22 +1223,22 @@ class Music(commands.Cog):
                 "atempo=0.94",
                 "asetrate=48000*0.94",
                 "aresample=48000",
-                "aecho=0.8:0.85:30:0.05",
+                "aecho=0.8:0.88:45:0.035",
             ])
         elif sped:
             filters.extend([
                 "atempo=1.08",
                 "asetrate=48000*1.08",
                 "aresample=48000",
-                "treble=g=1.2:f=4500:width_type=o:width=1.0:m=0.35",
+                "treble=g=1.0:f=4500:width_type=o:width=1.0:m=0.30",
             ])
         else:
             filters.append("aresample=48000")
 
         if bassboost:
             filters.extend([
-                "bass=g=2.5:f=90:width_type=o:width=1.2:m=0.35",
-                "volume=0.94"
+                "bass=g=2.0:f=85:width_type=o:width=1.1:m=0.30",
+                "volume=0.95"
             ])
 
         options = f'-vn -filter:a "{",".join(filters)}"' if filters else "-vn"
@@ -1572,6 +1653,15 @@ class Music(commands.Cog):
             if fresh_song is None or not audio_url:
                 fresh_song = await self.get_song_info(track_url)
                 audio_url = fresh_song.get("audio_url")
+
+            if audio_url:
+                webpage_url = fresh_song.get("webpage_url") or track_url
+
+                if audio_url == webpage_url or audio_url.startswith(
+                        "https://www.youtube.com/watch?"
+                ):
+                    fresh_song = await self.get_song_info(track_url)
+                    audio_url = fresh_song.get("audio_url")
 
         except Exception as e:
             await ctx.send(

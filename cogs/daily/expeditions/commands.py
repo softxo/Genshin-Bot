@@ -9,17 +9,13 @@ from utils.errors.error_handler import create_error_embed
 from utils.hoyolab.expedition_icons import EXPEDITION_ICONS
 
 
-async def _send_expeditions(
+async def _get_expeditions_message(
         bot,
         user_id: int,
-        account: dict,
-        *,
-        interaction: discord.Interaction | None = None,
-        ctx: commands.Context | None = None,
-        ephemeral: bool = True
+        account: dict
 ):
     try:
-        client = get_account_client(
+        client = await get_account_client(
             user_id,
             account["genshin_uid"]
         )
@@ -31,17 +27,7 @@ async def _send_expeditions(
                 "not_found"
             )
 
-            if interaction:
-                await interaction.followup.send(
-                    embed=embed,
-                    ephemeral=ephemeral
-                )
-            else:
-                await ctx.send(
-                    embed=embed
-                )
-
-            return
+            return embed
 
         async with client:
             response = await client.get_genshin_daily_note(
@@ -53,25 +39,16 @@ async def _send_expeditions(
             response
         )
 
+    except Exception as e:
 
-    except Exception:
         embed = create_error_embed(
             "Failed to Retrieve Expeditions",
-            "Cyrene couldn't retrieve your Expedition data from HoYoLAB.",
+            f"Cyrene couldn't retrieve your Expedition data from HoYoLAB.\n\n"
+            f"Error: `{type(e).__name__}: {e}`",
             "error"
         )
 
-        if interaction:
-            await interaction.followup.send(
-                embed=embed,
-                ephemeral=ephemeral
-            )
-        else:
-            await ctx.send(
-                embed=embed
-            )
-
-        return
+        return embed
 
     finished = sum(
         expedition.get("status") == "Finished"
@@ -110,10 +87,18 @@ async def _send_expeditions(
         emoji = None
 
         if character_name:
-            normalized_name = character_name.lower().replace(" ", "_")
+            normalized_name = (
+                character_name
+                .lower()
+                .replace(" ", "_")
+            )
 
             for server_emoji in bot.emojis:
-                emoji_name = server_emoji.name.lower().replace(" ", "_")
+                emoji_name = (
+                    server_emoji.name
+                    .lower()
+                    .replace(" ", "_")
+                )
 
                 if emoji_name == normalized_name:
                     emoji = server_emoji
@@ -131,11 +116,14 @@ async def _send_expeditions(
             )
 
         elif status == "Ongoing":
-            expedition_timestamp = int(time.time()) + int(
-                expedition.get("remained_time", 0)
+            expedition_timestamp = (
+                int(time.time())
+                + int(expedition.get("remained_time", 0))
             )
 
-            remaining_time = f"<t:{expedition_timestamp}:R>"
+            remaining_time = (
+                f"<t:{expedition_timestamp}:R>"
+            )
 
             expedition_lines.append(
                 f"{character_display} Finishes {remaining_time}"
@@ -176,15 +164,34 @@ async def _send_expeditions(
         inline=False
     )
 
-    if interaction:
-        await interaction.followup.send(
-            embed=embed,
-            ephemeral=ephemeral
+    return embed
+
+
+def create_account_options(
+        accounts: list[dict]
+) -> list[discord.SelectOption]:
+    options = []
+
+    for account in accounts:
+        options.append(
+            discord.SelectOption(
+                label=(
+                    account.get("nickname")
+                    or account["genshin_uid"]
+                ),
+                description=(
+                    f"UID: {account['genshin_uid']}"
+                    + (
+                        f" • AR: {account['level']}"
+                        if account.get("level") is not None
+                        else ""
+                    )
+                ),
+                value=account["genshin_uid"]
+            )
         )
-    else:
-        await ctx.send(
-            embed=embed
-        )
+
+    return options
 
 
 class ExpeditionsAccountSelect(discord.ui.Select):
@@ -193,8 +200,7 @@ class ExpeditionsAccountSelect(discord.ui.Select):
             bot,
             discord_user_id: int,
             options: list[discord.SelectOption],
-            *,
-            ephemeral: bool = True
+            view: "ExpeditionsAccountView"
     ):
         super().__init__(
             placeholder="Select a Genshin Account...",
@@ -203,12 +209,14 @@ class ExpeditionsAccountSelect(discord.ui.Select):
 
         self.bot = bot
         self.discord_user_id = discord_user_id
-        self.ephemeral = ephemeral
+        self.account_view = view
 
     async def callback(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
+        await interaction.response.defer()
+
         genshin_uid = self.values[0]
 
         accounts = await get_accounts(
@@ -231,23 +239,22 @@ class ExpeditionsAccountSelect(discord.ui.Select):
                 "not_found"
             )
 
-            await interaction.response.send_message(
+            await interaction.edit_original_response(
                 embed=embed,
-                ephemeral=self.ephemeral
+                view=self.account_view
             )
 
             return
 
-        await interaction.response.defer(
-            ephemeral=self.ephemeral
-        )
-
-        await _send_expeditions(
+        embed = await _get_expeditions_message(
             self.bot,
             self.discord_user_id,
-            account,
-            interaction=interaction,
-            ephemeral=self.ephemeral
+            account
+        )
+
+        await interaction.edit_original_response(
+            embed=embed,
+            view=self.account_view
         )
 
 
@@ -256,12 +263,10 @@ class ExpeditionsAccountView(discord.ui.View):
             self,
             bot,
             discord_user_id: int,
-            options: list[discord.SelectOption],
-            *,
-            ephemeral: bool = True
+            options: list[discord.SelectOption]
     ):
         super().__init__(
-            timeout=300
+            timeout=600
         )
 
         self.add_item(
@@ -269,7 +274,7 @@ class ExpeditionsAccountView(discord.ui.View):
                 bot,
                 discord_user_id,
                 options,
-                ephemeral=ephemeral
+                self
             )
         )
 
@@ -281,18 +286,52 @@ class Expeditions(commands.Cog):
     ):
         self.bot = bot
 
+    async def _show_expeditions(
+            self,
+            user_id: int,
+            accounts: list[dict],
+            *,
+            interaction: discord.Interaction | None = None,
+            ctx: commands.Context | None = None,
+            ephemeral: bool = True
+    ):
+        view = None
+
+        if len(accounts) > 1:
+            view = ExpeditionsAccountView(
+                self.bot,
+                user_id,
+                create_account_options(accounts)
+            )
+
+        account = accounts[0]
+
+        embed = await _get_expeditions_message(
+            self.bot,
+            user_id,
+            account
+        )
+
+        if interaction:
+            await interaction.followup.send(
+                embed=embed,
+                view=view,
+                ephemeral=ephemeral
+            )
+        else:
+            await ctx.send(
+                embed=embed,
+                view=view
+            )
+
     @app_commands.command(
         name="expeditions",
         description="Check your Genshin Expeditions."
     )
     async def expeditions(
-        self,
-        interaction: discord.Interaction
+            self,
+            interaction: discord.Interaction
     ):
-        await interaction.response.defer(
-            ephemeral=True
-        )
-
         accounts = await get_accounts(
             interaction.user.id
         )
@@ -307,62 +346,33 @@ class Expeditions(commands.Cog):
                 "not_found"
             )
 
-            await interaction.followup.send(
+            await interaction.response.send_message(
                 embed=embed,
                 ephemeral=True
             )
 
             return
 
-        if len(accounts) == 1:
-            await _send_expeditions(
+        account = accounts[0]
+
+        view = None
+
+        if len(accounts) > 1:
+            view = ExpeditionsAccountView(
                 self.bot,
                 interaction.user.id,
-                accounts[0],
-                interaction=interaction,
-                ephemeral=True
+                create_account_options(accounts)
             )
 
-            return
-
-        options = []
-
-        for account in accounts:
-            options.append(
-                discord.SelectOption(
-                    label=(
-                        account.get("nickname")
-                        or account["genshin_uid"]
-                    ),
-                    description=(
-                        f"UID: {account['genshin_uid']}"
-                        + (
-                            f" • AR: {account['level']}"
-                            if account.get("level") is not None
-                            else ""
-                        )
-                    ),
-                    value=account["genshin_uid"]
-                )
-            )
-
-        embed = discord.Embed(
-            title="Select a Genshin Account",
-            description=(
-                "You have multiple linked Genshin accounts.\n"
-                "Select the account you want to check."
-            ),
-            colour=discord.Colour.blurple()
+        embed = await _get_expeditions_message(
+            self.bot,
+            interaction.user.id,
+            account
         )
 
-        await interaction.followup.send(
+        await interaction.response.send_message(
             embed=embed,
-            view=ExpeditionsAccountView(
-                self.bot,
-                interaction.user.id,
-                options,
-                ephemeral=True
-            ),
+            view=view,
             ephemeral=True
         )
 
@@ -370,8 +380,8 @@ class Expeditions(commands.Cog):
         name="expeditions"
     )
     async def expeditions_prefix(
-        self,
-        ctx: commands.Context
+            self,
+            ctx: commands.Context
     ):
         accounts = await get_accounts(
             ctx.author.id
@@ -393,55 +403,11 @@ class Expeditions(commands.Cog):
 
             return
 
-        if len(accounts) == 1:
-            await _send_expeditions(
-                self.bot,
-                ctx.author.id,
-                accounts[0],
-                ctx=ctx,
-                ephemeral=False
-            )
-
-            return
-
-        options = []
-
-        for account in accounts:
-            options.append(
-                discord.SelectOption(
-                    label=(
-                        account.get("nickname")
-                        or account["genshin_uid"]
-                    ),
-                    description=(
-                        f"UID: {account['genshin_uid']}"
-                        + (
-                            f" • AR: {account['level']}"
-                            if account.get("level") is not None
-                            else ""
-                        )
-                    ),
-                    value=account["genshin_uid"]
-                )
-            )
-
-        embed = discord.Embed(
-            title="Select a Genshin Account",
-            description=(
-                "You have multiple linked Genshin accounts.\n"
-                "Select the account you want to check."
-            ),
-            colour=discord.Colour.blurple()
-        )
-
-        await ctx.send(
-            embed=embed,
-            view=ExpeditionsAccountView(
-                self.bot,
-                ctx.author.id,
-                options,
-                ephemeral=False
-            )
+        await self._show_expeditions(
+            ctx.author.id,
+            accounts,
+            ctx=ctx,
+            ephemeral=False
         )
 
 

@@ -2,15 +2,18 @@ import aiohttp
 from .auth import HoYoLABCredentials
 
 
+
 class HoYoLABClient:
     BASE_URL = "https://bbs-api-os.hoyolab.com"
 
-    def __init__(self, credentials: HoYoLABCredentials):
+    def __init__(
+            self,
+            credentials: HoYoLABCredentials
+    ):
         self.credentials = credentials
         self.session: aiohttp.ClientSession | None = None
 
     async def __aenter__(self):
-
         self.session = aiohttp.ClientSession(
             cookies=self.credentials.as_cookies(),
             headers={
@@ -27,7 +30,12 @@ class HoYoLABClient:
 
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(
+            self,
+            exc_type,
+            exc,
+            tb
+    ):
         if self.session:
             await self.session.close()
 
@@ -38,7 +46,9 @@ class HoYoLABClient:
             )
 
         url = (
-            "https://api-account-os.hoyolab.com/account/binding/api/getUserGameRolesByCookieToken"
+            "https://api-account-os.hoyolab.com/"
+            "account/binding/api/"
+            "getUserGameRolesByCookieToken"
         )
 
         async with self.session.get(url) as response:
@@ -56,7 +66,8 @@ class HoYoLABClient:
             )
 
         url = (
-            "https://bbs-api-os.hoyolab.com/game_record/genshin/api/dailyNote"
+            "https://sg-public-api.hoyolab.com/"
+            "event/game_record/genshin/api/dailyNote"
         )
 
         params = {
@@ -71,6 +82,4 @@ class HoYoLABClient:
 
             response.raise_for_status()
 
-            data = await response.json()
-
-            return data
+            return await response.json()

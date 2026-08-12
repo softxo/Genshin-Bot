@@ -21,9 +21,15 @@ class Error(commands.Cog):
         error_id = error_data["error_id"]
         error_type = error_data["type"]
 
-        explanation = explain_error(
+        error_info = explain_error(
             error_type
         )
+
+        error_code = error_data.get(
+            "code"
+        ) or error_info["code"]
+
+        explanation = error_info["description"]
 
         embed = discord.Embed(
             title=f"Error • {error_id}",
@@ -39,6 +45,12 @@ class Error(commands.Cog):
                 value=f"`{command}`",
                 inline=True
             )
+
+        embed.add_field(
+            name="Code",
+            value=f"`{error_code}`",
+            inline=True
+        )
 
         embed.add_field(
             name="Error Type",
@@ -63,7 +75,9 @@ class Error(commands.Cog):
         if timestamp:
             embed.add_field(
                 name="Occurred",
-                value=f"<t:{int(discord.utils.parse_time(timestamp).timestamp())}:F>",
+                value=(
+                    f"<t:{int(discord.utils.parse_time(timestamp).timestamp())}:F>"
+                ),
                 inline=False
             )
 

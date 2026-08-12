@@ -1,5 +1,5 @@
 def get_daily_note_data(
-    response: dict
+        response: dict
 ) -> dict:
     if response.get("retcode") != 0:
         raise RuntimeError(
@@ -41,6 +41,7 @@ def get_expeditions(
         []
     )
 
+
 def format_expedition_time(
         seconds: int
 ) -> str:
@@ -56,6 +57,7 @@ def format_expedition_time(
         return f"{hours}h{minutes}m"
 
     return f"{minutes}m"
+
 
 def get_home_coin(
     response: dict

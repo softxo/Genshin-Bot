@@ -4,17 +4,16 @@ import psycopg
 from psycopg.rows import dict_row
 
 
-
 def get_connection():
-    DATABASE_URL = os.getenv("DATABASE_URL")
+    database_url = os.getenv("DATABASE_URL")
 
-    if not DATABASE_URL:
+    if not database_url:
         raise RuntimeError(
             "DATABASE_URL is not configured."
         )
 
     return psycopg.connect(
-        DATABASE_URL,
+        database_url,
         row_factory=dict_row
     )
 
@@ -25,6 +24,8 @@ def initialise_database() -> None:
             """
             CREATE TABLE IF NOT EXISTS errors (
                 error_id TEXT PRIMARY KEY,
+
+                code TEXT,
 
                 type TEXT NOT NULL,
                 message TEXT,
@@ -51,6 +52,7 @@ def save_error(
     message: str,
     traceback_text: str,
     *,
+    code: str | None = None,
     command: str | None = None,
     user_id: int | None = None,
     guild_id: int | None = None,
@@ -62,6 +64,7 @@ def save_error(
             """
             INSERT INTO errors (
                 error_id,
+                code,
                 type,
                 message,
                 command,
@@ -72,13 +75,13 @@ def save_error(
                 traceback
             )
             VALUES (
-                %s, %s, %s, %s,
-                %s, %s, %s,
-                %s, %s
+                %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s
             )
 
             ON CONFLICT (error_id)
             DO UPDATE SET
+                code = EXCLUDED.code,
                 type = EXCLUDED.type,
                 message = EXCLUDED.message,
                 command = EXCLUDED.command,
@@ -90,6 +93,7 @@ def save_error(
             """,
             (
                 error_id.upper(),
+                code,
                 error_type,
                 message,
                 command,

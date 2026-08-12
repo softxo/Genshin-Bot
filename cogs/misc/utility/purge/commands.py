@@ -1,7 +1,6 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-
 from utils.errors.error_handler import (
     send_interaction_error,
     send_context_error,

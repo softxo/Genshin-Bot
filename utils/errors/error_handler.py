@@ -1,10 +1,14 @@
+import re
 import uuid
 import discord
 from discord.ext import commands
 from discord import app_commands
+from genshin import errors as genshin_errors
 from utils.constants.emojis import ERROR_EMOJIS, ERROR_TYPE_EMOJIS
 from utils.constants.colours import ERROR_COLOURS, ERROR_TYPE_COLOURS
 from utils.errors.error_logger import log_error
+from utils.errors.error_explanations import explain_error
+from utils.errors.hoyolab_errors import get_hoyolab_error
 
 
 def create_error_embed(
@@ -25,13 +29,11 @@ def create_error_embed(
         )
     )
 
-    embed = discord.Embed(
+    return discord.Embed(
         title=f"{emoji} {title}",
         description=description,
         colour=colour
     )
-
-    return embed
 
 
 async def send_interaction_error(
@@ -74,6 +76,7 @@ async def send_context_error(
 
     await ctx.send(embed=embed)
 
+
 async def send_missing_argument(
         ctx: commands.Context,
         usage: str,
@@ -97,51 +100,52 @@ async def send_missing_argument(
         "missing_argument"
     )
 
+
 async def send_invalid_input(
-    ctx: commands.Context,
-    description: str,
+        ctx: commands.Context,
+        description: str,
 ):
     await send_context_error(
         ctx,
         "Invalid Input",
         description,
-        "invalid_input",
+        "invalid_input"
     )
 
 
 async def send_not_found(
-    ctx: commands.Context,
-    description: str,
+        ctx: commands.Context,
+        description: str,
 ):
     await send_context_error(
         ctx,
         "Not Found",
         description,
-        "not_found",
+        "not_found"
     )
 
 
 async def send_permission_error(
-    ctx: commands.Context,
-    description: str,
+        ctx: commands.Context,
+        description: str,
 ):
     await send_context_error(
         ctx,
         "Permission Denied",
         description,
-        "permission",
+        "permission"
     )
 
 
 async def send_bot_permission_error(
-    ctx: commands.Context,
-    description: str,
+        ctx: commands.Context,
+        description: str,
 ):
     await send_context_error(
         ctx,
         "Missing Bot Permissions",
         description,
-        "bot_permission",
+        "bot_permission"
     )
 
 
@@ -149,20 +153,163 @@ def generate_error_id() -> str:
     return uuid.uuid4().hex[:6].upper()
 
 
+def get_hoyolab_retcode(
+        error
+) -> int | None:
+
+    response = getattr(
+        error,
+        "response",
+        None
+    )
+
+    if response is not None:
+
+        if isinstance(response, dict):
+            retcode = response.get("retcode")
+
+            if isinstance(retcode, int):
+                return retcode
+
+        retcode = getattr(
+            response,
+            "retcode",
+            None
+        )
+
+        if isinstance(retcode, int):
+            return retcode
+
+    match = re.search(
+        r"\[(-?\d+)\]",
+        str(error)
+    )
+
+    if match:
+        return int(match.group(1))
+
+    return None
+
+
+def get_command_name(
+        command
+) -> str | None:
+
+    if command is None:
+        return None
+
+    return getattr(
+        command,
+        "qualified_name",
+        None
+    )
+
+
+async def handle_hoyolab_error(
+        interaction_or_ctx,
+        error,
+        *,
+        command: str | None,
+        user_id: int,
+        guild_id: int | None,
+        channel_id: int | None,
+        interaction: bool
+) -> bool:
+
+    if not isinstance(
+        error,
+        genshin_errors.GenshinException
+    ):
+        return False
+
+    retcode = get_hoyolab_retcode(
+        error
+    )
+
+    if retcode is None:
+        return False
+
+    error_info = get_hoyolab_error(
+        retcode
+    )
+
+    error_id = generate_error_id()
+
+    log_error(
+        error,
+        error_id,
+        code=error_info["code"],
+        command=command,
+        user_id=user_id,
+        guild_id=guild_id,
+        channel_id=channel_id
+    )
+
+    description = (
+        f"{error_info['description']}\n\n"
+        f"**Error Code:** `{error_info['code']}`\n"
+        f"**Error ID:** `{error_id}`"
+    )
+
+    if interaction:
+        await send_interaction_error(
+            interaction_or_ctx,
+            error_info["title"],
+            description,
+            error_info["type"]
+        )
+    else:
+        await send_context_error(
+            interaction_or_ctx,
+            error_info["title"],
+            description,
+            error_info["type"]
+        )
+
+    return True
+
+
 async def handle_app_command_error(
         interaction: discord.Interaction,
         error: app_commands.AppCommandError
 ):
-    if isinstance(error, app_commands.CommandInvokeError):
+
+    if isinstance(
+        error,
+        app_commands.CommandInvokeError
+    ):
         original = error.original
     else:
         original = error
 
-# PERM ERROR
 
-    if isinstance(error, app_commands.MissingPermissions):
+    if await handle_hoyolab_error(
+        interaction,
+        original,
+        command=get_command_name(
+            interaction.command
+        ),
+        user_id=interaction.user.id,
+        guild_id=interaction.guild.id
+        if interaction.guild
+        else None,
+        channel_id=interaction.channel.id
+        if interaction.channel
+        else None,
+        interaction=True
+    ):
+        return
+
+
+    if isinstance(
+        error,
+        app_commands.MissingPermissions
+    ):
         permissions = ", ".join(
-            permission.replace("_", " ").title()
+            permission.replace(
+                "_",
+                " "
+            ).title()
             for permission in error.missing_permissions
         )
 
@@ -170,47 +317,61 @@ async def handle_app_command_error(
             interaction,
             "Permission Denied",
             (
-                "You do not have the required permissions to use this command.\n\n"
+                "You do not have the required permissions "
+                "to use this command.\n\n"
                 f"**Required:** {permissions}"
             ),
             "permission"
         )
         return
 
-    if isinstance(error, app_commands.BotMissingPermissions):
+
+    if isinstance(
+        error,
+        app_commands.BotMissingPermissions
+    ):
         permissions = ", ".join(
-            permission.replace("_", " ").title()
+            permission.replace(
+                "_",
+                " "
+            ).title()
             for permission in error.missing_permissions
         )
 
         await send_interaction_error(
             interaction,
-            "Missing BOT Permissions",
+            "Missing Bot Permissions",
             (
-                "I don't have the permissions required to execute this command.\n\n"
+                "I don't have the permissions required "
+                "to execute this command.\n\n"
                 f"**Required:** {permissions}"
             ),
             "bot_permission"
         )
         return
 
-# CDs
 
-    if isinstance(error, app_commands.CommandOnCooldown):
+    if isinstance(
+        error,
+        app_commands.CommandOnCooldown
+    ):
         await send_interaction_error(
             interaction,
             "Slow Down",
             (
                 "You're using this command too quickly.\n\n"
-                f"Please try again in **{error.retry_after:.1f} seconds**."
+                f"Please try again in **"
+                f"{error.retry_after:.1f} seconds**."
             ),
             "cooldown"
         )
         return
 
-# CHECKS
 
-    if isinstance(error, app_commands.CheckFailure):
+    if isinstance(
+        error,
+        app_commands.CheckFailure
+    ):
         await send_interaction_error(
             interaction,
             "Command Unavailable",
@@ -219,9 +380,11 @@ async def handle_app_command_error(
         )
         return
 
-# TRANSFORMER / ARGUMENT ERRORS
 
-    if isinstance(error, app_commands.TransformerError):
+    if isinstance(
+        error,
+        app_commands.TransformerError
+    ):
         await send_interaction_error(
             interaction,
             "Invalid Input",
@@ -233,52 +396,68 @@ async def handle_app_command_error(
         )
         return
 
-# DISCORD ERRORS
 
-    if isinstance(original, discord.Forbidden):
+    if isinstance(
+        original,
+        discord.Forbidden
+    ):
         await send_interaction_error(
             interaction,
             "Permission Error",
             (
-                "Discord prevented me from completing this action because I don't have the required permissions."
+                "Discord prevented me from completing this action "
+                "because I don't have the required permissions."
             ),
             "permission"
         )
         return
 
-    if isinstance(original, discord.NotFound):
+    if isinstance(
+        original,
+        discord.NotFound
+    ):
         await send_interaction_error(
             interaction,
             "Not Found",
-            (
-                "The requested Discord resource could not be found."
-            ),
+            "The requested Discord resource could not be found.",
             "not_found"
         )
         return
 
-    if isinstance(original, discord.HTTPException):
+    if isinstance(
+        original,
+        discord.HTTPException
+    ):
         await send_interaction_error(
             interaction,
             "Discord Error",
             (
-                "Discord encountered a problem while processing this request.\n\n"
+                "Discord encountered a problem while processing "
+                "this request.\n\n"
                 "Please try again in a moment."
             ),
             "error"
         )
         return
 
-# UNKNOWN / INTERNAL ERRORS
-
     error_id = generate_error_id()
+
+    error_type = type(original).__name__
+
+    error_info = explain_error(
+        error_type
+    )
+
+    error_code = error_info["code"]
+    error_description = error_info["description"]
 
     log_error(
         original,
         error_id,
-        command=interaction.command.qualified_name
-        if interaction.command
-        else None,
+        code=error_code,
+        command=get_command_name(
+            interaction.command
+        ),
         user_id=interaction.user.id,
         guild_id=interaction.guild.id
         if interaction.guild
@@ -293,7 +472,9 @@ async def handle_app_command_error(
         "Unexpected Error",
         (
             "Something went wrong while executing the command.\n\n"
+            f"{error_description}\n\n"
             "Please try again later.\n\n"
+            f"**Error Code:** `{error_code}`\n"
             f"**Error ID:** `{error_id}`"
         ),
         "unexpected"
@@ -304,48 +485,86 @@ async def handle_prefix_command_error(
         ctx: commands.Context,
         error: commands.CommandError
 ):
-    if getattr(error, "handled", False):
+
+    if getattr(
+        error,
+        "handled",
+        False
+    ):
         return
 
-    if isinstance(error, commands.CommandInvokeError):
+    if isinstance(
+        error,
+        commands.CommandInvokeError
+    ):
         original = error.original
     else:
         original = error
 
-# MISSING ARG
 
-    if isinstance(error, commands.MissingRequiredArgument):
+    if await handle_hoyolab_error(
+        ctx,
+        original,
+        command=get_command_name(
+            ctx.command
+        ),
+        user_id=ctx.author.id,
+        guild_id=ctx.guild.id
+        if ctx.guild
+        else None,
+        channel_id=ctx.channel.id
+        if ctx.channel
+        else None,
+        interaction=False
+    ):
+        return
+
+
+    if isinstance(
+        error,
+        commands.MissingRequiredArgument
+    ):
         await send_context_error(
             ctx,
             "Missing Argument",
             (
-                f"You're missing the required argument `{error.param.name}`.\n\n"
-                f"**Usage:** `{ctx.prefix}{ctx.command.qualified_name} "
+                f"You're missing the required argument "
+                f"`{error.param.name}`.\n\n"
+                f"**Usage:** `{ctx.prefix}"
+                f"{ctx.command.qualified_name} "
                 f"{' '.join(f'<{p.name}>' for p in ctx.command.clean_params.values())}`"
             ),
             "missing_argument"
         )
         return
 
-# BAD ARG
 
-    if isinstance(error, commands.BadArgument):
+    if isinstance(
+        error,
+        commands.BadArgument
+    ):
         await send_context_error(
             ctx,
             "Invalid Input",
             (
-                "One or more of the values you provided could not be understood.\n\n"
+                "One or more of the values you provided "
+                "could not be understood.\n\n"
                 "Please check your arguments and try again."
             ),
             "invalid_input"
         )
         return
 
-# MISSING USER PERM
 
-    if isinstance(error, commands.MissingPermissions):
+    if isinstance(
+        error,
+        commands.MissingPermissions
+    ):
         permissions = ", ".join(
-            permission.replace("_", " ").title()
+            permission.replace(
+                "_",
+                " "
+            ).title()
             for permission in error.missing_permissions
         )
 
@@ -353,18 +572,24 @@ async def handle_prefix_command_error(
             ctx,
             "Permission Denied",
             (
-                "You do not have the required permissions to use this command.\n\n"
+                "You do not have the required permissions "
+                "to use this command.\n\n"
                 f"**Required:** {permissions}"
             ),
             "permission"
         )
         return
 
-# MISSING BOT PERM
 
-    if isinstance(error, commands.BotMissingPermissions):
+    if isinstance(
+        error,
+        commands.BotMissingPermissions
+    ):
         permissions = ", ".join(
-            permission.replace("_", " ").title()
+            permission.replace(
+                "_",
+                " "
+            ).title()
             for permission in error.missing_permissions
         )
 
@@ -372,30 +597,36 @@ async def handle_prefix_command_error(
             ctx,
             "Missing Bot Permissions",
             (
-                "I don't have the permissions required to execute this command.\n\n"
+                "I don't have the permissions required "
+                "to execute this command.\n\n"
                 f"**Required:** {permissions}"
             ),
             "bot_permission"
         )
         return
 
-# COOLDOWN
 
-    if isinstance(error, commands.CommandOnCooldown):
+    if isinstance(
+        error,
+        commands.CommandOnCooldown
+    ):
         await send_context_error(
             ctx,
             "Slow Down",
             (
                 "You're using this command too quickly.\n\n"
-                f"Please try again in **{error.retry_after:.1f} seconds**."
+                f"Please try again in **"
+                f"{error.retry_after:.1f} seconds**."
             ),
             "cooldown"
         )
         return
 
-# CHECKS
 
-    if isinstance(error, commands.CheckFailure):
+    if isinstance(
+        error,
+        commands.CheckFailure
+    ):
         await send_context_error(
             ctx,
             "Command Unavailable",
@@ -404,9 +635,11 @@ async def handle_prefix_command_error(
         )
         return
 
-# DISCORD ERRORS
 
-    if isinstance(original, discord.NotFound):
+    if isinstance(
+        original,
+        discord.NotFound
+    ):
         await send_context_error(
             ctx,
             "Not Found",
@@ -415,7 +648,10 @@ async def handle_prefix_command_error(
         )
         return
 
-    if isinstance(original, discord.Forbidden):
+    if isinstance(
+        original,
+        discord.Forbidden
+    ):
         await send_context_error(
             ctx,
             "Permission Error",
@@ -427,28 +663,40 @@ async def handle_prefix_command_error(
         )
         return
 
-    if isinstance(original, discord.HTTPException):
+    if isinstance(
+        original,
+        discord.HTTPException
+    ):
         await send_context_error(
             ctx,
             "Discord Error",
             (
-                "Discord encountered a problem while processing this request.\n\n"
+                "Discord encountered a problem while processing "
+                "this request.\n\n"
                 "Please try again in a moment."
             ),
             "error"
         )
         return
 
-# UNKNOWN / INTERNAL ERRORS
-
     error_id = generate_error_id()
+
+    error_type = type(original).__name__
+
+    error_info = explain_error(
+        error_type
+    )
+
+    error_code = error_info["code"]
+    error_description = error_info["description"]
 
     log_error(
         original,
         error_id,
-        command=ctx.command.qualified_name
-        if ctx.command
-        else None,
+        code=error_code,
+        command=get_command_name(
+            ctx.command
+        ),
         user_id=ctx.author.id,
         guild_id=ctx.guild.id
         if ctx.guild
@@ -463,7 +711,9 @@ async def handle_prefix_command_error(
         "Unexpected Error",
         (
             "Something went wrong while executing the command.\n\n"
+            f"{error_description}\n\n"
             "Please try again later.\n\n"
+            f"**Error Code:** `{error_code}`\n"
             f"**Error ID:** `{error_id}`"
         ),
         "unexpected"
