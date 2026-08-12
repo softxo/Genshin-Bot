@@ -425,8 +425,8 @@ async def handle_app_command_error(
         return
 
     if isinstance(
-        original,
-        discord.HTTPException
+            original,
+            discord.HTTPException
     ):
         await send_interaction_error(
             interaction,

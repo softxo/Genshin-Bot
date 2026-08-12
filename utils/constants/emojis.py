@@ -72,6 +72,15 @@ ERROR_TYPE_EMOJIS = {
     "unexpected": "<:Unexpected_Error:1534254583449387191>",
 }
 
+HOYOLAB_EMOJIS = {
+    "original_resin": "<:Original_Resin:1537057573466017814>",
+    "serenitea_pot": "<:Serenitea_Pot:1537057570890580039>",
+    "parametric_transformer": "<:Parametric_Transformer:1537057568298635314>",
+    "expeditions": "<:Adventurers_Guild:1537057566708867224>",
+    "custom": "<:Custom_Reminder:1537059737147932672>",
+    "notification": "<:Notification:1537060765805052026>"
+}
+
 MUSIC_EMOJIS = {
     "success": "<:musicsuccess:1536391805795303555>",
     "error": "<:musicerror:1536391807456518204>",

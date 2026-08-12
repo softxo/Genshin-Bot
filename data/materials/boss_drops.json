@@ -218,8 +218,14 @@
     "name": "Remnant of the Dreadwing",
     "emoji": "Remnant_of_the_Dreadwing"
   },
+
   "prismatic_severed_tale": {
     "name": "Prismatic Severed Tale",
     "emoji": "Prismatic_Severed_Tale"
+  },
+
+  "unscorched_blossom_branch": {
+    "name": "Unscorched Blossom Branch",
+    "emoji": "Unscorched_Blossom_Branch"
   }
 }

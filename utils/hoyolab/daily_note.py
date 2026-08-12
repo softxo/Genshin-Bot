@@ -19,15 +19,30 @@ def get_daily_note_data(
     return data
 
 
+RESIN_REGEN_SECONDS = 480
+
+
 def get_resin(
     response: dict
 ) -> tuple[int, int, int]:
     data = get_daily_note_data(response)
 
+    current_resin = int(data["current_resin"])
+    max_resin = int(data["max_resin"])
+    recovery_time = int(data["resin_recovery_time"])
+
+    if current_resin >= max_resin:
+        recovery_time = 0
+    else:
+        recovery_time %= RESIN_REGEN_SECONDS
+
+        if recovery_time == 0:
+            recovery_time = RESIN_REGEN_SECONDS
+
     return (
-        data["current_resin"],
-        data["max_resin"],
-        int(data["resin_recovery_time"])
+        current_resin,
+        max_resin,
+        recovery_time
     )
 
 

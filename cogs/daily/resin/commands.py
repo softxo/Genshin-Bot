@@ -7,6 +7,7 @@ from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.database import get_accounts
 from utils.hoyolab.daily_note import get_resin
 from utils.errors.error_handler import create_error_embed
+from cogs.reminders.commands import ResinReminderModal
 
 
 async def _get_resin_message(
@@ -45,15 +46,15 @@ async def _get_resin_message(
         else:
             remaining_resin = max_resin - current_resin
 
-            fully_replenished_seconds = recovery
+            next_resin_seconds = recovery
 
-            next_resin_seconds = (
-                fully_replenished_seconds
-                - ((remaining_resin - 1) * 480)
+            fully_replenished_seconds = (
+                    next_resin_seconds
+                    + ((remaining_resin - 1) * 480)
             )
 
             next_resin_timestamp = (
-                int(time.time()) + next_resin_seconds
+                    int(time.time()) + next_resin_seconds
             )
 
             replenished_in = (
@@ -61,8 +62,8 @@ async def _get_resin_message(
             )
 
             fully_replenished_timestamp = (
-                int(time.time())
-                + fully_replenished_seconds
+                    int(time.time())
+                    + fully_replenished_seconds
             )
 
             fully_replenished = (
@@ -150,11 +151,12 @@ def create_account_options(
 
 
 class ResinAccountSelect(discord.ui.Select):
+
     def __init__(
-            self,
-            discord_user_id: int,
-            options: list[discord.SelectOption],
-            view: "ResinAccountView"
+        self,
+        discord_user_id: int,
+        options: list[discord.SelectOption],
+        view: "ResinAccountView"
     ):
         super().__init__(
             placeholder="Select a Genshin Account...",
@@ -165,12 +167,14 @@ class ResinAccountSelect(discord.ui.Select):
         self.account_view = view
 
     async def callback(
-            self,
-            interaction: discord.Interaction
+        self,
+        interaction: discord.Interaction
     ):
         await interaction.response.defer()
 
         genshin_uid = self.values[0]
+
+        self.account_view.genshin_uid = genshin_uid
 
         accounts = await get_accounts(
             self.discord_user_id
@@ -219,47 +223,97 @@ class ResinAccountSelect(discord.ui.Select):
             )
 
 
-class ResinAccountView(discord.ui.View):
+class ResinReminderButton(discord.ui.Button):
+
     def __init__(
         self,
         discord_user_id: int,
-        options: list[discord.SelectOption]
+        view: "ResinAccountView"
+    ):
+        super().__init__(
+            label="Set Reminder",
+            style=discord.ButtonStyle.primary
+        )
+
+        self.discord_user_id = discord_user_id
+        self.account_view = view
+
+    async def callback(
+        self,
+        interaction: discord.Interaction
+    ):
+        if interaction.user.id != self.discord_user_id:
+            await interaction.response.send_message(
+                "This Resin panel belongs to someone else.",
+                ephemeral=True
+            )
+
+            return
+
+        await interaction.response.send_modal(
+            ResinReminderModal(
+                self.discord_user_id,
+                self.account_view.genshin_uid
+            )
+        )
+
+
+class ResinAccountView(discord.ui.View):
+
+    def __init__(
+        self,
+        discord_user_id: int,
+        accounts: list[dict],
+        genshin_uid: str
     ):
         super().__init__(
             timeout=600
         )
 
+        self.discord_user_id = discord_user_id
+        self.genshin_uid = genshin_uid
+
+        if len(accounts) > 1:
+            self.add_item(
+                ResinAccountSelect(
+                    discord_user_id,
+                    create_account_options(accounts),
+                    self
+                )
+            )
+
         self.add_item(
-            ResinAccountSelect(
+            ResinReminderButton(
                 discord_user_id,
-                options,
                 self
             )
         )
 
 
 class Resin(commands.Cog):
-    def __init__(self, bot):
+
+    def __init__(
+        self,
+        bot: commands.Bot
+    ):
         self.bot = bot
 
     async def _show_resin(
-            self,
-            user_id: int,
-            accounts: list[dict],
-            *,
-            interaction: discord.Interaction | None = None,
-            ctx: commands.Context | None = None,
-            ephemeral: bool = True
+        self,
+        user_id: int,
+        accounts: list[dict],
+        *,
+        interaction: discord.Interaction | None = None,
+        ctx: commands.Context | None = None,
+        ephemeral: bool = True
     ):
-        view = None
-
-        if len(accounts) > 1:
-            view = ResinAccountView(
-                user_id,
-                create_account_options(accounts)
-            )
-
         account = accounts[0]
+
+        view = ResinAccountView(
+            user_id,
+            accounts,
+            account["genshin_uid"]
+        )
 
         embed, file = await _get_resin_message(
             user_id,
@@ -273,6 +327,7 @@ class Resin(commands.Cog):
                 view=view,
                 ephemeral=ephemeral
             )
+
         else:
             await ctx.send(
                 embed=embed,
@@ -285,8 +340,8 @@ class Resin(commands.Cog):
         description="Check your Resin."
     )
     async def resin(
-            self,
-            interaction: discord.Interaction
+        self,
+        interaction: discord.Interaction
     ):
         accounts = await get_accounts(
             interaction.user.id
@@ -311,13 +366,11 @@ class Resin(commands.Cog):
 
         account = accounts[0]
 
-        view = None
-
-        if len(accounts) > 1:
-            view = ResinAccountView(
-                interaction.user.id,
-                create_account_options(accounts)
-            )
+        view = ResinAccountView(
+            interaction.user.id,
+            accounts,
+            account["genshin_uid"]
+        )
 
         embed, file = await _get_resin_message(
             interaction.user.id,
@@ -330,7 +383,6 @@ class Resin(commands.Cog):
             view=view,
             ephemeral=True
         )
-
 
     @commands.command(
         name="resin"
@@ -367,5 +419,5 @@ class Resin(commands.Cog):
         )
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Resin(bot))

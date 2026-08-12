@@ -4,6 +4,7 @@ from psycopg_pool import AsyncConnectionPool
 from datetime import datetime, timezone
 from .auth import HoYoLABCredentials
 from .crypto import HoYoLABCrypto
+from psycopg.types.json import Jsonb
 
 
 _pool: AsyncConnectionPool | None = None
@@ -75,10 +76,70 @@ async def initialise_database() -> None:
             """
         )
 
+
         await connection.execute(
             """
             CREATE INDEX IF NOT EXISTS idx_accounts_discord_user
                 ON accounts(discord_user_id)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS reminders (
+                id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                discord_user_id BIGINT NOT NULL,
+
+                reminder_type TEXT NOT NULL,
+
+                reminder_mode TEXT NOT NULL DEFAULT 'automatic',
+                
+                genshin_uid TEXT,
+
+                enabled BOOLEAN NOT NULL DEFAULT TRUE,
+
+                delivery_type TEXT NOT NULL DEFAULT 'dm',
+
+                config JSONB NOT NULL DEFAULT '{}'::jsonb,
+
+                next_trigger_at TIMESTAMPTZ,
+
+                last_triggered_at TIMESTAMPTZ,
+
+                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            )
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_reminders_user
+                ON reminders(discord_user_id)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_reminders_due
+                ON reminders(next_trigger_at)
+                WHERE enabled = TRUE
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_reminders_user_type
+                ON reminders(discord_user_id, reminder_type)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_reminders_account
+                ON reminders(discord_user_id, genshin_uid)
             """
         )
 
@@ -589,3 +650,278 @@ async def get_account(
         "created_at": row["created_at"],
         "updated_at": row["updated_at"]
     }
+
+
+async def create_reminder(
+    discord_user_id: int,
+    reminder_type: str,
+    *,
+    genshin_uid: str | None = None,
+    config: dict | None = None,
+    delivery_type: str = "dm",
+    reminder_mode: str = "automatic",
+    next_trigger_at: datetime | None = None
+) -> int:
+
+    if reminder_mode not in {
+        "automatic",
+        "manual"
+    }:
+        raise ValueError(
+            "Invalid reminder mode."
+        )
+
+    if (
+        reminder_mode == "automatic"
+        and next_trigger_at is None
+    ):
+        next_trigger_at = datetime.now(timezone.utc)
+
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT id
+            FROM reminders
+            WHERE discord_user_id = %s
+            AND reminder_type = %s
+            AND reminder_mode = %s
+            AND genshin_uid IS NOT DISTINCT FROM %s
+            LIMIT 1
+            """,
+            (
+                discord_user_id,
+                reminder_type,
+                reminder_mode,
+                genshin_uid
+            )
+        )
+
+        existing = await result.fetchone()
+
+        if existing is not None:
+            reminder_id = existing["id"]
+
+            await connection.execute(
+                """
+                UPDATE reminders
+                SET
+                    enabled = TRUE,
+                    delivery_type = %s,
+                    config = %s,
+                    next_trigger_at = %s,
+                    last_triggered_at = NULL,
+                    updated_at = NOW()
+                WHERE discord_user_id = %s
+                AND id = %s
+                """,
+                (
+                    delivery_type,
+                    Jsonb(config or {}),
+                    next_trigger_at,
+                    discord_user_id,
+                    reminder_id
+                )
+            )
+
+            print(
+                "[Database] Reminder saved:",
+                reminder_id,
+                reminder_type,
+                reminder_mode,
+                genshin_uid,
+                config,
+                next_trigger_at
+            )
+
+            return reminder_id
+
+        result = await connection.execute(
+            """
+            INSERT INTO reminders (
+                discord_user_id,
+                reminder_type,
+                reminder_mode,
+                genshin_uid,
+                enabled,
+                delivery_type,
+                config,
+                next_trigger_at
+            )
+            VALUES (
+                %s, %s, %s, %s,
+                TRUE,
+                %s,
+                %s,
+                %s
+            )
+            RETURNING id
+            """,
+            (
+                discord_user_id,
+                reminder_type,
+                reminder_mode,
+                genshin_uid,
+                delivery_type,
+                Jsonb(config or {}),
+                next_trigger_at
+            )
+        )
+
+        row = await result.fetchone()
+
+    return row["id"]
+
+
+async def get_reminders(
+    discord_user_id: int,
+    *,
+    enabled_only: bool = False
+) -> list[dict]:
+    async with get_pool().connection() as connection:
+        query = """
+            SELECT
+                r.*,
+
+                a.nickname AS account_nickname,
+                a.cyrene_nickname AS account_cyrene_nickname,
+                a.level AS account_level,
+                a.genshin_server AS account_server
+
+            FROM reminders r
+
+            LEFT JOIN accounts a
+                ON a.discord_user_id = r.discord_user_id
+                AND a.genshin_uid = r.genshin_uid
+
+            WHERE r.discord_user_id = %s
+        """
+
+        params = [discord_user_id]
+
+        if enabled_only:
+            query += """
+                AND r.enabled = TRUE
+            """
+
+        query += """
+            ORDER BY r.created_at ASC
+        """
+
+        result = await connection.execute(
+            query,
+            tuple(params)
+        )
+
+        return await result.fetchall()
+
+
+async def get_reminder(
+    discord_user_id: int,
+    reminder_id: int
+) -> dict | None:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT *
+            FROM reminders
+            WHERE discord_user_id = %s
+            AND id = %s
+            LIMIT 1
+            """,
+            (
+                discord_user_id,
+                reminder_id
+            )
+        )
+
+        return await result.fetchone()
+
+
+_UNSET = object()
+
+async def update_reminder(
+    discord_user_id: int,
+    reminder_id: int,
+    *,
+    enabled: bool | None = None,
+    config: dict | None = None,
+    next_trigger_at: datetime | None | object = _UNSET,
+    last_triggered_at: datetime | None = None
+) -> bool:
+    updates = []
+    values = []
+
+    if enabled is not None:
+        updates.append("enabled = %s")
+        values.append(enabled)
+
+    if config is not None:
+        updates.append("config = %s")
+        values.append(Jsonb(config))
+
+    if next_trigger_at is not _UNSET:
+        updates.append("next_trigger_at = %s")
+        values.append(next_trigger_at)
+
+    if last_triggered_at is not None:
+        updates.append("last_triggered_at = %s")
+        values.append(last_triggered_at)
+
+    if not updates:
+        return False
+
+    updates.append("updated_at = NOW()")
+
+    values.extend([
+        discord_user_id,
+        reminder_id
+    ])
+
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            f"""
+            UPDATE reminders
+            SET {", ".join(updates)}
+            WHERE discord_user_id = %s
+            AND id = %s
+            """,
+            tuple(values)
+        )
+
+    return result.rowcount > 0
+
+
+async def delete_reminder(
+    discord_user_id: int,
+    reminder_id: int
+) -> bool:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            DELETE FROM reminders
+            WHERE discord_user_id = %s
+            AND id = %s
+            """,
+            (
+                discord_user_id,
+                reminder_id
+            )
+        )
+
+    return result.rowcount > 0
+
+
+async def get_due_reminders() -> list[dict]:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT *
+            FROM reminders
+            WHERE enabled = TRUE
+            AND next_trigger_at IS NOT NULL
+            AND next_trigger_at <= NOW()
+            ORDER BY next_trigger_at ASC
+            """
+        )
+
+        return await result.fetchall()

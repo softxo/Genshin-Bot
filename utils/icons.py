@@ -16,6 +16,7 @@ TALENT_SUFFIXES = {
     "a4": "A4",
     "utility": "Utility",
     "witch's homework": "WitchsHomework",
+    "radiance": "Radiance"
 }
 
 ## EMOJI Helpers

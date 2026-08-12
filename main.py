@@ -29,6 +29,7 @@ from utils.hoyolab.database import (
     update_discord_server
 )
 from utils.web.app import app as web_app
+from utils.reminders.scheduler import ReminderScheduler
 
 
 
@@ -55,12 +56,15 @@ print()
 intents = discord.Intents.default()
 intents.message_content = True
 
+
 bot = commands.Bot(
     command_prefix=lambda bot, message: get_prefix(
         message.guild.id if message.guild else None
     ),
     intents=intents,
 )
+
+reminder_scheduler = ReminderScheduler(bot)
 
 
 @bot.tree.interaction_check
@@ -132,6 +136,21 @@ async def load_cogs():
 
 @bot.event
 async def on_ready():
+    print("========== Reminder Scheduler ==========")
+
+    print(
+        "Scheduler running before start:",
+        reminder_scheduler.is_running()
+    )
+
+    if not reminder_scheduler.is_running():
+        reminder_scheduler.start()
+
+    print(
+        "Scheduler running after start:",
+        reminder_scheduler.is_running()
+    )
+
     await bot.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.listening,
@@ -144,7 +163,6 @@ async def on_ready():
     print(f"Guilds: {len(bot.guilds)}")
     print(f"Server Emojis: {len(bot.emojis)}")
     print()
-
 
     for cmd in bot.tree.get_commands():
         print("COMMAND:", cmd.name)
@@ -160,6 +178,7 @@ async def on_ready():
 
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} command(s).")
+
 
 async def main():
     initialise_error_database()
@@ -187,6 +206,7 @@ async def main():
             )
 
     finally:
+        await reminder_scheduler.stop()
         await close_hoyolab_database()
 
 

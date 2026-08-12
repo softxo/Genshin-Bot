@@ -287,5 +287,15 @@
   "winter_icelea": {
     "name": "Winter Icelea",
     "emoji": "Winter_Icelea"
+  },
+
+  "frostfairy_flower": {
+    "name": "Frostfairy_Flower",
+    "emoji": "Frostfairy_Flower"
+  },
+
+  "flockingweed": {
+    "name": "Flockingweed",
+    "emoji": "Flockingweed"
   }
 }

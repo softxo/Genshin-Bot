@@ -3,10 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from utils.hoyolab.login import login_with_password
 from utils.constants.emojis import ERROR_EMOJIS
-from utils.constants.colours import (
-    ERROR_COLOURS,
-    ERROR_TYPE_COLOURS
-)
+from utils.constants.colours import ERROR_COLOURS
 from utils.hoyolab.errors import (
     HoYoLABAuthenticationError,
     HoYoLABAccountNotFoundError,

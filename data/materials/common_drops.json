@@ -305,20 +305,20 @@
     }
   },
 
-  "glimmer": {
-    "name": "Glimmer",
+  "ethereal": {
+    "name": "Ethereal",
     "tiers": {
       "tier1": {
         "name": "Ethereal Glimmershard",
         "emoji": "Ethereal_Glimmershard"
       },
       "tier2": {
-        "name": "Frostnight's Glimmer",
-        "emoji": "Frostnights_Glimmer"
+        "name": "Ethereal Crystal",
+        "emoji": "Ethereal_Crystal"
       },
       "tier3": {
-        "name": "Glimmering Essence",
-        "emoji": "Glimmering_Essence"
+        "name": "Ethereal Crystalscale Stone",
+        "emoji": "Ethereal_Crystalscale_Stone"
       }
     }
   },

@@ -1,10 +1,15 @@
 import discord
+from pathlib import Path
 from discord import app_commands
 from discord.ext import commands
 from datetime import datetime, timezone, timedelta
 from utils.banners.banners import get_current_banner
 from utils.character.characters import get_character
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS
+
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+BANNER_ASSETS = BASE_DIR / "assets" / "banners"
 
 
 SERVER_OFFSETS = {
@@ -30,12 +35,12 @@ class Banners(commands.Cog):
         )
 
         banner_file = discord.File(
-            "assets/banners/6.7_second_half.gif",
-            filename="banner_6.7_2.gif"
+            BANNER_ASSETS / "7.0_first_half.gif",
+            filename="banner_7.0_1.gif"
         )
 
         embed.set_image(
-            url="attachment://banner_6.7_2.gif"
+            url="attachment://banner_7.0_1.gif"
         )
 
         embed.set_footer(
@@ -46,9 +51,6 @@ class Banners(commands.Cog):
 
         for character_id in banner["characters"]["5_star"]:
             character = get_character(character_id)
-
-            print("BANNER CHARACTER:", character_id)
-            print("LOOKUP RESULT:", get_character(character_id))
 
             if character is None:
                 five_star_lines.append(character_id)
@@ -127,17 +129,30 @@ class Banners(commands.Cog):
 
             return int(regional_dt.timestamp())
 
+        time_mode = banner.get("time_mode", "regional")
+
         started_lines = []
 
-        for region, offset in SERVER_OFFSETS.items():
-            timestamp = regional_timestamp(start, offset)
+        if time_mode == "fixed":
+            timestamp = int(start.timestamp())
 
-            started_lines.append(
-                f"{region}: <t:{timestamp}:R>"
-            )
+            for region in SERVER_OFFSETS:
+                started_lines.append(
+                    f"{region}: <t:{timestamp}:R>"
+                )
+        else:
+            for region, offset in SERVER_OFFSETS.items():
+                timestamp = regional_timestamp(
+                    start,
+                    offset
+                )
+
+                started_lines.append(
+                    f"{region}: <t:{timestamp}:R>"
+                )
 
         embed.add_field(
-            name="Started",
+            name="Start",
             value="\n".join(started_lines),
             inline=True
         )
@@ -145,29 +160,38 @@ class Banners(commands.Cog):
         ending_lines = []
 
         for region, offset in SERVER_OFFSETS.items():
-            timestamp = regional_timestamp(end, offset)
+            timestamp = regional_timestamp(
+                end,
+                offset
+            )
 
             ending_lines.append(
                 f"{region}: <t:{timestamp}:R>"
             )
 
         embed.add_field(
-            name="Ending",
+            name="End",
             value="\n".join(ending_lines),
             inline=True
         )
 
         return embed, banner_file
 
+
     @app_commands.command(
         name="banners",
         description="Shows the current character event banners."
     )
-    async def banners(self, interaction: discord.Interaction):
+    async def banners(
+            self,
+            interaction: discord.Interaction
+    ):
+
+        await interaction.response.defer()
 
         embed, banner_file = self._build_banner()
 
-        await interaction.response.send_message(
+        await interaction.followup.send(
             embed=embed,
             file=banner_file
         )
@@ -175,7 +199,10 @@ class Banners(commands.Cog):
     @commands.command(
         name="banners"
     )
-    async def banners_prefix(self, ctx):
+    async def banners_prefix(
+            self,
+            ctx: commands.Context
+    ):
 
         embed, banner_file = self._build_banner()
 
@@ -183,6 +210,7 @@ class Banners(commands.Cog):
             embed=embed,
             file=banner_file
         )
+
 
 
 async def setup(bot):
