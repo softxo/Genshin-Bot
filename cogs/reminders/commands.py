@@ -10,6 +10,11 @@ from utils.hoyolab.database import (
 )
 from datetime import datetime, timezone
 from utils.hoyolab.database import create_reminder
+from utils.errors.error_handler import (
+    create_error_embed,
+    send_context_error,
+)
+
 
 REMINDER_NAMES = {
     "resin": "Resin",
@@ -143,7 +148,7 @@ def build_reminders_embed(
                 reminder
                 for reminder in reminders
                 if reminder["reminder_type"] == reminder_type
-                and reminder["reminder_mode"] == "manual"
+                   and reminder["reminder_mode"] == "manual"
             ),
             None
         )
@@ -153,23 +158,29 @@ def build_reminders_embed(
                 reminder
                 for reminder in reminders
                 if reminder["reminder_type"] == reminder_type
-                and reminder["reminder_mode"] == "automatic"
+                   and reminder["reminder_mode"] == "automatic"
             ),
             None
         )
 
-        def format_reminder_status(
+        def get_reminder_display(
                 reminder: dict | None
-        ) -> str:
+        ) -> tuple[str, str]:
 
-            if reminder is None:
-                return f"{ERROR_EMOJIS['error']} Disabled"
-
-            if not reminder["enabled"]:
-                return f"{ERROR_EMOJIS['error']} Disabled"
+            if (
+                    reminder is None
+                    or not reminder["enabled"]
+            ):
+                return (
+                    f"{ERROR_EMOJIS['error']} Disabled",
+                    ""
+                )
 
             config = reminder.get("config") or {}
-            reminder_type = reminder["reminder_type"]
+
+            status = (
+                f"{ERROR_EMOJIS['success']} Enabled"
+            )
 
             details = ""
 
@@ -177,34 +188,52 @@ def build_reminders_embed(
                 amount = config.get("amount")
 
                 if amount is not None:
-                    details = f" — {HOYOLAB_EMOJIS['original_resin']}**{amount} Resin**"
+                    details = (
+                        f"{HOYOLAB_EMOJIS['original_resin']} "
+                        f"**{amount} Resin**"
+                    )
 
             elif reminder_type == "custom":
                 message = config.get("message")
 
                 if message:
-                    details = f' — "{message}"'
+                    details = f'"{message}"'
 
-            return (
-                f"{ERROR_EMOJIS['success']} Enabled"
-                f"{details}"
-            )
+            return status, details
 
-        manual_status = format_reminder_status(
-            manual
+        manual_status, manual_details = (
+            get_reminder_display(manual)
         )
 
-        automatic_status = format_reminder_status(
-            automatic
+        automatic_status, automatic_details = (
+            get_reminder_display(automatic)
         )
 
         embed.add_field(
             name=f"{emoji} {name}",
             value=(
-                f"- **Manual Reminder** — {manual_status}\n"
-                f"- **Automatic Reminder** — {automatic_status}"
+                "⦁\u2002**Manual Reminder**\n"
+                "⦁\u2002**Automatic Reminder**"
             ) + "\n\u200b",
-            inline=False
+            inline=True
+        )
+
+        embed.add_field(
+            name="\u200b",
+            value=(
+                f"{manual_status}\n"
+                f"{automatic_status}"
+            ),
+            inline=True
+        )
+
+        embed.add_field(
+            name="\u200b",
+            value=(
+                f"{manual_details or '\u200b'}\n"
+                f"{automatic_details or '\u200b'}"
+            ),
+            inline=True
         )
 
     return embed
@@ -278,7 +307,11 @@ class ReminderSelect(discord.ui.Select):
 
         if reminder is None:
             await interaction.response.send_message(
-                "That reminder no longer exists.",
+                embed=create_error_embed(
+                    "Reminder Not Found",
+                    "That reminder no longer exists.",
+                    "not_found"
+                ),
                 ephemeral=True
             )
 
@@ -395,7 +428,11 @@ class ReminderManagementView(
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This reminder belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -427,7 +464,11 @@ class ReminderManagementView(
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This reminder belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -459,7 +500,11 @@ class ReminderManagementView(
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This reminder belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -472,7 +517,11 @@ class ReminderManagementView(
 
         if not deleted:
             await interaction.response.send_message(
-                "That reminder no longer exists.",
+                embed=create_error_embed(
+                    "Reminder Not Found",
+                    "That reminder no longer exists.",
+                    "not_found"
+                ),
                 ephemeral=True
             )
 
@@ -522,7 +571,11 @@ class ReminderAccountSelect(discord.ui.Select):
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This menu belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -541,7 +594,11 @@ class ReminderAccountSelect(discord.ui.Select):
 
         if account is None:
             await interaction.response.send_message(
-                "That account could not be found.",
+                embed=create_error_embed(
+                    "Account Not Found",
+                    "That account could not be found.",
+                    "not_found"
+                ),
                 ephemeral=True
             )
 
@@ -605,7 +662,11 @@ class ResinReminderButton(discord.ui.Button):
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This reminder panel belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -686,7 +747,11 @@ class ManualReminderButton(
     ):
         if interaction.user.id != self.discord_user_id:
             await interaction.response.send_message(
-                "This reminder panel belongs to someone else.",
+                embed=create_error_embed(
+                    "Permission Denied",
+                    "This reminder belongs to someone else.",
+                    "permission"
+                ),
                 ephemeral=True
             )
 
@@ -721,7 +786,11 @@ class Reminders(commands.Cog):
 
         if not accounts:
             await interaction.response.send_message(
-                "You don't have any HoYoLAB accounts linked.",
+                embed=create_error_embed(
+                    "No Accounts Linked",
+                    "You don't have any HoYoLAB accounts linked.",
+                    "not_found"
+                ),
                 ephemeral=True
             )
 
@@ -769,9 +838,13 @@ class Reminders(commands.Cog):
         )
 
         if not accounts:
-            await ctx.send(
-                "You don't have any HoYoLAB accounts linked."
+            await send_context_error(
+                ctx,
+                "No Accounts Linked",
+                "You don't have any HoYoLAB accounts linked.",
+                "not_found"
             )
+
             return
 
         selected_account = accounts[0]
@@ -846,7 +919,11 @@ class ResinReminderModal(discord.ui.Modal):
 
         except ValueError:
             await interaction.response.send_message(
-                "Please enter a valid Resin amount.",
+                embed=create_error_embed(
+                    "Invalid Resin Amount",
+                    "Please enter a valid Resin amount.",
+                    "invalid_input"
+                ),
                 ephemeral=True
             )
 
@@ -854,7 +931,11 @@ class ResinReminderModal(discord.ui.Modal):
 
         if not 1 <= amount <= 200:
             await interaction.response.send_message(
-                "Resin must be between **1 and 200**.",
+                embed=create_error_embed(
+                    "Invalid Resin Amount",
+                    "Resin must be between **1 and 200**.",
+                    "invalid_input"
+                ),
                 ephemeral=True
             )
 
@@ -868,7 +949,8 @@ class ResinReminderModal(discord.ui.Modal):
                 "amount": amount
             },
             delivery_type="dm",
-            reminder_mode=self.mode
+            reminder_mode=self.mode,
+            next_trigger_at=datetime.now(timezone.utc)
         )
 
         reminders = await get_reminders(
@@ -909,14 +991,12 @@ class ResinReminderModal(discord.ui.Modal):
             except discord.NotFound:
                 pass
 
-        confirmation = discord.Embed(
-            title="Resin Reminder Set",
-            description=(
-                f"{HOYOLAB_EMOJIS['notification']} "
-                f"Your **{self.mode} Resin Reminder** has been set "
-                f"to **{amount} Resin**."
+        confirmation = create_error_embed(
+            "Resin Reminder Set",
+            (
+                f"Your **{self.mode.title()} Resin Reminder** has been set to **{amount} Resin**."
             ),
-            colour=discord.Colour.green()
+            "success"
         )
 
         await interaction.response.send_message(
@@ -973,8 +1053,14 @@ class ManualReminderModal(discord.ui.Modal):
 
         except ValueError:
             await interaction.response.send_message(
-                "Please enter a valid date and time.\n"
-                "Example: `12/08/2026` and `18:30`.",
+                embed=create_error_embed(
+                    "Invalid Date or Time",
+                    (
+                        "Please enter a valid date and time.\n\n"
+                        "Example: `12/08/2026` and `18:30`."
+                    ),
+                    "invalid_input"
+                ),
                 ephemeral=True
             )
 
@@ -986,7 +1072,11 @@ class ManualReminderModal(discord.ui.Modal):
 
         if trigger_at <= datetime.now(timezone.utc):
             await interaction.response.send_message(
-                "The reminder time must be in the future.",
+                embed=create_error_embed(
+                    "Invalid Reminder Time",
+                    "The reminder time must be in the future.",
+                    "invalid_input"
+                ),
                 ephemeral=True
             )
 
@@ -999,16 +1089,17 @@ class ManualReminderModal(discord.ui.Modal):
                 "message": self.message.value
             },
             delivery_type="dm",
+            reminder_mode="manual",
             next_trigger_at=trigger_at
         )
 
-        embed = discord.Embed(
-            title="Reminder Set",
-            description=(
-                f"{HOYOLAB_EMOJIS['notification']} "
-                f"I'll remind you <t:{int(trigger_at.timestamp())}:R>."
+        embed = create_error_embed(
+            "Reminder Set",
+            (
+                f"I'll remind you "
+                f"<t:{int(trigger_at.timestamp())}:R>."
             ),
-            colour=discord.Colour.green()
+            "success"
         )
 
         await interaction.response.send_message(

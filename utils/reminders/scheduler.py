@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 CHECK_INTERVAL = 10
 RESIN_REGEN_SECONDS = 480
+RESIN_TRIGGERED_CHECK_SECONDS = 300
 
 
 class ReminderScheduler:
@@ -128,10 +129,15 @@ class ReminderScheduler:
             self,
             reminder: dict
     ) -> bool:
-        if reminder["reminder_mode"] == "manual":
-            return await self.handle_manual(reminder)
 
         reminder_type = reminder["reminder_type"]
+        reminder_mode = reminder.get("reminder_mode")
+
+        if (
+                reminder_mode == "manual"
+                and reminder_type == "custom"
+        ):
+            return await self.handle_manual(reminder)
 
         handler = {
             "resin": self.handle_resin,
@@ -150,6 +156,7 @@ class ReminderScheduler:
             return False
 
         return await handler(reminder)
+
 
     async def handle_manual(
         self,
@@ -188,71 +195,69 @@ class ReminderScheduler:
         reminder_id = reminder["id"]
         user_id = reminder["discord_user_id"]
         genshin_uid = reminder.get("genshin_uid")
+        reminder_mode = reminder.get("reminder_mode")
 
         print(
             f"[ReminderScheduler] RESIN HANDLER STARTED: "
             f"id={reminder_id}, user={user_id}, uid={genshin_uid}"
         )
 
-        if not genshin_uid:
-            print(
-                f"[ReminderScheduler] Resin reminder {reminder_id} "
-                f"has no Genshin UID."
-            )
-
-            await update_reminder(
-                user_id,
-                reminder_id,
-                enabled=False,
-                next_trigger_at=None
-            )
-
-            return True
-
         config = reminder.get("config") or {}
-        amount = config.get("amount")
 
         print(
             f"[ReminderScheduler] Reminder {reminder_id} config: "
             f"{config}"
         )
 
+        amount = config.get("amount")
+
         if amount is None:
             print(
                 f"[ReminderScheduler] Resin reminder {reminder_id} "
-                f"has no target amount."
+                f"has no target amount. Retrying in 60 seconds."
             )
 
-            await update_reminder(
-                user_id,
-                reminder_id,
-                enabled=False,
-                next_trigger_at=None
+            await self.retry_reminder(
+                reminder,
+                seconds=60
             )
 
-            return True
+            return False
 
         try:
             amount = int(amount)
+
         except (TypeError, ValueError):
             print(
                 f"[ReminderScheduler] Invalid Resin target "
-                f"for reminder {reminder_id}: {amount!r}"
+                f"for reminder {reminder_id}: {amount!r}. "
+                f"Retrying in 60 seconds."
             )
 
-            await update_reminder(
-                user_id,
-                reminder_id,
-                enabled=False,
-                next_trigger_at=None
+            await self.retry_reminder(
+                reminder,
+                seconds=60
             )
 
-            return True
+            return False
 
         print(
             f"[ReminderScheduler] Resin target for reminder "
             f"{reminder_id}: {amount}"
         )
+
+        if not genshin_uid:
+            print(
+                f"[ReminderScheduler] Resin reminder {reminder_id} "
+                f"has no Genshin UID. Retrying in 60 seconds."
+            )
+
+            await self.retry_reminder(
+                reminder,
+                seconds=60
+            )
+
+            return False
 
         print(
             f"[ReminderScheduler] Getting account client "
@@ -264,6 +269,7 @@ class ReminderScheduler:
                 user_id,
                 genshin_uid
             )
+
         except Exception:
             logger.exception(
                 "Failed to get account client for Resin reminder %s.",
@@ -284,7 +290,8 @@ class ReminderScheduler:
         if client is None:
             print(
                 f"[ReminderScheduler] No account client found "
-                f"for reminder {reminder_id}."
+                f"for reminder {reminder_id}. "
+                f"Retrying in 60 seconds."
             )
 
             await self.retry_reminder(
@@ -292,7 +299,7 @@ class ReminderScheduler:
                 seconds=60
             )
 
-            return
+            return False
 
         try:
             async with client:
@@ -322,12 +329,13 @@ class ReminderScheduler:
                 seconds=60
             )
 
-            return
+            return False
 
         try:
             current_resin, max_resin, recovery = get_resin(
                 response
             )
+
         except Exception:
             logger.exception(
                 "Failed to parse Resin response for reminder %s.",
@@ -339,16 +347,36 @@ class ReminderScheduler:
                 seconds=60
             )
 
-            return
+            return False
+
+        triggered = bool(
+            config.get("triggered", False)
+        )
 
         print(
             f"[ReminderScheduler] Resin status: "
             f"{current_resin}/{max_resin}, "
             f"target={amount}, "
-            f"recovery={recovery}s"
+            f"recovery={recovery}s, "
+            f"triggered={triggered}"
         )
 
         if current_resin >= amount:
+            if triggered:
+                print(
+                    f"[ReminderScheduler] Reminder {reminder_id} "
+                    f"already triggered. "
+                    f"Resin is still >= target. "
+                    f"No notification will be sent."
+                )
+
+                await self.retry_reminder(
+                    reminder,
+                    seconds=60
+                )
+
+                return False
+
             print(
                 f"[ReminderScheduler] TARGET REACHED: "
                 f"{current_resin} >= {amount}"
@@ -369,23 +397,7 @@ class ReminderScheduler:
                 f"{reminder_id}: {sent}"
             )
 
-            if sent:
-                await update_reminder(
-                    user_id,
-                    reminder_id,
-                    enabled=False,
-                    next_trigger_at=None,
-                    last_triggered_at=datetime.now(timezone.utc)
-                )
-
-                print(
-                    f"[ReminderScheduler] Reminder {reminder_id} "
-                    f"completed and disabled."
-                )
-
-                return True
-
-            else:
+            if not sent:
                 print(
                     f"[ReminderScheduler] DM failed. "
                     f"Retrying reminder {reminder_id} in 60 seconds."
@@ -398,6 +410,59 @@ class ReminderScheduler:
 
                 return False
 
+            now = datetime.now(timezone.utc)
+
+            if reminder_mode == "manual":
+                await update_reminder(
+                    user_id,
+                    reminder_id,
+                    enabled=False,
+                    last_triggered_at=now,
+                    next_trigger_at=None
+                )
+
+                print(
+                    f"[ReminderScheduler] Manual Resin reminder "
+                    f"{reminder_id} notified successfully and was disabled."
+                )
+
+                return True
+
+            config["triggered"] = True
+
+            await update_reminder(
+                user_id,
+                reminder_id,
+                enabled=True,
+                config=config,
+                last_triggered_at=now,
+                next_trigger_at=now + timedelta(
+                    seconds=RESIN_TRIGGERED_CHECK_SECONDS
+                )
+            )
+
+            print(
+                f"[ReminderScheduler] Automatic Resin reminder "
+                f"{reminder_id} notified successfully and remains active."
+            )
+
+            return False
+
+        if triggered:
+            print(
+                f"[ReminderScheduler] Resin dropped below target "
+                f"for reminder {reminder_id}. "
+                f"Resetting trigger state."
+            )
+
+            config["triggered"] = False
+
+            await update_reminder(
+                user_id,
+                reminder_id,
+                enabled=True,
+                config=config
+            )
 
         resin_needed = amount - current_resin
 
@@ -415,27 +480,31 @@ class ReminderScheduler:
 
         return False
 
-
     async def schedule_resin_reminder(
-        self,
-        reminder: dict,
-        current_resin: int,
-        target_resin: int,
-        recovery: int
+            self,
+            reminder: dict,
+            current_resin: int,
+            target_resin: int,
+            recovery: int
     ):
         resin_needed = target_resin - current_resin
 
         if resin_needed <= 0:
+            await self.retry_reminder(
+                reminder,
+                seconds=60
+            )
+
             return
 
         seconds_until_target = (
-            recovery
-            + ((resin_needed - 1) * RESIN_REGEN_SECONDS)
+                recovery
+                + ((resin_needed - 1) * RESIN_REGEN_SECONDS)
         )
 
         next_trigger_at = (
-            datetime.now(timezone.utc)
-            + timedelta(seconds=seconds_until_target)
+                datetime.now(timezone.utc)
+                + timedelta(seconds=seconds_until_target)
         )
 
         logger.info(
@@ -450,6 +519,7 @@ class ReminderScheduler:
         await update_reminder(
             reminder["discord_user_id"],
             reminder["id"],
+            enabled=True,
             next_trigger_at=next_trigger_at
         )
 

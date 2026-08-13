@@ -7,6 +7,7 @@ from utils.hoyolab.database import (
     update_account_nickname
 )
 from cogs.hoyolab.link_account.commands import HoYoLABAccountsView
+from utils.constants.emojis import MISC_EMOJIS
 
 
 def get_account_name(account: dict) -> str:
@@ -217,7 +218,7 @@ class AccountsView(discord.ui.View):
 
     @discord.ui.button(
         label="Add Account",
-        emoji="<:Add:1535757951011131542>",
+        emoji=f"{MISC_EMOJIS['add']}",
         style=discord.ButtonStyle.secondary
     )
     async def add_account(
@@ -253,7 +254,7 @@ class AccountsView(discord.ui.View):
 
     @discord.ui.button(
         label="Remove Account",
-        emoji="<:Remove:1535757952403775578>",
+        emoji=f"{MISC_EMOJIS['remove']}",
         style=discord.ButtonStyle.secondary
     )
     async def remove_account(
@@ -306,7 +307,7 @@ class AccountsView(discord.ui.View):
 
     @discord.ui.button(
         label="Edit Nickname",
-        emoji="<:Rename:1535757957650714734>",
+        emoji=f"{MISC_EMOJIS['rename']}",
         style=discord.ButtonStyle.secondary
     )
     async def edit_nickname(

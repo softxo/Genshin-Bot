@@ -46,7 +46,8 @@ ERROR_TYPE_COLOURS = {
     "not_found": 0xF1C40F,
     "invalid_input": 0x820505,
     "missing_argument": 0xF1C40F,
-    "unexpected": 0x820505
+    "unexpected": 0x820505,
+    "success": 0x34E100,
 }
 
 

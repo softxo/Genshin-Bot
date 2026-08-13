@@ -52,7 +52,10 @@ STAT_EMOJIS = {
 
 MISC_EMOJIS = {
     "info": "<:info:1532802335393321080>",
-    "important": "<:important:1532802333908668446>"
+    "important": "<:important:1532802333908668446>",
+    "add": "<:Add:1535757951011131542>",
+    "remove": "<:Remove:1535757952403775578>",
+    "rename": "<:Rename:1535757957650714734>"
 }
 
 ERROR_EMOJIS = {
@@ -70,6 +73,7 @@ ERROR_TYPE_EMOJIS = {
     "invalid_input": "<:Error:1534168169865023580>",
     "missing_argument": "<:Missing_Arg:1534168164269555843>",
     "unexpected": "<:Unexpected_Error:1534254583449387191>",
+    "success": "<:Success:1534168168027783278>"
 }
 
 HOYOLAB_EMOJIS = {

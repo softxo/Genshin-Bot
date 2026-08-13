@@ -4,10 +4,19 @@ from pathlib import Path
 from discord import app_commands
 from discord.ext import commands
 from utils.hoyolab.account_client import get_account_client
-from utils.hoyolab.database import get_accounts
+from utils.hoyolab.database import (
+    get_accounts,
+    get_reminders,
+    delete_reminder
+)
 from utils.hoyolab.daily_note import get_resin
 from utils.errors.error_handler import create_error_embed
 from cogs.reminders.commands import ResinReminderModal
+from utils.constants.emojis import (
+    HOYOLAB_EMOJIS,
+    ERROR_EMOJIS,
+    MISC_EMOJIS
+)
 
 
 async def _get_resin_message(
@@ -86,6 +95,23 @@ async def _get_resin_message(
         "assets/hoyolab/daily/Original_Resin.webp"
     )
 
+    reminders = await get_reminders(
+        user_id
+    )
+
+    manual_reminder, automatic_reminder = get_resin_reminders(
+        reminders,
+        account["genshin_uid"]
+    )
+
+    manual_status, manual_amount = get_resin_reminder_display(
+        manual_reminder
+    )
+
+    automatic_status, automatic_amount = get_resin_reminder_display(
+        automatic_reminder
+    )
+
     file = discord.File(
         resin_image,
         filename="Original_Resin.webp"
@@ -116,8 +142,35 @@ async def _get_resin_message(
             f"- **Current**: {current_resin}/{max_resin}\n"
             f"- **Replenished**: {replenished_in}\n"
             f"- **Fully Replenished**: {fully_replenished}"
-        ),
+        ) + "\n\u200b",
         inline=False
+    )
+
+    embed.add_field(
+        name="Reminders",
+        value=(
+            "⦁\u2002**Manual Reminder**\n"
+            "⦁\u2002**Automatic Reminder**"
+        ),
+        inline=True
+    )
+
+    embed.add_field(
+        name="\u200b",
+        value=(
+            f"{manual_status}\n"
+            f"{automatic_status}"
+        ),
+        inline=True
+    )
+
+    embed.add_field(
+        name="\u200b",
+        value=(
+            f"{f'{manual_amount}' if manual_amount else '\u200b'}\n"
+            f"{f'{automatic_amount}' if automatic_amount else '\u200b'}"
+        ),
+        inline=True
     )
 
     return embed, file
@@ -148,6 +201,65 @@ def create_account_options(
         )
 
     return options
+
+
+def get_resin_reminders(
+    reminders: list[dict],
+    genshin_uid: str
+) -> tuple[dict | None, dict | None]:
+
+    manual = next(
+        (
+            reminder
+            for reminder in reminders
+            if reminder["genshin_uid"] == genshin_uid
+            and reminder["reminder_type"] == "resin"
+            and reminder["reminder_mode"] == "manual"
+        ),
+        None
+    )
+
+    automatic = next(
+        (
+            reminder
+            for reminder in reminders
+            if reminder["genshin_uid"] == genshin_uid
+            and reminder["reminder_type"] == "resin"
+            and reminder["reminder_mode"] == "automatic"
+        ),
+        None
+    )
+
+    return manual, automatic
+
+
+def get_resin_reminder_display(
+    reminder: dict | None
+) -> tuple[str, str]:
+
+    if reminder is None or not reminder["enabled"]:
+        return (
+            f"{ERROR_EMOJIS['error']} Disabled",
+            "\u200b"
+        )
+
+    config = reminder.get("config") or {}
+
+    amount = config.get("amount")
+
+    status = (
+        f"{ERROR_EMOJIS['success']} Enabled"
+    )
+
+    if amount is None:
+        return status, "\u200b"
+
+    amount_text = (
+        f"{HOYOLAB_EMOJIS['original_resin']} "
+        f"**{amount} Resin**"
+    )
+
+    return status, amount_text
 
 
 class ResinAccountSelect(discord.ui.Select):
@@ -223,7 +335,9 @@ class ResinAccountSelect(discord.ui.Select):
             )
 
 
-class ResinReminderButton(discord.ui.Button):
+class AddManualResinReminderButton(
+    discord.ui.Button
+):
 
     def __init__(
         self,
@@ -231,8 +345,9 @@ class ResinReminderButton(discord.ui.Button):
         view: "ResinAccountView"
     ):
         super().__init__(
-            label="Set Reminder",
-            style=discord.ButtonStyle.primary
+            label="Add Manual Reminder",
+            emoji=f"{MISC_EMOJIS['add']}",
+            style=discord.ButtonStyle.secondary
         )
 
         self.discord_user_id = discord_user_id
@@ -253,8 +368,316 @@ class ResinReminderButton(discord.ui.Button):
         await interaction.response.send_modal(
             ResinReminderModal(
                 self.discord_user_id,
-                self.account_view.genshin_uid
+                self.account_view.genshin_uid,
+                "manual",
+                self.account_view,
+                interaction.message
             )
+        )
+
+
+class AddAutomaticResinReminderButton(
+    discord.ui.Button
+):
+
+    def __init__(
+        self,
+        discord_user_id: int,
+        view: "ResinAccountView"
+    ):
+        super().__init__(
+            label="Add Automatic Reminder",
+            emoji=f"{MISC_EMOJIS['add']}",
+            style=discord.ButtonStyle.secondary
+        )
+
+        self.discord_user_id = discord_user_id
+        self.account_view = view
+
+    async def callback(
+        self,
+        interaction: discord.Interaction
+    ):
+        if interaction.user.id != self.discord_user_id:
+            await interaction.response.send_message(
+                "This Resin panel belongs to someone else.",
+                ephemeral=True
+            )
+
+            return
+
+        await interaction.response.send_modal(
+            ResinReminderModal(
+                self.discord_user_id,
+                self.account_view.genshin_uid,
+                "automatic",
+                self.account_view,
+                interaction.message
+            )
+        )
+
+
+class RemoveResinRemindersButton(
+    discord.ui.Button
+):
+
+    def __init__(
+        self,
+        discord_user_id: int,
+        view: "ResinAccountView"
+    ):
+        super().__init__(
+            label="Remove Reminder(s)",
+            emoji=f"{MISC_EMOJIS['remove']}",
+            style=discord.ButtonStyle.secondary
+        )
+
+        self.discord_user_id = discord_user_id
+        self.account_view = view
+
+    async def callback(
+        self,
+        interaction: discord.Interaction
+    ):
+        if interaction.user.id != self.discord_user_id:
+            await interaction.response.send_message(
+                "This Resin panel belongs to someone else.",
+                ephemeral=True
+            )
+
+            return
+
+        await interaction.response.edit_message(
+            embed=discord.Embed(
+                title="Remove Resin Reminders",
+                description=(
+                    "Which Resin reminders would you like to remove?"
+                ),
+                colour=discord.Colour.red()
+            ),
+            view=RemoveResinRemindersView(
+                self.discord_user_id,
+                self.account_view
+            )
+        )
+
+
+class RemoveResinRemindersView(
+    discord.ui.View
+):
+
+    def __init__(
+        self,
+        discord_user_id: int,
+        resin_view: "ResinAccountView"
+    ):
+        super().__init__(
+            timeout=300
+        )
+
+        self.discord_user_id = discord_user_id
+        self.resin_view = resin_view
+
+    async def remove(
+        self,
+        interaction: discord.Interaction,
+        mode: str
+    ):
+        if interaction.user.id != self.discord_user_id:
+            await interaction.response.send_message(
+                "This Resin panel belongs to someone else.",
+                ephemeral=True
+            )
+
+            return
+
+        reminders = await get_reminders(
+            self.discord_user_id
+        )
+
+        account_reminders = [
+            reminder
+            for reminder in reminders
+            if reminder["genshin_uid"] == self.resin_view.genshin_uid
+            and reminder["reminder_type"] == "resin"
+            and reminder["reminder_mode"] in (
+                ["manual", "automatic"]
+                if mode == "both"
+                else [mode]
+            )
+        ]
+
+        if not account_reminders:
+            await interaction.response.edit_message(
+                embed=create_error_embed(
+                    "No Reminders Found",
+                    "There are no matching Resin reminders to remove.",
+                    "not_found"
+                ),
+                view=self.resin_view
+            )
+
+            return
+
+        for reminder in account_reminders:
+            await delete_reminder(
+                self.discord_user_id,
+                reminder["id"]
+            )
+
+        accounts = await get_accounts(
+            self.discord_user_id
+        )
+
+        account = next(
+            (
+                account
+                for account in accounts
+                if account["genshin_uid"]
+                == self.resin_view.genshin_uid
+            ),
+            None
+        )
+
+        if account is None:
+            await interaction.response.edit_message(
+                embed=create_error_embed(
+                    "Account Not Found",
+                    "The selected Genshin account could not be found.",
+                    "not_found"
+                ),
+                view=None
+            )
+
+            return
+
+        embed, file = await _get_resin_message(
+            self.discord_user_id,
+            account
+        )
+
+        if file is not None:
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[file],
+                view=ResinAccountView(
+                    self.discord_user_id,
+                    accounts,
+                    self.resin_view.genshin_uid
+                )
+            )
+        else:
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[],
+                view=ResinAccountView(
+                    self.discord_user_id,
+                    accounts,
+                    self.resin_view.genshin_uid
+                )
+            )
+
+    @discord.ui.button(
+        label="← Back",
+        style=discord.ButtonStyle.primary
+    )
+    async def back(
+            self,
+            interaction: discord.Interaction,
+            button: discord.ui.Button
+    ):
+        accounts = await get_accounts(
+            self.discord_user_id
+        )
+
+        account = next(
+            (
+                account
+                for account in accounts
+                if account["genshin_uid"]
+                   == self.resin_view.genshin_uid
+            ),
+            None
+        )
+
+        if account is None:
+            await interaction.response.send_message(
+                embed=create_error_embed(
+                    "Account Not Found",
+                    "The selected Genshin account could not be found.",
+                    "not_found"
+                ),
+                ephemeral=True
+            )
+
+            return
+
+        embed, file = await _get_resin_message(
+            self.discord_user_id,
+            account
+        )
+
+        if file is not None:
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[file],
+                view=ResinAccountView(
+                    self.discord_user_id,
+                    accounts,
+                    self.resin_view.genshin_uid
+                )
+            )
+        else:
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[],
+                view=ResinAccountView(
+                    self.discord_user_id,
+                    accounts,
+                    self.resin_view.genshin_uid
+                )
+            )
+
+    @discord.ui.button(
+        label="Manual",
+        style=discord.ButtonStyle.secondary
+    )
+    async def manual(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        await self.remove(
+            interaction,
+            "manual"
+        )
+
+    @discord.ui.button(
+        label="Automatic",
+        style=discord.ButtonStyle.secondary
+    )
+    async def automatic(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        await self.remove(
+            interaction,
+            "automatic"
+        )
+
+    @discord.ui.button(
+        label="Both",
+        style=discord.ButtonStyle.secondary
+    )
+    async def both(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        await self.remove(
+            interaction,
+            "both"
         )
 
 
@@ -283,7 +706,21 @@ class ResinAccountView(discord.ui.View):
             )
 
         self.add_item(
-            ResinReminderButton(
+            AddManualResinReminderButton(
+                discord_user_id,
+                self
+            )
+        )
+
+        self.add_item(
+            AddAutomaticResinReminderButton(
+                discord_user_id,
+                self
+            )
+        )
+
+        self.add_item(
+            RemoveResinRemindersButton(
                 discord_user_id,
                 self
             )
