@@ -32,7 +32,17 @@ class Mention(commands.Cog):
 
         if self.bot.user in message.mentions:
 
-            if random.random() < 0.05:
+            roll = random.random()
+
+            if roll < 0.001:
+                await message.reply(
+                    file=discord.File(
+                        self.cyrene_mood_gif,
+                        filename="Cyrene_mood.gif"
+                    )
+                )
+
+            elif roll < 0.051:
                 await message.reply(
                     file=discord.File(
                         self.cyrene_gif,
