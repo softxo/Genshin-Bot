@@ -55,8 +55,6 @@ class Mention(commands.Cog):
                     "Hello! 👋"
                 )
 
-        await self.bot.process_commands(message)
-
 
 async def setup(bot):
     await bot.add_cog(Mention(bot))

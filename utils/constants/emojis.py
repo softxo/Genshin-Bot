@@ -55,7 +55,8 @@ MISC_EMOJIS = {
     "important": "<:important:1532802333908668446>",
     "add": "<:Add:1535757951011131542>",
     "remove": "<:Remove:1535757952403775578>",
-    "rename": "<:Rename:1535757957650714734>"
+    "rename": "<:Rename:1535757957650714734>",
+    "back": "<:Back:1537723004748959815>"
 }
 
 ERROR_EMOJIS = {

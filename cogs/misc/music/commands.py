@@ -20,15 +20,23 @@ load_dotenv()
 
 ytdlp_utils.bug_reports_message = lambda *args, **kwargs: ""
 
-ytdl_format_options: dict[str, Any] = {
+ytdl_format_options = {
     "format": "bestaudio[acodec=opus]/bestaudio/best",
     "noplaylist": True,
     "quiet": True,
     "default_search": "auto",
+
     "js_runtimes": {
         "deno": {}
     },
+
     "cookiefile": "/home/container/cookies.txt",
+
+    "extractor_args": {
+        "youtube": {
+            "player_client": ["android_vr"]
+        }
+    },
 }
 
 search_ytdl_options: dict[str, Any] = {
@@ -36,9 +44,12 @@ search_ytdl_options: dict[str, Any] = {
     "extract_flat": "in_playlist",
     "noplaylist": True,
     "default_search": "auto",
+
     "js_runtimes": {
         "deno": {}
     },
+
+    "cookiefile": "/home/container/cookies.txt",
 }
 
 search_ytdl = youtube_dl.YoutubeDL(
@@ -49,9 +60,7 @@ ffmpeg_options = {
     "before_options": (
         "-reconnect 1 "
         "-reconnect_streamed 1 "
-        "-reconnect_on_network_error 1 "
-        "-reconnect_on_http_error 4xx,5xx "
-        "-reconnect_delay_max 10"
+        "-reconnect_delay_max 5"
     ),
     "options": "-vn",
 }
@@ -939,6 +948,7 @@ class Music(commands.Cog):
             "title": info.get("title", "Unknown"),
             "webpage_url": webpage_url,
             "audio_url": audio_url,
+            "http_headers": info.get("http_headers", {}),
             "duration": info.get("duration") or 0,
             "thumbnail": (
                     self.get_youtube_thumbnail(webpage_url)
@@ -968,11 +978,10 @@ class Music(commands.Cog):
         if artist and track:
             queries.extend(
                 [
-                    f"ytsearch15:{artist} topic",
+                    f"ytsearch15:{artist}",
                     f"ytsearch15:{artist} songs",
                     f"ytsearch15:{artist} music",
-                    f"ytsearch15:{artist} - {track}",
-                    f"ytsearch15:{artist}",
+                    f"ytsearch15:{artist} - {track}"
                 ]
             )
         elif artist:
@@ -1206,6 +1215,7 @@ class Music(commands.Cog):
             self,
             audio_url,
             *,
+            http_headers=None,
             start_at=0.0,
             slowed=False,
             sped=False,
@@ -1243,11 +1253,20 @@ class Music(commands.Cog):
 
         options = f'-vn -filter:a "{",".join(filters)}"' if filters else "-vn"
 
+        if http_headers:
+            header_string = "".join(
+                f"{key}: {value}\r\n"
+                for key, value in http_headers.items()
+            )
+
+            before = f'{before} -headers "{header_string}"'
+
         source = discord.FFmpegPCMAudio(
             audio_url,
             before_options=before,
             options=options
         )
+
         return discord.PCMVolumeTransformer(source, volume=volume)
 
     async def apply_current_mode(self, ctx) -> tuple[bool, str | None]:
@@ -1709,6 +1728,7 @@ class Music(commands.Cog):
 
         source = self.make_audio_source(
             audio_url,
+            http_headers=fresh_song.get("http_headers"),
             slowed=state.slowed_mode,
             sped=state.sped_mode,
             bassboost=state.bassboost_mode,

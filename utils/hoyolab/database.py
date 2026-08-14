@@ -723,16 +723,6 @@ async def create_reminder(
                 )
             )
 
-            print(
-                "[Database] Reminder saved:",
-                reminder_id,
-                reminder_type,
-                reminder_mode,
-                genshin_uid,
-                config,
-                next_trigger_at
-            )
-
             return reminder_id
 
         result = await connection.execute(

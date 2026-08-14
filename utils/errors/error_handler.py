@@ -36,6 +36,20 @@ def create_error_embed(
     )
 
 
+NOT_YOUR_COMMAND_IMAGE = "assets/fun/Cyrene_Lock_In.jpg"
+
+
+async def send_not_your_command(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "This interaction is not yours.",
+        file=discord.File(
+            NOT_YOUR_COMMAND_IMAGE,
+            filename="Lock_In.jpg"
+        ),
+        ephemeral=True
+    )
+
+
 async def send_interaction_error(
         interaction: discord.Interaction,
         title: str,

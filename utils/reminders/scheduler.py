@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import traceback
 import discord
 from datetime import datetime, timezone, timedelta
 from utils.hoyolab.account_client import get_account_client
@@ -61,12 +60,8 @@ class ReminderScheduler:
         logger.info("Reminder scheduler stopped.")
 
     async def _run(self):
-        print("[ReminderScheduler] Loop started.")
-
         while self.running:
             try:
-                print("[ReminderScheduler] Checking reminders...")
-
                 await self.process_due_reminders()
 
             except asyncio.CancelledError:
@@ -83,47 +78,21 @@ class ReminderScheduler:
     async def process_due_reminders(self):
         reminders = await get_due_reminders()
 
-        print(
-            f"[ReminderScheduler] Due reminders: {len(reminders)}"
-        )
-
         if not reminders:
             return
 
         for reminder in reminders:
-            print(
-                "[ReminderScheduler] Processing reminder:",
-                reminder["id"],
-                reminder["reminder_type"],
-                reminder.get("reminder_mode"),
-                reminder.get("genshin_uid"),
-                reminder.get("next_trigger_at")
-            )
-
             try:
-                completed = await self.process_reminder(
+                await self.process_reminder(
                     reminder
                 )
 
-                if completed:
-                    print(
-                        "[ReminderScheduler] Reminder completed:",
-                        reminder["id"]
-                    )
-                else:
-                    print(
-                        "[ReminderScheduler] Reminder rescheduled:",
-                        reminder["id"]
-                    )
-
             except Exception as error:
-                print(
-                    "[ReminderScheduler] REMINDER ERROR:",
+                logger.exception(
+                    "[ReminderScheduler] REMINDER ERROR: %s: %r",
                     reminder["id"],
-                    repr(error)
+                    error
                 )
-
-                traceback.print_exc()
 
     async def process_reminder(
             self,
@@ -197,26 +166,11 @@ class ReminderScheduler:
         genshin_uid = reminder.get("genshin_uid")
         reminder_mode = reminder.get("reminder_mode")
 
-        print(
-            f"[ReminderScheduler] RESIN HANDLER STARTED: "
-            f"id={reminder_id}, user={user_id}, uid={genshin_uid}"
-        )
-
         config = reminder.get("config") or {}
-
-        print(
-            f"[ReminderScheduler] Reminder {reminder_id} config: "
-            f"{config}"
-        )
 
         amount = config.get("amount")
 
         if amount is None:
-            print(
-                f"[ReminderScheduler] Resin reminder {reminder_id} "
-                f"has no target amount. Retrying in 60 seconds."
-            )
-
             await self.retry_reminder(
                 reminder,
                 seconds=60
@@ -228,41 +182,20 @@ class ReminderScheduler:
             amount = int(amount)
 
         except (TypeError, ValueError):
-            print(
-                f"[ReminderScheduler] Invalid Resin target "
-                f"for reminder {reminder_id}: {amount!r}. "
-                f"Retrying in 60 seconds."
-            )
-
             await self.retry_reminder(
                 reminder,
                 seconds=60
             )
 
             return False
-
-        print(
-            f"[ReminderScheduler] Resin target for reminder "
-            f"{reminder_id}: {amount}"
-        )
 
         if not genshin_uid:
-            print(
-                f"[ReminderScheduler] Resin reminder {reminder_id} "
-                f"has no Genshin UID. Retrying in 60 seconds."
-            )
-
             await self.retry_reminder(
                 reminder,
                 seconds=60
             )
 
             return False
-
-        print(
-            f"[ReminderScheduler] Getting account client "
-            f"for user={user_id}, uid={genshin_uid}..."
-        )
 
         try:
             client = await get_account_client(
@@ -283,17 +216,7 @@ class ReminderScheduler:
 
             return False
 
-        print(
-            f"[ReminderScheduler] Account client result: {client!r}"
-        )
-
         if client is None:
-            print(
-                f"[ReminderScheduler] No account client found "
-                f"for reminder {reminder_id}. "
-                f"Retrying in 60 seconds."
-            )
-
             await self.retry_reminder(
                 reminder,
                 seconds=60
@@ -303,19 +226,9 @@ class ReminderScheduler:
 
         try:
             async with client:
-                print(
-                    f"[ReminderScheduler] Fetching daily note "
-                    f"for reminder {reminder_id}..."
-                )
-
                 response = await client.get_genshin_daily_note(
                     client.genshin_uid,
                     client.genshin_server
-                )
-
-                print(
-                    f"[ReminderScheduler] Daily note received "
-                    f"for reminder {reminder_id}."
                 )
 
         except Exception:
@@ -353,34 +266,14 @@ class ReminderScheduler:
             config.get("triggered", False)
         )
 
-        print(
-            f"[ReminderScheduler] Resin status: "
-            f"{current_resin}/{max_resin}, "
-            f"target={amount}, "
-            f"recovery={recovery}s, "
-            f"triggered={triggered}"
-        )
-
         if current_resin >= amount:
             if triggered:
-                print(
-                    f"[ReminderScheduler] Reminder {reminder_id} "
-                    f"already triggered. "
-                    f"Resin is still >= target. "
-                    f"No notification will be sent."
-                )
-
                 await self.retry_reminder(
                     reminder,
                     seconds=60
                 )
 
                 return False
-
-            print(
-                f"[ReminderScheduler] TARGET REACHED: "
-                f"{current_resin} >= {amount}"
-            )
 
             sent = await self.send_reminder(
                 reminder,
@@ -392,17 +285,7 @@ class ReminderScheduler:
                 )
             )
 
-            print(
-                f"[ReminderScheduler] DM result for reminder "
-                f"{reminder_id}: {sent}"
-            )
-
             if not sent:
-                print(
-                    f"[ReminderScheduler] DM failed. "
-                    f"Retrying reminder {reminder_id} in 60 seconds."
-                )
-
                 await self.retry_reminder(
                     reminder,
                     seconds=60
@@ -421,11 +304,6 @@ class ReminderScheduler:
                     next_trigger_at=None
                 )
 
-                print(
-                    f"[ReminderScheduler] Manual Resin reminder "
-                    f"{reminder_id} notified successfully and was disabled."
-                )
-
                 return True
 
             config["triggered"] = True
@@ -441,20 +319,9 @@ class ReminderScheduler:
                 )
             )
 
-            print(
-                f"[ReminderScheduler] Automatic Resin reminder "
-                f"{reminder_id} notified successfully and remains active."
-            )
-
             return False
 
         if triggered:
-            print(
-                f"[ReminderScheduler] Resin dropped below target "
-                f"for reminder {reminder_id}. "
-                f"Resetting trigger state."
-            )
-
             config["triggered"] = False
 
             await update_reminder(
@@ -463,13 +330,6 @@ class ReminderScheduler:
                 enabled=True,
                 config=config
             )
-
-        resin_needed = amount - current_resin
-
-        print(
-            f"[ReminderScheduler] Target not reached. "
-            f"{resin_needed} Resin needed."
-        )
 
         await self.schedule_resin_reminder(
             reminder,
@@ -540,34 +400,49 @@ class ReminderScheduler:
         )
 
     async def handle_expedition(
-        self,
-        reminder: dict
+            self,
+            reminder: dict
     ):
         logger.debug(
             "Expedition reminder %s is not implemented yet.",
             reminder["id"]
         )
 
+        await self.retry_reminder(
+            reminder,
+            seconds=60
+        )
+
         return False
 
     async def handle_teapot(
-        self,
-        reminder: dict
+            self,
+            reminder: dict
     ):
         logger.debug(
             "Teapot reminder %s is not implemented yet.",
             reminder["id"]
         )
 
+        await self.retry_reminder(
+            reminder,
+            seconds=60
+        )
+
         return False
 
     async def handle_transformer(
-        self,
-        reminder: dict
+            self,
+            reminder: dict
     ):
         logger.debug(
             "Transformer reminder %s is not implemented yet.",
             reminder["id"]
+        )
+
+        await self.retry_reminder(
+            reminder,
+            seconds=60
         )
 
         return False
@@ -623,40 +498,21 @@ class ReminderScheduler:
     ) -> bool:
         user_id = reminder["discord_user_id"]
 
-        print(
-            f"[ReminderScheduler] Attempting to send DM "
-            f"to {user_id}..."
-        )
-
         user = self.bot.get_user(user_id)
 
         if user is None:
-            print(
-                f"[ReminderScheduler] User {user_id} isn't cached. "
-                f"Fetching..."
-            )
-
             try:
                 user = await self.bot.fetch_user(user_id)
 
             except discord.NotFound:
-                print(
-                    f"[ReminderScheduler] Discord user {user_id} "
-                    f"does not exist."
-                )
                 return False
 
-            except discord.HTTPException as error:
-                print(
-                    f"[ReminderScheduler] Failed to fetch user "
-                    f"{user_id}: {error!r}"
+            except discord.HTTPException:
+                logger.exception(
+                    "Failed to fetch Discord user %s.",
+                    user_id
                 )
                 return False
-
-        print(
-            f"[ReminderScheduler] User resolved: "
-            f"{user} ({user.id})"
-        )
 
         embed = discord.Embed(
             title=title,
@@ -670,32 +526,34 @@ class ReminderScheduler:
         )
 
         if delivery_type != "dm":
-            print(
-                f"[ReminderScheduler] Unsupported delivery type: "
-                f"{delivery_type!r}"
+            logger.warning(
+                "Unsupported delivery type %r for reminder %s.",
+                delivery_type,
+                reminder["id"]
             )
             return False
 
         try:
             await user.send(embed=embed)
 
-        except discord.Forbidden as error:
-            print(
-                f"[ReminderScheduler] Discord FORBIDDEN while "
-                f"sending DM to {user.id}: {error!r}"
+        except discord.Forbidden:
+            logger.warning(
+                "Discord user %s has DMs disabled or blocked the bot.",
+                user_id
             )
             return False
 
-        except discord.HTTPException as error:
-            print(
-                f"[ReminderScheduler] Discord HTTP error while "
-                f"sending DM to {user.id}: {error!r}"
+        except discord.HTTPException:
+            logger.exception(
+                "Discord HTTP error while sending DM to %s.",
+                user_id
             )
             return False
 
-        print(
-            f"[ReminderScheduler] *** DM SENT SUCCESSFULLY *** "
-            f"to {user.id}"
+        logger.info(
+            "Reminder %s sent to Discord user %s.",
+            reminder["id"],
+            user_id
         )
 
         return True

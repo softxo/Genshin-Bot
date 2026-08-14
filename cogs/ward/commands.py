@@ -5,7 +5,7 @@ from utils.shield.wards import get_ward
 from utils.shield.ward_autocomplete import ward_autocomplete
 from utils.constants.colours import WARD_COLOURS
 from utils.constants.emojis import COLOURED_ELEMENT_EMOJIS, WARD_EMOJIS, MISC_EMOJIS
-from utils.errors.error_handler import send_interaction_error, send_not_found, send_missing_argument
+from utils.errors.error_handler import send_interaction_error, send_not_found, send_missing_argument, send_not_your_command
 
 
 def get_ward_url(emoji: str) -> str:
@@ -192,40 +192,60 @@ def build_notes_embed(data):
     return embed
 
 class WardView(discord.ui.View):
-    def __init__(self, ward_id, ward_data):
+    def __init__(self, ward_id, ward_data, owner_id):
         super().__init__(timeout=None)
         self.ward_id = ward_id
         self.ward_data = ward_data
+        self.owner_id = owner_id
 
     @discord.ui.button(
         label="Notes →",
         style=discord.ButtonStyle.secondary
     )
     async def notes(self, interaction, button):
+
+        if interaction.user.id != self.owner_id:
+            await send_not_your_command(interaction)
+            return
+
         embed = build_notes_embed(self.ward_data)
 
         await interaction.response.edit_message(
             embed=embed,
-            view=WardNotesView(self.ward_id, self.ward_data)
+            view=WardNotesView(
+                self.ward_id,
+                self.ward_data,
+                self.owner_id
+            )
         )
 
 
 class WardNotesView(discord.ui.View):
-    def __init__(self, ward_id, ward_data):
+    def __init__(self, ward_id, ward_data, owner_id):
         super().__init__(timeout=None)
         self.ward_id = ward_id
         self.ward_data = ward_data
+        self.owner_id = owner_id
 
     @discord.ui.button(
         label="← Back",
         style=discord.ButtonStyle.secondary
     )
     async def back(self, interaction, button):
+
+        if interaction.user.id != self.owner_id:
+            await send_not_your_command(interaction)
+            return
+
         embed, _ = build_main_embed(self.ward_id)
 
         await interaction.response.edit_message(
             embed=embed,
-            view=WardView(self.ward_id, self.ward_data)
+            view=WardView(
+                self.ward_id,
+                self.ward_data,
+                self.owner_id
+            )
         )
 
 
@@ -273,7 +293,11 @@ class Ward(commands.Cog):
         embed, data = result
 
         view = (
-            WardView(ward.lower(), data)
+            WardView(
+                ward.lower(),
+                data,
+                interaction.user.id
+            )
             if data["emoji"] == "Geo"
             else None
         )
@@ -315,7 +339,11 @@ class Ward(commands.Cog):
         embed, data = result
 
         view = (
-            WardView(ward.lower(), data)
+            WardView(
+                ward.lower(),
+                data,
+                ctx.author.id
+            )
             if data["emoji"] == "Geo"
             else None
         )

@@ -32,6 +32,14 @@ WEAPON_RARITY_COLOURS = {
     5: 0xF4B400,
 }
 
+RARITY_COLOURS = {
+    1: 0x8E8E8E,
+    2: 0x4CAF50,
+    3: 0x3F51B5,
+    4: 0x9C27B0,
+    5: 0xF4B400,
+}
+
 ERROR_COLOURS = {
     "error": 0x820505,
     "warning": 0xF1C40F,

@@ -8,6 +8,7 @@ from utils.hoyolab.database import (
 )
 from cogs.hoyolab.link_account.commands import HoYoLABAccountsView
 from utils.constants.emojis import MISC_EMOJIS
+from utils.errors.error_handler import send_not_your_command
 
 
 def get_account_name(account: dict) -> str:
@@ -184,11 +185,8 @@ class AccountsView(discord.ui.View):
             self,
             interaction: discord.Interaction
     ) -> bool:
-        if interaction.user.id != self.user_id:
-            await interaction.response.send_message(
-                "This account management menu isn't yours.",
-                ephemeral=True
-            )
+        if interaction.user.id != self.owner_id:
+            await send_not_your_command(interaction)
             return False
 
         return True

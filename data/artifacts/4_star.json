@@ -57,6 +57,7 @@
     "name": "Instructor",
     "emoji": "Instructor",
     "icon": "Instructor",
+    "alias": ["Ins"],
     "type": "artifact_set",
     "bonus_2pc": "Increases Elemental Mastery by 80.",
     "bonus_4pc": "Upon triggering an Elemental Reaction, increases all party members' Elemental Mastery by 120 for 8s."

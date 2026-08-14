@@ -8,7 +8,8 @@ from utils.character.character_autocomplete import character_autocomplete
 from utils.icons import get_character_icon, get_material_emoji
 from utils.constants.costs import ASCENSION_MORA_COSTS, LEVEL_MORA_COSTS, LEVEL_EXP_COSTS, TALENT_MORA_COSTS
 from collections import defaultdict
-from utils.errors.error_handler import send_interaction_error, send_not_found
+from utils.errors.error_handler import send_interaction_error, send_not_found, send_not_your_command
+
 
 
 MATERIALS_PATH = Path("data/materials")
@@ -426,10 +427,7 @@ class MaterialsView(discord.ui.View):
 
     async def interaction_check(self, interaction: discord.Interaction):
         if interaction.user.id != self.user_id:
-            await interaction.response.send_message(
-                "You cannot control this menu.",
-                ephemeral=True
-            )
+            await send_not_your_command(interaction)
             return False
 
         return True
