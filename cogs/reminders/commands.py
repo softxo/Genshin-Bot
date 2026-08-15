@@ -47,9 +47,9 @@ def format_account_info(account: dict) -> str:
     name = get_account_name(account)
 
     return (
-        f"**Name**: {name}\n"
-        f"**UID**: {account['genshin_uid']}\n"
-        f"**AR**: {account.get('level') or 'Unknown'}"
+        f"- **Name**: {name}\n"
+        f"- **UID**: {account['genshin_uid']}\n"
+        f"- **AR**: {account.get('level') or 'Unknown'}"
     )
 
 
@@ -139,7 +139,7 @@ def build_reminders_embed(
     )
 
     embed.add_field(
-        name="Account",
+        name=f"{HOYOLAB_EMOJIS['account']} Account",
         value=format_account_info(account) + "\n\u200b",
         inline=False
     )
@@ -273,7 +273,8 @@ class ReminderCategoryButton(
                 self.accounts,
                 self.selected_account["genshin_uid"],
                 reminders,
-                self.selected_account
+                selected_account=self.selected_account,
+                show_back=True
             )
 
             embed, file = await _get_resin_message(

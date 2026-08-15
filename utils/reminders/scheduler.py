@@ -1,13 +1,16 @@
 import asyncio
 import logging
 import discord
+from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.database import (
     get_due_reminders,
     update_reminder,
+    get_accounts
 )
 from utils.hoyolab.daily_note import get_resin
+from utils.constants.emojis import HOYOLAB_EMOJIS
 
 
 logger = logging.getLogger(__name__)
@@ -16,6 +19,10 @@ logger = logging.getLogger(__name__)
 CHECK_INTERVAL = 10
 RESIN_REGEN_SECONDS = 480
 RESIN_TRIGGERED_CHECK_SECONDS = 300
+
+RESIN_IMAGE = Path(
+        "assets/hoyolab/daily/Original_Resin.webp"
+    )
 
 
 class ReminderScheduler:
@@ -275,15 +282,44 @@ class ReminderScheduler:
 
                 return False
 
+            accounts = await get_accounts(
+                user_id
+            )
+
+            account = next(
+                (
+                    account
+                    for account in accounts
+                    if account["genshin_uid"] == genshin_uid
+                ),
+                None
+            )
+
+            account_name = (
+                account.get("nickname", "Unknown")
+                if account is not None
+                else "Unknown"
+            )
+
+            if reminder_mode == "manual":
+                title = "Resin Replenished"
+                footer = f"UID: {genshin_uid} — Manual Reminder"
+
+            else:
+                title = "Automatic Resin Reminder"
+                footer = f"UID: {genshin_uid} — Automatic Reminder"
+
             sent = await self.send_reminder(
                 reminder,
-                title="Resin Reminder",
+                title=title,
                 message=(
-                    f"Your Resin has reached "
-                    f"**{current_resin}/{max_resin}** "
-                    f"(target: **{amount}**)."
-                )
+                    f"Hey <@{user_id}>!\n\n"
+                    f"Your account **{account_name}** has reached {HOYOLAB_EMOJIS['original_resin']}**{current_resin}** Resin.\n\u200b"
+                ),
+                footer=footer,
+                thumbnail=RESIN_IMAGE
             )
+
 
             if not sent:
                 await self.retry_reminder(
@@ -489,12 +525,15 @@ class ReminderScheduler:
 
         return True
 
+
     async def send_reminder(
             self,
             reminder: dict,
             *,
             title: str,
-            message: str
+            message: str,
+            footer: str | None = None,
+            thumbnail: Path | None = None
     ) -> bool:
         user_id = reminder["discord_user_id"]
 
@@ -520,6 +559,23 @@ class ReminderScheduler:
             colour=discord.Colour.blurple()
         )
 
+        if footer is not None:
+            embed.set_footer(
+                text=footer
+            )
+
+        file = None
+
+        if thumbnail is not None:
+            file = discord.File(
+                thumbnail,
+                filename=thumbnail.name
+            )
+
+            embed.set_thumbnail(
+                url=f"attachment://{thumbnail.name}"
+            )
+
         delivery_type = reminder.get(
             "delivery_type",
             "dm"
@@ -534,7 +590,10 @@ class ReminderScheduler:
             return False
 
         try:
-            await user.send(embed=embed)
+            await user.send(
+                embed=embed,
+                file=file
+            )
 
         except discord.Forbidden:
             logger.warning(

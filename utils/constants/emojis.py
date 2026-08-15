@@ -83,7 +83,9 @@ HOYOLAB_EMOJIS = {
     "parametric_transformer": "<:Parametric_Transformer:1537057568298635314>",
     "expeditions": "<:Adventurers_Guild:1537057566708867224>",
     "custom": "<:Custom_Reminder:1537059737147932672>",
-    "notification": "<:Notification:1537060765805052026>"
+    "notification": "<:Notification:1537060765805052026>",
+    "account": "<:Account:1538168557672865882>",
+    "reminder": "<:Reminder:1538168559476146249>"
 }
 
 MUSIC_EMOJIS = {

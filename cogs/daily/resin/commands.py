@@ -129,7 +129,7 @@ async def _get_resin_message(
     )
 
     embed.add_field(
-        name="Account",
+        name=f"{HOYOLAB_EMOJIS['account']} Account",
         value=(
             f"- **Name**: {account.get('nickname', 'Unknown')}\n"
             f"- **UID**: {account['genshin_uid']}\n"
@@ -139,7 +139,7 @@ async def _get_resin_message(
     )
 
     embed.add_field(
-        name="Resin",
+        name=f"{HOYOLAB_EMOJIS['original_resin']} Resin",
         value=(
             f"- **Current**: {current_resin}/{max_resin}\n"
             f"- **Replenished**: {replenished_in}\n"
@@ -149,7 +149,7 @@ async def _get_resin_message(
     )
 
     embed.add_field(
-        name="Reminders",
+        name=f"{HOYOLAB_EMOJIS['reminder']} Reminders",
         value=(
             "⦁\u2002**Manual Reminder**\n"
             "⦁\u2002**Automatic Reminder**"
@@ -329,7 +329,8 @@ class ResinAccountSelect(discord.ui.Select):
             accounts,
             genshin_uid,
             reminders,
-            account
+            account,
+            show_back=self.account_view.show_back
         )
 
         if file is not None:
@@ -468,7 +469,8 @@ class ResinReminderButton(discord.ui.Button):
             accounts,
             self.account_view.genshin_uid,
             reminders,
-            account
+            selected_account=account if self.account_view.show_back else None,
+            show_back=self.account_view.show_back
         )
 
         await interaction.edit_original_response(
@@ -542,7 +544,8 @@ class ResinAccountView(discord.ui.View):
         accounts: list[dict],
         genshin_uid: str,
         reminders: list[dict],
-        selected_account: dict | None = None
+        selected_account: dict | None = None,
+        show_back: bool = False
     ):
         super().__init__(
             timeout=600
@@ -550,6 +553,7 @@ class ResinAccountView(discord.ui.View):
 
         self.discord_user_id = discord_user_id
         self.genshin_uid = genshin_uid
+        self.show_back = show_back
 
         if len(accounts) > 1:
             self.add_item(
@@ -560,7 +564,7 @@ class ResinAccountView(discord.ui.View):
                 )
             )
 
-        if selected_account is not None:
+        if self.show_back and selected_account is not None:
             self.add_item(
                 ResinBackButton(
                     discord_user_id,
@@ -702,7 +706,8 @@ class ResinReminderModal(discord.ui.Modal):
                 accounts,
                 self.genshin_uid,
                 reminders,
-                account
+                selected_account=account if self.resin_view.show_back else None,
+                show_back=self.resin_view.show_back
             )
 
             embed, file = await _get_resin_message(
@@ -725,8 +730,7 @@ class ResinReminderModal(discord.ui.Modal):
         confirmation = create_error_embed(
             "Resin Reminder Set",
             (
-                f"Your **{self.mode.title()} Resin Reminder** "
-                f"has been set to **{amount} Resin**."
+                f"Your **{self.mode.title()} Resin Reminder** has been set to {HOYOLAB_EMOJIS['original_resin']}**{amount} Resin**."
             ),
             "success"
         )
