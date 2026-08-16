@@ -64,6 +64,12 @@ bot = commands.Bot(
     intents=intents,
 )
 
+bot.tree.allowed_contexts = app_commands.AppCommandContext(
+    guild=True,
+    dm_channel=True,
+    private_channel=True
+)
+
 reminder_scheduler = ReminderScheduler(bot)
 
 

@@ -656,7 +656,7 @@ class ResinReminderModal(discord.ui.Modal):
                     "Please enter a valid Resin amount.",
                     "invalid_input"
                 ),
-                ephemeral=True
+                ephemeral=interaction.guild is not None
             )
             return
 
@@ -667,7 +667,7 @@ class ResinReminderModal(discord.ui.Modal):
                     "Resin must be between **1 and 200**.",
                     "invalid_input"
                 ),
-                ephemeral=True
+                ephemeral=interaction.guild is not None
             )
             return
 
@@ -737,7 +737,7 @@ class ResinReminderModal(discord.ui.Modal):
 
         await interaction.response.send_message(
             embed=confirmation,
-            ephemeral=True
+            ephemeral=interaction.guild is not None
         )
 
 
@@ -794,6 +794,10 @@ class Resin(commands.Cog):
         name="resin",
         description="Check your Resin."
     )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True
+    )
     async def resin(
         self,
         interaction: discord.Interaction
@@ -814,7 +818,7 @@ class Resin(commands.Cog):
 
             await interaction.response.send_message(
                 embed=embed,
-                ephemeral=True
+                ephemeral=interaction.guild is not None
             )
 
             return
@@ -841,7 +845,7 @@ class Resin(commands.Cog):
             embed=embed,
             file=file,
             view=view,
-            ephemeral=True
+            ephemeral=interaction.guild is not None
         )
 
     @commands.command(

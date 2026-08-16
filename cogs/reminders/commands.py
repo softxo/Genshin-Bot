@@ -252,7 +252,7 @@ class ReminderCategoryButton(
                     ),
                     "error"
                 ),
-                ephemeral=True
+                ephemeral=interaction.guild is not None
             )
             return
 
@@ -467,6 +467,10 @@ class Reminders(commands.Cog):
         name="reminders",
         description="Manage your reminders."
     )
+    @app_commands.allowed_contexts(
+        guilds=True,
+        dms=True
+    )
     async def reminders(
         self,
         interaction: discord.Interaction
@@ -482,7 +486,7 @@ class Reminders(commands.Cog):
                     "You don't have any HoYoLAB accounts linked.",
                     "not_found"
                 ),
-                ephemeral=True
+                ephemeral=interaction.guild is not None
             )
             return
 
@@ -513,7 +517,7 @@ class Reminders(commands.Cog):
         await interaction.response.send_message(
             embed=embed,
             view=view,
-            ephemeral=True
+            ephemeral=interaction.guild is not None
         )
 
     @commands.command(
