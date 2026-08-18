@@ -183,15 +183,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    overflow: hidden;
 }
 
 
 .nav-icon img {
-    max-width: 33px;
-    max-height: 33px;
-
-    width: auto;
-    height: auto;
+    width: 33px;
+    height: 33px;
 
     display: block;
 
