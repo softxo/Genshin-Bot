@@ -136,7 +136,7 @@ body {
     display: flex;
     align-items: center;
 
-    height: 43px;
+    min-height: 43px;
 
     gap: 12px;
 
