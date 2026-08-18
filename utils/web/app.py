@@ -20,16 +20,16 @@ app = FastAPI(
     redoc_url=None,
 )
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 templates = Jinja2Templates(
-    directory=BASE_DIR / "web" / "templates"
+    directory=BASE_DIR / "website" / "templates"
 )
 
 app.mount(
     "/static",
     StaticFiles(
-        directory=BASE_DIR / "web" / "static"
+        directory=BASE_DIR / "website" / "static"
     ),
     name="static",
 )
@@ -42,8 +42,9 @@ GT_V3_URL = "https://static.geetest.com/static/js/gt.0.5.0.js"
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
-        "home.html",
-        {
+        request=request,
+        name="home.html",
+        context={
             "request": request,
         },
     )
