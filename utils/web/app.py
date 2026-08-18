@@ -1,8 +1,10 @@
 import typing
-from fastapi import FastAPI, HTTPException
+from pathlib import Path
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from genshin.models.auth.geetest import (
-    SessionMMT,
     SessionMMTv4,
     SessionMMTResult,
     SessionMMTv4Result,
@@ -18,8 +20,33 @@ app = FastAPI(
     redoc_url=None,
 )
 
+BASE_DIR = Path(__file__).resolve().parent
+
+templates = Jinja2Templates(
+    directory=BASE_DIR / "web" / "templates"
+)
+
+app.mount(
+    "/static",
+    StaticFiles(
+        directory=BASE_DIR / "web" / "static"
+    ),
+    name="static",
+)
+
 
 GT_V3_URL = "https://static.geetest.com/static/js/gt.0.5.0.js"
+
+
+
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse(
+        "home.html",
+        {
+            "request": request,
+        },
+    )
 
 
 @app.get(
