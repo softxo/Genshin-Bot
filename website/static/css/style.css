@@ -136,9 +136,9 @@ body {
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    height: 43px;
 
-    min-height: 40px;
+    gap: 12px;
 
     padding: 5px 13px;
 
@@ -175,10 +175,10 @@ body {
 
 
 .nav-icon {
-    width: 40px;
-    height: 40px;
+    width: 33px;
+    height: 33px;
 
-    flex-shrink: 0;
+    flex: 0 0 33px;
 
     display: flex;
     align-items: center;
@@ -187,8 +187,11 @@ body {
 
 
 .nav-icon img {
-    width: 40px;
-    height: 40px;
+    max-width: 33px;
+    max-height: 33px;
+
+    width: auto;
+    height: auto;
 
     display: block;
 
