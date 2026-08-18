@@ -400,6 +400,15 @@ body {
     font-size: 21px;
 }
 
+.card-icon img {
+    width: 36px;
+    height: 36px;
+
+    display: block;
+
+    object-fit: contain;
+}
+
 
 .feature-card h3 {
     margin: 0 0 6px;
