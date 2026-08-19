@@ -35,7 +35,7 @@
 
         <nav class="navigation">
 
-            <a href="/" class="nav-item active">
+            <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Home.webp"
@@ -44,7 +44,7 @@
                 <span>Home</span>
             </a>
 
-            <a href="/characters" class="nav-item">
+            <a href="/characters" class="nav-item {% if request.path == '/characters' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Characters.webp"
@@ -53,7 +53,7 @@
                 <span>Characters</span>
             </a>
 
-            <a href="/weapons" class="nav-item">
+            <a href="/weapons" class="nav-item {% if request.path == '/weapons' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Weapons.webp"
@@ -62,7 +62,7 @@
                 <span>Weapons</span>
             </a>
 
-            <a href="/planner" class="nav-item">
+            <a href="/planner" class="nav-item {% if request.path == '/planner' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Planner.webp"
@@ -71,7 +71,7 @@
                 <span>Planner</span>
             </a>
 
-            <a href="/achievements" class="nav-item">
+            <a href="/achievements" class="nav-item {% if request.path == '/achievements' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Achievements.webp"
@@ -80,7 +80,7 @@
                 <span>Achievements</span>
             </a>
 
-            <a href="/wishes" class="nav-item">
+            <a href="/wishes" class="nav-item {% if request.path == '/wishes' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Wishes.webp"
@@ -93,7 +93,7 @@
 
         <div class="sidebar-bottom">
 
-            <a href="/settings" class="nav-item">
+            <a href="/settings" class="nav-item {% if request.path == '/settings' %}active{% endif %}">
                 <span class="nav-icon">
                     <img
                         src="/static/images/Settings.webp"
@@ -101,7 +101,7 @@
                 </span>
                 <span>Settings</span>
             </a>
-
+        
         </div>
 
     </aside>
