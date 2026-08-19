@@ -93,7 +93,20 @@
 
         <div class="sidebar-bottom">
 
-            <a href="/settings" class="nav-item {% if request.path == '/settings' %}active{% endif %}">
+            <a
+                href="/verify"
+                class="nav-item {% if request.path == '/verify' %}active{% endif %}"
+            >
+                <span class="nav-icon">
+                    <span>●</span>
+                </span>
+                <span>Connect Discord</span>
+            </a>
+
+            <a
+                href="/settings"
+                class="nav-item {% if request.path == '/settings' %}active{% endif %}"
+            >
                 <span class="nav-icon">
                     <img
                         src="/static/images/Settings.webp"
@@ -101,7 +114,7 @@
                 </span>
                 <span>Settings</span>
             </a>
-        
+
         </div>
 
     </aside>
