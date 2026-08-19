@@ -182,6 +182,21 @@ async def auth_status(
         "user_id": session.user_id,
     }
 
+
+@app.get(
+    "/planner",
+    response_class=HTMLResponse,
+)
+async def planner(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="planner.html",
+        context={
+            "request": request,
+        },
+    )
+
+
 @app.get(
     "/challenge/{token}",
     response_class=HTMLResponse,
