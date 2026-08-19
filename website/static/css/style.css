@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 :root {
     --background: #0d0f14;
     --sidebar: #11141b;
@@ -26,7 +27,7 @@
    ============================= */
 
 /* Dark Blue */
-[data-theme="dark-blue"] {
+[data-theme="blue"] {
     --background: #0d0f14;
     --sidebar: #11141b;
     --surface: #171a22;
@@ -45,7 +46,7 @@
 
 
 /* Dark Pink */
-[data-theme="dark-pink"] {
+[data-theme="pink"] {
     --background: #0f0d12;
     --sidebar: #151117;
     --surface: #1b161e;

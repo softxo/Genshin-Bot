@@ -1,8 +1,3 @@
-const savedTheme = localStorage.getItem("theme") || "dark-blue";
-
-document.documentElement.dataset.theme = savedTheme;
-
-
 function updateThemeSelection(theme) {
     document
         .querySelectorAll("[data-theme-option]")

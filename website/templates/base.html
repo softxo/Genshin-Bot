@@ -10,6 +10,11 @@
 
     <title>{% block title %}Cyrene{% endblock %}</title>
 
+    <script>
+        const savedTheme = localStorage.getItem("theme") || "blue";
+        document.documentElement.dataset.theme = savedTheme;
+    </script>
+
     <link
         rel="stylesheet"
         href="/static/css/style.css"
