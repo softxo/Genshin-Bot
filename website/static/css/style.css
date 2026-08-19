@@ -9,15 +9,25 @@
     --text: #f2f3f5;
     --text-muted: #9298a6;
 
+    /* Theme colours */
     --accent: #8f9cff;
     --accent-soft: rgba(143, 156, 255, 0.12);
+    --accent-glow: rgba(143, 156, 255, 0.16);
+    --accent-border: rgba(143, 156, 255, 0.25);
 
     --sidebar-width: 250px;
 }
 
 
-* {
-    box-sizing: border-box;
+/* =============================
+   THEMES
+   ============================= */
+
+[data-theme="pink"] {
+    --accent: #e889b5;
+    --accent-soft: rgba(232, 137, 181, 0.12);
+    --accent-glow: rgba(232, 137, 181, 0.16);
+    --accent-border: rgba(232, 137, 181, 0.25);
 }
 
 
@@ -246,7 +256,7 @@ body {
     background:
         radial-gradient(
             circle at 80% 20%,
-            rgba(143, 156, 255, 0.16),
+            var(--accent-glow),
             transparent 40%
         ),
         var(--surface);
@@ -374,8 +384,7 @@ body {
 .feature-card:hover {
     background: var(--surface-hover);
 
-    border-color:
-        rgba(143, 156, 255, 0.25);
+    border-color: var(--accent-border);
 
     transform: translateY(-2px);
 }
