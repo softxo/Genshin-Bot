@@ -1,4 +1,4 @@
-const savedTheme = localStorage.getItem("theme") || "blue";
+const savedTheme = localStorage.getItem("theme") || "dark-blue";
 
 document.documentElement.dataset.theme = savedTheme;
 
