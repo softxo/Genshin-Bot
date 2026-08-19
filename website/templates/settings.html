@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Cyrene • Settings{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <section class="section-header">
+        <h2>Settings</h2>
+        <p>Customize your Cyrene experience.</p>
+    </section>
+
+
+    <section class="settings-section">
+
+        <div class="settings-section-header">
+            <h3>Appearance</h3>
+            <p>Choose the colour palette used throughout Cyrene.</p>
+        </div>
+
+
+        <div class="theme-options">
+
+            <button
+                class="theme-option"
+                data-theme-option="blue"
+                onclick="setTheme('blue')"
+            >
+                <div class="theme-preview theme-preview-blue">
+                    <span></span>
+                </div>
+
+                <div class="theme-option-info">
+                    <strong>Midnight Blue</strong>
+                    <span>Current Cyrene palette</span>
+                </div>
+
+                <div class="theme-check">
+                    ✓
+                </div>
+            </button>
+
+
+            <button
+                class="theme-option"
+                data-theme-option="pink"
+                onclick="setTheme('pink')"
+            >
+                <div class="theme-preview theme-preview-pink">
+                    <span></span>
+                </div>
+
+                <div class="theme-option-info">
+                    <strong>Cyrene Pink</strong>
+                    <span>Pink accent inspired by Cyrene</span>
+                </div>
+
+                <div class="theme-check">
+                    ✓
+                </div>
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

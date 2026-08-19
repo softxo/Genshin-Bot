@@ -14,6 +14,8 @@ from utils.web.sessions import (
     complete_challenge,
 )
 
+
+
 app = FastAPI(
     title="Cyrene Authentication",
     docs_url=None,
@@ -44,6 +46,17 @@ async def home(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="home.html",
+        context={
+            "request": request,
+        },
+    )
+
+
+@app.get("/settings", response_class=HTMLResponse)
+async def settings(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="settings.html",
         context={
             "request": request,
         },

@@ -517,3 +517,190 @@ body {
     }
 
 }
+
+
+/* =============================
+   SETTINGS
+   ============================= */
+
+.settings-section {
+    padding: 24px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background: var(--surface);
+}
+
+
+.settings-section-header {
+    margin-bottom: 20px;
+}
+
+
+.settings-section-header h3 {
+    margin: 0;
+
+    font-size: 17px;
+}
+
+
+.settings-section-header p {
+    margin: 6px 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+}
+
+
+.theme-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+.theme-option {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.theme-option:hover {
+    background: var(--surface-hover);
+
+    transform: translateY(-1px);
+}
+
+
+.theme-option.selected {
+    border-color: var(--accent);
+}
+
+
+.theme-preview {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+}
+
+
+.theme-preview span {
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+}
+
+
+.theme-preview-blue {
+    background: rgba(143, 156, 255, 0.12);
+}
+
+
+.theme-preview-blue span {
+    background: #8f9cff;
+}
+
+
+.theme-preview-pink {
+    background: rgba(232, 137, 181, 0.12);
+}
+
+
+.theme-preview-pink span {
+    background: #e889b5;
+}
+
+
+.theme-option-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.theme-option-info strong {
+    font-size: 14px;
+}
+
+
+.theme-option-info span {
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+.theme-check {
+    margin-left: auto;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+
+    color: var(--background);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    opacity: 0;
+
+    transform: scale(0.8);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.theme-option.selected .theme-check {
+    opacity: 1;
+
+    transform: scale(1);
+}
