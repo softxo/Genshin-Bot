@@ -224,6 +224,8 @@ body {
     min-height: 100vh;
 
     margin-left: var(--sidebar-width);
+
+    width: calc(100% - var(--sidebar-width));
 }
 
 
@@ -459,7 +461,7 @@ body {
    MOBILE
    ============================= */
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 
     .sidebar {
         width: 70px;
