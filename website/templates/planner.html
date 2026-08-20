@@ -1000,35 +1000,19 @@ window.initPlanner = function () {
         );
 };
 
+if (document.readyState === "loading") {
 
-window.destroyPlanner = function () {
+    document.addEventListener(
+        "DOMContentLoaded",
+        window.initPlanner,
+        { once: true }
+    );
 
-    /*
-     * Stop the Resin countdown.
-     */
+} else {
 
-    if (window.plannerInterval) {
+    window.initPlanner();
 
-        clearInterval(
-            window.plannerInterval
-        );
-
-        window.plannerInterval = null;
-    }
-
-
-    /*
-     * Cancel the API request if Planner is being left.
-     */
-
-    if (plannerAbortController) {
-
-        plannerAbortController.abort();
-
-        plannerAbortController = null;
-    }
-
-};
+}
 
 
 </script>
