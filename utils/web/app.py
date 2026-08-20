@@ -322,6 +322,9 @@ async def planner_data(
 
     for reminder in reminders:
 
+        if not reminder.get("enabled"):
+            continue
+
         config = reminder.get("config") or {}
 
         account = next(
@@ -345,7 +348,6 @@ async def planner_data(
                 "type": reminder["reminder_type"],
                 "mode": reminder["reminder_mode"],
                 "genshin_uid": reminder["genshin_uid"],
-                "enabled": reminder["enabled"],
                 "config": config,
             }
         )

@@ -154,8 +154,36 @@
                     <label>
                         Account
 
-                        <select id="reminder-account">
-                        </select>
+                        <div
+                            class="custom-select"
+                            id="reminder-account-select"
+                        >
+
+                            <button
+                                type="button"
+                                class="custom-select-button"
+                                id="reminder-account-button"
+                            >
+                                <span id="reminder-account-value">
+                                    Select Account
+                                </span>
+
+                                <span class="custom-select-arrow">
+                                    ⌄
+                                </span>
+                            </button>
+
+                            <div
+                                class="custom-select-menu"
+                                id="reminder-account-menu"
+                            ></div>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="reminder-account"
+                        >
                     </label>
 
 
@@ -382,7 +410,10 @@
     .reminders-list {
         display: flex;
         flex-direction: column;
+
         gap: 10px;
+
+        margin-top: 10px;
     }
 
     .reminder-card {
@@ -392,8 +423,7 @@
             minmax(180px, 1.5fr)
             minmax(100px, 0.8fr)
             minmax(120px, 0.9fr)
-            minmax(110px, 0.9fr)
-            auto;
+            minmax(110px, 0.9fr);
 
         align-items: center;
 
@@ -551,47 +581,23 @@
     }
 
     .reminder-form select,
-.reminder-form input {
-    width: 100%;
+    .reminder-form input {
+        width: 100%;
 
-    box-sizing: border-box;
+        box-sizing: border-box;
 
-    padding: 10px 12px;
+        padding: 10px 12px;
 
-    border: 1px solid var(--border);
-    border-radius: 10px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
 
-    background: var(--background);
-    color: var(--text);
-
-    font: inherit;
-
-    outline: none;
-}
-
-    .reminder-form select {
-        cursor: pointer;
-
-        appearance: auto;
-    }
-
-    .reminder-form select:hover {
         background: var(--background);
         color: var(--text);
-        border-color: var(--border);
-    }
 
-    .reminder-form select:focus {
-        background: var(--background);
-        color: var(--text);
-        border-color: var(--accent);
-    }
+        font: inherit;
 
-    .reminder-form select:focus,
-    .reminder-form input:focus {
-        border-color: var(--accent);
+        outline: none;
     }
-
 
     .resin-input {
         display: flex;
@@ -664,40 +670,163 @@
         background: var(--accent);
         filter: brightness(1.08);
     }
+    
 
+    /* ================================
+   Custom Account Select
+   ================================ */
 
-    /* Status */
+    .custom-select {
+        position: relative;
+        width: 100%;
+    }
 
-    .reminder-status {
-        display: inline-flex;
+    .custom-select-button {
+        width: 100%;
 
+        display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
 
-        min-width: 76px;
+        box-sizing: border-box;
 
-        padding: 6px 11px;
+        padding: 10px 12px;
 
-        border-radius: 999px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
 
-        font-size: 12px;
-        font-weight: 600;
+        background: var(--background);
+        color: var(--text);
+
+        font: inherit;
+        font-size: 13px;
+
+        cursor: pointer;
+
+        outline: none;
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
     }
 
-    .reminder-status.enabled {
-        background: rgba(90, 200, 120, 0.12);
-        color: #72d692;
-
-        border: 1px solid rgba(90, 200, 120, 0.18);
+    .custom-select-button:hover {
+        background: var(--surface-hover);
+        border-color: var(--border);
     }
 
-    .reminder-status.disabled {
-        background: rgba(220, 90, 90, 0.10);
-        color: #e98282;
+    .custom-select-button:focus,
+    .custom-select.open .custom-select-button {
+        border-color: var(--accent);
 
-        border: 1px solid rgba(220, 90, 90, 0.16);
+        box-shadow:
+            0 0 0 2px
+            color-mix(
+                in srgb,
+                var(--accent) 15%,
+                transparent
+            );
     }
 
+    .custom-select-arrow {
+        flex-shrink: 0;
+
+        margin-left: 8px;
+
+        color: var(--text-muted);
+
+        font-size: 16px;
+        line-height: 1;
+
+        transition:
+            color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .custom-select-button:hover .custom-select-arrow,
+    .custom-select.open .custom-select-arrow {
+        color: var(--accent);
+    }
+
+    .custom-select.open .custom-select-arrow {
+        transform: rotate(180deg);
+    }
+
+
+    /* Dropdown */
+
+    .custom-select-menu {
+        position: absolute;
+
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+
+        z-index: 100;
+
+        display: none;
+
+        padding: 5px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+        border-radius: 10px;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.25);
+
+        overflow: hidden;
+    }
+
+    .custom-select.open .custom-select-menu {
+        display: block;
+    }
+
+
+    /* Individual options */
+
+    .custom-select-option {
+        width: 100%;
+
+        display: block;
+
+        padding: 9px 10px;
+
+        border: 0;
+        border-radius: 7px;
+
+        background: transparent;
+        color: var(--text);
+
+        font: inherit;
+        font-size: 13px;
+
+        text-align: left;
+
+        cursor: pointer;
+
+        transition:
+            background 0.15s ease,
+            color 0.15s ease;
+    }
+
+    .custom-select-option:hover {
+        background: var(--surface-hover);
+        color: var(--accent);
+    }
+
+    .custom-select-option.selected {
+        background:
+            color-mix(
+                in srgb,
+                var(--accent) 12%,
+                transparent
+            );
+
+        color: var(--accent);
+    }
 
     /* ================================
        Empty State
@@ -982,16 +1111,6 @@ function renderPlanner(
             reminder.mode
             || "Unknown";
 
-        const statusClass =
-            reminder.enabled
-            ? "enabled"
-            : "disabled";
-
-        const statusText =
-            reminder.enabled
-            ? "Enabled"
-            : "Disabled";
-
 
         /*
          * Capitalise the reminder type.
@@ -1092,13 +1211,6 @@ function renderPlanner(
                 </span>
 
             </div>
-
-
-            <span
-                class="reminder-status ${statusClass}"
-            >
-                ${statusText}
-            </span>
 
         `;
 
@@ -1323,26 +1435,64 @@ function openReminderPanel() {
     const panel =
         document.getElementById("reminder-panel");
 
-    const accountSelect =
+    const accountInput =
         document.getElementById("reminder-account");
 
-    if (!panel || !accountSelect) {
+    const accountButton =
+        document.getElementById("reminder-account-button");
+
+    const accountValue =
+        document.getElementById("reminder-account-value");
+
+    const accountMenu =
+        document.getElementById("reminder-account-menu");
+
+    const accountSelect =
+        document.getElementById("reminder-account-select");
+
+
+    if (
+        !panel ||
+        !accountInput ||
+        !accountButton ||
+        !accountValue ||
+        !accountMenu ||
+        !accountSelect
+    ) {
         return;
     }
 
-    accountSelect.innerHTML = "";
 
     /*
-     * Populate the account selector using
-     * the accounts already loaded by the Planner.
+     * Reset the account selector.
      */
 
-    for (const account of window.plannerAccounts || []) {
+    accountInput.value = "";
+
+    accountValue.textContent =
+        "Select Account";
+
+    accountMenu.innerHTML = "";
+
+
+    /*
+     * Populate the custom account selector.
+     */
+
+    for (
+        const account
+        of window.plannerAccounts || []
+    ) {
 
         const option =
-            document.createElement("option");
+            document.createElement("button");
 
-        option.value =
+        option.type = "button";
+
+        option.className =
+            "custom-select-option";
+
+        option.dataset.value =
             account.genshin_uid;
 
         option.textContent =
@@ -1350,8 +1500,57 @@ function openReminderPanel() {
             ? `${account.nickname} (${account.genshin_uid})`
             : account.genshin_uid;
 
-        accountSelect.appendChild(option);
+
+        option.addEventListener(
+            "click",
+            () => {
+
+                accountInput.value =
+                    account.genshin_uid;
+
+                accountValue.textContent =
+                    option.textContent;
+
+
+                /*
+                 * Update selected state.
+                 */
+
+                accountMenu
+                    .querySelectorAll(
+                        ".custom-select-option"
+                    )
+                    .forEach(item => {
+
+                        item.classList.remove(
+                            "selected"
+                        );
+
+                    });
+
+                option.classList.add(
+                    "selected"
+                );
+
+
+                /*
+                 * Close the dropdown.
+                 */
+
+                accountSelect.classList.remove(
+                    "open"
+                );
+            }
+        );
+
+
+        accountMenu.appendChild(option);
     }
+
+
+    /*
+     * Open the reminder panel.
+     */
 
     panel.hidden = false;
 }
@@ -1383,6 +1582,16 @@ function initialiseReminderPanel() {
 
     const saveButton =
         document.getElementById("reminder-save-button");
+
+    const accountSelect =
+        document.getElementById(
+            "reminder-account-select"
+        );
+
+    const accountButton =
+        document.getElementById(
+            "reminder-account-button"
+        );
 
 
     if (addButton) {
@@ -1419,6 +1628,54 @@ function initialiseReminderPanel() {
             saveReminder
         );
     }
+
+
+    /*
+     * Custom account selector.
+     */
+
+    if (
+        accountButton &&
+        accountSelect
+    ) {
+
+        accountButton.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                accountSelect.classList.toggle(
+                    "open"
+                );
+
+            }
+        );
+    }
+
+
+    /*
+     * Close the account selector when
+     * clicking elsewhere on the page.
+     */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            if (
+                accountSelect &&
+                !accountSelect.contains(event.target)
+            ) {
+
+                accountSelect.classList.remove(
+                    "open"
+                );
+
+            }
+
+        }
+    );
 
 }
 
