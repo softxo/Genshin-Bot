@@ -432,7 +432,8 @@ async function loadPlanner() {
         const response = await fetch(
             "/api/planner",
             {
-                credentials: "same-origin"
+                credentials: "same-origin",
+                signal: plannerAbortController?.signal
             }
         );
 
@@ -458,6 +459,15 @@ async function loadPlanner() {
         );
 
     } catch (exception) {
+
+        /*
+         * Aborting the request is expected when
+         * leaving the Planner.
+         */
+
+        if (exception.name === "AbortError") {
+            return;
+        }
 
         console.error(exception);
 
@@ -938,13 +948,88 @@ function updateCountdown(
 }
 
 
-loadPlanner();
+let plannerAbortController = null;
 
 
-setInterval(
-    updateTimestamps,
-    1_000
-);
+window.initPlanner = function () {
+
+    /*
+     * Stop any previous Planner timer.
+     */
+
+    if (window.plannerInterval) {
+
+        clearInterval(
+            window.plannerInterval
+        );
+
+        window.plannerInterval = null;
+    }
+
+
+    /*
+     * Cancel any previous API request.
+     */
+
+    if (plannerAbortController) {
+
+        plannerAbortController.abort();
+
+    }
+
+
+    /*
+     * Start a new API request.
+     */
+
+    plannerAbortController =
+        new AbortController();
+
+
+    loadPlanner();
+
+
+    /*
+     * Start the Resin countdown.
+     */
+
+    window.plannerInterval =
+        setInterval(
+            updateTimestamps,
+            1_000
+        );
+};
+
+
+window.destroyPlanner = function () {
+
+    /*
+     * Stop the Resin countdown.
+     */
+
+    if (window.plannerInterval) {
+
+        clearInterval(
+            window.plannerInterval
+        );
+
+        window.plannerInterval = null;
+    }
+
+
+    /*
+     * Cancel the API request if Planner is being left.
+     */
+
+    if (plannerAbortController) {
+
+        plannerAbortController.abort();
+
+        plannerAbortController = null;
+    }
+
+};
+
 
 </script>
 
