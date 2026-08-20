@@ -240,6 +240,92 @@ async def planner(
     )
 
 
+@app.get("/api/planner")
+async def planner_data(
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    reminders = await get_reminders(
+        user_id
+    )
+
+    planner_accounts = []
+
+    for account in accounts:
+
+        client = await get_account_client(
+            user_id,
+            account["genshin_uid"]
+        )
+
+        if client is None:
+            continue
+
+        try:
+            async with client:
+                response = await client.get_genshin_daily_note(
+                    client.genshin_uid,
+                    client.genshin_server
+                )
+
+            current_resin, max_resin, recovery = get_resin(
+                response
+            )
+
+        except Exception as error:
+            print("===== WEBSITE PLANNER RESIN ERROR =====")
+            print(type(error).__name__)
+            print(error)
+            print("========================================")
+
+            continue
+
+        replenished_at = None
+
+        if current_resin < max_resin:
+            replenished_at = (
+                int(time.time())
+                + recovery
+            )
+
+        planner_accounts.append({
+            "genshin_uid": account["genshin_uid"],
+            "nickname": account.get("nickname"),
+            "level": account.get("level"),
+            "genshin_server": account["genshin_server"],
+            "current_resin": current_resin,
+            "max_resin": max_resin,
+            "replenished_at": replenished_at,
+        })
+
+    planner_reminders = []
+
+    for reminder in reminders:
+
+        config = reminder.get("config") or {}
+
+        planner_reminders.append({
+            "id": reminder["id"],
+            "type": reminder["reminder_type"],
+            "mode": reminder["reminder_mode"],
+            "genshin_uid": reminder["genshin_uid"],
+            "enabled": reminder["enabled"],
+            "config": config,
+        })
+
+    return {
+        "accounts": planner_accounts,
+        "reminders": planner_reminders,
+    }
+
+
 @app.get("/api/planner/resin")
 async def planner_resin(
     cyrene_session: str | None = Cookie(default=None)
