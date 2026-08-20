@@ -465,6 +465,31 @@ async def planner_resin_reminder(
     }
 
 
+@app.delete("/api/planner/reminder/{reminder_id}")
+async def delete_planner_reminder(
+    reminder_id: int,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    deleted = await delete_reminder(
+        discord_user_id=user_id,
+        reminder_id=reminder_id
+    )
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Reminder not found."
+        )
+
+    return {
+        "success": True
+    }
+
+
 @app.post("/api/planner/reminders")
 async def create_planner_reminder(
     data: dict,
