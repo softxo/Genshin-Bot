@@ -224,15 +224,19 @@
         margin: 16px 0;
     }
 
+    .resin-countdown,
+    .resin-full-countdown {
+        color: var(--accent);
+        font-weight: 500;
+    }
 
     /* ================================
-       Reminders
-       ================================ */
+   Reminders
+   ================================ */
 
     .reminders-list {
         display: flex;
         flex-direction: column;
-
         gap: 10px;
     }
 
@@ -240,15 +244,17 @@
         display: grid;
 
         grid-template-columns:
-            minmax(180px, 1fr)
-            auto
+            minmax(180px, 1.5fr)
+            minmax(100px, 0.8fr)
+            minmax(120px, 0.9fr)
+            minmax(110px, 0.9fr)
             auto;
 
         align-items: center;
 
         gap: 24px;
 
-        padding: 16px 20px;
+        padding: 14px 20px;
 
         background: var(--surface);
 
@@ -271,9 +277,9 @@
     }
 
     .reminder-account {
-        margin-top: 4px;
+        margin-top: 3px;
 
-        font-size: 13px;
+        font-size: 12px;
 
         color: var(--text-muted);
     }
@@ -284,11 +290,11 @@
 
         gap: 3px;
 
-        min-width: 100px;
+        min-width: 0;
     }
 
     .reminder-label {
-        font-size: 11px;
+        font-size: 10px;
 
         text-transform: uppercase;
         letter-spacing: 0.08em;
@@ -297,10 +303,24 @@
     }
 
     .reminder-value {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
         font-size: 14px;
 
         color: var(--text);
     }
+
+    .reminder-resin-icon {
+        width: 18px;
+        height: 18px;
+
+        object-fit: contain;
+    }
+
+
+    /* Status */
 
     .reminder-status {
         display: inline-flex;
@@ -310,7 +330,7 @@
 
         min-width: 76px;
 
-        padding: 6px 10px;
+        padding: 6px 11px;
 
         border-radius: 999px;
 
@@ -321,11 +341,15 @@
     .reminder-status.enabled {
         background: rgba(90, 200, 120, 0.12);
         color: #72d692;
+
+        border: 1px solid rgba(90, 200, 120, 0.18);
     }
 
     .reminder-status.disabled {
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--text-muted);
+        background: rgba(220, 90, 90, 0.10);
+        color: #e98282;
+
+        border: 1px solid rgba(220, 90, 90, 0.16);
     }
 
 
@@ -509,7 +533,7 @@ function renderPlanner(
             <hr>
 
             <p>
-                Replenished in
+                Replenished
 
                 <span
                     class="resin-countdown"
@@ -524,9 +548,9 @@ function renderPlanner(
             </p>
 
             <p>
-                Fully Replenished in
+                Fully Replenished
 
-                <strong
+                <span
                     class="resin-full-countdown"
                     data-full-timestamp="${account.full_resin_at ?? ""}"
                 >
@@ -535,7 +559,7 @@ function renderPlanner(
                         ? "Full"
                         : "Loading..."
                     }
-                </strong>
+                </span>
             </p>
         `;
 
@@ -559,7 +583,7 @@ function renderPlanner(
        Reminders
        ================================ */
 
-    for (const reminder of plannerData.reminders) {
+        for (const reminder of plannerData.reminders) {
 
         const card =
             document.createElement("div");
@@ -588,23 +612,78 @@ function renderPlanner(
             ? "Enabled"
             : "Disabled";
 
-        const amountText =
+
+        /*
+         * Capitalise the reminder type.
+         */
+
+        const displayType =
+            type.charAt(0).toUpperCase()
+            + type.slice(1);
+
+
+        /*
+         * Capitalise the reminder mode.
+         */
+
+        const displayMode =
+            mode.charAt(0).toUpperCase()
+            + mode.slice(1);
+
+
+        /*
+         * Resin amount.
+         */
+
+        let amountHTML = "—";
+
+        if (
             amount !== undefined
             && amount !== null
-            ? `${amount} Resin`
-            : "—";
+        ) {
+
+            if (
+                type.toLowerCase() === "resin"
+            ) {
+
+                amountHTML = `
+                    <img
+                        src="/static/images/Original_Resin.webp"
+                        alt="Resin"
+                        class="reminder-resin-icon"
+                    >
+
+                    ${amount}
+                `;
+
+            } else {
+
+                amountHTML =
+                    `${amount}`;
+            }
+        }
+
 
         card.innerHTML = `
 
             <div class="reminder-main">
 
                 <h3 class="reminder-name">
-                    ${type}
+                    ${reminder.account_nickname || "Account"}
                 </h3>
 
-                <div class="reminder-account">
-                    UID: ${reminder.genshin_uid}
-                </div>
+            </div>
+
+
+            <div class="reminder-detail">
+
+                <span class="reminder-label">
+                    Type
+                </span>
+
+                <span class="reminder-value">
+                    ${displayType}
+                </span>
 
             </div>
 
@@ -616,7 +695,7 @@ function renderPlanner(
                 </span>
 
                 <span class="reminder-value">
-                    ${mode}
+                    ${displayMode}
                 </span>
 
             </div>
@@ -629,7 +708,7 @@ function renderPlanner(
                 </span>
 
                 <span class="reminder-value">
-                    ${amountText}
+                    ${amountHTML}
                 </span>
 
             </div>

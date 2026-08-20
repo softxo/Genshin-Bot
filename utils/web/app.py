@@ -324,14 +324,31 @@ async def planner_data(
 
         config = reminder.get("config") or {}
 
-        planner_reminders.append({
-            "id": reminder["id"],
-            "type": reminder["reminder_type"],
-            "mode": reminder["reminder_mode"],
-            "genshin_uid": reminder["genshin_uid"],
-            "enabled": reminder["enabled"],
-            "config": config,
-        })
+        account = next(
+            (
+                account
+                for account in accounts
+                if account["genshin_uid"]
+                   == reminder["genshin_uid"]
+            ),
+            None,
+        )
+
+        planner_reminders.append(
+            {
+                "id": reminder["id"],
+                "account_nickname": (
+                    account.get("nickname")
+                    if account
+                    else None
+                ),
+                "type": reminder["reminder_type"],
+                "mode": reminder["reminder_mode"],
+                "genshin_uid": reminder["genshin_uid"],
+                "enabled": reminder["enabled"],
+                "config": config,
+            }
+        )
 
     return {
         "accounts": planner_accounts,
