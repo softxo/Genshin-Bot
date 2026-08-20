@@ -1,4 +1,6 @@
 import typing
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 from fastapi import Cookie
 from fastapi import FastAPI, HTTPException, Request
@@ -21,6 +23,15 @@ from utils.web.auth import (
     get_web_session,
     delete_web_session,
 )
+from utils.hoyolab.database import (
+    get_accounts,
+    get_reminders,
+    create_reminder,
+    update_reminder,
+    delete_reminder,
+)
+from utils.hoyolab.account_client import get_account_client
+from utils.hoyolab.daily_note import get_resin
 
 
 
@@ -183,11 +194,43 @@ async def auth_status(
     }
 
 
+async def get_authenticated_user(
+    cyrene_session: str | None
+) -> int:
+
+    session = get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Authentication required."
+        )
+
+    return session.user_id
+
 @app.get(
     "/planner",
     response_class=HTMLResponse,
 )
-async def planner(request: Request):
+async def planner(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    session = get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+        return templates.TemplateResponse(
+            request=request,
+            name="verify.html",
+            context={
+                "request": request,
+            },
+        )
+
     return templates.TemplateResponse(
         request=request,
         name="planner.html",
@@ -195,6 +238,226 @@ async def planner(request: Request):
             "request": request,
         },
     )
+
+
+@app.get("/api/planner/resin")
+async def planner_resin(
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    if not accounts:
+        raise HTTPException(
+            status_code=404,
+            detail="No Genshin account linked."
+        )
+
+    account = accounts[0]
+
+    client = await get_account_client(
+        user_id,
+        account["genshin_uid"]
+    )
+
+    if client is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Genshin account not found."
+        )
+
+    try:
+        async with client:
+            response = await client.get_genshin_daily_note(
+                client.genshin_uid,
+                client.genshin_server
+            )
+
+        current_resin, max_resin, recovery = get_resin(
+            response
+        )
+
+    except Exception as error:
+        print("===== WEBSITE RESIN ERROR =====")
+        print(type(error).__name__)
+        print(error)
+        print("================================")
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to retrieve Resin."
+        ) from error
+
+    reminders = await get_reminders(
+        user_id
+    )
+
+    reminder = next(
+        (
+            reminder
+            for reminder in reminders
+            if reminder["genshin_uid"]
+            == account["genshin_uid"]
+            and reminder["reminder_type"] == "resin"
+            and reminder["reminder_mode"] == "automatic"
+        ),
+        None
+    )
+
+    next_resin_seconds = None
+    full_resin_seconds = None
+
+    if current_resin < max_resin:
+        remaining_resin = max_resin - current_resin
+
+        next_resin_seconds = recovery
+
+        full_resin_seconds = (
+            recovery
+            + ((remaining_resin - 1) * 480)
+        )
+
+    return {
+        "account": {
+            "uid": account["genshin_uid"],
+            "nickname": (
+                account.get("nickname")
+                or account["genshin_uid"]
+            ),
+            "level": account.get("level"),
+            "server": account["genshin_server"],
+        },
+
+        "resin": {
+            "current": current_resin,
+            "maximum": max_resin,
+            "next_resin_seconds": next_resin_seconds,
+            "full_resin_seconds": full_resin_seconds,
+        },
+
+        "reminder": {
+            "enabled": (
+                reminder is not None
+                and reminder["enabled"]
+            ),
+            "amount": (
+                (reminder.get("config") or {}).get("amount")
+                if reminder
+                else None
+            ),
+        },
+    }
+
+
+@app.post("/api/planner/resin/reminder")
+async def planner_resin_reminder(
+    data: dict,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    amount = data.get("amount")
+    enabled = data.get("enabled")
+
+    if amount is not None:
+        try:
+            amount = int(amount)
+        except (TypeError, ValueError):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid Resin amount."
+            )
+
+        if not 1 <= amount <= 200:
+            raise HTTPException(
+                status_code=400,
+                detail="Resin must be between 1 and 200."
+            )
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    if not accounts:
+        raise HTTPException(
+            status_code=404,
+            detail="No Genshin account linked."
+        )
+
+    account = accounts[0]
+
+    reminders = await get_reminders(
+        user_id
+    )
+
+    reminder = next(
+        (
+            reminder
+            for reminder in reminders
+            if reminder["genshin_uid"]
+            == account["genshin_uid"]
+            and reminder["reminder_type"] == "resin"
+            and reminder["reminder_mode"] == "automatic"
+        ),
+        None
+    )
+
+    if reminder is None:
+
+        if enabled is False:
+            return {
+                "success": True,
+                "enabled": False,
+                "amount": None,
+            }
+
+        if amount is None:
+            raise HTTPException(
+                status_code=400,
+                detail="A Resin amount is required."
+            )
+
+        reminder_id = await create_reminder(
+            discord_user_id=user_id,
+            reminder_type="resin",
+            genshin_uid=account["genshin_uid"],
+            config={
+                "amount": amount
+            },
+            delivery_type="dm",
+            reminder_mode="automatic",
+            next_trigger_at=datetime.now(timezone.utc)
+        )
+
+    else:
+
+        config = reminder.get("config") or {}
+
+        if amount is not None:
+            config["amount"] = amount
+
+        if enabled is None:
+            enabled = reminder["enabled"]
+
+        await update_reminder(
+            discord_user_id=user_id,
+            reminder_id=reminder["id"],
+            enabled=enabled,
+            config=config,
+        )
+
+    return {
+        "success": True,
+        "enabled": enabled,
+        "amount": amount,
+    }
 
 
 @app.get(
