@@ -147,7 +147,7 @@ class GenshinAccountSelect(discord.ui.Select):
             return
 
         try:
-            save_account(
+            await save_account(
                 self.discord_user_id,
                 self.credentials,
                 discord_username=interaction.user.name,
