@@ -288,22 +288,35 @@ async def planner_data(
             continue
 
         replenished_at = None
+        full_resin_at = None
 
         if current_resin < max_resin:
+
+            remaining_resin = max_resin - current_resin
+
             replenished_at = (
-                int(time.time())
-                + recovery
+                    int(time.time())
+                    + recovery
             )
 
-        planner_accounts.append({
-            "genshin_uid": account["genshin_uid"],
-            "nickname": account.get("nickname"),
-            "level": account.get("level"),
-            "genshin_server": account["genshin_server"],
-            "current_resin": current_resin,
-            "max_resin": max_resin,
-            "replenished_at": replenished_at,
-        })
+            full_resin_at = (
+                    int(time.time())
+                    + recovery
+                    + ((remaining_resin - 1) * 480)
+            )
+
+        planner_accounts.append(
+            {
+                "genshin_uid": account["genshin_uid"],
+                "nickname": account.get("nickname"),
+                "level": account.get("level"),
+                "genshin_server": account["genshin_server"],
+                "current_resin": current_resin,
+                "max_resin": max_resin,
+                "replenished_at": replenished_at,
+                "full_resin_at": full_resin_at,
+            }
+        )
 
     planner_reminders = []
 

@@ -6,7 +6,8 @@
 
 <div class="page">
 
-    <section class="hero">
+    <!-- Planner Header -->
+    <section class="hero planner-hero">
 
         <div class="hero-content">
 
@@ -19,7 +20,8 @@
             </h1>
 
             <p>
-                Your Resin and Events will appear here.
+                Keep track of your Genshin accounts, Resin,
+                and active reminders.
             </p>
 
         </div>
@@ -28,55 +30,42 @@
 
 
     <!-- Loading -->
-
-    <div id="planner-loading" class="planner-state">
+    <div
+        id="planner-loading"
+        class="planner-state"
+    >
         Loading planner...
     </div>
 
 
     <!-- Error -->
-
     <div
         id="planner-error"
-        class="planner-state"
+        class="planner-state planner-error"
         hidden
     >
-        <h2>Something went wrong</h2>
-
-        <p>
-            Cyrene couldn't load your planner data.
-        </p>
-
-        <button
-            type="button"
-            onclick="loadPlanner()"
-        >
-            Try Again
-        </button>
+        Failed to load planner data.
     </div>
 
 
-    <!-- Planner -->
-
+    <!-- Planner Content -->
     <div
         id="planner-content"
-        class="planner-content"
         hidden
     >
 
         <!-- Accounts -->
-
         <section class="planner-section">
 
             <div class="section-header">
 
                 <div>
                     <span class="eyebrow">
-                        GENSHIN
+                        ACCOUNTS
                     </span>
 
                     <h2>
-                        Accounts
+                        Your Accounts
                     </h2>
                 </div>
 
@@ -91,7 +80,6 @@
 
 
         <!-- Reminders -->
-
         <section class="planner-section">
 
             <div class="section-header">
@@ -102,15 +90,19 @@
                     </span>
 
                     <h2>
-                        Reminders
+                        Your Reminders
                     </h2>
+
+                    <p>
+                        Manage the reminders configured for your accounts.
+                    </p>
                 </div>
 
             </div>
 
             <div
                 id="reminders"
-                class="planner-grid"
+                class="reminders-list"
             ></div>
 
         </section>
@@ -122,126 +114,278 @@
 
 <style>
 
-.planner-state {
-    padding: 60px 20px;
-    text-align: center;
-    color: var(--text-muted);
-}
+    /* ================================
+       Planner Header
+       ================================ */
 
-.planner-state h2 {
-    margin-bottom: 8px;
-    color: var(--text);
-}
-
-.planner-state p {
-    margin-bottom: 20px;
-    color: var(--text-muted);
-}
-
-.planner-state button {
-    padding: 10px 18px;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    background: var(--surface);
-    color: var(--text);
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.planner-state button:hover {
-    background: var(--surface-hover);
-}
-
-
-.planner-content {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
-
-
-.planner-section {
-    width: 100%;
-}
-
-
-.section-header {
-    margin-bottom: 18px;
-}
-
-
-.section-header h2 {
-    margin: 4px 0 0;
-}
-
-
-.planner-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px, 1fr)
-        );
-
-    gap: 16px;
-}
-
-
-.planner-card {
-    padding: 22px;
-
-    background: var(--surface);
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
-
-    box-sizing: border-box;
-}
-
-
-.planner-card h2,
-.planner-card h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-
-    color: var(--text);
-}
-
-
-.planner-card p {
-    margin: 6px 0;
-
-    color: var(--text-muted);
-}
-
-
-.planner-card strong {
-    color: var(--text);
-}
-
-
-.planner-card hr {
-    margin: 18px 0;
-
-    border: 0;
-    border-top: 1px solid var(--border);
-}
-
-
-@media (max-width: 700px) {
-
-    .planner-grid {
-        grid-template-columns: 1fr;
+    .planner-hero {
+        padding: 28px 32px;
+        margin-bottom: 28px;
     }
 
-}
+    .planner-hero .hero-content {
+        max-width: 760px;
+    }
+
+    .planner-hero h1 {
+        margin: 6px 0 8px;
+    }
+
+    .planner-hero p {
+        margin: 0;
+    }
+
+
+    /* ================================
+       Sections
+       ================================ */
+
+    .planner-section {
+        margin-bottom: 40px;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+        margin: 5px 0 0;
+    }
+
+    .section-header p {
+        margin: 6px 0 0;
+        color: var(--text-muted);
+    }
+
+
+    /* ================================
+       Account Cards
+       ================================ */
+
+    .resin-icon {
+        width: 20px;
+        height: 20px;
+
+        object-fit: contain;
+
+        vertical-align: middle;
+
+        margin-right: 4px;
+    }
+
+    .planner-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+
+        gap: 16px;
+    }
+
+    .planner-card {
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 14px;
+
+        padding: 20px;
+
+        box-sizing: border-box;
+    }
+
+    .planner-card h2 {
+        margin: 0 0 8px;
+    }
+
+    .planner-card p {
+        margin: 6px 0;
+
+        color: var(--text-muted);
+    }
+
+    .planner-card strong {
+        color: var(--text);
+    }
+
+    .planner-card hr {
+        border: 0;
+
+        border-top:
+            1px solid var(--border);
+
+        margin: 16px 0;
+    }
+
+
+    /* ================================
+       Reminders
+       ================================ */
+
+    .reminders-list {
+        display: flex;
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .reminder-card {
+        display: grid;
+
+        grid-template-columns:
+            minmax(180px, 1fr)
+            auto
+            auto;
+
+        align-items: center;
+
+        gap: 24px;
+
+        padding: 16px 20px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 12px;
+    }
+
+    .reminder-main {
+        min-width: 0;
+    }
+
+    .reminder-name {
+        margin: 0;
+
+        font-size: 15px;
+        font-weight: 600;
+
+        color: var(--text);
+    }
+
+    .reminder-account {
+        margin-top: 4px;
+
+        font-size: 13px;
+
+        color: var(--text-muted);
+    }
+
+    .reminder-detail {
+        display: flex;
+        flex-direction: column;
+
+        gap: 3px;
+
+        min-width: 100px;
+    }
+
+    .reminder-label {
+        font-size: 11px;
+
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+
+        color: var(--text-muted);
+    }
+
+    .reminder-value {
+        font-size: 14px;
+
+        color: var(--text);
+    }
+
+    .reminder-status {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 76px;
+
+        padding: 6px 10px;
+
+        border-radius: 999px;
+
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .reminder-status.enabled {
+        background: rgba(90, 200, 120, 0.12);
+        color: #72d692;
+    }
+
+    .reminder-status.disabled {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-muted);
+    }
+
+
+    /* ================================
+       Empty State
+       ================================ */
+
+    .planner-empty {
+        padding: 24px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 12px;
+
+        color: var(--text-muted);
+
+        text-align: center;
+    }
+
+
+    /* ================================
+       Loading / Error
+       ================================ */
+
+    .planner-state {
+        padding: 40px;
+
+        color: var(--text-muted);
+
+        text-align: center;
+    }
+
+    .planner-error {
+        color: #e98282;
+    }
+
+
+    /* ================================
+       Responsive
+       ================================ */
+
+    @media (max-width: 700px) {
+
+        .planner-hero {
+            padding: 22px;
+        }
+
+        .reminder-card {
+            grid-template-columns: 1fr;
+
+            gap: 12px;
+        }
+
+        .reminder-detail {
+            min-width: 0;
+        }
+
+    }
 
 </style>
 
@@ -259,26 +403,6 @@ async function loadPlanner() {
     const error =
         document.getElementById("planner-error");
 
-
-    /*
-     * Elements do or don't exist -
-     */
-
-    if (!loading || !content || !error) {
-
-        console.error(
-            "Planner HTML elements are missing."
-        );
-
-        return;
-    }
-
-
-    loading.hidden = false;
-    content.hidden = true;
-    error.hidden = true;
-
-
     try {
 
         const response = await fetch(
@@ -288,46 +412,32 @@ async function loadPlanner() {
             }
         );
 
-
         if (response.status === 401) {
-
             window.location.href = "/";
-
             return;
         }
 
-
         if (!response.ok) {
-
             throw new Error(
-                `Planner request failed: ${response.status}`
+                "Failed to load planner data."
             );
         }
-
 
         const plannerData =
             await response.json();
 
-
         loading.hidden = true;
         content.hidden = false;
-
 
         renderPlanner(
             plannerData
         );
 
-
     } catch (exception) {
 
-        console.error(
-            "Failed to load planner:",
-            exception
-        );
-
+        console.error(exception);
 
         loading.hidden = true;
-        content.hidden = true;
         error.hidden = false;
     }
 }
@@ -343,212 +453,207 @@ function renderPlanner(
     const reminders =
         document.getElementById("reminders");
 
-
-    if (!accounts || !reminders) {
-
-        console.error(
-            "Planner containers are missing."
-        );
-
-        return;
-    }
-
-
     accounts.innerHTML = "";
     reminders.innerHTML = "";
 
 
-    /*
-     * Accounts
-     */
+    /* ================================
+       Accounts
+       ================================ */
 
-    for (
-        const account of
-        plannerData.accounts || []
-    ) {
+    for (const account of plannerData.accounts) {
 
         const card =
             document.createElement("div");
 
-
-        card.className =
-            "planner-card";
-
+        card.className = "planner-card";
 
         const name =
             account.nickname
             || account.genshin_uid;
 
-
-        let resinStatus;
-
-
-        if (
-            account.replenished_at === null
-            ||
-            account.replenished_at === undefined
-        ) {
-
-            resinStatus = "Full";
-
-        } else {
-
-            resinStatus = `
-                <span
-                    data-timestamp="${account.replenished_at}"
-                >
-                    Loading...
-                </span>
-            `;
-        }
-
-
         card.innerHTML = `
-
-            <h2>
-                ${name}
-            </h2>
+            <h2>${name}</h2>
 
             <p>
-                UID:
-                ${account.genshin_uid}
+                UID: ${account.genshin_uid}
             </p>
 
             <p>
-                AR:
-                ${account.level ?? "Unknown"}
+                AR: ${account.level ?? "Unknown"}
+            </p>
+
+            <hr>
+
+            <p class="resin-value">
+
+                <img
+                    src="/static/images/Original_Resin.webp"
+                    alt="Resin"
+                    class="resin-icon"
+                >
+
+                <strong
+                    data-resin-current="${account.current_resin}"
+                    data-resin-max="${account.max_resin}"
+                >
+                    ${account.current_resin}
+                    /
+                    ${account.max_resin}
+                </strong>
+
+                Resin
+
             </p>
 
             <hr>
 
             <p>
-                💧
-                <strong>
-                    ${account.current_resin}
-                    /
-                    ${account.max_resin}
-                </strong>
-                Resin
+                Replenished in
+
+                <span
+                    class="resin-countdown"
+                    data-timestamp="${account.replenished_at ?? ""}"
+                >
+                    ${
+                        account.replenished_at === null
+                        ? "Full"
+                        : "Loading..."
+                    }
+                </span>
             </p>
 
             <p>
-                Replenished:
-                ${resinStatus}
+                Fully Replenished in
+
+                <strong
+                    class="resin-full-countdown"
+                    data-full-timestamp="${account.full_resin_at ?? ""}"
+                >
+                    ${
+                        account.full_resin_at === null
+                        ? "Full"
+                        : "Loading..."
+                    }
+                </strong>
             </p>
-
         `;
-
 
         accounts.appendChild(card);
     }
 
 
-    /*
-     * No accounts
-     */
-
     if (
-        !plannerData.accounts
-        ||
         plannerData.accounts.length === 0
     ) {
 
         accounts.innerHTML = `
-            <div class="planner-card">
-
-                <h3>
-                    No Genshin Accounts
-                </h3>
-
-                <p>
-                    You don't currently have a
-                    Genshin account linked to Cyrene.
-                </p>
-
+            <div class="planner-empty">
+                No Genshin accounts are linked.
             </div>
         `;
     }
 
 
-    /*
-     * Reminders
-     */
+    /* ================================
+       Reminders
+       ================================ */
 
-    for (
-        const reminder of
-        plannerData.reminders || []
-    ) {
+    for (const reminder of plannerData.reminders) {
 
         const card =
             document.createElement("div");
 
-
         card.className =
-            "planner-card";
-
+            "reminder-card";
 
         const amount =
             reminder.config?.amount;
 
+        const type =
+            reminder.type
+            || "Unknown";
+
+        const mode =
+            reminder.mode
+            || "Unknown";
+
+        const statusClass =
+            reminder.enabled
+            ? "enabled"
+            : "disabled";
+
+        const statusText =
+            reminder.enabled
+            ? "Enabled"
+            : "Disabled";
+
+        const amountText =
+            amount !== undefined
+            && amount !== null
+            ? `${amount} Resin`
+            : "—";
 
         card.innerHTML = `
 
-            <h3>
-                ${reminder.type}
-            </h3>
+            <div class="reminder-main">
 
-            <p>
-                Mode:
-                ${reminder.mode}
-            </p>
+                <h3 class="reminder-name">
+                    ${type}
+                </h3>
 
-            ${
-                amount
-                ?
-                `<p>${amount} Resin</p>`
-                :
-                ""
-            }
+                <div class="reminder-account">
+                    UID: ${reminder.genshin_uid}
+                </div>
 
-            <p>
-                ${
-                    reminder.enabled
-                    ?
-                    "Enabled"
-                    :
-                    "Disabled"
-                }
-            </p>
+            </div>
+
+
+            <div class="reminder-detail">
+
+                <span class="reminder-label">
+                    Mode
+                </span>
+
+                <span class="reminder-value">
+                    ${mode}
+                </span>
+
+            </div>
+
+
+            <div class="reminder-detail">
+
+                <span class="reminder-label">
+                    Amount
+                </span>
+
+                <span class="reminder-value">
+                    ${amountText}
+                </span>
+
+            </div>
+
+
+            <span
+                class="reminder-status ${statusClass}"
+            >
+                ${statusText}
+            </span>
 
         `;
-
 
         reminders.appendChild(card);
     }
 
 
-    /*
-     * No reminders
-     */
-
     if (
-        !plannerData.reminders
-        ||
         plannerData.reminders.length === 0
     ) {
 
         reminders.innerHTML = `
-            <div class="planner-card">
-
-                <h3>
-                    No Reminders
-                </h3>
-
-                <p>
-                    Your Resin and other reminders
-                    will appear here.
-                </p>
-
+            <div class="planner-empty">
+                No reminders configured.
             </div>
         `;
     }
@@ -561,75 +666,196 @@ function renderPlanner(
 function updateTimestamps() {
 
     document
-        .querySelectorAll("[data-timestamp]")
-        .forEach(element => {
+        .querySelectorAll(".planner-card")
+        .forEach(card => {
+
+            const resinValue =
+                card.querySelector(
+                    "[data-resin-current]"
+                );
+
+            const replenished =
+                card.querySelector(
+                    "[data-timestamp]"
+                );
+
+            const fullyReplenished =
+                card.querySelector(
+                    "[data-full-timestamp]"
+                );
+
+            if (
+                !resinValue ||
+                !replenished
+            ) {
+                return;
+            }
+
+
+            let currentResin =
+                Number(
+                    resinValue.dataset.resinCurrent
+                );
+
+            const maxResin =
+                Number(
+                    resinValue.dataset.resinMax
+                );
+
+
+            /*
+             * Update the Resin regeneration timer.
+             */
 
             const timestamp =
                 Number(
-                    element.dataset.timestamp
+                    replenished.dataset.timestamp
                 );
 
+            if (timestamp) {
+
+                const seconds =
+                    timestamp -
+                    Math.floor(
+                        Date.now() / 1000
+                    );
+
+                if (seconds <= 0) {
+
+                    currentResin =
+                        Math.min(
+                            currentResin + 1,
+                            maxResin
+                        );
+
+                    resinValue.dataset.resinCurrent =
+                        currentResin;
+
+                    resinValue.textContent =
+                        `${currentResin} / ${maxResin}`;
+
+
+                    /*
+                     * Resin is now completely full.
+                     */
+
+                    if (
+                        currentResin >= maxResin
+                    ) {
+
+                        replenished.textContent =
+                            "Full";
+
+                        replenished.removeAttribute(
+                            "data-timestamp"
+                        );
+
+                        if (fullyReplenished) {
+
+                            fullyReplenished.textContent =
+                                "Full";
+
+                            fullyReplenished.removeAttribute(
+                                "data-full-timestamp"
+                            );
+                        }
+
+                        return;
+                    }
+
+
+                    /*
+                     * Start the next Resin timer.
+                     */
+
+                    const nextTimestamp =
+                        Math.floor(
+                            Date.now() / 1000
+                        ) + 480;
+
+                    replenished.dataset.timestamp =
+                        nextTimestamp;
+
+                }
+
+                updateCountdown(
+                    replenished,
+                    Number(
+                        replenished.dataset.timestamp
+                    )
+                );
+            }
+
+
+            /*
+             * Update Fully Replenished timer.
+             */
 
             if (
-                !Number.isFinite(timestamp)
+                fullyReplenished &&
+                fullyReplenished.dataset.fullTimestamp
             ) {
 
-                element.textContent =
-                    "Unknown";
-
-                return;
+                updateCountdown(
+                    fullyReplenished,
+                    Number(
+                        fullyReplenished.dataset.fullTimestamp
+                    )
+                );
             }
 
-
-            const seconds =
-                timestamp
-                -
-                Math.floor(
-                    Date.now() / 1000
-                );
-
-
-            if (seconds <= 0) {
-
-                element.textContent =
-                    "Ready";
-
-                return;
-            }
-
-
-            const minutes =
-                Math.floor(
-                    seconds / 60
-                );
-
-
-            if (minutes < 60) {
-
-                element.textContent =
-                    `in ${minutes}m`;
-
-                return;
-            }
-
-
-            const hours =
-                Math.floor(
-                    minutes / 60
-                );
-
-
-            const remainingMinutes =
-                minutes % 60;
-
-
-            element.textContent =
-                remainingMinutes === 0
-                ?
-                `in ${hours}h`
-                :
-                `in ${hours}h ${remainingMinutes}m`;
         });
+}
+
+
+function updateCountdown(
+    element,
+    timestamp
+) {
+
+    const seconds =
+        Math.max(
+            0,
+            timestamp -
+            Math.floor(
+                Date.now() / 1000
+            )
+        );
+
+    const hours =
+        Math.floor(
+            seconds / 3600
+        );
+
+    const minutes =
+        Math.floor(
+            (seconds % 3600) / 60
+        );
+
+    const remainingSeconds =
+        seconds % 60;
+
+
+    if (hours > 0) {
+
+        element.textContent =
+            `in ${hours}h ${minutes}m ${remainingSeconds}s`;
+
+        return;
+    }
+
+
+    if (minutes > 0) {
+
+        element.textContent =
+            `in ${minutes}m ${remainingSeconds}s`;
+
+        return;
+    }
+
+
+    element.textContent =
+        `in ${remainingSeconds}s`;
 }
 
 
@@ -638,7 +864,7 @@ loadPlanner();
 
 setInterval(
     updateTimestamps,
-    30_000
+    1_000
 );
 
 </script>
