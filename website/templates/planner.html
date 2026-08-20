@@ -110,109 +110,110 @@
 
 
             <div
+                id="reminder-panel"
+                class="reminder-panel"
+                hidden
+            >
+                <div class="reminder-panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            NEW REMINDER
+                        </span>
+
+                        <h3>
+                            Add Reminder
+                        </h3>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="reminder-close-button"
+                        id="reminder-close-button"
+                        aria-label="Close"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="reminder-form">
+
+                    <label>
+                        Reminder Type
+
+                        <select id="reminder-type">
+                            <option value="resin">
+                                Resin
+                            </option>
+                        </select>
+                    </label>
+
+
+                    <label>
+                        Account
+
+                        <select id="reminder-account">
+                        </select>
+                    </label>
+
+
+                    <label>
+                        Notify me at
+
+                        <div class="resin-input">
+
+                            <img
+                                src="/static/images/Original_Resin.webp"
+                                alt="Resin"
+                            >
+
+                            <input
+                                type="number"
+                                id="reminder-amount"
+                                min="1"
+                                max="200"
+                                value="160"
+                            >
+
+                            <span>
+                                Resin
+                            </span>
+
+                        </div>
+                    </label>
+
+
+                    <div class="reminder-form-actions">
+
+                        <button
+                            type="button"
+                            class="planner-button"
+                            id="reminder-cancel-button"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="button"
+                            class="planner-button reminder-save-button"
+                            id="reminder-save-button"
+                        >
+                            Add Reminder
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
                 id="reminders"
                 class="reminders-list"
             ></div>
-
-            <div
-            id="reminder-panel"
-            class="reminder-panel"
-            hidden
-        >
-            <div class="reminder-panel-header">
-
-                <div>
-                    <span class="eyebrow">
-                        NEW REMINDER
-                    </span>
-
-                    <h3>
-                        Add Reminder
-                    </h3>
-                </div>
-
-                <button
-                    type="button"
-                    class="reminder-close-button"
-                    id="reminder-close-button"
-                    aria-label="Close"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="reminder-form">
-
-                <label>
-                    Reminder Type
-
-                    <select id="reminder-type">
-                        <option value="resin">
-                            Resin
-                        </option>
-                    </select>
-                </label>
-
-
-                <label>
-                    Account
-
-                    <select id="reminder-account">
-                    </select>
-                </label>
-
-
-                <label>
-                    Notify me at
-
-                    <div class="resin-input">
-
-                        <img
-                            src="/static/images/Original_Resin.webp"
-                            alt="Resin"
-                        >
-
-                        <input
-                            type="number"
-                            id="reminder-amount"
-                            min="1"
-                            max="200"
-                            value="160"
-                        >
-
-                        <span>
-                            Resin
-                        </span>
-
-                    </div>
-                </label>
-
-
-                <div class="reminder-form-actions">
-
-                    <button
-                        type="button"
-                        class="planner-button"
-                        id="reminder-cancel-button"
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="button"
-                        class="planner-button reminder-save-button"
-                        id="reminder-save-button"
-                    >
-                        Add Reminder
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
 
 
         </section>
@@ -550,22 +551,40 @@
     }
 
     .reminder-form select,
-    .reminder-form input {
-        width: 100%;
+.reminder-form input {
+    width: 100%;
 
-        box-sizing: border-box;
+    box-sizing: border-box;
 
-        padding: 10px 12px;
+    padding: 10px 12px;
 
-        border: 1px solid var(--border);
-        border-radius: 9px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
 
+    background: var(--background);
+    color: var(--text);
+
+    font: inherit;
+
+    outline: none;
+}
+
+    .reminder-form select {
+        cursor: pointer;
+
+        appearance: auto;
+    }
+
+    .reminder-form select:hover {
         background: var(--background);
         color: var(--text);
+        border-color: var(--border);
+    }
 
-        font: inherit;
-
-        outline: none;
+    .reminder-form select:focus {
+        background: var(--background);
+        color: var(--text);
+        border-color: var(--accent);
     }
 
     .reminder-form select:focus,
@@ -1362,6 +1381,9 @@ function initialiseReminderPanel() {
     const cancelButton =
         document.getElementById("reminder-cancel-button");
 
+    const saveButton =
+        document.getElementById("reminder-save-button");
+
 
     if (addButton) {
 
@@ -1389,6 +1411,139 @@ function initialiseReminderPanel() {
         );
     }
 
+
+    if (saveButton) {
+
+        saveButton.addEventListener(
+            "click",
+            saveReminder
+        );
+    }
+
+}
+
+
+async function saveReminder() {
+
+    const accountSelect =
+        document.getElementById("reminder-account");
+
+    const amountInput =
+        document.getElementById("reminder-amount");
+
+    const saveButton =
+        document.getElementById("reminder-save-button");
+
+
+    const genshinUid =
+        accountSelect?.value;
+
+    const amount =
+        Number(amountInput?.value);
+
+
+    if (!genshinUid) {
+
+        alert(
+            "Please select a Genshin account."
+        );
+
+        return;
+    }
+
+
+    if (
+        !Number.isInteger(amount)
+        || amount < 1
+        || amount > 200
+    ) {
+
+        alert(
+            "Resin must be between 1 and 200."
+        );
+
+        return;
+    }
+
+
+    if (saveButton) {
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/planner/resin/reminder",
+                {
+                    method: "POST",
+
+                    credentials: "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        amount: amount,
+                        enabled: true
+                    })
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            window.location.href = "/";
+            return;
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail
+                || "Failed to save reminder."
+            );
+        }
+
+
+        closeReminderPanel();
+
+
+        /*
+         * Reload the Planner so the new reminder
+         * appears immediately.
+         */
+
+        await loadPlanner();
+
+    } catch (exception) {
+
+        console.error(exception);
+
+        alert(
+            exception.message
+            || "Failed to save reminder."
+        );
+
+    } finally {
+
+        if (saveButton) {
+
+            saveButton.disabled = false;
+            saveButton.textContent =
+                "Add Reminder";
+        }
+    }
 }
 
 
