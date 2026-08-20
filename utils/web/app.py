@@ -463,6 +463,226 @@ async def planner_resin_reminder(
     }
 
 
+@app.post("/api/planner/reminders")
+async def create_planner_reminder(
+    data: dict,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    reminder_type = data.get("type")
+    reminder_mode = data.get(
+        "mode",
+        "automatic"
+    )
+    genshin_uid = data.get("genshin_uid")
+    config = data.get("config") or {}
+    delivery_type = data.get(
+        "delivery_type",
+        "dm"
+    )
+
+    if reminder_type not in {
+        "resin",
+        "expedition",
+        "teapot",
+        "transformer",
+        "custom",
+    }:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid reminder type."
+        )
+
+    if reminder_mode not in {
+        "automatic",
+        "manual",
+    }:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid reminder mode."
+        )
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    if not accounts:
+        raise HTTPException(
+            status_code=404,
+            detail="No Genshin account linked."
+        )
+
+    if genshin_uid is not None:
+
+        account = next(
+            (
+                account
+                for account in accounts
+                if account["genshin_uid"]
+                == genshin_uid
+            ),
+            None,
+        )
+
+        if account is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid Genshin account."
+            )
+
+    elif reminder_type != "custom":
+
+        account = accounts[0]
+
+        genshin_uid = account[
+            "genshin_uid"
+        ]
+
+    else:
+        account = None
+
+    if reminder_type == "resin":
+
+        amount = config.get("amount")
+
+        try:
+            amount = int(amount)
+        except (TypeError, ValueError):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid Resin amount."
+            )
+
+        if not 1 <= amount <= 200:
+            raise HTTPException(
+                status_code=400,
+                detail="Resin must be between 1 and 200."
+            )
+
+        config["amount"] = amount
+
+    reminder_id = await create_reminder(
+        discord_user_id=user_id,
+        reminder_type=reminder_type,
+        genshin_uid=genshin_uid,
+        config=config,
+        delivery_type=delivery_type,
+        reminder_mode=reminder_mode,
+        next_trigger_at=datetime.now(timezone.utc)
+    )
+
+    return {
+        "success": True,
+        "id": reminder_id,
+    }
+
+
+@app.patch("/api/planner/reminders/{reminder_id}")
+async def update_planner_reminder(
+    reminder_id: int,
+    data: dict,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    reminder = await get_reminder(
+        user_id,
+        reminder_id
+    )
+
+    if reminder is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Reminder not found."
+        )
+
+    enabled = data.get("enabled")
+    config = data.get("config")
+
+    if enabled is not None:
+        if not isinstance(enabled, bool):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid enabled value."
+            )
+
+    if config is not None:
+        if not isinstance(config, dict):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid reminder configuration."
+            )
+
+        if reminder["reminder_type"] == "resin":
+
+            amount = config.get("amount")
+
+            if amount is not None:
+
+                try:
+                    amount = int(amount)
+                except (TypeError, ValueError):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Invalid Resin amount."
+                    )
+
+                if not 1 <= amount <= 200:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Resin must be between 1 and 200."
+                    )
+
+                config["amount"] = amount
+
+    updated = await update_reminder(
+        discord_user_id=user_id,
+        reminder_id=reminder_id,
+        enabled=enabled,
+        config=config,
+    )
+
+    if not updated:
+        raise HTTPException(
+            status_code=400,
+            detail="Nothing to update."
+        )
+
+    return {
+        "success": True,
+    }
+
+
+@app.delete("/api/planner/reminders/{reminder_id}")
+async def delete_planner_reminder(
+    reminder_id: int,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    deleted = await delete_reminder(
+        user_id,
+        reminder_id
+    )
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Reminder not found."
+        )
+
+    return {
+        "success": True,
+    }
+
+
 @app.get(
     "/challenge/{token}",
     response_class=HTMLResponse,

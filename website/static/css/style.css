@@ -592,7 +592,20 @@ body {
 
         background: transparent;
 
+        color: inherit;
+
+        -webkit-tap-highlight-color: transparent;
+
+        outline: none;
+
         cursor: pointer;
+    }
+
+    .mobile-menu-button:focus,
+    .mobile-menu-button:focus-visible,
+    .mobile-menu-button:active {
+        background: transparent;
+        outline: none;
     }
 
 

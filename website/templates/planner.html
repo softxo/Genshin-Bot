@@ -98,14 +98,125 @@
                     </p>
                 </div>
 
+                <button
+                    type="button"
+                    class="planner-button"
+                    id="add-reminder-button"
+                >
+                    + Add Reminder
+                </button>
+
             </div>
+
 
             <div
                 id="reminders"
                 class="reminders-list"
             ></div>
 
+            <div
+            id="reminder-panel"
+            class="reminder-panel"
+            hidden
+        >
+            <div class="reminder-panel-header">
+
+                <div>
+                    <span class="eyebrow">
+                        NEW REMINDER
+                    </span>
+
+                    <h3>
+                        Add Reminder
+                    </h3>
+                </div>
+
+                <button
+                    type="button"
+                    class="reminder-close-button"
+                    id="reminder-close-button"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="reminder-form">
+
+                <label>
+                    Reminder Type
+
+                    <select id="reminder-type">
+                        <option value="resin">
+                            Resin
+                        </option>
+                    </select>
+                </label>
+
+
+                <label>
+                    Account
+
+                    <select id="reminder-account">
+                    </select>
+                </label>
+
+
+                <label>
+                    Notify me at
+
+                    <div class="resin-input">
+
+                        <img
+                            src="/static/images/Original_Resin.webp"
+                            alt="Resin"
+                        >
+
+                        <input
+                            type="number"
+                            id="reminder-amount"
+                            min="1"
+                            max="200"
+                            value="160"
+                        >
+
+                        <span>
+                            Resin
+                        </span>
+
+                    </div>
+                </label>
+
+
+                <div class="reminder-form-actions">
+
+                    <button
+                        type="button"
+                        class="planner-button"
+                        id="reminder-cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        class="planner-button reminder-save-button"
+                        id="reminder-save-button"
+                    >
+                        Add Reminder
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
         </section>
+
 
     </div>
 
@@ -231,6 +342,39 @@
     }
 
     /* ================================
+   Planner Buttons
+   ================================ */
+
+    .planner-button {
+        padding: 9px 15px;
+
+        border: 1px solid var(--border);
+        border-radius: 9px;
+
+        background: var(--surface);
+        color: var(--text);
+
+        font-size: 13px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .planner-button:hover {
+        background: var(--surface-hover);
+        border-color: var(--accent);
+    }
+
+    .planner-button:active {
+        transform: scale(0.97);
+    }
+
+    /* ================================
    Reminders
    ================================ */
 
@@ -319,6 +463,189 @@
         object-fit: contain;
     }
 
+    /* ================================
+   Reminder Panel
+   ================================ */
+
+    .reminder-panel {
+        margin-top: 16px;
+
+        padding: 20px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 14px;
+    }
+
+    .reminder-panel-header {
+        display: flex;
+
+        align-items: flex-start;
+        justify-content: space-between;
+
+        margin-bottom: 20px;
+    }
+
+    .reminder-panel-header h3 {
+        margin: 5px 0 0;
+
+        font-size: 18px;
+    }
+
+    .reminder-close-button {
+        width: 32px;
+        height: 32px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border: 1px solid var(--border);
+        border-radius: 8px;
+
+        background: transparent;
+        color: var(--text-muted);
+
+        font-size: 22px;
+        line-height: 1;
+
+        cursor: pointer;
+
+        transition:
+            background 0.15s ease,
+            color 0.15s ease;
+    }
+
+    .reminder-close-button:hover {
+        background: var(--surface-hover);
+        color: var(--text);
+    }
+
+
+    .reminder-form {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 16px;
+
+        align-items: end;
+    }
+
+    .reminder-form label {
+        display: flex;
+        flex-direction: column;
+
+        gap: 7px;
+
+        color: var(--text-muted);
+
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .reminder-form select,
+    .reminder-form input {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 10px 12px;
+
+        border: 1px solid var(--border);
+        border-radius: 9px;
+
+        background: var(--background);
+        color: var(--text);
+
+        font: inherit;
+
+        outline: none;
+    }
+
+    .reminder-form select:focus,
+    .reminder-form input:focus {
+        border-color: var(--accent);
+    }
+
+
+    .resin-input {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 0 10px;
+
+        border: 1px solid var(--border);
+        border-radius: 9px;
+
+        background: var(--background);
+    }
+
+    .resin-input:focus-within {
+        border-color: var(--accent);
+    }
+
+    .resin-input img {
+        width: 20px;
+        height: 20px;
+
+        object-fit: contain;
+    }
+
+    .resin-input input {
+        padding-left: 0;
+        padding-right: 0;
+
+        border: 0;
+
+        background: transparent;
+    }
+
+    .resin-input input:focus {
+        border: 0;
+    }
+
+    .resin-input span {
+        white-space: nowrap;
+
+        color: var(--text-muted);
+
+        font-size: 12px;
+    }
+
+
+    .reminder-form-actions {
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 8px;
+
+        grid-column: 1 / -1;
+
+        padding-top: 4px;
+    }
+
+    .reminder-save-button {
+        background: var(--accent);
+        color: white;
+
+        border-color: var(--accent);
+    }
+
+    .reminder-save-button:hover {
+        background: var(--accent);
+        filter: brightness(1.08);
+    }
+
 
     /* Status */
 
@@ -399,9 +726,30 @@
             padding: 22px;
         }
 
+        .section-header {
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .planner-button {
+            flex-shrink: 0;
+        }
+
+        .reminder-form {
+            grid-template-columns: 1fr;
+        }
+
+        .reminder-form-actions {
+            grid-column: auto;
+            justify-content: stretch;
+        }
+
+        .reminder-form-actions .planner-button {
+            flex: 1;
+        }
+
         .reminder-card {
             grid-template-columns: 1fr;
-
             gap: 12px;
         }
 
@@ -480,6 +828,9 @@ async function loadPlanner() {
 function renderPlanner(
     plannerData
 ) {
+
+    window.plannerAccounts =
+        plannerData.accounts || [];
 
     const accounts =
         document.getElementById("accounts");
@@ -948,10 +1299,105 @@ function updateCountdown(
 }
 
 
+function openReminderPanel() {
+
+    const panel =
+        document.getElementById("reminder-panel");
+
+    const accountSelect =
+        document.getElementById("reminder-account");
+
+    if (!panel || !accountSelect) {
+        return;
+    }
+
+    accountSelect.innerHTML = "";
+
+    /*
+     * Populate the account selector using
+     * the accounts already loaded by the Planner.
+     */
+
+    for (const account of window.plannerAccounts || []) {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            account.genshin_uid;
+
+        option.textContent =
+            account.nickname
+            ? `${account.nickname} (${account.genshin_uid})`
+            : account.genshin_uid;
+
+        accountSelect.appendChild(option);
+    }
+
+    panel.hidden = false;
+}
+
+
+function closeReminderPanel() {
+
+    const panel =
+        document.getElementById("reminder-panel");
+
+    if (!panel) {
+        return;
+    }
+
+    panel.hidden = true;
+}
+
+
+function initialiseReminderPanel() {
+
+    const addButton =
+        document.getElementById("add-reminder-button");
+
+    const closeButton =
+        document.getElementById("reminder-close-button");
+
+    const cancelButton =
+        document.getElementById("reminder-cancel-button");
+
+
+    if (addButton) {
+
+        addButton.addEventListener(
+            "click",
+            openReminderPanel
+        );
+    }
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeReminderPanel
+        );
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.addEventListener(
+            "click",
+            closeReminderPanel
+        );
+    }
+
+}
+
+
 let plannerAbortController = null;
 
 
 window.initPlanner = function () {
+
+    initialiseReminderPanel();
 
     /*
      * Stop any previous Planner timer.
