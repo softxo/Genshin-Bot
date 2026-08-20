@@ -423,11 +423,12 @@
             minmax(180px, 1.5fr)
             minmax(100px, 0.8fr)
             minmax(120px, 0.9fr)
-            minmax(110px, 0.9fr);
+            minmax(110px, 0.9fr)
+            34px;
 
         align-items: center;
 
-        gap: 24px;
+        gap: 10px;
 
         padding: 14px 20px;
 
@@ -443,8 +444,8 @@
    ================================ */
 
     .reminder-delete-button {
-        width: 34px;
-        height: 34px;
+        width: 36px;
+        height: 36px;
 
         display: flex;
         align-items: center;
@@ -457,9 +458,6 @@
 
         background: transparent;
         color: var(--text-muted);
-
-        font-size: 16px;
-        line-height: 1;
 
         cursor: pointer;
 
@@ -482,6 +480,33 @@
     .reminder-delete-button:active {
         transform: scale(0.92);
     }
+
+    .reminder-delete-button img {
+        width: 19px;
+        height: 19px;
+
+        object-fit: contain;
+
+        display: block;
+
+        transition: filter 0.15s ease;
+    }
+
+    .reminder-delete-button:hover img {
+        filter:
+            brightness(0)
+            saturate(100%)
+            invert(55%)
+            sepia(45%)
+            saturate(1800%)
+            hue-rotate(325deg)
+            brightness(95%)
+            contrast(95%);
+    }
+
+    /*
+    --
+     */
 
     .reminder-main {
         min-width: 0;
@@ -1264,10 +1289,11 @@ function renderPlanner(
                 aria-label="Delete reminder"
                 title="Delete reminder"
             >
-                🗑
+                <img
+                    src="/static/images/Delete.webp"
+                    alt=""
+                >
             </button>
-
-            \`;
 
         `;
 
@@ -1734,6 +1760,31 @@ function initialiseReminderPanel() {
         }
     );
 
+    const reminders =
+        document.getElementById("reminders");
+    
+    if (reminders) {
+
+        reminders.addEventListener(
+            "click",
+            event => {
+
+                const button =
+                    event.target.closest(
+                        ".reminder-delete-button"
+                    );
+
+                if (!button) {
+                    return;
+                }
+
+                deleteReminder(
+                    button.dataset.reminderId
+                );
+            }
+        );
+}
+
 }
 
 
@@ -1857,6 +1908,63 @@ async function saveReminder() {
             saveButton.textContent =
                 "Add Reminder";
         }
+    }
+}
+
+
+async function deleteReminder(reminderId) {
+
+    if (!reminderId) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/planner/reminders/${reminderId}`,
+                {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            window.location.href = "/";
+            return;
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail
+                || "Failed to delete reminder."
+            );
+        }
+
+
+        /*
+         * Reload the Planner so the deleted
+         * reminder disappears immediately.
+         */
+
+        await loadPlanner();
+
+    } catch (exception) {
+
+        console.error(exception);
+
+        alert(
+            exception.message
+            || "Failed to delete reminder."
+        );
     }
 }
 
