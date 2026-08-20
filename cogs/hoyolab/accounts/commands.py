@@ -185,7 +185,7 @@ class AccountsView(discord.ui.View):
             self,
             interaction: discord.Interaction
     ) -> bool:
-        if interaction.user.id != self.owner_id:
+        if interaction.user.id != self.user_id:
             await send_not_your_command(interaction)
             return False
 
