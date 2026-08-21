@@ -95,39 +95,39 @@ body {
 
 /* Light Blue */
 [data-theme="light-blue"] {
-    --background: #e3e5ea;
-    --sidebar: #d4d7de;
-    --surface: #f0f1f4;
-    --surface-hover: #e5e7ec;
+    --background: #cfd2d8;
+    --sidebar: #c3c6cd;
+    --surface: #dfe1e6;
+    --surface-hover: #d3d5db;
 
-    --border: rgba(20, 25, 40, 0.10);
+    --border: rgba(20, 25, 40, 0.12);
 
     --text: #1c1f2a;
-    --text-muted: #666c7b;
+    --text-muted: #626875;
 
     --accent: #6675e8;
-    --accent-soft: rgba(102, 117, 232, 0.11);
-    --accent-glow: rgba(102, 117, 232, 0.14);
-    --accent-border: rgba(102, 117, 232, 0.25);
+    --accent-soft: rgba(102, 117, 232, 0.12);
+    --accent-glow: rgba(102, 117, 232, 0.15);
+    --accent-border: rgba(102, 117, 232, 0.28);
 }
 
 
 /* Light Pink */
 [data-theme="light-pink"] {
-    --background: #e8e1e5;
-    --sidebar: #d9d0d6;
-    --surface: #f3eef1;
-    --surface-hover: #e9e1e6;
+    --background: #d5cdd2;
+    --sidebar: #c8bec5;
+    --surface: #e2dce0;
+    --surface-hover: #d6cfd4;
 
-    --border: rgba(40, 25, 35, 0.10);
+    --border: rgba(40, 25, 35, 0.12);
 
     --text: #29212a;
-    --text-muted: #786d75;
+    --text-muted: #71666e;
 
     --accent: #d7659b;
-    --accent-soft: rgba(215, 101, 155, 0.11);
-    --accent-glow: rgba(215, 101, 155, 0.14);
-    --accent-border: rgba(215, 101, 155, 0.25);
+    --accent-soft: rgba(215, 101, 155, 0.12);
+    --accent-glow: rgba(215, 101, 155, 0.15);
+    --accent-border: rgba(215, 101, 155, 0.28);
 }
 
 
@@ -281,6 +281,15 @@ body {
     display: block;
 
     object-fit: contain;
+}
+
+/* =============================
+   Light Theme Sidebar Icons
+   ============================= */
+
+[data-theme="light-blue"] .nav-icon img,
+[data-theme="light-pink"] .nav-icon img {
+    filter: brightness(0.88) saturate(0.88);
 }
 
 .sidebar-bottom {

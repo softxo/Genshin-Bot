@@ -84,7 +84,7 @@ HOYOLAB_EMOJIS = {
     "expeditions": "<:Adventurers_Guild:1537057566708867224>",
     "custom": "<:Custom_Reminder:1537059737147932672>",
     "notification": "<:Notification:1537060765805052026>",
-    "account": "<:Account:1538168557672865882>",
+    "account": ":face_with_bags_under_eyes:",
     "reminder": "<:Reminder:1538168559476146249>"
 }
 

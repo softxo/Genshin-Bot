@@ -291,7 +291,7 @@
                                     data-direction="up"
                                     aria-label="Increase Resin"
                                 >
-                                    ▲
+                                    <span class="spinner-arrow"></span>
                                 </button>
 
                                 <button
@@ -300,7 +300,7 @@
                                     data-direction="down"
                                     aria-label="Decrease Resin"
                                 >
-                                    ▼
+                                    <span class="spinner-arrow"></span>
                                 </button>
 
                             </div>
@@ -343,6 +343,27 @@
         </section>
 
 
+    </div>
+
+    <!-- Toast Notifications -->
+    <div
+        id="planner-toast"
+        class="planner-toast"
+        aria-live="polite"
+    >
+        <span
+            id="planner-toast-icon"
+            class="planner-toast-icon"
+        >
+            ✓
+        </span>
+
+        <span
+            id="planner-toast-message"
+            class="planner-toast-message"
+        >
+            Done
+        </span>
     </div>
 
 </div>
@@ -1133,6 +1154,17 @@
         color: var(--accent);
     }
 
+    .custom-input-wrapper input[type="number"] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+
+    .custom-input-wrapper input[type="number"]::-webkit-inner-spin-button,
+    .custom-input-wrapper input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 
     /* ================================
    Notify Me At
@@ -1266,9 +1298,6 @@
         background: transparent;
         color: var(--text-muted);
 
-        font-size: 8px;
-        line-height: 1;
-
         cursor: pointer;
 
         transition:
@@ -1282,17 +1311,151 @@
     }
 
     .number-spinner-button:active {
+        background: transparent;
+        color: var(--accent);
+    }
+
+    .spinner-arrow {
+        width: 7px;
+        height: 7px;
+
+        display: block;
+
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+
+        transition:
+            color 0.12s ease,
+            transform 0.12s ease;
+    }
+
+    /* Up */
+
+    .number-spinner-button[data-direction="up"] .spinner-arrow {
+        transform: rotate(225deg);
+    }
+
+    /* Down */
+
+    .number-spinner-button[data-direction="down"] .spinner-arrow {
+        transform: rotate(45deg);
+    }
+
+    /* Press animation */
+
+    .number-spinner-button[data-direction="up"]:active .spinner-arrow {
+        transform: rotate(225deg) translate(-1px, -1px);
+    }
+
+    .number-spinner-button[data-direction="down"]:active .spinner-arrow {
+        transform: rotate(45deg) translate(1px, 1px);
+    }
+
+
+    /* ================================
+   Planner Toast
+   ================================ */
+
+    .planner-toast {
+        position: fixed;
+
+        right: 24px;
+        bottom: 24px;
+
+        z-index: 1000;
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        min-width: 220px;
+        max-width: 320px;
+
+        padding: 12px 15px;
+
+        box-sizing: border-box;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.25);
+
+        color: var(--text);
+
+        font-size: 13px;
+        font-weight: 500;
+
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    .planner-toast.show {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+
+    .planner-toast-icon {
+        width: 20px;
+        height: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 50%;
+
         background:
             color-mix(
                 in srgb,
-                var(--accent) 12%,
+                var(--accent) 15%,
                 transparent
             );
+
+        color: var(--accent);
+
+        font-size: 12px;
+        font-weight: 700;
     }
 
-    .number-spinner-button:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
+
+    .planner-toast-message {
+        min-width: 0;
+
+        line-height: 1.4;
+    }
+
+
+    @media (max-width: 700px) {
+
+        .planner-toast {
+            right: 16px;
+            bottom: 16px;
+
+            left: 16px;
+
+            max-width: none;
+            min-width: 0;
+        }
+
     }
 
     /* ================================
@@ -1372,6 +1535,23 @@
             min-width: 0;
         }
 
+    }
+
+    /* ================================
+       Light Theme Planner Icons
+       ================================ */
+
+    [data-theme="light-blue"] .resin-icon,
+    [data-theme="light-blue"] .reminder-resin-icon,
+    [data-theme="light-pink"] .resin-icon,
+    [data-theme="light-pink"] .reminder-resin-icon {
+        filter: brightness(0.88) saturate(0.9);
+    }
+
+
+    [data-theme="light-blue"] .reminder-delete-button img,
+    [data-theme="light-pink"] .reminder-delete-button img {
+        filter: brightness(0.62) saturate(0.85);
     }
 
 </style>
@@ -2249,70 +2429,218 @@ function initialiseReminderPanel() {
 
         /*
          * Custom number spinner buttons.
+         *
+         * Supports:
+         * - Single click
+         * - Press and hold
+         * - Rapid repeated changes while held
          */
 
         document
             .querySelectorAll(".number-spinner-button")
             .forEach(button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+                let holdInterval = null;
+                let holdTimeout = null;
 
-                        const input =
-                            button
-                                .closest(".custom-input-wrapper")
-                                ?.querySelector(
-                                    'input[type="number"]'
-                                );
 
-                        if (!input) {
-                            return;
-                        }
+                function changeValue() {
 
-                        const min =
-                            Number(input.min) || 1;
-
-                        const max =
-                            Number(input.max) || 200;
-
-                        const current =
-                            Number(input.value) || min;
-
-                        const direction =
-                            button.dataset.direction;
-
-                        let value = current;
-
-                        if (direction === "up") {
-                            value = Math.min(
-                                current + 1,
-                                max
+                    const input =
+                        button
+                            .closest(".custom-input-wrapper")
+                            ?.querySelector(
+                                'input[type="number"]'
                             );
-                        }
 
-                        if (direction === "down") {
-                            value = Math.max(
-                                current - 1,
-                                min
-                            );
-                        }
+                    if (!input) {
+                        return;
+                    }
 
-                        input.value = value;
 
-                        input.dispatchEvent(
-                            new Event("input", {
-                                bubbles: true
-                            })
-                        );
+                    const min =
+                        Number(input.min) || 1;
 
-                        input.dispatchEvent(
-                            new Event("change", {
-                                bubbles: true
-                            })
+                    const max =
+                        Number(input.max) || 200;
+
+                    const current =
+                        Number(input.value) || min;
+
+                    const direction =
+                        button.dataset.direction;
+
+
+                    let value = current;
+
+
+                    if (direction === "up") {
+
+                        value = Math.min(
+                            current + 1,
+                            max
                         );
 
                     }
+
+
+                    if (direction === "down") {
+
+                        value = Math.max(
+                            current - 1,
+                            min
+                        );
+
+                    }
+
+
+                    /*
+                     * Don't continue doing anything once
+                     * the limit has been reached.
+                     */
+
+                    if (value === current) {
+                        return;
+                    }
+
+
+                    input.value = value;
+
+
+                    input.dispatchEvent(
+                        new Event("input", {
+                            bubbles: true
+                        })
+                    );
+
+                    input.dispatchEvent(
+                        new Event("change", {
+                            bubbles: true
+                        })
+                    );
+                }
+
+
+                function startHolding(event) {
+
+                    /*
+                     * Only react to the primary mouse button.
+                     */
+
+                    if (
+                        event.type === "mousedown"
+                        && event.button !== 0
+                    ) {
+                        return;
+                    }
+
+
+                    /*
+                     * Prevent the browser from selecting
+                     * text while holding the button.
+                     */
+
+                    event.preventDefault();
+
+
+                    /*
+                     * First increment happens immediately.
+                     */
+
+                    changeValue();
+
+
+                    /*
+                     * Wait briefly before starting the
+                     * rapid-repeat behaviour.
+                     */
+
+                    holdTimeout =
+                        setTimeout(() => {
+
+                            holdInterval =
+                                setInterval(
+                                    changeValue,
+                                    50
+                                );
+
+                        }, 350);
+                }
+
+
+                function stopHolding() {
+
+                    if (holdTimeout) {
+
+                        clearTimeout(
+                            holdTimeout
+                        );
+
+                        holdTimeout = null;
+                    }
+
+
+                    if (holdInterval) {
+
+                        clearInterval(
+                            holdInterval
+                        );
+
+                        holdInterval = null;
+                    }
+                }
+
+
+                button.addEventListener(
+                    "mousedown",
+                    startHolding
+                );
+
+                button.addEventListener(
+                    "mouseup",
+                    stopHolding
+                );
+
+                button.addEventListener(
+                    "mouseleave",
+                    stopHolding
+                );
+
+
+                /*
+                 * Prevent the normal click event from
+                 * causing a second increment after
+                 * mouseup.
+                 */
+
+                button.addEventListener(
+                    "click",
+                    event => {
+                        event.preventDefault();
+                    }
+                );
+
+
+                /*
+                 * Also support touch devices.
+                 */
+
+                button.addEventListener(
+                    "touchstart",
+                    startHolding,
+                    {
+                        passive: false
+                    }
+                );
+
+                button.addEventListener(
+                    "touchend",
+                    stopHolding
+                );
+
+                button.addEventListener(
+                    "touchcancel",
+                    stopHolding
                 );
 
             });
@@ -2371,6 +2699,79 @@ function initialiseReminderPanel() {
             }
         );
     }
+}
+
+
+let plannerToastTimeout = null;
+
+
+function showPlannerToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "planner-toast"
+        );
+
+    const toastMessage =
+        document.getElementById(
+            "planner-toast-message"
+        );
+
+    if (
+        !toast ||
+        !toastMessage
+    ) {
+        return;
+    }
+
+
+    /*
+     * Cancel any previous timeout.
+     */
+
+    if (plannerToastTimeout) {
+
+        clearTimeout(
+            plannerToastTimeout
+        );
+
+        plannerToastTimeout = null;
+    }
+
+
+    /*
+     * Update the message.
+     */
+
+    toastMessage.textContent =
+        message;
+
+
+    /*
+     * Show the toast.
+     */
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    /*
+     * Hide it after 3 seconds.
+     */
+
+    plannerToastTimeout =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+            plannerToastTimeout = null;
+
+        }, 3000);
 }
 
 
@@ -2502,6 +2903,10 @@ async function saveReminder() {
 
         closeReminderPanel();
 
+        showPlannerToast(
+            "Reminder added successfully."
+        );
+
         await loadPlanner();
 
     } catch (exception) {
@@ -2568,6 +2973,10 @@ async function deleteReminder(reminderId) {
          * Reload the Planner so the deleted
          * reminder disappears immediately.
          */
+
+        showPlannerToast(
+            "Reminder deleted successfully."
+        );
 
         await loadPlanner();
 
