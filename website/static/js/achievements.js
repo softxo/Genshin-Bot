@@ -308,9 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
             !achievementList ||
             !achievementData
         ) {
-
             return;
-
         }
 
 
@@ -330,44 +328,58 @@ document.addEventListener("DOMContentLoaded", () => {
                 const item =
                     document.createElement("div");
 
-
                 item.className =
                     "achievement-item";
 
 
+                const totalTiers =
+                    achievement.tiers?.length || 1;
+
+                const currentTier = 0;
+
+
                 item.innerHTML = `
-
-                    <div
-                        class="achievement-item-status"
-                    ></div>
-
-
-                    <div
-                        class="achievement-item-content"
-                    >
-
+    
+                    <div class="achievement-item-tier">
+    
+                        <img
+                            src="${getTierImage(
+                                currentTier,
+                                totalTiers
+                            )}"
+                            alt="${currentTier}/${totalTiers}"
+                        >
+    
+                    </div>
+    
+    
+                    <div class="achievement-item-content">
+    
                         <h3>
                             ${escapeHTML(
                                 achievement.name
                             )}
                         </h3>
-
+    
                         <p>
                             ${getAchievementDescription(
                                 achievement
                             )}
                         </p>
-
+    
                     </div>
-
-
+    
+    
                     <button
                         type="button"
                         class="achievement-complete-button"
+                        aria-label="Mark ${escapeHTML(
+                            achievement.name
+                        )} completed"
+                        title="Mark Completed"
                     >
-                        Mark Completed
                     </button>
-
+    
                 `;
 
 
@@ -394,6 +406,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
         );
+
+    }
+
+    function getTierImage(
+        currentTier,
+        totalTiers
+    ) {
+
+        return `/static/images/achievements/tiers/Achievement_${currentTier}_${totalTiers}.png`;
 
     }
 
@@ -451,9 +472,6 @@ document.addEventListener("DOMContentLoaded", () => {
      * --------------------------------------------------
      *
      * TEMPORARY FRONT-END STATE.
-     *
-     * We will later connect this to the
-     * user's saved achievement progress.
      */
 
     function markCompleted(
@@ -464,13 +482,28 @@ document.addEventListener("DOMContentLoaded", () => {
         item.classList.add("completed");
 
 
-        const status =
+        const totalTiers =
+            achievement.tiers?.length || 1;
+
+
+        const tier =
             item.querySelector(
-                ".achievement-item-status"
+                ".achievement-item-tier img"
             );
 
 
-        status.textContent = "✓";
+        if (tier) {
+
+            tier.src =
+                getTierImage(
+                    totalTiers,
+                    totalTiers
+                );
+
+            tier.alt =
+                `${totalTiers}/${totalTiers}`;
+
+        }
 
 
         const button =
@@ -479,25 +512,12 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        button.textContent =
-            "Completed";
-
+        button.classList.add("completed");
 
         button.disabled = true;
 
-
-        const state =
-            item.querySelector(
-                ".achievement-item-state"
-            );
-
-
-        if (state) {
-
-            state.textContent =
-                "Completed";
-
-        }
+        button.title =
+            "Completed";
 
     }
 

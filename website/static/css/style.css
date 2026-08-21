@@ -1606,37 +1606,35 @@ body {
 }
 
 
-.achievement-item-status {
-    width: 30px;
-    height: 30px;
+/* =============================
+   ACHIEVEMENT TIER
+   ============================= */
+
+.achievement-item-tier {
+    width: 42px;
+    height: 42px;
 
     flex-shrink: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    border: 1px solid var(--border);
-
-    border-radius: 50%;
-
-    color: transparent;
-
-    font-size: 14px;
-
-    font-weight: 700;
 }
 
 
-.achievement-item.completed .achievement-item-status {
-    border-color: var(--accent);
+.achievement-item-tier img {
+    width: 42px;
+    height: 42px;
 
-    background: var(--accent);
+    display: block;
 
-    color: var(--background);
+    object-fit: contain;
 }
 
+
+/* =============================
+   ACHIEVEMENT CONTENT
+   ============================= */
 
 .achievement-item-content {
     min-width: 0;
@@ -1663,17 +1661,68 @@ body {
 }
 
 
-.achievement-item-state {
+/* =============================
+   ACHIEVEMENT COMPLETE BUTTON
+   ============================= */
+
+.achievement-complete-button {
+    width: 30px;
+    height: 30px;
+
     flex-shrink: 0;
 
-    color: var(--text-muted);
+    padding: 0;
 
-    font-size: 11px;
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 
-.achievement-item.completed .achievement-item-state {
-    color: var(--accent);
+.achievement-complete-button:hover {
+    border-color: var(--accent);
+
+    background: var(--accent-soft);
+
+    transform: scale(1.08);
+}
+
+
+.achievement-complete-button.completed {
+    position: relative;
+
+    border-color: var(--accent);
+
+    background: var(--accent);
+}
+
+
+.achievement-complete-button.completed::after {
+    content: "✓";
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--background);
+
+    font-size: 13px;
+
+    font-weight: 700;
 }
 
 
