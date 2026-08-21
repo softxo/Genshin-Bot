@@ -143,11 +143,85 @@
                     <label>
                         Reminder Type
 
-                        <select id="reminder-type">
-                            <option value="resin">
-                                Resin
-                            </option>
-                        </select>
+                        <div
+                            class="custom-select"
+                            id="reminder-type-select"
+                        >
+
+                            <button
+                                type="button"
+                                class="custom-select-button"
+                                id="reminder-type-button"
+                            >
+                                <span>
+                                    Resin
+                                </span>
+
+                                <span class="custom-select-arrow">
+                                    ⌄
+                                </span>
+                            </button>
+
+                            <div
+                                class="custom-select-menu"
+                                id="reminder-type-menu"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="custom-select-option selected"
+                                    data-value="resin"
+                                >
+                                    Resin
+                                </button>
+
+                                <!-- Not implemented yet -->
+
+                                <button
+                                    type="button"
+                                    class="custom-select-option disabled"
+                                    data-value="expedition"
+                                    disabled
+                                >
+                                    Expedition
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="custom-select-option disabled"
+                                    data-value="teapot"
+                                    disabled
+                                >
+                                    Serenitea Pot
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="custom-select-option disabled"
+                                    data-value="transformer"
+                                    disabled
+                                >
+                                    Parametric Transformer
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="custom-select-option disabled"
+                                    data-value="custom"
+                                    disabled
+                                >
+                                    Custom
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="reminder-type"
+                            value="resin"
+                        >
                     </label>
 
 
@@ -190,7 +264,7 @@
                     <label>
                         Notify me at
 
-                        <div class="resin-input">
+                        <div class="custom-input-wrapper">
 
                             <img
                                 src="/static/images/Original_Resin.webp"
@@ -208,6 +282,28 @@
                             <span>
                                 Resin
                             </span>
+
+                            <div class="number-spinner">
+
+                                <button
+                                    type="button"
+                                    class="number-spinner-button"
+                                    data-direction="up"
+                                    aria-label="Increase Resin"
+                                >
+                                    ▲
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="number-spinner-button"
+                                    data-direction="down"
+                                    aria-label="Decrease Resin"
+                                >
+                                    ▼
+                                </button>
+
+                            </div>
 
                         </div>
                     </label>
@@ -676,12 +772,25 @@
 
         gap: 8px;
 
+        min-height: 39px;
+
         padding: 0 10px;
 
+        box-sizing: border-box;
+
         border: 1px solid var(--border);
-        border-radius: 9px;
+        border-radius: 10px;
 
         background: var(--background);
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+    .resin-input:hover {
+        background: var(--surface-hover);
     }
 
     .resin-input:focus-within {
@@ -896,6 +1005,294 @@
             );
 
         color: var(--accent);
+    }
+
+    .custom-select-option.disabled {
+        color: var(--text-muted);
+
+        opacity: 0.45;
+
+        cursor: not-allowed;
+    }
+
+    .custom-select-option.disabled:hover {
+        background: transparent;
+        color: var(--text-muted);
+    }
+
+
+    /* ================================
+   Custom Input
+   ================================ */
+
+    .custom-input-wrapper {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+
+        box-sizing: border-box;
+
+        min-height: 39px;
+
+        padding: 0 12px;
+
+        border: 1px solid var(--border);
+        border-radius: 10px;
+
+        background: var(--background);
+        color: var(--text);
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
+
+        cursor: text;
+    }
+
+    .custom-input-wrapper:hover {
+        background: var(--surface-hover);
+    }
+
+    .custom-input-wrapper:focus-within {
+        border-color: var(--accent);
+
+        box-shadow:
+            0 0 0 2px
+            color-mix(
+                in srgb,
+                var(--accent) 15%,
+                transparent
+            );
+    }
+
+    .custom-input-wrapper img {
+        width: 20px;
+        height: 20px;
+
+        object-fit: contain;
+
+        flex-shrink: 0;
+
+        margin-right: 8px;
+    }
+
+    .custom-input-wrapper input {
+        flex: 1;
+
+        min-width: 0;
+
+        width: auto;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+        color: var(--text);
+
+        font: inherit;
+        font-size: 13px;
+
+        outline: none;
+    }
+
+    .custom-input-wrapper input:focus {
+        border: 0;
+        box-shadow: none;
+    }
+
+    .custom-input-wrapper span:not(.custom-select-arrow) {
+        flex-shrink: 0;
+
+        margin-left: 8px;
+
+        color: var(--text-muted);
+
+        font-size: 13px;
+    }
+
+    .custom-input-wrapper .custom-select-arrow {
+        flex-shrink: 0;
+
+        margin-left: 8px;
+
+        color: var(--text-muted);
+
+        font-size: 16px;
+        line-height: 1;
+
+        transition:
+            color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .custom-input-wrapper:hover .custom-select-arrow,
+    .custom-input-wrapper:focus-within .custom-select-arrow {
+        color: var(--accent);
+    }
+
+
+    /* ================================
+   Notify Me At
+   ================================ */
+
+    .custom-input-wrapper {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+
+        box-sizing: border-box;
+
+        min-height: 39px;
+
+        padding: 0 12px;
+
+        border: 1px solid var(--border);
+        border-radius: 10px;
+
+        background: var(--background);
+        color: var(--text);
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+    .custom-input-wrapper:hover {
+        background: var(--surface-hover);
+    }
+
+    .custom-input-wrapper:focus-within {
+        border-color: var(--accent);
+
+        box-shadow:
+            0 0 0 2px
+            color-mix(
+                in srgb,
+                var(--accent) 15%,
+                transparent
+            );
+    }
+
+    .custom-input-wrapper img {
+        width: 20px;
+        height: 20px;
+
+        object-fit: contain;
+
+        flex-shrink: 0;
+
+        margin-right: 8px;
+    }
+
+    .custom-input-wrapper input {
+        flex: 1;
+
+        min-width: 0;
+
+        width: auto;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+        color: var(--text);
+
+        font: inherit;
+        font-size: 13px;
+
+        outline: none;
+    }
+
+    /* Keep the native number spinner */
+    .custom-input-wrapper input[type="number"] {
+        appearance: auto;
+        -webkit-appearance: auto;
+    }
+
+    .custom-input-wrapper input:focus {
+        border: 0;
+        box-shadow: none;
+    }
+
+    /* Resin text */
+    .custom-input-wrapper > span {
+        flex-shrink: 0;
+
+        margin-left: 8px;
+
+        color: var(--text-muted);
+
+        font-size: 13px;
+    }
+
+
+    /* ================================
+   Custom Number Spinner
+   ================================ */
+
+    .number-spinner {
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+
+        width: 20px;
+        height: 30px;
+
+        margin-left: 6px;
+
+        flex-shrink: 0;
+    }
+
+    .number-spinner-button {
+        width: 20px;
+        height: 15px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border: 0;
+        border-radius: 5px;
+
+        background: transparent;
+        color: var(--text-muted);
+
+        font-size: 8px;
+        line-height: 1;
+
+        cursor: pointer;
+
+        transition:
+            background 0.15s ease,
+            color 0.15s ease;
+    }
+
+    .number-spinner-button:hover {
+        background: var(--surface-hover);
+        color: var(--accent);
+    }
+
+    .number-spinner-button:active {
+        background:
+            color-mix(
+                in srgb,
+                var(--accent) 12%,
+                transparent
+            );
+    }
+
+    .number-spinner-button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
     }
 
     /* ================================
@@ -1654,6 +2051,19 @@ function closeReminderPanel() {
 
 function initialiseReminderPanel() {
 
+    const panel =
+        document.getElementById("reminder-panel");
+
+    if (!panel) {
+        return;
+    }
+
+    if (panel.dataset.initialized === "true") {
+        return;
+    }
+
+    panel.dataset.initialized = "true";
+
     const addButton =
         document.getElementById("add-reminder-button");
 
@@ -1666,16 +2076,10 @@ function initialiseReminderPanel() {
     const saveButton =
         document.getElementById("reminder-save-button");
 
-    const accountSelect =
-        document.getElementById(
-            "reminder-account-select"
-        );
 
-    const accountButton =
-        document.getElementById(
-            "reminder-account-button"
-        );
-
+    /*
+     * Open / close the Reminder panel.
+     */
 
     if (addButton) {
 
@@ -1714,55 +2118,238 @@ function initialiseReminderPanel() {
 
 
     /*
-     * Custom account selector.
+     * Initialise all custom selects.
      */
 
-    if (
-        accountButton &&
-        accountSelect
-    ) {
+    document
+        .querySelectorAll(".custom-select")
+        .forEach(select => {
 
-        accountButton.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                accountSelect.classList.toggle(
-                    "open"
+            const button =
+                select.querySelector(
+                    ".custom-select-button"
                 );
 
+            const hiddenInput =
+                select.parentElement.querySelector(
+                    'input[type="hidden"]'
+                );
+
+            const valueDisplay =
+                select.querySelector(
+                    ".custom-select-button span"
+                );
+
+            const options =
+                select.querySelectorAll(
+                    ".custom-select-option:not(:disabled)"
+                );
+
+
+            if (
+                !button ||
+                !hiddenInput ||
+                !valueDisplay
+            ) {
+                return;
             }
-        );
-    }
+
+
+            /*
+             * Open / close dropdown.
+             */
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+
+                    /*
+                     * Close every other dropdown.
+                     */
+
+                    document
+                        .querySelectorAll(
+                            ".custom-select.open"
+                        )
+                        .forEach(otherSelect => {
+
+                            if (
+                                otherSelect !== select
+                            ) {
+
+                                otherSelect.classList.remove(
+                                    "open"
+                                );
+                            }
+
+                        });
+
+
+                    select.classList.toggle(
+                        "open"
+                    );
+                }
+            );
+
+
+            /*
+             * Select an option.
+             */
+
+            options.forEach(option => {
+
+                option.addEventListener(
+                    "click",
+                    event => {
+
+                        event.stopPropagation();
+
+
+                        hiddenInput.value =
+                            option.dataset.value;
+
+
+                        valueDisplay.textContent =
+                            option.textContent.trim();
+
+
+                        /*
+                         * Update selected state.
+                         */
+
+                        options.forEach(item => {
+
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        });
+
+                        option.classList.add(
+                            "selected"
+                        );
+
+
+                        /*
+                         * Close dropdown.
+                         */
+
+                        select.classList.remove(
+                            "open"
+                        );
+                    }
+                );
+
+            });
+
+        });
+
+        /*
+         * Custom number spinner buttons.
+         */
+
+        document
+            .querySelectorAll(".number-spinner-button")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const input =
+                            button
+                                .closest(".custom-input-wrapper")
+                                ?.querySelector(
+                                    'input[type="number"]'
+                                );
+
+                        if (!input) {
+                            return;
+                        }
+
+                        const min =
+                            Number(input.min) || 1;
+
+                        const max =
+                            Number(input.max) || 200;
+
+                        const current =
+                            Number(input.value) || min;
+
+                        const direction =
+                            button.dataset.direction;
+
+                        let value = current;
+
+                        if (direction === "up") {
+                            value = Math.min(
+                                current + 1,
+                                max
+                            );
+                        }
+
+                        if (direction === "down") {
+                            value = Math.max(
+                                current - 1,
+                                min
+                            );
+                        }
+
+                        input.value = value;
+
+                        input.dispatchEvent(
+                            new Event("input", {
+                                bubbles: true
+                            })
+                        );
+
+                        input.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true
+                            })
+                        );
+
+                    }
+                );
+
+            });
 
 
     /*
-     * Close the account selector when
-     * clicking elsewhere on the page.
+     * Close all custom selects when clicking
+     * elsewhere on the page.
      */
 
     document.addEventListener(
         "click",
-        event => {
+        () => {
 
-            if (
-                accountSelect &&
-                !accountSelect.contains(event.target)
-            ) {
+            document
+                .querySelectorAll(
+                    ".custom-select.open"
+                )
+                .forEach(select => {
 
-                accountSelect.classList.remove(
-                    "open"
-                );
+                    select.classList.remove(
+                        "open"
+                    );
 
-            }
+                });
 
         }
     );
 
+
+    /*
+     * Delete reminder buttons.
+     */
+
     const reminders =
         document.getElementById("reminders");
-    
+
     if (reminders) {
 
         reminders.addEventListener(
@@ -1783,14 +2370,16 @@ function initialiseReminderPanel() {
                 );
             }
         );
-}
-
+    }
 }
 
 
 async function saveReminder() {
 
-    const accountSelect =
+    const typeInput =
+        document.getElementById("reminder-type");
+
+    const accountInput =
         document.getElementById("reminder-account");
 
     const amountInput =
@@ -1800,11 +2389,21 @@ async function saveReminder() {
         document.getElementById("reminder-save-button");
 
 
-    const genshinUid =
-        accountSelect?.value;
+    const type =
+        typeInput?.value;
 
-    const amount =
-        Number(amountInput?.value);
+    const genshinUid =
+        accountInput?.value;
+
+
+    if (!type) {
+
+        alert(
+            "Please select a reminder type."
+        );
+
+        return;
+    }
 
 
     if (!genshinUid) {
@@ -1817,24 +2416,41 @@ async function saveReminder() {
     }
 
 
-    if (
-        !Number.isInteger(amount)
-        || amount < 1
-        || amount > 200
-    ) {
+    const config = {};
 
-        alert(
-            "Resin must be between 1 and 200."
-        );
 
-        return;
+    /*
+     * Resin-specific configuration.
+     */
+
+    if (type === "resin") {
+
+        const amount =
+            Number(amountInput?.value);
+
+        if (
+            !Number.isInteger(amount)
+            || amount < 1
+            || amount > 200
+        ) {
+
+            alert(
+                "Resin must be between 1 and 200."
+            );
+
+            return;
+        }
+
+        config.amount = amount;
     }
 
 
     if (saveButton) {
 
         saveButton.disabled = true;
-        saveButton.textContent = "Saving...";
+
+        saveButton.textContent =
+            "Saving...";
     }
 
 
@@ -1842,7 +2458,7 @@ async function saveReminder() {
 
         const response =
             await fetch(
-                "/api/planner/resin/reminder",
+                "/api/planner/reminders",
                 {
                     method: "POST",
 
@@ -1854,8 +2470,11 @@ async function saveReminder() {
                     },
 
                     body: JSON.stringify({
-                        amount: amount,
-                        enabled: true
+                        type: type,
+                        mode: "automatic",
+                        genshin_uid: genshinUid,
+                        config: config,
+                        delivery_type: "dm"
                     })
                 }
             );
@@ -1883,12 +2502,6 @@ async function saveReminder() {
 
         closeReminderPanel();
 
-
-        /*
-         * Reload the Planner so the new reminder
-         * appears immediately.
-         */
-
         await loadPlanner();
 
     } catch (exception) {
@@ -1905,6 +2518,7 @@ async function saveReminder() {
         if (saveButton) {
 
             saveButton.disabled = false;
+
             saveButton.textContent =
                 "Add Reminder";
         }

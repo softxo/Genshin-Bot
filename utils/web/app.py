@@ -26,6 +26,7 @@ from utils.web.auth import (
 from utils.hoyolab.database import (
     get_accounts,
     get_reminders,
+    get_reminder,
     create_reminder,
     update_reminder,
     delete_reminder,
@@ -358,113 +359,6 @@ async def planner_data(
     }
 
 
-
-@app.post("/api/planner/resin/reminder")
-async def planner_resin_reminder(
-    data: dict,
-    cyrene_session: str | None = Cookie(default=None)
-):
-    user_id = await get_authenticated_user(
-        cyrene_session
-    )
-
-    amount = data.get("amount")
-    enabled = data.get("enabled")
-
-    if amount is not None:
-        try:
-            amount = int(amount)
-        except (TypeError, ValueError):
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid Resin amount."
-            )
-
-        if not 1 <= amount <= 200:
-            raise HTTPException(
-                status_code=400,
-                detail="Resin must be between 1 and 200."
-            )
-
-    accounts = await get_accounts(
-        user_id
-    )
-
-    if not accounts:
-        raise HTTPException(
-            status_code=404,
-            detail="No Genshin account linked."
-        )
-
-    account = accounts[0]
-
-    reminders = await get_reminders(
-        user_id
-    )
-
-    reminder = next(
-        (
-            reminder
-            for reminder in reminders
-            if reminder["genshin_uid"]
-            == account["genshin_uid"]
-            and reminder["reminder_type"] == "resin"
-            and reminder["reminder_mode"] == "automatic"
-        ),
-        None
-    )
-
-    if reminder is None:
-
-        if enabled is False:
-            return {
-                "success": True,
-                "enabled": False,
-                "amount": None,
-            }
-
-        if amount is None:
-            raise HTTPException(
-                status_code=400,
-                detail="A Resin amount is required."
-            )
-
-        reminder_id = await create_reminder(
-            discord_user_id=user_id,
-            reminder_type="resin",
-            genshin_uid=account["genshin_uid"],
-            config={
-                "amount": amount
-            },
-            delivery_type="dm",
-            reminder_mode="automatic",
-            next_trigger_at=datetime.now(timezone.utc)
-        )
-
-    else:
-
-        config = reminder.get("config") or {}
-
-        if amount is not None:
-            config["amount"] = amount
-
-        if enabled is None:
-            enabled = reminder["enabled"]
-
-        await update_reminder(
-            discord_user_id=user_id,
-            reminder_id=reminder["id"],
-            enabled=enabled,
-            config=config,
-        )
-
-    return {
-        "success": True,
-        "enabled": enabled,
-        "amount": amount,
-    }
-
-
 @app.post("/api/planner/reminders")
 async def create_planner_reminder(
     data: dict,
@@ -475,36 +369,50 @@ async def create_planner_reminder(
     )
 
     reminder_type = data.get("type")
-    reminder_mode = data.get(
-        "mode",
-        "automatic"
-    )
+    reminder_mode = data.get("mode", "automatic")
     genshin_uid = data.get("genshin_uid")
     config = data.get("config") or {}
-    delivery_type = data.get(
-        "delivery_type",
-        "dm"
-    )
+    delivery_type = data.get("delivery_type", "dm")
 
-    if reminder_type not in {
+    valid_types = {
         "resin",
         "expedition",
         "teapot",
         "transformer",
         "custom",
-    }:
+    }
+
+    valid_modes = {
+        "automatic",
+        "manual",
+    }
+
+    valid_delivery_types = {
+        "dm",
+    }
+
+    if reminder_type not in valid_types:
         raise HTTPException(
             status_code=400,
             detail="Invalid reminder type."
         )
 
-    if reminder_mode not in {
-        "automatic",
-        "manual",
-    }:
+    if reminder_mode not in valid_modes:
         raise HTTPException(
             status_code=400,
             detail="Invalid reminder mode."
+        )
+
+    if delivery_type not in valid_delivery_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid delivery type."
+        )
+
+    if not isinstance(config, dict):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid reminder configuration."
         )
 
     accounts = await get_accounts(
@@ -517,34 +425,30 @@ async def create_planner_reminder(
             detail="No Genshin account linked."
         )
 
-    if genshin_uid is not None:
-
-        account = next(
-            (
-                account
-                for account in accounts
-                if account["genshin_uid"]
-                == genshin_uid
-            ),
-            None,
+    if not genshin_uid:
+        raise HTTPException(
+            status_code=400,
+            detail="A Genshin account is required."
         )
 
-        if account is None:
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid Genshin account."
-            )
+    account = next(
+        (
+            account
+            for account in accounts
+            if account["genshin_uid"] == genshin_uid
+        ),
+        None,
+    )
 
-    elif reminder_type != "custom":
+    if account is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid Genshin account."
+        )
 
-        account = accounts[0]
-
-        genshin_uid = account[
-            "genshin_uid"
-        ]
-
-    else:
-        account = None
+    # --------------------------------
+    # Resin validation
+    # --------------------------------
 
     if reminder_type == "resin":
 
@@ -566,6 +470,18 @@ async def create_planner_reminder(
 
         config["amount"] = amount
 
+    # --------------------------------
+    # Automatic reminder restrictions
+    # --------------------------------
+
+    if reminder_mode == "automatic":
+
+        if reminder_type == "custom":
+            raise HTTPException(
+                status_code=400,
+                detail="Custom reminders cannot use automatic mode."
+            )
+
     reminder_id = await create_reminder(
         discord_user_id=user_id,
         reminder_type=reminder_type,
@@ -573,7 +489,7 @@ async def create_planner_reminder(
         config=config,
         delivery_type=delivery_type,
         reminder_mode=reminder_mode,
-        next_trigger_at=datetime.now(timezone.utc)
+        next_trigger_at=datetime.now(timezone.utc),
     )
 
     return {
