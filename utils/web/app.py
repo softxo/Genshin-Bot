@@ -602,6 +602,36 @@ async def delete_planner_reminder(
     }
 
 
+@app.get(
+    "/achievements",
+    response_class=HTMLResponse,
+)
+async def achievements(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    session = get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+        return templates.TemplateResponse(
+            request=request,
+            name="verify.html",
+            context={
+                "request": request,
+            },
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="achievements.html",
+        context={
+            "request": request,
+        },
+    )
+
+
 @app.get("/api/achievements")
 async def achievements_data(
     cyrene_session: str | None = Cookie(default=None)
