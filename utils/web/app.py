@@ -33,6 +33,7 @@ from utils.hoyolab.database import (
 )
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.daily_note import get_resin
+from utils.achievements.achievements import load_achievements
 
 
 
@@ -598,6 +599,37 @@ async def delete_planner_reminder(
 
     return {
         "success": True,
+    }
+
+
+@app.get("/api/achievements")
+async def achievements_data(
+    cyrene_session: str | None = Cookie(default=None)
+):
+    await get_authenticated_user(
+        cyrene_session
+    )
+
+    achievements = load_achievements()
+
+    categories = {}
+
+    for achievement in achievements:
+
+        category = achievement.get("category")
+
+        if not category:
+            continue
+
+        if category not in categories:
+            categories[category] = 0
+
+        categories[category] += 1
+
+    return {
+        "achievements": achievements,
+        "categories": categories,
+        "total": len(achievements),
     }
 
 

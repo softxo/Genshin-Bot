@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+
+{% block title %}Cyrene • Achievements{% endblock %}
+
+{% block content %}
+
+<div class="page achievements-page">
+
+    <!-- Page Header -->
+    <section class="page-header">
+
+        <div>
+            <span class="eyebrow">
+                PROGRESSION
+            </span>
+
+            <h1>
+                Achievements
+            </h1>
+
+            <p>
+                Track your progress across all Genshin Impact achievements.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- Overall Progress -->
+    <section class="achievement-overview">
+
+        <div class="achievement-overview-header">
+
+            <div>
+                <span class="achievement-overview-label">
+                    Overall Progress
+                </span>
+
+                <strong>
+                    127 / 1000
+                </strong>
+            </div>
+
+            <span class="achievement-overview-percent">
+                12.7%
+            </span>
+
+        </div>
+
+
+        <div class="achievement-progress">
+
+            <div
+                class="achievement-progress-fill"
+                style="width: 12.7%;"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Categories -->
+    <section
+        class="achievement-categories-section"
+        id="achievement-categories"
+    >
+
+        <div class="section-header">
+
+            <div>
+                <h2>Categories</h2>
+
+                <p>
+                    Select a category to view its achievements.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="achievement-category-grid">
+
+            <button
+                class="achievement-category"
+                type="button"
+                data-category="wonders"
+            >
+
+                <div class="achievement-category-icon">
+                    <img
+                        src="/static/images/Achievements.webp"
+                        alt=""
+                    >
+                </div>
+
+                <div class="achievement-category-content">
+
+                    <h3>
+                        Wonders of the World
+                    </h3>
+
+                    <span>
+                        24 / 80 completed
+                    </span>
+
+                    <div class="achievement-category-progress">
+
+                        <div
+                            class="achievement-category-progress-fill"
+                            style="width: 30%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <span class="achievement-category-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="achievement-category"
+                type="button"
+                data-category="memories"
+            >
+
+                <div class="achievement-category-icon">
+                    <img
+                        src="/static/images/Achievements.webp"
+                        alt=""
+                    >
+                </div>
+
+                <div class="achievement-category-content">
+
+                    <h3>
+                        Memories of the Heart
+                    </h3>
+
+                    <span>
+                        18 / 60 completed
+                    </span>
+
+                    <div class="achievement-category-progress">
+
+                        <div
+                            class="achievement-category-progress-fill"
+                            style="width: 30%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <span class="achievement-category-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="achievement-category"
+                type="button"
+                data-category="the-abyss"
+            >
+
+                <div class="achievement-category-icon">
+                    <img
+                        src="/static/images/Achievements.webp"
+                        alt=""
+                    >
+                </div>
+
+                <div class="achievement-category-content">
+
+                    <h3>
+                        The Abyss
+                    </h3>
+
+                    <span>
+                        12 / 40 completed
+                    </span>
+
+                    <div class="achievement-category-progress">
+
+                        <div
+                            class="achievement-category-progress-fill"
+                            style="width: 30%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <span class="achievement-category-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <button
+                class="achievement-category"
+                type="button"
+                data-category="exploration"
+            >
+
+                <div class="achievement-category-icon">
+                    <img
+                        src="/static/images/Achievements.webp"
+                        alt=""
+                    >
+                </div>
+
+                <div class="achievement-category-content">
+
+                    <h3>
+                        Exploration
+                    </h3>
+
+                    <span>
+                        31 / 100 completed
+                    </span>
+
+                    <div class="achievement-category-progress">
+
+                        <div
+                            class="achievement-category-progress-fill"
+                            style="width: 31%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <span class="achievement-category-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Achievement Browser -->
+    <section
+        class="achievement-browser"
+        id="achievement-browser"
+        hidden
+    >
+
+        <aside class="achievement-sidebar">
+
+            <div class="achievement-sidebar-header">
+                <span>Categories</span>
+            </div>
+
+
+            <div class="achievement-sidebar-list">
+
+                <button
+                    type="button"
+                    class="achievement-sidebar-item active"
+                    data-category="wonders"
+                >
+                    <span>Wonders of the World</span>
+                    <small>24 / 80</small>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="achievement-sidebar-item"
+                    data-category="memories"
+                >
+                    <span>Memories of the Heart</span>
+                    <small>18 / 60</small>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="achievement-sidebar-item"
+                    data-category="the-abyss"
+                >
+                    <span>The Abyss</span>
+                    <small>12 / 40</small>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="achievement-sidebar-item"
+                    data-category="exploration"
+                >
+                    <span>Exploration</span>
+                    <small>31 / 100</small>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <div class="achievement-content">
+
+            <div class="achievement-content-header">
+
+                <div>
+                    <span class="eyebrow">
+                        CATEGORY
+                    </span>
+
+                    <h2 id="achievement-category-title">
+                        Wonders of the World
+                    </h2>
+
+                    <p id="achievement-category-progress">
+                        24 / 80 completed
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="achievement-list">
+
+                <div class="achievement-item completed">
+
+                    <div class="achievement-item-status">
+                        ✓
+                    </div>
+
+                    <div class="achievement-item-content">
+
+                        <h3>
+                            Example Achievement
+                        </h3>
+
+                        <p>
+                            Complete this example achievement to demonstrate
+                            the achievement layout.
+                        </p>
+
+                    </div>
+
+                    <span class="achievement-item-state">
+                        Completed
+                    </span>
+
+                </div>
+
+
+                <div class="achievement-item">
+
+                    <div class="achievement-item-status">
+                    </div>
+
+                    <div class="achievement-item-content">
+
+                        <h3>
+                            Another Achievement
+                        </h3>
+
+                        <p>
+                            This achievement has not been completed yet.
+                        </p>
+
+                    </div>
+
+                    <span class="achievement-item-state">
+                        Not completed
+                    </span>
+
+                </div>
+
+
+                <div class="achievement-item">
+
+                    <div class="achievement-item-status">
+                    </div>
+
+                    <div class="achievement-item-content">
+
+                        <h3>
+                            A Third Achievement
+                        </h3>
+
+                        <p>
+                            Achievement progress will eventually come from
+                            the user's Genshin data.
+                        </p>
+
+                    </div>
+
+                    <span class="achievement-item-state">
+                        Not completed
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

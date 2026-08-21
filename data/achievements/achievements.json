@@ -1,0 +1,98 @@
+{
+    "achievements": [
+        {
+            "id": "test_001",
+            "name": "A Test Achievement",
+            "category": "Wonders of the World",
+            "region": [],
+            "tiers": [
+                {
+                    "tier": 1,
+                    "version": "1.0",
+                    "description": "Complete the first test objective.",
+                    "primogems": 5
+                }
+            ]
+        },
+        {
+            "id": "test_002",
+            "name": "A Two-Tier Achievement",
+            "category": "Wonders of the World",
+            "region": [],
+            "tiers": [
+                {
+                    "tier": 1,
+                    "version": "1.0",
+                    "description": "Complete the first objective.",
+                    "primogems": 5
+                },
+                {
+                    "tier": 2,
+                    "version": "1.0",
+                    "description": "Complete the second objective.",
+                    "primogems": 10
+                }
+            ]
+        },
+        {
+            "id": "test_003",
+            "name": "A Three-Tier Achievement",
+            "category": "Wonders of the World",
+            "region": [],
+            "tiers": [
+                {
+                    "tier": 1,
+                    "version": "1.0",
+                    "description": "Complete the first objective.",
+                    "primogems": 5
+                },
+                {
+                    "tier": 2,
+                    "version": "1.0",
+                    "description": "Complete the second objective.",
+                    "primogems": 10
+                },
+                {
+                    "tier": 3,
+                    "version": "1.0",
+                    "description": "Complete the final objective.",
+                    "primogems": 20
+                }
+            ]
+        },
+        {
+            "id": "test_004",
+            "name": "Another Achievement",
+            "category": "Memories of the Heart",
+            "region": ["Inazuma"],
+            "tiers": [
+                {
+                    "tier": 1,
+                    "version": "2.0",
+                    "description": "Complete this test objective.",
+                    "primogems": 5
+                }
+            ]
+        },
+        {
+            "id": "test_005",
+            "name": "A Second Category",
+            "category": "Mortal Travails: Series I",
+            "region": ["Sumeru"],
+            "tiers": [
+                {
+                    "tier": 1,
+                    "version": "3.0",
+                    "description": "Complete the first objective.",
+                    "primogems": 5
+                },
+                {
+                    "tier": 2,
+                    "version": "3.0",
+                    "description": "Complete the second objective.",
+                    "primogems": 10
+                }
+            ]
+        }
+    ]
+}
