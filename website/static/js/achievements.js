@@ -425,43 +425,49 @@ document.addEventListener("DOMContentLoaded", () => {
      * --------------------------------------------------
      */
 
-    function getAchievementDescription(
-        achievement
-    ) {
+    function getAchievementDescription(achievement) {
 
         if (
             !achievement.tiers ||
             achievement.tiers.length === 0
         ) {
-
             return "";
-
         }
 
 
-        if (
-            achievement.tiers.length === 1
-        ) {
-
-            return escapeHTML(
-                achievement.tiers[0].description
-            );
-
-        }
+        const totalTiers =
+            achievement.tiers.length;
 
 
         return achievement.tiers
             .map(tier => {
 
+                const tierNumber =
+                    tier.tier;
+
+
                 return `
-                    Tier ${tier.tier}:
-                    ${escapeHTML(
-                        tier.description
-                    )}
+                    <div class="achievement-tier-row">
+    
+                        <img
+                            src="${getTierImage(
+                                tierNumber,
+                                totalTiers
+                            )}"
+                            alt="${tierNumber}/${totalTiers}"
+                        >
+    
+                        <span>
+                            ${escapeHTML(
+                                tier.description
+                            )}
+                        </span>
+    
+                    </div>
                 `;
 
             })
-            .join("<br>");
+            .join("");
 
     }
 
