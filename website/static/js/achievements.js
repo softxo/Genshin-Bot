@@ -1,15 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const categories = document.getElementById("achievement-categories");
-    const browser = document.getElementById("achievement-browser");
-    const backButton = document.getElementById("achievement-back");
-
-    const categoryButtons = document.querySelectorAll(
-        ".achievement-category"
+    const categories = document.getElementById(
+        "achievement-categories"
     );
 
-    const sidebarButtons = document.querySelectorAll(
-        ".achievement-sidebar-item"
+    const categoryGrid = document.getElementById(
+        "achievement-category-grid"
+    );
+
+    const browser = document.getElementById(
+        "achievement-browser"
+    );
+
+    const backButton = document.getElementById(
+        "achievement-back"
+    );
+
+    const sidebarList = document.getElementById(
+        "achievement-sidebar-list"
+    );
+
+    const achievementList = document.getElementById(
+        "achievement-list"
     );
 
     const categoryTitle = document.getElementById(
@@ -21,104 +33,528 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    const categoryData = {
+    let achievementData = null;
 
-        wonders: {
-            title: "Wonders of the World",
-            completed: 24,
-            total: 80
-        },
 
-        memories: {
-            title: "Memories of the Heart",
-            completed: 18,
-            total: 60
-        },
+    /*
+     * --------------------------------------------------
+     * LOAD ACHIEVEMENTS
+     * --------------------------------------------------
+     */
 
-        "the-abyss": {
-            title: "The Abyss",
-            completed: 12,
-            total: 40
-        },
+    async function loadAchievements() {
 
-        exploration: {
-            title: "Exploration",
-            completed: 31,
-            total: 100
+        try {
+
+            const response = await fetch(
+                "/api/achievements"
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to load achievements."
+                );
+            }
+
+            achievementData = await response.json();
+
+            buildCategories();
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load achievements:",
+                error
+            );
+
         }
 
-    };
+    }
 
+
+    /*
+     * --------------------------------------------------
+     * BUILD CATEGORY CARDS
+     * --------------------------------------------------
+     */
+
+    function buildCategories() {
+
+        if (!categoryGrid || !achievementData) {
+            return;
+        }
+
+
+        categoryGrid.innerHTML = "";
+
+
+        const categoryEntries =
+            Object.entries(
+                achievementData.categories
+            );
+
+
+        categoryEntries.forEach(
+            ([category, data]) => {
+
+                const button =
+                    document.createElement("button");
+
+                button.type = "button";
+
+                button.className =
+                    "achievement-category";
+
+
+                const progress =
+                    data.total > 0
+                        ? (
+                            data.completed /
+                            data.total
+                        ) * 100
+                        : 0;
+
+
+                button.innerHTML = `
+
+                    <div class="achievement-category-icon">
+
+                        <img
+                            src="/static/images/Achievements.webp"
+                            alt=""
+                        >
+
+                    </div>
+
+
+                    <div class="achievement-category-content">
+
+                        <h3>
+                            ${escapeHTML(category)}
+                        </h3>
+
+                        <span>
+                            ${data.completed} /
+                            ${data.total}
+                            completed
+                        </span>
+
+
+                        <div
+                            class="achievement-category-progress"
+                        >
+
+                            <div
+                                class="achievement-category-progress-fill"
+                                style="width: ${progress}%"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <span
+                        class="achievement-category-arrow"
+                    >
+                        →
+                    </span>
+
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        openCategory(category);
+
+                    }
+                );
+
+
+                categoryGrid.appendChild(button);
+
+            }
+        );
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * BUILD SIDEBAR
+     * --------------------------------------------------
+     */
+
+    function buildSidebar(
+        selectedCategory
+    ) {
+
+        if (!sidebarList || !achievementData) {
+            return;
+        }
+
+
+        sidebarList.innerHTML = "";
+
+
+        Object.entries(
+            achievementData.categories
+        ).forEach(
+            ([category, data]) => {
+
+                const button =
+                    document.createElement("button");
+
+                button.type = "button";
+
+                button.className =
+                    "achievement-sidebar-item";
+
+
+                if (
+                    category === selectedCategory
+                ) {
+
+                    button.classList.add("active");
+
+                }
+
+
+                button.innerHTML = `
+
+                    <span>
+                        ${escapeHTML(category)}
+                    </span>
+
+                    <small>
+                        ${data.completed} /
+                        ${data.total}
+                    </small>
+
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        openCategory(category);
+
+                    }
+                );
+
+
+                sidebarList.appendChild(button);
+
+            }
+        );
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * OPEN CATEGORY
+     * --------------------------------------------------
+     */
 
     function openCategory(category) {
 
-        const data = categoryData[category];
+        if (!achievementData) {
+            return;
+        }
+
+
+        const data =
+            achievementData.categories[category];
+
 
         if (!data) {
             return;
         }
 
 
-        categoryTitle.textContent = data.title;
+        categoryTitle.textContent =
+            category;
+
 
         categoryProgress.textContent =
             `${data.completed} / ${data.total} completed`;
 
 
-        sidebarButtons.forEach(button => {
+        buildSidebar(category);
 
-            button.classList.toggle(
-                "active",
-                button.dataset.category === category
-            );
-
-        });
+        buildAchievements(category);
 
 
         categories.hidden = true;
+
         browser.hidden = false;
 
     }
 
 
+    /*
+     * --------------------------------------------------
+     * BUILD ACHIEVEMENTS
+     * --------------------------------------------------
+     */
+
+    function buildAchievements(category) {
+
+        if (
+            !achievementList ||
+            !achievementData
+        ) {
+
+            return;
+
+        }
+
+
+        achievementList.innerHTML = "";
+
+
+        const achievements =
+            achievementData.achievements.filter(
+                achievement =>
+                    achievement.category === category
+            );
+
+
+        achievements.forEach(
+            achievement => {
+
+                const item =
+                    document.createElement("div");
+
+
+                item.className =
+                    "achievement-item";
+
+
+                item.innerHTML = `
+
+                    <div
+                        class="achievement-item-status"
+                    ></div>
+
+
+                    <div
+                        class="achievement-item-content"
+                    >
+
+                        <h3>
+                            ${escapeHTML(
+                                achievement.name
+                            )}
+                        </h3>
+
+                        <p>
+                            ${getAchievementDescription(
+                                achievement
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="achievement-complete-button"
+                    >
+                        Mark Completed
+                    </button>
+
+                `;
+
+
+                const completeButton =
+                    item.querySelector(
+                        ".achievement-complete-button"
+                    );
+
+
+                completeButton.addEventListener(
+                    "click",
+                    () => {
+
+                        markCompleted(
+                            achievement,
+                            item
+                        );
+
+                    }
+                );
+
+
+                achievementList.appendChild(item);
+
+            }
+        );
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * ACHIEVEMENT DESCRIPTION
+     * --------------------------------------------------
+     */
+
+    function getAchievementDescription(
+        achievement
+    ) {
+
+        if (
+            !achievement.tiers ||
+            achievement.tiers.length === 0
+        ) {
+
+            return "";
+
+        }
+
+
+        if (
+            achievement.tiers.length === 1
+        ) {
+
+            return escapeHTML(
+                achievement.tiers[0].description
+            );
+
+        }
+
+
+        return achievement.tiers
+            .map(tier => {
+
+                return `
+                    Tier ${tier.tier}:
+                    ${escapeHTML(
+                        tier.description
+                    )}
+                `;
+
+            })
+            .join("<br>");
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * MARK COMPLETED
+     * --------------------------------------------------
+     *
+     * TEMPORARY FRONT-END STATE.
+     *
+     * We will later connect this to the
+     * user's saved achievement progress.
+     */
+
+    function markCompleted(
+        achievement,
+        item
+    ) {
+
+        item.classList.add("completed");
+
+
+        const status =
+            item.querySelector(
+                ".achievement-item-status"
+            );
+
+
+        status.textContent = "✓";
+
+
+        const button =
+            item.querySelector(
+                ".achievement-complete-button"
+            );
+
+
+        button.textContent =
+            "Completed";
+
+
+        button.disabled = true;
+
+
+        const state =
+            item.querySelector(
+                ".achievement-item-state"
+            );
+
+
+        if (state) {
+
+            state.textContent =
+                "Completed";
+
+        }
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * BACK TO CATEGORIES
+     * --------------------------------------------------
+     */
+
     function closeBrowser() {
 
         browser.hidden = true;
+
         categories.hidden = false;
 
     }
 
 
-    categoryButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            openCategory(button.dataset.category);
-
-        });
-
-    });
-
-
-    sidebarButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            openCategory(button.dataset.category);
-
-        });
-
-    });
-
-
     if (backButton) {
 
-        backButton.addEventListener("click", () => {
-
-            closeBrowser();
-
-        });
+        backButton.addEventListener(
+            "click",
+            closeBrowser
+        );
 
     }
+
+
+    /*
+     * --------------------------------------------------
+     * HTML ESCAPING
+     * --------------------------------------------------
+     *
+     * Prevents achievement/category data
+     * from being interpreted as HTML.
+     */
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * INITIAL LOAD
+     * --------------------------------------------------
+     */
+
+    loadAchievements();
 
 });

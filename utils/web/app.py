@@ -652,14 +652,18 @@ async def achievements_data(
             continue
 
         if category not in categories:
-            categories[category] = 0
+            categories[category] = {
+                "total": 0,
+                "completed": 0,
+            }
 
-        categories[category] += 1
+        categories[category]["total"] += 1
 
     return {
         "achievements": achievements,
         "categories": categories,
         "total": len(achievements),
+        "completed": 0,
     }
 
 

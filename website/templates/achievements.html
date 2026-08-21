@@ -79,172 +79,10 @@
         </div>
 
 
-        <div class="achievement-category-grid">
-
-            <button
-                class="achievement-category"
-                type="button"
-                data-category="wonders"
-            >
-
-                <div class="achievement-category-icon">
-                    <img
-                        src="/static/images/Achievements.webp"
-                        alt=""
-                    >
-                </div>
-
-                <div class="achievement-category-content">
-
-                    <h3>
-                        Wonders of the World
-                    </h3>
-
-                    <span>
-                        24 / 80 completed
-                    </span>
-
-                    <div class="achievement-category-progress">
-
-                        <div
-                            class="achievement-category-progress-fill"
-                            style="width: 30%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <span class="achievement-category-arrow">
-                    →
-                </span>
-
-            </button>
-
-
-            <button
-                class="achievement-category"
-                type="button"
-                data-category="memories"
-            >
-
-                <div class="achievement-category-icon">
-                    <img
-                        src="/static/images/Achievements.webp"
-                        alt=""
-                    >
-                </div>
-
-                <div class="achievement-category-content">
-
-                    <h3>
-                        Memories of the Heart
-                    </h3>
-
-                    <span>
-                        18 / 60 completed
-                    </span>
-
-                    <div class="achievement-category-progress">
-
-                        <div
-                            class="achievement-category-progress-fill"
-                            style="width: 30%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <span class="achievement-category-arrow">
-                    →
-                </span>
-
-            </button>
-
-
-            <button
-                class="achievement-category"
-                type="button"
-                data-category="the-abyss"
-            >
-
-                <div class="achievement-category-icon">
-                    <img
-                        src="/static/images/Achievements.webp"
-                        alt=""
-                    >
-                </div>
-
-                <div class="achievement-category-content">
-
-                    <h3>
-                        The Abyss
-                    </h3>
-
-                    <span>
-                        12 / 40 completed
-                    </span>
-
-                    <div class="achievement-category-progress">
-
-                        <div
-                            class="achievement-category-progress-fill"
-                            style="width: 30%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <span class="achievement-category-arrow">
-                    →
-                </span>
-
-            </button>
-
-
-            <button
-                class="achievement-category"
-                type="button"
-                data-category="exploration"
-            >
-
-                <div class="achievement-category-icon">
-                    <img
-                        src="/static/images/Achievements.webp"
-                        alt=""
-                    >
-                </div>
-
-                <div class="achievement-category-content">
-
-                    <h3>
-                        Exploration
-                    </h3>
-
-                    <span>
-                        31 / 100 completed
-                    </span>
-
-                    <div class="achievement-category-progress">
-
-                        <div
-                            class="achievement-category-progress-fill"
-                            style="width: 31%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <span class="achievement-category-arrow">
-                    →
-                </span>
-
-            </button>
-
-        </div>
+        <div
+            class="achievement-category-grid"
+            id="achievement-category-grid"
+        ></div>
 
     </section>
 
@@ -259,52 +97,25 @@
         <aside class="achievement-sidebar">
 
             <div class="achievement-sidebar-header">
+
+                <button
+                    type="button"
+                    class="achievement-back"
+                    id="achievement-back"
+                    aria-label="Back to categories"
+                >
+                    ←
+                </button>
+
                 <span>Categories</span>
-            </div>
-
-
-            <div class="achievement-sidebar-list">
-
-                <button
-                    type="button"
-                    class="achievement-sidebar-item active"
-                    data-category="wonders"
-                >
-                    <span>Wonders of the World</span>
-                    <small>24 / 80</small>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="achievement-sidebar-item"
-                    data-category="memories"
-                >
-                    <span>Memories of the Heart</span>
-                    <small>18 / 60</small>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="achievement-sidebar-item"
-                    data-category="the-abyss"
-                >
-                    <span>The Abyss</span>
-                    <small>12 / 40</small>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="achievement-sidebar-item"
-                    data-category="exploration"
-                >
-                    <span>Exploration</span>
-                    <small>31 / 100</small>
-                </button>
 
             </div>
+
+
+            <div
+                class="achievement-sidebar-list"
+                id="achievement-sidebar-list"
+            ></div>
 
         </aside>
 
@@ -330,83 +141,10 @@
             </div>
 
 
-            <div class="achievement-list">
-
-                <div class="achievement-item completed">
-
-                    <div class="achievement-item-status">
-                        ✓
-                    </div>
-
-                    <div class="achievement-item-content">
-
-                        <h3>
-                            Example Achievement
-                        </h3>
-
-                        <p>
-                            Complete this example achievement to demonstrate
-                            the achievement layout.
-                        </p>
-
-                    </div>
-
-                    <span class="achievement-item-state">
-                        Completed
-                    </span>
-
-                </div>
-
-
-                <div class="achievement-item">
-
-                    <div class="achievement-item-status">
-                    </div>
-
-                    <div class="achievement-item-content">
-
-                        <h3>
-                            Another Achievement
-                        </h3>
-
-                        <p>
-                            This achievement has not been completed yet.
-                        </p>
-
-                    </div>
-
-                    <span class="achievement-item-state">
-                        Not completed
-                    </span>
-
-                </div>
-
-
-                <div class="achievement-item">
-
-                    <div class="achievement-item-status">
-                    </div>
-
-                    <div class="achievement-item-content">
-
-                        <h3>
-                            A Third Achievement
-                        </h3>
-
-                        <p>
-                            Achievement progress will eventually come from
-                            the user's Genshin data.
-                        </p>
-
-                    </div>
-
-                    <span class="achievement-item-state">
-                        Not completed
-                    </span>
-
-                </div>
-
-            </div>
+            <div
+                class="achievement-list"
+                id="achievement-list"
+            ></div>
 
         </div>
 

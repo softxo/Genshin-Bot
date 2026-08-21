@@ -1387,7 +1387,13 @@ body {
 
 
 .achievement-sidebar-header {
-    padding: 20px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 14px 12px;
 
     border-bottom: 1px solid var(--border);
 
@@ -1490,14 +1496,49 @@ body {
     min-width: 0;
 
     padding: 28px;
+}
 
-    <button
-        type="button"
-        class="achievement-back"
-        id="achievement-back"
-    >
-        ← Categories
-    </button>
+.achievement-back {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--surface);
+
+    color: var(--text-muted);
+
+    font-size: 16px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.achievement-back:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+
+    color: var(--accent);
+
+    transform: translateX(-1px);
 }
 
 
@@ -1633,4 +1674,14 @@ body {
 
 .achievement-item.completed .achievement-item-state {
     color: var(--accent);
+}
+
+
+/* =============================
+   ACHIEVEMENT VIEW VISIBILITY
+   ============================= */
+
+.achievement-browser[hidden],
+.achievement-categories-section[hidden] {
+    display: none !important;
 }
