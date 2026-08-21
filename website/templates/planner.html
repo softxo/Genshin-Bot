@@ -525,6 +525,9 @@
    ================================ */
 
     .reminders-list {
+        position: relative;
+        z-index: 1;
+
         display: flex;
         flex-direction: column;
 
@@ -682,10 +685,13 @@
     }
 
     /* ================================
-   Reminder Panel
-   ================================ */
+       Reminder Panel
+       ================================ */
 
     .reminder-panel {
+        position: relative;
+        z-index: 200;
+
         margin-top: 16px;
 
         padding: 20px;
@@ -695,6 +701,105 @@
         border: 1px solid var(--border);
 
         border-radius: 14px;
+    }
+
+
+    .reminder-panel[hidden] {
+        display: none;
+    }
+
+
+    .reminder-panel:not([hidden]) {
+        animation: reminder-panel-open 0.22s ease forwards;
+    }
+
+
+    .reminder-panel.closing {
+        animation: reminder-panel-close 0.18s ease forwards;
+    }
+
+
+    @keyframes reminder-panel-open {
+
+        from {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+    }
+
+
+    @keyframes reminder-panel-close {
+
+        from {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+        }
+
+    }
+
+    /* ================================
+       Reminder Card Animations
+       ================================ */
+
+    .reminder-card {
+        animation:
+            reminder-card-in 0.22s ease forwards;
+
+        transform-origin: center;
+    }
+
+    .reminder-card.removing {
+        animation:
+            reminder-card-out 0.18s ease forwards;
+    }
+
+
+    @keyframes reminder-card-in {
+
+        from {
+            opacity: 0;
+            transform:
+                translateY(-6px)
+                scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+    }
+
+
+    @keyframes reminder-card-out {
+
+        from {
+            opacity: 1;
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+        to {
+            opacity: 0;
+            transform:
+                translateY(-6px)
+                scale(0.98);
+        }
+
     }
 
     .reminder-panel-header {
@@ -963,7 +1068,7 @@
         left: 0;
         right: 0;
 
-        z-index: 100;
+        z-index: 300;
 
         display: none;
 
@@ -1537,6 +1642,7 @@
 
     }
 
+
     /* ================================
        Light Theme Planner Icons
        ================================ */
@@ -1647,6 +1753,9 @@ function renderPlanner(
             document.createElement("div");
 
         card.className = "planner-card";
+
+        card.dataset.genshinUid =
+            account.genshin_uid;
 
         const name =
             account.nickname
@@ -2039,6 +2148,164 @@ function updateTimestamps() {
 }
 
 
+async function refreshResin() {
+
+    try {
+
+        const response = await fetch(
+            "/api/planner",
+            {
+                credentials: "same-origin",
+                signal: plannerAbortController?.signal
+            }
+        );
+
+        if (response.status === 401) {
+            window.location.href = "/";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                "Failed to refresh Resin data."
+            );
+        }
+
+        const plannerData =
+            await response.json();
+
+        for (
+            const account
+            of plannerData.accounts || []
+        ) {
+
+            const card =
+                document.querySelector(
+                    `.planner-card[data-genshin-uid="${account.genshin_uid}"]`
+                );
+
+            if (!card) {
+                continue;
+            }
+
+            /*
+             * -------------------------------
+             * Resin value
+             * -------------------------------
+             */
+
+            const resinValue =
+                card.querySelector(
+                    "[data-resin-current]"
+                );
+
+            if (resinValue) {
+
+                resinValue.dataset.resinCurrent =
+                    account.current_resin;
+
+                resinValue.dataset.resinMax =
+                    account.max_resin;
+
+                resinValue.textContent =
+                    `${account.current_resin} / ${account.max_resin}`;
+            }
+
+
+            /*
+             * -------------------------------
+             * Replenished timer
+             * -------------------------------
+             */
+
+            const replenished =
+                card.querySelector(
+                    "[data-timestamp]"
+                );
+
+            if (replenished) {
+
+                if (
+                    account.replenished_at === null
+                ) {
+
+                    replenished.textContent =
+                        "Full";
+
+                    replenished.dataset.timestamp =
+                        "";
+
+                } else {
+
+                    replenished.dataset.timestamp =
+                        account.replenished_at;
+
+                    replenished.textContent =
+                        "Loading...";
+                }
+            }
+
+
+            /*
+             * -------------------------------
+             * Fully replenished timer
+             * -------------------------------
+             */
+
+            const fullyReplenished =
+                card.querySelector(
+                    "[data-full-timestamp]"
+                );
+
+            if (fullyReplenished) {
+
+                if (
+                    account.full_resin_at === null
+                ) {
+
+                    fullyReplenished.textContent =
+                        "Full";
+
+                    fullyReplenished.dataset.fullTimestamp =
+                        "";
+
+                } else {
+
+                    fullyReplenished.dataset.fullTimestamp =
+                        account.full_resin_at;
+
+                    fullyReplenished.textContent =
+                        "Loading...";
+                }
+            }
+        }
+
+        /*
+         * Immediately recalculate the
+         * countdown using the new server data.
+         */
+        updateTimestamps();
+
+    } catch (exception) {
+
+        /*
+         * Aborting the request is expected when
+         * leaving the Planner.
+         */
+        if (
+            exception.name === "AbortError"
+        ) {
+            return;
+        }
+
+        console.error(
+            "Failed to refresh Resin:",
+            exception
+        );
+    }
+}
+
+
 function updateCountdown(
     element,
     timestamp
@@ -2225,7 +2492,15 @@ function closeReminderPanel() {
         return;
     }
 
-    panel.hidden = true;
+    panel.classList.add("closing");
+
+    setTimeout(() => {
+
+        panel.hidden = true;
+
+        panel.classList.remove("closing");
+
+    }, 180);
 }
 
 
@@ -2937,16 +3212,45 @@ async function deleteReminder(reminderId) {
         return;
     }
 
+
+    const button =
+        document.querySelector(
+            `.reminder-delete-button[data-reminder-id="${reminderId}"]`
+        );
+
+    const card =
+        button?.closest(".reminder-card");
+
+
+    /*
+     * Start the delete request immediately.
+     */
+
+    const deleteRequest =
+        fetch(
+            `/api/planner/reminders/${reminderId}`,
+            {
+                method: "DELETE",
+                credentials: "same-origin"
+            }
+        );
+
+
+    /*
+     * Start the visual removal animation.
+     */
+
+    if (card) {
+
+        card.classList.add("removing");
+
+    }
+
+
     try {
 
         const response =
-            await fetch(
-                `/api/planner/reminders/${reminderId}`,
-                {
-                    method: "DELETE",
-                    credentials: "same-origin"
-                }
-            );
+            await deleteRequest;
 
 
         if (response.status === 401) {
@@ -2970,19 +3274,51 @@ async function deleteReminder(reminderId) {
 
 
         /*
-         * Reload the Planner so the deleted
-         * reminder disappears immediately.
+         * Wait for the removal animation to finish.
+         */
+
+        if (card) {
+
+            await new Promise(resolve => {
+
+                setTimeout(
+                    resolve,
+                    180
+                );
+
+            });
+
+            card.remove();
+        }
+
+
+        /*
+         * Show success notification.
          */
 
         showPlannerToast(
             "Reminder deleted successfully."
         );
 
+
+        /*
+         * Refresh planner data so the local
+         * state remains accurate.
+         */
+
         await loadPlanner();
 
     } catch (exception) {
 
         console.error(exception);
+
+
+        /*
+         * Restore the planner if deletion failed.
+         */
+
+        await loadPlanner();
+
 
         alert(
             exception.message
@@ -2993,6 +3329,8 @@ async function deleteReminder(reminderId) {
 
 
 let plannerAbortController = null;
+
+window.plannerRefreshInterval = null;
 
 
 window.initPlanner = function () {
@@ -3010,6 +3348,15 @@ window.initPlanner = function () {
         );
 
         window.plannerInterval = null;
+    }
+
+    if (window.plannerRefreshInterval) {
+
+        clearInterval(
+            window.plannerRefreshInterval
+        );
+
+        window.plannerRefreshInterval = null;
     }
 
 
@@ -3043,6 +3390,16 @@ window.initPlanner = function () {
         setInterval(
             updateTimestamps,
             1_000
+        );
+
+    /*
+     * Refresh Resin from HoYoLAB every 30 seconds.
+     */
+
+    window.plannerRefreshInterval =
+        setInterval(
+            refreshResin,
+            30_000
         );
 };
 
