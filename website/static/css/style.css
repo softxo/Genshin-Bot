@@ -1219,7 +1219,7 @@ body {
     display: grid;
 
     grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        repeat(4, minmax(0, 1fr));
 
     gap: 14px;
 }
@@ -1323,28 +1323,6 @@ body {
     color: var(--text-muted);
 
     font-size: 12px;
-}
-
-
-.achievement-category-progress {
-    width: 100%;
-
-    height: 5px;
-
-    overflow: hidden;
-
-    border-radius: 999px;
-
-    background: var(--background);
-}
-
-
-.achievement-category-progress-fill {
-    height: 100%;
-
-    border-radius: inherit;
-
-    background: var(--accent);
 }
 
 
@@ -1757,6 +1735,313 @@ body {
 
 
 /* =============================
+   ACHIEVEMENT CATEGORY CONTROLS
+   ============================= */
+
+.achievement-category-controls {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* =============================
+   SEARCH
+   ============================= */
+
+.achievement-search-wrapper {
+    position: relative;
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+
+.achievement-search {
+    display: block;
+
+    width: 100%;
+    height: 42px;
+
+    padding: 0 14px 0 40px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.achievement-search::placeholder {
+    color: var(--text-muted);
+}
+
+
+.achievement-search:hover {
+    background: var(--surface-hover);
+}
+
+
+.achievement-search:focus {
+    border-color: var(--accent-border);
+
+    background: var(--surface-hover);
+
+    box-shadow:
+        0 0 0 3px var(--accent-soft);
+}
+
+
+.achievement-search-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    transform: translateY(-50%);
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+
+/* =============================
+   CUSTOM SELECT WRAPPERS
+   ============================= */
+
+.achievement-version-wrapper,
+.achievement-dropdown-wrapper {
+    position: relative;
+
+    flex: 0 0 150px;
+
+    width: 150px;
+}
+
+
+/* =============================
+   CUSTOM SELECT ARROW
+   ============================= */
+
+.achievement-version-wrapper::after,
+.achievement-dropdown-wrapper::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    right: 14px;
+
+    width: 7px;
+    height: 7px;
+
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+
+    transform:
+        translateY(-70%)
+        rotate(45deg);
+
+    pointer-events: none;
+
+    transition:
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+/* =============================
+   SELECT
+   ============================= */
+
+.achievement-version,
+.achievement-dropdown {
+    display: block;
+
+    width: 100%;
+    height: 42px;
+
+    padding: 0 36px 0 13px;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.achievement-version:hover,
+.achievement-dropdown:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+}
+
+
+.achievement-version:focus,
+.achievement-dropdown:focus {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+
+    box-shadow:
+        0 0 0 3px var(--accent-soft);
+}
+
+
+/* =============================
+   HIDE COMPLETED
+   ============================= */
+
+.achievement-hide-completed {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    height: 42px;
+
+    flex: 0 0 auto;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.achievement-hide-completed:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+
+    color: var(--text);
+}
+
+
+.achievement-hide-completed input {
+    width: 15px;
+    height: 15px;
+
+    margin: 0;
+
+    accent-color: var(--accent);
+
+    cursor: pointer;
+}
+
+
+/* =============================
+   IMPORT BUTTON
+   ============================= */
+
+.achievement-import-button {
+    height: 42px;
+
+    padding: 0 16px;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    font: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+
+    white-space: nowrap;
+}
+
+
+.achievement-import-button:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+
+    color: var(--accent);
+
+    transform: translateY(-1px);
+}
+
+
+/* =============================
    CATEGORY PROGRESS BAR
    ============================= */
 
@@ -1801,34 +2086,6 @@ body {
 }
 
 
-.achievement-item {
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 16px;
-
-    padding: 18px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 12px;
-
-    background: var(--background);
-
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease;
-}
-
-
-.achievement-item:hover {
-    background: var(--surface-hover);
-
-    border-color: var(--accent-border);
-}
-
-
 /* =============================
    ACHIEVEMENT ITEM
    ============================= */
@@ -1855,6 +2112,12 @@ body {
         border-color 0.15s ease;
 
     overflow: hidden;
+}
+
+
+.achievement-item:hover {
+    background: var(--surface-hover);
+    border-color: var(--accent-border);
 }
 
 
@@ -1961,30 +2224,6 @@ body {
 
 .achievement-item.completed:hover {
     border-color: var(--accent);
-}
-
-
-/* =============================
-   PROGRESS COLOUR ANIMATION
-   ============================= */
-
-.achievement-item.progress-low::before,
-.achievement-item.progress-medium::before,
-.achievement-item.progress-high::before {
-    animation:
-        achievement-progress-fade 0.45s ease-out forwards;
-}
-
-@keyframes achievement-progress-fade {
-
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-
 }
 
 
@@ -2254,72 +2493,7 @@ body {
 
     cursor: pointer;
 
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        color 0.15s ease,
-        transform 0.15s ease;
-}
-
-
-.achievement-complete-button:hover {
-    border-color: var(--accent);
-
-    background: var(--accent-soft);
-
-    color: var(--accent);
-
-    transform: scale(1.06);
-}
-
-
-.achievement-complete-button.completed {
-    border-color: var(--accent);
-
-    background: var(--accent);
-
-    color: var(--background);
-}
-
-
-.achievement-complete-button.completed::after {
-    content: "✓";
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 100%;
-
-    font-size: 12px;
-
-    font-weight: 700;
-}
-
-
-/* =============================
-   TIER COMPLETE BUTTON
-   ============================= */
-
-.achievement-complete-button {
-    width: 28px;
-    height: 28px;
-
-    flex: 0 0 28px;
-
-    padding: 0;
-
-    border: 1px solid var(--border);
-
-    border-radius: 50%;
-
-    background: transparent;
-
-    color: var(--text-muted);
-
-    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 
     transition:
         background 0.15s ease,
@@ -2337,6 +2511,14 @@ body {
     color: var(--accent);
 
     transform: scale(1.06);
+}
+
+
+.achievement-complete-button:focus,
+.achievement-complete-button:focus-visible {
+    outline: none;
+
+    box-shadow: none;
 }
 
 
@@ -2385,12 +2567,6 @@ body {
     /* =============================
        CATEGORY GRID
        ============================= */
-
-    .achievement-category-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
 
     .achievement-category {
         min-height: 88px;
@@ -2444,17 +2620,16 @@ body {
        ============================= */
 
     .achievement-category-controls {
-        display: flex;
+        display: grid;
 
-        align-items: center;
+        grid-template-columns: 1fr 1fr;
 
         gap: 10px;
 
         margin-top: 20px;
-
         margin-bottom: 20px;
 
-        flex-wrap: wrap;
+        width: 100%;
     }
 
 
@@ -2463,70 +2638,9 @@ body {
        ============================= */
 
     .achievement-search-wrapper {
-        position: relative;
+        grid-column: 1 / -1;
 
-        flex: 1 1 280px;
-
-        min-width: 220px;
-    }
-
-
-    .achievement-search {
-        width: 100%;
-
-        height: 42px;
-
-        padding: 0 14px 0 40px;
-
-        border: 1px solid var(--border);
-
-        border-radius: 10px;
-
-        background: var(--surface);
-
-        color: var(--text);
-
-        font: inherit;
-
-        font-size: 13px;
-
-        outline: none;
-
-        transition:
-            border-color 0.15s ease,
-            background 0.15s ease,
-            box-shadow 0.15s ease;
-    }
-
-
-    .achievement-search::placeholder {
-        color: var(--text-muted);
-    }
-
-
-    .achievement-search:focus {
-        border-color: var(--accent-border);
-
-        background: var(--surface-hover);
-
-        box-shadow:
-            0 0 0 3px var(--accent-soft);
-    }
-
-
-    .achievement-search-icon {
-        position: absolute;
-
-        top: 50%;
-        left: 14px;
-
-        transform: translateY(-50%);
-
-        color: var(--text-muted);
-
-        font-size: 14px;
-
-        pointer-events: none;
+        min-width: 0;
     }
 
 
@@ -2534,153 +2648,10 @@ body {
        VERSION SELECT
        ============================= */
 
-    .achievement-version {
-        height: 42px;
-
-        min-width: 150px;
-
-        padding: 0 36px 0 13px;
-
-        border: 1px solid var(--border);
-
-        border-radius: 10px;
-
-        background-color: var(--surface);
-
-        color: var(--text);
-
-        font: inherit;
-
-        font-size: 13px;
-
-        cursor: pointer;
-
-        outline: none;
+    .achievement-version-wrapper {
+        width: 100%;
+        flex: none;
     }
-
-
-    .achievement-version:focus {
-        border-color: var(--accent-border);
-
-        box-shadow:
-            0 0 0 3px var(--accent-soft);
-    }
-
-
-    /* =============================
-       HIDE COMPLETED
-       ============================= */
-
-    .achievement-hide-completed {
-        display: flex;
-
-        align-items: center;
-
-        gap: 9px;
-
-        height: 42px;
-
-        padding: 0 13px;
-
-        border: 1px solid var(--border);
-
-        border-radius: 10px;
-
-        background: var(--surface);
-
-        color: var(--text-muted);
-
-        font-size: 13px;
-
-        cursor: pointer;
-
-        user-select: none;
-
-        transition:
-            background 0.15s ease,
-            border-color 0.15s ease,
-            color 0.15s ease;
-    }
-
-
-    .achievement-hide-completed:hover {
-        background: var(--surface-hover);
-
-        border-color: var(--accent-border);
-
-        color: var(--text);
-    }
-
-
-    .achievement-hide-completed input {
-        width: 15px;
-        height: 15px;
-
-        margin: 0;
-
-        accent-color: var(--accent);
-
-        cursor: pointer;
-    }
-
-
-    /* =============================
-       IMPORT BUTTON
-       ============================= */
-
-    .achievement-import-button {
-        height: 42px;
-
-        padding: 0 16px;
-
-        border: 1px solid var(--border);
-
-        border-radius: 10px;
-
-        background: var(--surface);
-
-        color: var(--text);
-
-        font: inherit;
-
-        font-size: 13px;
-
-        font-weight: 600;
-
-        cursor: pointer;
-
-        transition:
-            background 0.15s ease,
-            border-color 0.15s ease,
-            color 0.15s ease,
-            transform 0.15s ease;
-    }
-
-
-    .achievement-import-button:hover {
-        background: var(--surface-hover);
-
-        border-color: var(--accent-border);
-
-        color: var(--accent);
-
-        transform: translateY(-1px);
-    }
-
-
-    /* =============================
-       CATEGORY GRID
-       ============================= */
-
-    .achievement-category-grid {
-        display: grid;
-
-        grid-template-columns:
-            repeat(6, minmax(0, 1fr));
-
-        gap: 12px;
-    }
-
 
     /* =============================
        ACHIEVEMENT BROWSER
@@ -2807,8 +2778,6 @@ body {
 
     .achievement-category-progress {
         margin-top: 10px;
-
-        height: 5px;
     }
 
 
@@ -2954,50 +2923,6 @@ body {
     }
 }
 
-.achievement-complete-button {
-    width: 28px;
-    height: 28px;
-
-    flex: 0 0 28px;
-
-    padding: 0;
-
-    border: 1px solid var(--border);
-
-    border-radius: 50%;
-
-    background: transparent;
-
-    color: var(--text-muted);
-
-    cursor: pointer;
-
-    -webkit-tap-highlight-color: transparent;
-
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        color 0.15s ease,
-        transform 0.15s ease;
-}
-
-
-.achievement-complete-button:focus,
-.achievement-complete-button:focus-visible {
-    outline: none;
-    box-shadow: none;
-}
-
-
-/* =============================
-   ACHIEVEMENT VIEW VISIBILITY
-   ============================= */
-
-.achievement-browser[hidden],
-.achievement-categories-section[hidden] {
-    display: none !important;
-}
-
 
 /* =============================
    ACHIEVEMENT RESPONSIVE
@@ -3007,42 +2932,6 @@ body {
 
     .achievement-category-grid {
         grid-template-columns:
-            repeat(4, minmax(0, 1fr));
-    }
-
-}
-
-
-@media (max-width: 800px) {
-
-    .achievement-category-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .achievement-category-controls {
-        align-items: stretch;
-
-        flex-direction: column;
-    }
-
-
-    .achievement-search-wrapper,
-    .achievement-version,
-    .achievement-hide-completed,
-    .achievement-import-button {
-        width: 100%;
-    }
-
-
-    .achievement-category-grid {
-        grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
-
 }
