@@ -1368,27 +1368,23 @@ body {
 }
 
 
-/* ==========================================
+/* ==================================================
    VERIFICATION PAGE
-   ========================================== */
+   ================================================== */
 
 .verification-page {
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 40px);
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    padding: 40px 20px;
-
-    box-sizing: border-box;
 }
 
 
 .verification-panel {
     width: min(100%, 560px);
 
-    padding: 48px;
+    padding: 40px;
 
     background: var(--surface);
 
@@ -1398,21 +1394,23 @@ body {
 
     text-align: center;
 
-    box-sizing: border-box;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 
 .verification-panel h1 {
     margin: 0 0 12px;
 
-    font-size: 30px;
+    color: var(--text);
+
+    font-size: 32px;
+    font-weight: 700;
 }
 
 
 .verification-description {
-    margin: 0 auto 32px;
-
-    max-width: 440px;
+    margin: 0;
 
     color: var(--text-muted);
 
@@ -1420,66 +1418,68 @@ body {
 }
 
 
+.verification-description strong {
+    color: var(--text);
+}
+
+
 .verification-code {
-    width: 100%;
+    margin: 32px 0 24px;
 
-    padding: 24px 20px;
-
-    box-sizing: border-box;
+    padding: 22px 28px;
 
     background: var(--background);
 
     border: 1px solid var(--border);
 
     border-radius: 14px;
-}
 
-
-.verification-code span {
-    display: block;
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
 
     font-size: 36px;
 
     font-weight: 700;
 
-    letter-spacing: 8px;
+    letter-spacing: 6px;
 
     color: var(--text);
 
-    font-variant-numeric: tabular-nums;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 
 .verification-status {
-    margin: 24px 0 0;
+    margin: 0;
 
     color: var(--text-muted);
 
-    line-height: 1.5;
+    font-size: 14px;
 }
 
 
 @media (max-width: 600px) {
 
-    .verification-page {
-        padding: 24px 16px;
+    .verification-panel {
+        padding: 28px 20px;
     }
 
-    .verification-panel {
-        padding: 32px 20px;
-    }
 
     .verification-panel h1 {
         font-size: 26px;
     }
 
-    .verification-code {
-        padding: 20px 14px;
-    }
 
-    .verification-code span {
-        font-size: 28px;
-        letter-spacing: 5px;
+    .verification-code {
+        font-size: 27px;
+
+        letter-spacing: 4px;
+
+        padding: 18px 12px;
     }
 
 }

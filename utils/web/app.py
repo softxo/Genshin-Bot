@@ -246,7 +246,8 @@ async def planner(
 
     if session is None:
         return RedirectResponse(
-            url="/verify"
+            url="/verify?next=/planner",
+            status_code=303,
         )
 
     return templates.TemplateResponse(
@@ -632,7 +633,8 @@ async def achievements(
 
     if session is None:
         return RedirectResponse(
-            url="/verify"
+            url="/verify?next=/planner",
+            status_code=303,
         )
 
     return templates.TemplateResponse(

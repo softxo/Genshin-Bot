@@ -10,22 +10,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const response = await fetch(url);
+            const response = await fetch(
+                url,
+                {
+                    redirect: "manual"
+                }
+            );
 
             if (
-                response.redirected &&
-                new URL(response.url).pathname === "/verify"
+                response.status === 301 ||
+                response.status === 302 ||
+                response.status === 303 ||
+                response.status === 307 ||
+                response.status === 308
             ) {
-                history.pushState(
-                    {},
-                    "",
-                    "/verify"
-                );
 
-                window.location.href = "/verify";
+                const redirectUrl =
+                    response.headers.get("Location");
 
-                return;
+                if (redirectUrl) {
+
+                    window.location.href =
+                        new URL(
+                            redirectUrl,
+                            window.location.origin
+                        ).href;
+
+                    return;
+                }
             }
+
 
             if (!response.ok) {
                 throw new Error(
