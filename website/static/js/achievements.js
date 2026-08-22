@@ -258,220 +258,220 @@ document.addEventListener("DOMContentLoaded", () => {
     const CATEGORY_SIDEBAR_ICONS = {
 
         "Wonders of the World":
-            "/static/images/achievements/categories/Wonders_of_the_World.png",
+            "/static/images/achievements/categories/sidebar/Wonders_of_the_World.png",
 
         "Memories of the Heart":
-            "/static/images/achievements/categories/Memories_of_the_Heart.png",
+            "/static/images/achievements/categories/sidebar/Memories_of_the_Heart.png",
 
         "Mortal Travails: Series I":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series II":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series III":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series IV":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series V":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series VI":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "Mortal Travails: Series VII":
-            "/static/images/achievements/categories/Mortal_Travails.png",
+            "/static/images/achievements/categories/sidebar/Mortal_Travails.png",
 
         "The Art of Adventure":
-            "/static/images/achievements/categories/The_Art_of_Adventure.png",
+            "/static/images/achievements/categories/sidebar/The_Art_of_Adventure.png",
 
         "The Hero's Journey":
-            "/static/images/achievements/categories/The_Heros_Journey.png",
+            "/static/images/achievements/categories/sidebar/The_Heros_Journey.png",
 
         "Mondstadt: The City of Wind and Song":
-            "/static/images/achievements/categories/Mondstadt_The_City_of_Wind_and_Song.png",
+            "/static/images/achievements/categories/sidebar/Mondstadt_The_City_of_Wind_and_Song.png",
 
         "Liyue: The Harbor of Stone and Contracts":
-            "/static/images/achievements/categories/Liyue_The_Harbor_of_Stone_and_Contracts.png",
+            "/static/images/achievements/categories/sidebar/Liyue_The_Harbor_of_Stone_and_Contracts.png",
 
         "Elemental Specialist: Series I":
-            "/static/images/achievements/categories/Elemental_Specialist_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Elemental_Specialist_Series_I.png",
 
         "Elemental Specialist: Series II":
-            "/static/images/achievements/categories/Elemental_Specialist_Series_II.png",
+            "/static/images/achievements/categories/sidebar/Elemental_Specialist_Series_II.png",
 
         "Marksmanship":
-            "/static/images/achievements/categories/Marksmanship.png",
+            "/static/images/achievements/categories/sidebar/Marksmanship.png",
 
         "Challenger: Series I":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series II":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series III":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series IV":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series V":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series VI":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series VII":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series VIII":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series IX":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Challenger: Series X":
-            "/static/images/achievements/categories/Challenger.png",
+            "/static/images/achievements/categories/sidebar/Challenger.png",
 
         "Domains and Spiral Abyss: Series I":
-            "/static/images/achievements/categories/Domains_and_Spiral_Abyss_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Domains_and_Spiral_Abyss_Series_I.png",
 
         "Olah!: Series I":
-            "/static/images/achievements/categories/Olah!_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Olah!_Series_I.png",
 
         "Snezhnaya Does Not Believe in Tears: Series I":
-            "/static/images/achievements/categories/Snezhnaya_Does_Not_Believe_in_Tears_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Snezhnaya_Does_Not_Believe_in_Tears_Series_I.png",
 
         "Stone Harbor's Nostalgia: Series I":
-            "/static/images/achievements/categories/Stone_Harbors_Nostalgia_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Stone_Harbors_Nostalgia_Series_I.png",
 
         "Meetings in Outrealm: Series I":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series II":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series III":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series IV":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series V":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series VI":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Meetings in Outrealm: Series VII":
-            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+            "/static/images/achievements/categories/sidebar/Meetings_in_Outrealm.png",
 
         "Visitors on the Icy Mountain":
-            "/static/images/achievements/categories/Visitors_on_the_Icy_Mountain.png",
+            "/static/images/achievements/categories/sidebar/Visitors_on_the_Icy_Mountain.png",
 
         "A Realm Beyond: Series I":
-            "/static/images/achievements/categories/A_Realm_Beyond.png",
+            "/static/images/achievements/categories/sidebar/A_Realm_Beyond.png",
 
         "A Realm Beyond: Series II":
-            "/static/images/achievements/categories/A_Realm_Beyond.png",
+            "/static/images/achievements/categories/sidebar/A_Realm_Beyond.png",
 
         "Inazuma: The Islands of Thunder and Eternity - Series I":
-            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+            "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
         "Inazuma: The Islands of Thunder and Eternity - Series II":
-            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+            "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
         "Inazuma: The Islands of Thunder and Eternity - Series III":
-            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+            "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
         "Teyvat Fishing Guide: Series I":
-            "/static/images/achievements/categories/Teyvat_Fishing_Guide_Series_I.png",
+            "/static/images/achievements/categories/sidebar/Teyvat_Fishing_Guide_Series_I.png",
 
         "The Light of Day":
-            "/static/images/achievements/categories/The_Light_of_Day.png",
+            "/static/images/achievements/categories/sidebar/The_Light_of_Day.png",
 
         "Chasmlighter":
-            "/static/images/achievements/categories/Chasmlighter.png",
+            "/static/images/achievements/categories/sidebar/Chasmlighter.png",
 
         "Sumeru: The Rainforest of Lore":
-            "/static/images/achievements/categories/Sumeru_The_Rainforest_of_Lore.png",
+            "/static/images/achievements/categories/sidebar/Sumeru_The_Rainforest_of_Lore.png",
 
         "Sumeru: The Gilded Desert - Series I":
-            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert.png",
+            "/static/images/achievements/categories/sidebar/Sumeru_The_Gilded_Desert.png",
 
         "Sumeru: The Gilded Desert - Series II":
-            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert.png",
+            "/static/images/achievements/categories/sidebar/Sumeru_The_Gilded_Desert.png",
 
         "Genius Invokation TCG":
-            "/static/images/achievements/categories/Genius_Invokation_TCG.png",
+            "/static/images/achievements/categories/sidebar/Genius_Invokation_TCG.png",
 
         "Blessed Hamada":
-            "/static/images/achievements/categories/Blessed_Hamada.png",
+            "/static/images/achievements/categories/sidebar/Blessed_Hamada.png",
 
         "Fontaine: Dance of the Dew-White Springs (I)":
-            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+            "/static/images/achievements/categories/sidebar/Fontaine_Dance_of_the_Dew_White_Springs.png",
 
         "Fontaine: Dance of the Dew-White Springs (II)":
-            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+            "/static/images/achievements/categories/sidebar/Fontaine_Dance_of_the_Dew_White_Springs.png",
 
         "Fontaine: Dance of the Dew-White Springs (III)":
-            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+            "/static/images/achievements/categories/sidebar/Fontaine_Dance_of_the_Dew_White_Springs.png",
 
         "Chenyu's Splendor":
-            "/static/images/achievements/categories/Chenyus_Splendor.png",
+            "/static/images/achievements/categories/sidebar/Chenyus_Splendor.png",
 
         "Rhapsodia in the Ancient Sea":
-            "/static/images/achievements/categories/Rhapsodia_in_the_Ancient_Sea.png",
+            "/static/images/achievements/categories/sidebar/Rhapsodia_in_the_Ancient_Sea.png",
 
         "Imaginarium Theater: The First Folio":
-            "/static/images/achievements/categories/Imaginarium_Theater.png",
+            "/static/images/achievements/categories/sidebar/Imaginarium_Theater.png",
 
         "Imaginarium Theater: The Second Folio":
-            "/static/images/achievements/categories/Imaginarium_Theater.png",
+            "/static/images/achievements/categories/sidebar/Imaginarium_Theater.png",
 
         "Natlan: The Land of Fire and Competition (I)":
-            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition.png",
+            "/static/images/achievements/categories/sidebar/Natlan_The_Land_of_Fire_and_Competition.png",
 
         "Natlan: The Land of Fire and Competition (II)":
-            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition.png",
+            "/static/images/achievements/categories/sidebar/Natlan_The_Land_of_Fire_and_Competition.png",
 
         "Duelist: Series I":
-            "/static/images/achievements/categories/Duelist.png",
+            "/static/images/achievements/categories/sidebar/Duelist.png",
 
         "Duelist: Series II":
-            "/static/images/achievements/categories/Duelist.png",
+            "/static/images/achievements/categories/sidebar/Duelist.png",
 
         "Duelist: Series III":
-            "/static/images/achievements/categories/Duelist.png",
+            "/static/images/achievements/categories/sidebar/Duelist.png",
 
         "Repertoire of Myriad Melodies":
-            "/static/images/achievements/categories/Reperoire_of_Myriad_Melodies.png",
+            "/static/images/achievements/categories/sidebar/Reperoire_of_Myriad_Melodies.png",
 
         "Sacred Mountain's Fading Glow":
-            "/static/images/achievements/categories/Sacred_Mountains_Fading_Glow.png",
+            "/static/images/achievements/categories/sidebar/Sacred_Mountains_Fading_Glow.png",
 
         "A Summer of Ash and Prickly Pears":
-            "/static/images/achievements/categories/A_Summer_of_Ash_and_Prickly_Pears.png",
+            "/static/images/achievements/categories/sidebar/A_Summer_of_Ash_and_Prickly_Pears.png",
 
         "Nod-Krai: An Elysium of Moonlight and Wanderings (I)":
-            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
+            "/static/images/achievements/categories/sidebar/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
 
         "Nod-Krai: An Elysium of Moonlight and Wanderings (II)":
-            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
+            "/static/images/achievements/categories/sidebar/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
 
         "Demon Mountain's Breath":
-            "/static/images/achievements/categories/Demon_Mountains_Breath.png",
+            "/static/images/achievements/categories/sidebar/Demon_Mountains_Breath.png",
 
         "Unfettered Crescent":
-            "/static/images/achievements/categories/Unfettered_Crescent.png",
+            "/static/images/achievements/categories/sidebar/Unfettered_Crescent.png",
 
         "Snezhnaya: Sacred city of ice and pale star (I)":
-            "/static/images/achievements/categories/Snezhnaya_Sacred_city_of_ice_and_pale_star.png",
+            "/static/images/achievements/categories/sidebar/Snezhnaya_Sacred_city_of_ice_and_pale_star.png",
 
         "Land of Surging Shadows":
-            "/static/images/achievements/categories/Land_of_Surging_Shadows.png",
+            "/static/images/achievements/categories/sidebar/Land_of_Surging_Shadows.png",
 
     };
 
@@ -499,6 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
             achievementData = await response.json();
 
             buildCategories();
+            updateOverallAchievementProgress();
 
         } catch (error) {
 
@@ -1048,6 +1049,8 @@ document.addEventListener("DOMContentLoaded", () => {
             button.title =
                 "Mark Completed";
 
+            tier.completed = false;
+
         } else {
 
             tierContainer.classList.add(
@@ -1069,6 +1072,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             button.title =
                 "Mark Incomplete";
+
+            tier.completed = true;
 
         }
 
@@ -1164,6 +1169,8 @@ document.addEventListener("DOMContentLoaded", () => {
         updateLockedTiers(item);
         updateAchievementProgress(item);
 
+        updateOverallAchievementProgress();
+
     }
 
     function updateAchievementProgress(item) {
@@ -1199,6 +1206,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
+         * Force the browser to register
+         * the class removal so the animation
+         * can restart when the new class is added.
+         */
+
+        void item.offsetWidth;
+
+
+        /*
          * Do not apply progress colour
          * to a fully completed achievement.
          */
@@ -1215,47 +1231,33 @@ document.addEventListener("DOMContentLoaded", () => {
             completedCount / totalTiers;
 
 
-        let progressClass = null;
-
-
         /*
-         * 1/3 or more, but below 2/3.
+         * 1/3 complete.
          */
 
         if (
             progress >= 1 / 3 &&
-            progress < 2 / 3
+            progress < 1 / 2
         ) {
 
-            progressClass =
-                "progress-low";
+            item.classList.add(
+                "progress-low"
+            );
 
         }
 
 
         /*
-         * 2/3 complete or more,
+         * 1/2 complete or more,
          * but not fully completed.
          */
 
-        else if (progress >= 2 / 3) {
-
-            progressClass =
-                "progress-high";
-
-        }
-
-
-        /*
-         * Force the animation to restart.
-         */
-
-        if (progressClass) {
-
-            void item.offsetWidth;
+        else if (
+            progress >= 1 / 2
+        ) {
 
             item.classList.add(
-                progressClass
+                "progress-high"
             );
 
         }
@@ -1411,6 +1413,149 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     }
+
+
+    function updateOverallAchievementProgress() {
+
+        if (!achievementData) {
+            return;
+        }
+
+
+        const countElement =
+            document.getElementById(
+                "achievement-overall-count"
+            );
+
+
+        const percentElement =
+            document.getElementById(
+                "achievement-overall-percent"
+            );
+
+
+        const progressFill =
+            document.getElementById(
+                "achievement-overall-progress-fill"
+            );
+
+
+        if (
+            !countElement ||
+            !percentElement ||
+            !progressFill
+        ) {
+            return;
+        }
+
+
+        let totalAchievements = 0;
+        let completedAchievements = 0;
+
+
+        /*
+         * Every tier counts as its own achievement.
+         *
+         * Example:
+         *
+         * Achievement A
+         *   Tier 1
+         *   Tier 2
+         *   Tier 3
+         *
+         * = 3 total achievements
+         */
+
+        achievementData.achievements.forEach(
+            achievement => {
+
+                if (
+                    !Array.isArray(
+                        achievement.tiers
+                    )
+                ) {
+                    return;
+                }
+
+
+                achievement.tiers.forEach(
+                    tier => {
+
+                        totalAchievements++;
+
+
+                        if (
+                            tier.completed === true
+                        ) {
+
+                            completedAchievements++;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /*
+         * No achievements available.
+         */
+
+        if (totalAchievements === 0) {
+
+            countElement.textContent =
+                "0 / 0";
+
+            percentElement.textContent =
+                "0%";
+
+            progressFill.style.width =
+                "0%";
+
+            return;
+
+        }
+
+
+        /*
+         * Calculate percentage.
+         */
+
+        const percentage =
+            (
+                completedAchievements /
+                totalAchievements
+            ) * 100;
+
+
+        /*
+         * Update the number.
+         */
+
+        countElement.textContent =
+            `${completedAchievements} / ${totalAchievements}`;
+
+
+        /*
+         * Update percentage.
+         */
+
+        percentElement.textContent =
+            `${percentage.toFixed(1)}%`;
+
+
+        /*
+         * Update progress bar.
+
+         */
+
+        progressFill.style.width =
+            `${percentage}%`;
+
+    }
+
 
     function updateTierAvailability(item) {
 
@@ -1581,7 +1726,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 updateAchievementProgress(item);
 
-            }
+    }
 
 
     /*

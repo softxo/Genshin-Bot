@@ -21,13 +21,13 @@
 
     --achievement-progress-low: color-mix(
         in srgb,
-        var(--accent) 3%,
+        var(--accent) 3.5%,
         var(--background)
     );
 
     --achievement-progress-high: color-mix(
         in srgb,
-        var(--accent) 6%,
+        var(--accent) 7%,
         var(--background)
     );
 
@@ -1686,7 +1686,7 @@ body {
 
 
 /* =============================
-   ACHIEVEMENT PROGRESS COLOUR
+   ACHIEVEMENT PROGRESS
    ============================= */
 
 .achievement-item.progress-low::before,
@@ -1704,20 +1704,36 @@ body {
     pointer-events: none;
 
     opacity: 1;
+
+    animation:
+        achievement-progress-fade 0.45s ease-out forwards;
 }
 
 
-/* 1/2 complete */
+/* 1/3 complete → LOW */
 
 .achievement-item.progress-low::before {
     background: var(--achievement-progress-low);
 }
 
 
-/* 2/3 complete */
+/* 1/2 and 2/3 complete → HIGH */
 
 .achievement-item.progress-high::before {
     background: var(--achievement-progress-high);
+}
+
+
+@keyframes achievement-progress-fade {
+
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
 }
 
 
@@ -1770,11 +1786,11 @@ body {
    ============================= */
 
 .achievement-item.progress-low::before,
+.achievement-item.progress-medium::before,
 .achievement-item.progress-high::before {
     animation:
         achievement-progress-fade 0.45s ease-out forwards;
 }
-
 
 @keyframes achievement-progress-fade {
 

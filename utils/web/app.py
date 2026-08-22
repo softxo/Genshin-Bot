@@ -644,6 +644,9 @@ async def achievements_data(
 
     categories = {}
 
+    total_tiers = 0
+    completed_tiers = 0
+
     for achievement in achievements:
 
         category = achievement.get("category")
@@ -651,19 +654,29 @@ async def achievements_data(
         if not category:
             continue
 
+        tiers = achievement.get("tiers", [])
+
         if category not in categories:
             categories[category] = {
                 "total": 0,
                 "completed": 0,
             }
 
-        categories[category]["total"] += 1
+        for tier in tiers:
+
+            total_tiers += 1
+
+            categories[category]["total"] += 1
+
+            if tier.get("completed", False):
+                completed_tiers += 1
+                categories[category]["completed"] += 1
 
     return {
         "achievements": achievements,
         "categories": categories,
-        "total": len(achievements),
-        "completed": 0,
+        "total": total_tiers,
+        "completed": completed_tiers,
     }
 
 
