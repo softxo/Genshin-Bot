@@ -2048,6 +2048,60 @@ body {
 
 
 /* =============================
+   ACHIEVEMENT TITLE
+   ============================= */
+
+.achievement-title-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    min-width: 0;
+}
+
+
+.achievement-title-row h3 {
+    min-width: 0;
+}
+
+
+/* =============================
+   ACHIEVEMENT VERSION BADGE
+   ============================= */
+
+.achievement-version-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    height: 21px;
+
+    padding: 0 7px;
+
+    border: 1px solid var(--accent-border);
+
+    border-radius: 6px;
+
+    background: var(--accent-soft);
+
+    color: var(--accent);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* =============================
    ACHIEVEMENT HEADER
    ============================= */
 

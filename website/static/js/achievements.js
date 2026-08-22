@@ -522,14 +522,20 @@ window.initAchievements = function () {
          * --------------------------------------------------
          */
 
-        function getAchievementVersion(achievement) {
+        function getAchievementVersions(achievement) {
 
-            return (
-                achievement.version ??
-                achievement.game_version ??
-                achievement.gameVersion ??
-                null
-            );
+            if (!Array.isArray(achievement.tiers)) {
+                return [];
+            }
+
+            return [
+                ...new Set(
+                    achievement.tiers
+                        .map(tier => tier.version)
+                        .filter(Boolean)
+                        .map(String)
+                )
+            ];
 
         }
 
@@ -550,19 +556,15 @@ window.initAchievements = function () {
             achievementData.achievements.forEach(
                 achievement => {
 
-                    const version =
-                        getAchievementVersion(
-                            achievement
-                        );
+                    getAchievementVersions(
+                        achievement
+                    ).forEach(
+                        version => {
 
+                            versions.add(version);
 
-                    if (version) {
-
-                        versions.add(
-                            String(version)
-                        );
-
-                    }
+                        }
+                    );
 
                 }
             );
@@ -596,8 +598,7 @@ window.initAchievements = function () {
 
 
                             if (
-                                aValue !==
-                                bValue
+                                aValue !== bValue
                             ) {
 
                                 return bValue - aValue;
@@ -635,8 +636,9 @@ window.initAchievements = function () {
                         version;
 
 
-                    achievementVersionSelect
-                        .appendChild(option);
+                    achievementVersionSelect.appendChild(
+                        option
+                    );
 
                 }
             );
@@ -735,15 +737,16 @@ window.initAchievements = function () {
                 achievementVersion !== "all"
             ) {
 
-                const version =
-                    getAchievementVersion(
+                const versions =
+                    getAchievementVersions(
                         achievement
                     );
 
 
                 if (
-                    String(version) !==
-                    achievementVersion
+                    !versions.includes(
+                        achievementVersion
+                    )
                 ) {
 
                     return false;
@@ -1299,13 +1302,29 @@ window.initAchievements = function () {
                     <div class="achievement-item-content">
     
                         <div class="achievement-item-header">
-    
-                            <h3>
-                                ${escapeHTML(
-                                    achievement.name
-                                )}
-                            </h3>
-    
+
+                            <div class="achievement-title-row">
+                        
+                                <h3>
+                                    ${escapeHTML(
+                                        achievement.name
+                                    )}
+                                </h3>
+                        
+                                ${
+                                    achievement.tiers?.[0]?.version
+                                        ? `
+                                            <span class="achievement-version-badge">
+                                                ${escapeHTML(
+                                                    achievement.tiers[0].version
+                                                )}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+                        
+                            </div>
+                        
                         </div>
     
     
