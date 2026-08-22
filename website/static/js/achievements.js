@@ -1048,14 +1048,12 @@ window.initAchievements = function () {
                 
                         <div class="achievement-category-stats">
                 
-                            <span>
-                                ${completed} / ${total} completed
-                            </span>
-                
                             <strong>
                                 ${progress.toFixed(1)}%
+                                <span class="achievement-category-count">
+                                    ${completed}/${total}
+                                </span>
                             </strong>
-                
                         </div>
                 
                 
