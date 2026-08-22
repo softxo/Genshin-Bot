@@ -147,6 +147,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
+             * Initialize page-specific functionality.
+             */
+
+            const finalPath =
+                new URL(
+                    url,
+                    window.location.origin
+                ).pathname;
+
+
+            if (
+                finalPath === "/planner" &&
+                typeof window.initPlanner === "function"
+            ) {
+
+                window.initPlanner();
+
+            }
+
+
+            if (
+                finalPath === "/achievements" &&
+                typeof window.initAchievements === "function"
+            ) {
+
+                window.initAchievements();
+
+            }
+
+
+            /*
              * Update active sidebar item.
              */
 
