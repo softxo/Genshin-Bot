@@ -28,10 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "achievement-category-title"
     );
 
-    const categoryProgress = document.getElementById(
-        "achievement-category-progress"
+    const categoryPercent = document.getElementById(
+        "achievement-category-percent"
     );
 
+    const categoryProgressFill = document.getElementById(
+        "achievement-category-progress-fill"
+    );
 
     let achievementData = null;
 
@@ -733,8 +736,22 @@ document.addEventListener("DOMContentLoaded", () => {
             category;
 
 
-        categoryProgress.textContent =
-            `${data.completed} / ${data.total} completed`;
+        const percentage =
+            data.total > 0
+                ? (data.completed / data.total) * 100
+                : 0;
+
+
+        const roundedPercentage =
+            Math.round(percentage * 10) / 10;
+
+
+        categoryPercent.textContent =
+            `${roundedPercentage}% (${data.completed}/${data.total})`;
+
+
+        categoryProgressFill.style.width =
+            `${percentage}%`;
 
 
         buildSidebar(category);
@@ -1029,6 +1046,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (isCompleted) {
 
+            /*
+             * Uncompleting a tier also uncompletes
+             * every tier after it.
+             */
+
+            achievement.tiers.forEach(
+                achievementTier => {
+
+                    if (
+                        achievementTier.tier >= tier.tier
+                    ) {
+
+                        achievementTier.completed = false;
+
+                    }
+
+                }
+            );
+
+
+            /*
+             * Update the clicked tier visually.
+             */
+
             tierContainer.classList.remove(
                 "completed"
             );
@@ -1048,8 +1089,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             button.title =
                 "Mark Completed";
-
-            tier.completed = false;
 
         } else {
 

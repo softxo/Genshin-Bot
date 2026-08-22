@@ -1582,26 +1582,92 @@ body {
 }
 
 
+/* =============================
+   ACHIEVEMENT CONTENT HEADER
+   ============================= */
+
 .achievement-content-header {
     margin-bottom: 25px;
 }
 
 
-.achievement-content-header h2 {
-    margin: 0;
-
-    font-size: 24px;
-
-    letter-spacing: -0.5px;
+.achievement-content-header .eyebrow {
+    margin-bottom: 10px;
 }
 
 
-.achievement-content-header p {
-    margin: 7px 0 0;
+.achievement-content-title-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.achievement-content-title-row h2 {
+    margin: 0;
+
+    min-width: 0;
+
+    font-size: 24px;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.5px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.achievement-content-title-row > span {
+    flex-shrink: 0;
 
     color: var(--text-muted);
 
     font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =============================
+   CATEGORY PROGRESS BAR
+   ============================= */
+
+.achievement-content-progress {
+    width: 100%;
+
+    height: 6px;
+
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: var(--background);
+}
+
+
+.achievement-content-progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--accent);
+
+    transition: width 0.3s ease;
 }
 
 
