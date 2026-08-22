@@ -83,6 +83,73 @@
         </div>
 
 
+        <!-- Category Controls -->
+        <div class="achievement-category-controls">
+
+            <div class="achievement-search-wrapper">
+
+                <span class="achievement-search-icon">
+                    🔍
+                </span>
+
+                <input
+                    type="search"
+                    id="achievement-search"
+                    class="achievement-search"
+                    placeholder="Search achievements..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <select
+                id="achievement-version"
+                class="achievement-version"
+            >
+
+                <option value="all">
+                    All Versions
+                </option>
+
+            </select>
+
+
+            <label
+                class="achievement-hide-completed"
+            >
+
+                <input
+                    type="checkbox"
+                    id="achievement-hide-completed"
+                >
+
+                <span>
+                    Hide Completed
+                </span>
+
+            </label>
+
+
+            <button
+                type="button"
+                class="achievement-import-button"
+                id="achievement-import-button"
+            >
+                Import
+            </button>
+
+
+            <input
+                type="file"
+                id="achievement-import-input"
+                accept=".json,application/json"
+                hidden
+            >
+
+        </div>
+
+
         <div
             class="achievement-category-grid"
             id="achievement-category-grid"

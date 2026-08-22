@@ -2386,6 +2386,249 @@ body {
 
 
     /* =============================
+       ACHIEVEMENT CATEGORY CONTROLS
+       ============================= */
+
+    .achievement-category-controls {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-top: 20px;
+
+        margin-bottom: 20px;
+
+        flex-wrap: wrap;
+    }
+
+
+    /* =============================
+       SEARCH
+       ============================= */
+
+    .achievement-search-wrapper {
+        position: relative;
+
+        flex: 1 1 280px;
+
+        min-width: 220px;
+    }
+
+
+    .achievement-search {
+        width: 100%;
+
+        height: 42px;
+
+        padding: 0 14px 0 40px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        background: var(--surface);
+
+        color: var(--text);
+
+        font: inherit;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition:
+            border-color 0.15s ease,
+            background 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+
+    .achievement-search::placeholder {
+        color: var(--text-muted);
+    }
+
+
+    .achievement-search:focus {
+        border-color: var(--accent-border);
+
+        background: var(--surface-hover);
+
+        box-shadow:
+            0 0 0 3px var(--accent-soft);
+    }
+
+
+    .achievement-search-icon {
+        position: absolute;
+
+        top: 50%;
+        left: 14px;
+
+        transform: translateY(-50%);
+
+        color: var(--text-muted);
+
+        font-size: 14px;
+
+        pointer-events: none;
+    }
+
+
+    /* =============================
+       VERSION SELECT
+       ============================= */
+
+    .achievement-version {
+        height: 42px;
+
+        min-width: 150px;
+
+        padding: 0 36px 0 13px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        background-color: var(--surface);
+
+        color: var(--text);
+
+        font: inherit;
+
+        font-size: 13px;
+
+        cursor: pointer;
+
+        outline: none;
+    }
+
+
+    .achievement-version:focus {
+        border-color: var(--accent-border);
+
+        box-shadow:
+            0 0 0 3px var(--accent-soft);
+    }
+
+
+    /* =============================
+       HIDE COMPLETED
+       ============================= */
+
+    .achievement-hide-completed {
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        height: 42px;
+
+        padding: 0 13px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        background: var(--surface);
+
+        color: var(--text-muted);
+
+        font-size: 13px;
+
+        cursor: pointer;
+
+        user-select: none;
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            color 0.15s ease;
+    }
+
+
+    .achievement-hide-completed:hover {
+        background: var(--surface-hover);
+
+        border-color: var(--accent-border);
+
+        color: var(--text);
+    }
+
+
+    .achievement-hide-completed input {
+        width: 15px;
+        height: 15px;
+
+        margin: 0;
+
+        accent-color: var(--accent);
+
+        cursor: pointer;
+    }
+
+
+    /* =============================
+       IMPORT BUTTON
+       ============================= */
+
+    .achievement-import-button {
+        height: 42px;
+
+        padding: 0 16px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        background: var(--surface);
+
+        color: var(--text);
+
+        font: inherit;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background 0.15s ease,
+            border-color 0.15s ease,
+            color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+
+    .achievement-import-button:hover {
+        background: var(--surface-hover);
+
+        border-color: var(--accent-border);
+
+        color: var(--accent);
+
+        transform: translateY(-1px);
+    }
+
+
+    /* =============================
+       CATEGORY GRID
+       ============================= */
+
+    .achievement-category-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(6, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+
+    /* =============================
        ACHIEVEMENT BROWSER
        ============================= */
 
@@ -2689,4 +2932,63 @@ body {
 .achievement-complete-button:focus-visible {
     outline: none;
     box-shadow: none;
+}
+
+
+/* =============================
+   ACHIEVEMENT VIEW VISIBILITY
+   ============================= */
+
+.achievement-browser[hidden],
+.achievement-categories-section[hidden] {
+    display: none !important;
+}
+
+
+/* =============================
+   ACHIEVEMENT RESPONSIVE
+   ============================= */
+
+@media (max-width: 1200px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .achievement-category-controls {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .achievement-search-wrapper,
+    .achievement-version,
+    .achievement-hide-completed,
+    .achievement-import-button {
+        width: 100%;
+    }
+
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
 }
