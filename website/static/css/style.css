@@ -19,6 +19,18 @@
     --accent-glow: rgba(143, 156, 255, 0.16);
     --accent-border: rgba(143, 156, 255, 0.25);
 
+    --achievement-progress-low: color-mix(
+        in srgb,
+        var(--accent) 3%,
+        var(--background)
+    );
+
+    --achievement-progress-high: color-mix(
+        in srgb,
+        var(--accent) 6%,
+        var(--background)
+    );
+
     --sidebar-width: 250px;
 }
 
@@ -1255,8 +1267,8 @@ body {
 
 
 .achievement-category-icon {
-    width: 48px;
-    height: 48px;
+    width: 72px;
+    height: 72px;
 
     flex-shrink: 0;
 
@@ -1265,15 +1277,17 @@ body {
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     background: var(--accent-soft);
+
+    overflow: hidden;
 }
 
 
 .achievement-category-icon img {
-    width: 34px;
-    height: 34px;
+    width: 60px;
+    height: 60px;
 
     display: block;
 
@@ -1464,8 +1478,10 @@ body {
 }
 
 
-.achievement-sidebar-item span {
+.achievement-sidebar-item > span {
     min-width: 0;
+
+    flex: 1;
 
     overflow: hidden;
 
@@ -1487,6 +1503,30 @@ body {
     font-size: 10px;
 }
 
+
+.achievement-sidebar-icon {
+    width: 28px;
+    height: 28px;
+
+    flex: 0 0 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+.achievement-sidebar-icon img {
+    width: 28px;
+    height: 28px;
+
+    display: block;
+
+    object-fit: contain;
+}
 
 /* =============================
    ACHIEVEMENT CONTENT
@@ -1574,22 +1614,22 @@ body {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 12px;
 }
 
 
 .achievement-item {
     display: flex;
 
-    align-items: center;
+    align-items: flex-start;
 
-    gap: 14px;
+    gap: 16px;
 
-    padding: 16px;
+    padding: 18px;
 
     border: 1px solid var(--border);
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     background: var(--background);
 
@@ -1607,24 +1647,189 @@ body {
 
 
 /* =============================
-   ACHIEVEMENT TIER
+   ACHIEVEMENT ITEM
    ============================= */
 
-.achievement-item-tier {
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
+.achievement-item {
+    position: relative;
 
     display: flex;
+
     align-items: center;
-    justify-content: center;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--background);
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
+
+    overflow: hidden;
 }
 
 
-.achievement-item-tier img {
-    width: 42px;
-    height: 42px;
+/* Keep the actual content above
+   the animated background */
+
+.achievement-item > * {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* =============================
+   ACHIEVEMENT PROGRESS COLOUR
+   ============================= */
+
+.achievement-item.progress-low::before,
+.achievement-item.progress-high::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+
+    opacity: 1;
+}
+
+
+/* 1/2 complete */
+
+.achievement-item.progress-low::before {
+    background: var(--achievement-progress-low);
+}
+
+
+/* 2/3 complete */
+
+.achievement-item.progress-high::before {
+    background: var(--achievement-progress-high);
+}
+
+
+/* =============================
+   COMPLETED ACHIEVEMENT
+   ============================= */
+
+.achievement-item.completed::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--accent) 18%, transparent) 0%,
+            color-mix(in srgb, var(--accent) 18%, transparent) 65%,
+            transparent 100%
+        );
+
+    opacity: 0;
+
+    animation:
+        achievement-complete-fade 0.8s ease-out forwards;
+}
+
+
+.achievement-item.completed {
+    border-color: var(--accent-border);
+
+    box-shadow:
+        0 0 0 1px var(--accent-soft),
+        0 8px 30px var(--accent-glow);
+}
+
+
+.achievement-item.completed:hover {
+    border-color: var(--accent);
+}
+
+
+/* =============================
+   PROGRESS COLOUR ANIMATION
+   ============================= */
+
+.achievement-item.progress-low::before,
+.achievement-item.progress-high::before {
+    animation:
+        achievement-progress-fade 0.45s ease-out forwards;
+}
+
+
+@keyframes achievement-progress-fade {
+
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+
+/* =============================
+   COMPLETION COLOUR ANIMATION
+   ============================= */
+
+@keyframes achievement-complete-fade {
+
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+
+/* =============================
+   LARGE ACHIEVEMENT ICON
+   ============================= */
+
+.achievement-item-icon {
+    width: 76px;
+    height: 76px;
+
+    flex: 0 0 76px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    overflow: hidden;
+}
+
+
+.achievement-item-icon img {
+    width: 68px;
+    height: 68px;
 
     display: block;
 
@@ -1643,69 +1848,146 @@ body {
 }
 
 
-.achievement-item-content h3 {
-    margin: 0 0 4px;
+/* =============================
+   ACHIEVEMENT HEADER
+   ============================= */
 
-    font-size: 14px;
+.achievement-item-header {
+    margin: 0;
 }
 
 
-.achievement-item-content p {
+.achievement-item-header h3 {
     margin: 0;
 
-    color: var(--text-muted);
+    font-size: 18px;
 
-    font-size: 12px;
-
-    line-height: 1.5;
+    line-height: 1.3;
 }
 
 
-.achievement-tier-row {
+/* =============================
+   ACHIEVEMENT TIERS
+   ============================= */
+
+.achievement-tier-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0;
+
+    margin: 0;
+}
+
+
+.achievement-tier {
     display: flex;
 
     align-items: center;
 
-    gap: 8px;
+    gap: 10px;
 
-    margin-top: 5px;
+    min-height: 44px;
+
+    padding: 8px 0;
 }
 
 
-.achievement-tier-row img {
-    width: 22px;
-    height: 22px;
+.achievement-tier + .achievement-tier {
+    border-top: 1px solid rgba(255, 255, 255, 0.035);
+}
 
-    flex-shrink: 0;
+
+/* =============================
+   LOCKED ACHIEVEMENT TIERS
+   ============================= */
+
+.achievement-tier.locked {
+    opacity: 0.35;
+}
+
+
+.achievement-tier.locked
+.achievement-tier-icon img {
+    filter: grayscale(1);
+}
+
+
+.achievement-tier.locked
+.achievement-tier-content p {
+    color: var(--text-muted);
+}
+
+
+.achievement-tier.locked
+.achievement-complete-button {
+    cursor: pointer;
+}
+
+
+/* =============================
+   TIER ICON
+   ============================= */
+
+.achievement-tier-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+.achievement-tier-icon img {
+    width: 28px;
+    height: 28px;
 
     display: block;
 
     object-fit: contain;
 
-    opacity: 0.45;
-}
+    opacity: 0.85;
 
-
-.achievement-tier-row span {
-    min-width: 0;
-
-    color: var(--text-muted);
-
-    font-size: 12px;
-
-    line-height: 1.5;
+    transition: opacity 0.15s ease;
 }
 
 
 /* =============================
-   ACHIEVEMENT COMPLETE BUTTON
+   TIER DESCRIPTION
+   ============================= */
+
+.achievement-tier-content {
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.achievement-tier-content p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* =============================
+   TIER COMPLETE BUTTON
    ============================= */
 
 .achievement-complete-button {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 
-    flex-shrink: 0;
+    flex: 0 0 28px;
 
     padding: 0;
 
@@ -1715,12 +1997,15 @@ body {
 
     background: transparent;
 
+    color: var(--text-muted);
+
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
 }
 
 
@@ -1729,34 +2014,100 @@ body {
 
     background: var(--accent-soft);
 
-    transform: scale(1.08);
+    color: var(--accent);
+
+    transform: scale(1.06);
 }
 
 
 .achievement-complete-button.completed {
-    position: relative;
-
     border-color: var(--accent);
 
     background: var(--accent);
+
+    color: var(--background);
 }
 
 
 .achievement-complete-button.completed::after {
     content: "✓";
 
-    position: absolute;
+    display: flex;
 
-    inset: 0;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =============================
+   TIER COMPLETE BUTTON
+   ============================= */
+
+.achievement-complete-button {
+    width: 28px;
+    height: 28px;
+
+    flex: 0 0 28px;
+
+    padding: 0;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.achievement-complete-button:hover {
+    border-color: var(--accent);
+
+    background: var(--accent-soft);
+
+    color: var(--accent);
+
+    transform: scale(1.06);
+}
+
+
+.achievement-complete-button.completed {
+    border-color: var(--accent);
+
+    background: var(--accent);
+
+    color: var(--background);
+}
+
+
+.achievement-complete-button.completed::after {
+    content: "✓";
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    color: var(--background);
+    width: 100%;
+    height: 100%;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 700;
 }

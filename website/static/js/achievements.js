@@ -35,6 +35,446 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let achievementData = null;
 
+    const CATEGORY_ICONS = {
+
+        "Wonders of the World":
+            "/static/images/achievements/categories/Wonders_of_the_World.png",
+
+        "Memories of the Heart":
+            "/static/images/achievements/categories/Memories_of_the_Heart.png",
+
+        "Mortal Travails: Series I":
+            "/static/images/achievements/categories/Mortal_Travails_Series_I.png",
+
+        "Mortal Travails: Series II":
+            "/static/images/achievements/categories/Mortal_Travails_Series_II.png",
+
+        "Mortal Travails: Series III":
+            "/static/images/achievements/categories/Mortal_Travails_Series_III.png",
+
+        "Mortal Travails: Series IV":
+            "/static/images/achievements/categories/Mortal_Travails_Series_IV.png",
+
+        "Mortal Travails: Series V":
+            "/static/images/achievements/categories/Mortal_Travails_Series_V.png",
+
+        "Mortal Travails: Series VI":
+            "/static/images/achievements/categories/Mortal_Travails_Series_VI.png",
+
+        "Mortal Travails: Series VII":
+            "/static/images/achievements/categories/Mortal_Travails_Series_VII.png",
+
+        "The Art of Adventure":
+            "/static/images/achievements/categories/The_Art_of_Adventure.png",
+
+        "The Hero's Journey":
+            "/static/images/achievements/categories/The_Heros_Journey.png",
+
+        "Mondstadt: The City of Wind and Song":
+            "/static/images/achievements/categories/Mondstadt_The_City_of_Wind_and_Song.png",
+
+        "Liyue: The Harbor of Stone and Contracts":
+            "/static/images/achievements/categories/Liyue_The_Harbor_of_Stone_and_Contracts.png",
+
+        "Elemental Specialist: Series I":
+            "/static/images/achievements/categories/Elemental_Specialist_Series_I.png",
+
+        "Elemental Specialist: Series II":
+            "/static/images/achievements/categories/Elemental_Specialist_Series_II.png",
+
+        "Marksmanship":
+            "/static/images/achievements/categories/Marksmanship.png",
+
+        "Challenger: Series I":
+            "/static/images/achievements/categories/Challenger_Series_I.png",
+
+        "Challenger: Series II":
+            "/static/images/achievements/categories/Challenger_Series_II.png",
+
+        "Challenger: Series III":
+            "/static/images/achievements/categories/Challenger_Series_III.png",
+
+        "Challenger: Series IV":
+            "/static/images/achievements/categories/Challenger_Series_IV.png",
+
+        "Challenger: Series V":
+            "/static/images/achievements/categories/Challenger_Series_V.png",
+
+        "Challenger: Series VI":
+            "/static/images/achievements/categories/Challenger_Series_VI.png",
+
+        "Challenger: Series VII":
+            "/static/images/achievements/categories/Challenger_Series_VII.png",
+
+        "Challenger: Series VIII":
+            "/static/images/achievements/categories/Challenger_Series_VIII.png",
+
+        "Challenger: Series IX":
+            "/static/images/achievements/categories/Challenger_Series_IX.png",
+
+        "Challenger: Series X":
+            "/static/images/achievements/categories/Challenger_Series_X.png",
+
+        "Domains and Spiral Abyss: Series I":
+            "/static/images/achievements/categories/Domains_and_Spiral_Abyss_Series_I.png",
+
+        "Olah!: Series I":
+            "/static/images/achievements/categories/Olah!_Series_I.png",
+
+        "Snezhnaya Does Not Believe in Tears: Series I":
+            "/static/images/achievements/categories/Snezhnaya_Does_Not_Believe_in_Tears_Series_I.png",
+
+        "Stone Harbor's Nostalgia: Series I":
+            "/static/images/achievements/categories/Stone_Harbors_Nostalgia_Series_I.png",
+
+        "Meetings in Outrealm: Series I":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_I.png",
+
+        "Meetings in Outrealm: Series II":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_II.png",
+
+        "Meetings in Outrealm: Series III":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_III.png",
+
+        "Meetings in Outrealm: Series IV":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_IV.png",
+
+        "Meetings in Outrealm: Series V":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_V.png",
+
+        "Meetings in Outrealm: Series VI":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_VI.png",
+
+        "Meetings in Outrealm: Series VII":
+            "/static/images/achievements/categories/Meetings_in_Outrealm_Series_VII.png",
+
+        "Visitors on the Icy Mountain":
+            "/static/images/achievements/categories/Visitors_on_the_Icy_Mountain.png",
+
+        "A Realm Beyond: Series I":
+            "/static/images/achievements/categories/A_Realm_Beyond_Series_I.png",
+
+        "A Realm Beyond: Series II":
+            "/static/images/achievements/categories/A_Realm_Beyond_Series_II.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series I":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_I.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series II":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_II.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series III":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_III.png",
+
+        "Teyvat Fishing Guide: Series I":
+            "/static/images/achievements/categories/Teyvat_Fishing_Guide_Series_I.png",
+
+        "The Light of Day":
+            "/static/images/achievements/categories/The_Light_of_Day.png",
+
+        "Chasmlighter":
+            "/static/images/achievements/categories/Chasmlighter.png",
+
+        "Sumeru: The Rainforest of Lore":
+            "/static/images/achievements/categories/Sumeru_The_Rainforest_of_Lore.png",
+
+        "Sumeru: The Gilded Desert - Series I":
+            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert_Series_I.png",
+
+        "Sumeru: The Gilded Desert - Series II":
+            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert_Series_II.png",
+
+        "Genius Invokation TCG":
+            "/static/images/achievements/categories/Genius_Invokation_TCG.png",
+
+        "Blessed Hamada":
+            "/static/images/achievements/categories/Blessed_Hamada.png",
+
+        "Fontaine: Dance of the Dew-White Springs (I)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs_I.png",
+
+        "Fontaine: Dance of the Dew-White Springs (II)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs_II.png",
+
+        "Fontaine: Dance of the Dew-White Springs (III)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs_III.png",
+
+        "Chenyu's Splendor":
+            "/static/images/achievements/categories/Chenyus_Splendor.png",
+
+        "Rhapsodia in the Ancient Sea":
+            "/static/images/achievements/categories/Rhapsodia_in_the_Ancient_Sea.png",
+
+        "Imaginarium Theater: The First Folio":
+            "/static/images/achievements/categories/Imaginarium_Theater_The_First_Folio.png",
+
+        "Imaginarium Theater: The Second Folio":
+            "/static/images/achievements/categories/Imaginarium_Theater_The_Second_Folio.png",
+
+        "Natlan: The Land of Fire and Competition (I)":
+            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition_I.png",
+
+        "Natlan: The Land of Fire and Competition (II)":
+            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition_II.png",
+
+        "Duelist: Series I":
+            "/static/images/achievements/categories/Duelist_Series_I.png",
+
+        "Duelist: Series II":
+            "/static/images/achievements/categories/Duelist_Series_II.png",
+
+        "Duelist: Series III":
+            "/static/images/achievements/categories/Duelist_Series_III.png",
+
+        "Repertoire of Myriad Melodies":
+            "/static/images/achievements/categories/Reperoire_of_Myriad_Melodies.png",
+
+        "Sacred Mountain's Fading Glow":
+            "/static/images/achievements/categories/Sacred_Mountains_Fading_Glow.png",
+
+        "A Summer of Ash and Prickly Pears":
+            "/static/images/achievements/categories/A_Summer_of_Ash_and_Prickly_Pears.png",
+
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (I)":
+            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings_I.png",
+
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (II)":
+            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings_II.png",
+
+        "Demon Mountain's Breath":
+            "/static/images/achievements/categories/Demon_Mountains_Breath.png",
+
+        "Unfettered Crescent":
+            "/static/images/achievements/categories/Unfettered_Crescent.png",
+
+        "Snezhnaya: Sacred city of ice and pale star (I)":
+            "/static/images/achievements/categories/Snezhnaya_Sacred_city_of_ice_and_pale_star_I.png",
+
+        "Land of Surging Shadows":
+            "/static/images/achievements/categories/Land_of_Surging_Shadows.png",
+
+    };
+
+    const CATEGORY_SIDEBAR_ICONS = {
+
+        "Wonders of the World":
+            "/static/images/achievements/categories/Wonders_of_the_World.png",
+
+        "Memories of the Heart":
+            "/static/images/achievements/categories/Memories_of_the_Heart.png",
+
+        "Mortal Travails: Series I":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series II":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series III":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series IV":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series V":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series VI":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "Mortal Travails: Series VII":
+            "/static/images/achievements/categories/Mortal_Travails.png",
+
+        "The Art of Adventure":
+            "/static/images/achievements/categories/The_Art_of_Adventure.png",
+
+        "The Hero's Journey":
+            "/static/images/achievements/categories/The_Heros_Journey.png",
+
+        "Mondstadt: The City of Wind and Song":
+            "/static/images/achievements/categories/Mondstadt_The_City_of_Wind_and_Song.png",
+
+        "Liyue: The Harbor of Stone and Contracts":
+            "/static/images/achievements/categories/Liyue_The_Harbor_of_Stone_and_Contracts.png",
+
+        "Elemental Specialist: Series I":
+            "/static/images/achievements/categories/Elemental_Specialist_Series_I.png",
+
+        "Elemental Specialist: Series II":
+            "/static/images/achievements/categories/Elemental_Specialist_Series_II.png",
+
+        "Marksmanship":
+            "/static/images/achievements/categories/Marksmanship.png",
+
+        "Challenger: Series I":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series II":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series III":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series IV":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series V":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series VI":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series VII":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series VIII":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series IX":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Challenger: Series X":
+            "/static/images/achievements/categories/Challenger.png",
+
+        "Domains and Spiral Abyss: Series I":
+            "/static/images/achievements/categories/Domains_and_Spiral_Abyss_Series_I.png",
+
+        "Olah!: Series I":
+            "/static/images/achievements/categories/Olah!_Series_I.png",
+
+        "Snezhnaya Does Not Believe in Tears: Series I":
+            "/static/images/achievements/categories/Snezhnaya_Does_Not_Believe_in_Tears_Series_I.png",
+
+        "Stone Harbor's Nostalgia: Series I":
+            "/static/images/achievements/categories/Stone_Harbors_Nostalgia_Series_I.png",
+
+        "Meetings in Outrealm: Series I":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series II":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series III":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series IV":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series V":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series VI":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Meetings in Outrealm: Series VII":
+            "/static/images/achievements/categories/Meetings_in_Outrealm.png",
+
+        "Visitors on the Icy Mountain":
+            "/static/images/achievements/categories/Visitors_on_the_Icy_Mountain.png",
+
+        "A Realm Beyond: Series I":
+            "/static/images/achievements/categories/A_Realm_Beyond.png",
+
+        "A Realm Beyond: Series II":
+            "/static/images/achievements/categories/A_Realm_Beyond.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series I":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series II":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+
+        "Inazuma: The Islands of Thunder and Eternity - Series III":
+            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
+
+        "Teyvat Fishing Guide: Series I":
+            "/static/images/achievements/categories/Teyvat_Fishing_Guide_Series_I.png",
+
+        "The Light of Day":
+            "/static/images/achievements/categories/The_Light_of_Day.png",
+
+        "Chasmlighter":
+            "/static/images/achievements/categories/Chasmlighter.png",
+
+        "Sumeru: The Rainforest of Lore":
+            "/static/images/achievements/categories/Sumeru_The_Rainforest_of_Lore.png",
+
+        "Sumeru: The Gilded Desert - Series I":
+            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert.png",
+
+        "Sumeru: The Gilded Desert - Series II":
+            "/static/images/achievements/categories/Sumeru_The_Gilded_Desert.png",
+
+        "Genius Invokation TCG":
+            "/static/images/achievements/categories/Genius_Invokation_TCG.png",
+
+        "Blessed Hamada":
+            "/static/images/achievements/categories/Blessed_Hamada.png",
+
+        "Fontaine: Dance of the Dew-White Springs (I)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+
+        "Fontaine: Dance of the Dew-White Springs (II)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+
+        "Fontaine: Dance of the Dew-White Springs (III)":
+            "/static/images/achievements/categories/Fontaine_Dance_of_the_Dew_White_Springs.png",
+
+        "Chenyu's Splendor":
+            "/static/images/achievements/categories/Chenyus_Splendor.png",
+
+        "Rhapsodia in the Ancient Sea":
+            "/static/images/achievements/categories/Rhapsodia_in_the_Ancient_Sea.png",
+
+        "Imaginarium Theater: The First Folio":
+            "/static/images/achievements/categories/Imaginarium_Theater.png",
+
+        "Imaginarium Theater: The Second Folio":
+            "/static/images/achievements/categories/Imaginarium_Theater.png",
+
+        "Natlan: The Land of Fire and Competition (I)":
+            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition.png",
+
+        "Natlan: The Land of Fire and Competition (II)":
+            "/static/images/achievements/categories/Natlan_The_Land_of_Fire_and_Competition.png",
+
+        "Duelist: Series I":
+            "/static/images/achievements/categories/Duelist.png",
+
+        "Duelist: Series II":
+            "/static/images/achievements/categories/Duelist.png",
+
+        "Duelist: Series III":
+            "/static/images/achievements/categories/Duelist.png",
+
+        "Repertoire of Myriad Melodies":
+            "/static/images/achievements/categories/Reperoire_of_Myriad_Melodies.png",
+
+        "Sacred Mountain's Fading Glow":
+            "/static/images/achievements/categories/Sacred_Mountains_Fading_Glow.png",
+
+        "A Summer of Ash and Prickly Pears":
+            "/static/images/achievements/categories/A_Summer_of_Ash_and_Prickly_Pears.png",
+
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (I)":
+            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
+
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (II)":
+            "/static/images/achievements/categories/Nod_Krai_An_Elysium_of_Moonlight_and_Wanderings.png",
+
+        "Demon Mountain's Breath":
+            "/static/images/achievements/categories/Demon_Mountains_Breath.png",
+
+        "Unfettered Crescent":
+            "/static/images/achievements/categories/Unfettered_Crescent.png",
+
+        "Snezhnaya: Sacred city of ice and pale star (I)":
+            "/static/images/achievements/categories/Snezhnaya_Sacred_city_of_ice_and_pale_star.png",
+
+        "Land of Surging Shadows":
+            "/static/images/achievements/categories/Land_of_Surging_Shadows.png",
+
+    };
+
 
     /*
      * --------------------------------------------------
@@ -120,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="achievement-category-icon">
 
                         <img
-                            src="/static/images/Achievements.webp"
+                            src="${CATEGORY_ICONS[category] || "/static/images/Achievements.webp"}"
                             alt=""
                         >
 
@@ -224,15 +664,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 button.innerHTML = `
 
+                    <div class="achievement-sidebar-icon">
+                
+                        <img
+                            src="${
+                                CATEGORY_SIDEBAR_ICONS[category]
+                                || "/static/images/Achievements.webp"
+                            }"
+                            alt=""
+                        >
+                
+                    </div>
+                
                     <span>
                         ${escapeHTML(category)}
                     </span>
-
+                
                     <small>
                         ${data.completed} /
                         ${data.total}
                     </small>
-
+                
                 `;
 
 
@@ -335,71 +787,132 @@ document.addEventListener("DOMContentLoaded", () => {
                 const totalTiers =
                     achievement.tiers?.length || 1;
 
-                const currentTier = 0;
-
 
                 item.innerHTML = `
     
-                    <div class="achievement-item-tier">
+                    <!-- Large achievement icon -->
+    
+                    <div class="achievement-item-icon">
     
                         <img
+                            class="achievement-item-main-icon"
                             src="${getTierImage(
-                                currentTier,
+                                0,
                                 totalTiers
                             )}"
-                            alt="${currentTier}/${totalTiers}"
+                            alt=""
                         >
     
                     </div>
     
     
+                    <!-- Achievement content -->
+    
                     <div class="achievement-item-content">
     
-                        <h3>
-                            ${escapeHTML(
-                                achievement.name
-                            )}
-                        </h3>
+                        <div class="achievement-item-header">
     
-                        <p>
-                            ${getAchievementDescription(
-                                achievement
-                            )}
-                        </p>
+                            <h3>
+                                ${escapeHTML(
+                                    achievement.name
+                                )}
+                            </h3>
+    
+                        </div>
+    
+    
+                        <div class="achievement-tier-list">
+    
+                            ${achievement.tiers.map(
+                                tier => {
+    
+                                    return `
+    
+                                        <div
+                                            class="achievement-tier"
+                                            data-tier="${tier.tier}"
+                                        >
+    
+                                            <!-- Small tier icon -->
+    
+                                            <div class="achievement-tier-icon">
+    
+                                                <img
+                                                    src="${getTierImage(
+                                                        tier.tier,
+                                                        totalTiers
+                                                    )}"
+                                                    alt="${tier.tier}/${totalTiers}"
+                                                >
+    
+                                            </div>
+    
+    
+                                            <div class="achievement-tier-content">
+    
+                                                <p>
+                                                    ${escapeHTML(
+                                                        tier.description
+                                                    )}
+                                                </p>
+    
+                                            </div>
+    
+    
+                                            <button
+                                                type="button"
+                                                class="achievement-complete-button"
+                                                aria-label="Mark tier ${tier.tier} completed"
+                                                title="Mark Completed"
+                                            >
+                                            </button>
+    
+                                        </div>
+    
+                                    `;
+    
+                                }
+                            ).join("")}
+    
+                        </div>
     
                     </div>
-    
-    
-                    <button
-                        type="button"
-                        class="achievement-complete-button"
-                        aria-label="Mark ${escapeHTML(
-                            achievement.name
-                        )} completed"
-                        title="Mark Completed"
-                    >
-                    </button>
     
                 `;
 
 
-                const completeButton =
-                    item.querySelector(
+                const tierButtons =
+                    item.querySelectorAll(
                         ".achievement-complete-button"
                     );
 
 
-                completeButton.addEventListener(
-                    "click",
-                    () => {
+                tierButtons.forEach(
+                    (button, index) => {
 
-                        markCompleted(
-                            achievement,
-                            item
+                        const tier =
+                            achievement.tiers[index];
+
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                toggleTierCompleted(
+                                    achievement,
+                                    tier,
+                                    item,
+                                    button
+                                );
+
+                            }
                         );
 
                     }
                 );
+
+
+                updateTierAvailability(item);
 
 
                 achievementList.appendChild(item);
@@ -476,56 +989,599 @@ document.addEventListener("DOMContentLoaded", () => {
      * --------------------------------------------------
      * MARK COMPLETED
      * --------------------------------------------------
-     *
-     * TEMPORARY FRONT-END STATE.
      */
 
-    function markCompleted(
+    function toggleTierCompleted(
         achievement,
-        item
+        tier,
+        item,
+        button
     ) {
-
-        item.classList.add("completed");
-
 
         const totalTiers =
             achievement.tiers?.length || 1;
 
 
-        const tier =
-            item.querySelector(
-                ".achievement-item-tier img"
+        const tierContainer =
+            button.closest(
+                ".achievement-tier"
             );
 
 
-        if (tier) {
+        const tierImage =
+            tierContainer.querySelector(
+                ".achievement-tier-icon img"
+            );
 
-            tier.src =
+
+        const isCompleted =
+            tierContainer.classList.contains(
+                "completed"
+            );
+
+
+        /*
+         * ------------------------------------------
+         * TOGGLE CURRENT TIER
+         * ------------------------------------------
+         */
+
+        if (isCompleted) {
+
+            tierContainer.classList.remove(
+                "completed"
+            );
+
+            button.classList.remove(
+                "completed"
+            );
+
+            tierImage.src =
                 getTierImage(
-                    totalTiers,
+                    tier.tier,
                     totalTiers
                 );
 
-            tier.alt =
-                `${totalTiers}/${totalTiers}`;
+            tierImage.alt =
+                `${tier.tier}/${totalTiers}`;
+
+            button.title =
+                "Mark Completed";
+
+        } else {
+
+            tierContainer.classList.add(
+                "completed"
+            );
+
+            button.classList.add(
+                "completed"
+            );
+
+            tierImage.src =
+                getTierImage(
+                    tier.tier,
+                    totalTiers
+                );
+
+            tierImage.alt =
+                `${tier.tier}/${totalTiers}`;
+
+            button.title =
+                "Mark Incomplete";
 
         }
 
 
-        const button =
-            item.querySelector(
-                ".achievement-complete-button"
+        /*
+         * ------------------------------------------
+         * CHECK WHETHER ENTIRE ACHIEVEMENT
+         * IS COMPLETED
+         * ------------------------------------------
+         */
+
+        const tierContainers =
+            item.querySelectorAll(
+                ".achievement-tier"
             );
 
 
-        button.classList.add("completed");
+        const completedTiers =
+            item.querySelectorAll(
+                ".achievement-tier.completed"
+            );
 
-        button.disabled = true;
 
-        button.title =
-            "Completed";
+        const achievementCompleted =
+            completedTiers.length ===
+            tierContainers.length;
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE ACHIEVEMENT BOX
+         * ------------------------------------------
+         */
+
+        item.classList.toggle(
+            "completed",
+            achievementCompleted
+        );
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE LARGE ICON
+         * ------------------------------------------
+         */
+
+        const largeIcon =
+            item.querySelector(
+                ".achievement-item-icon img"
+            );
+
+
+        if (largeIcon) {
+
+            let highestCompletedTier = 0;
+
+
+            completedTiers.forEach(
+                completedTier => {
+
+                    const tierNumber =
+                        Number(
+                            completedTier.dataset.tier
+                        );
+
+
+                    if (
+                        tierNumber >
+                        highestCompletedTier
+                    ) {
+
+                        highestCompletedTier =
+                            tierNumber;
+
+                    }
+
+                }
+            );
+
+
+            largeIcon.src =
+                getTierImage(
+                    highestCompletedTier,
+                    totalTiers
+                );
+
+
+            largeIcon.alt =
+                `${highestCompletedTier}/${totalTiers}`;
+
+        }
+
+        updateLockedTiers(item);
+        updateAchievementProgress(item);
 
     }
+
+    function updateAchievementProgress(item) {
+
+        const tiers =
+            item.querySelectorAll(
+                ".achievement-tier"
+            );
+
+
+        const completedTiers =
+            item.querySelectorAll(
+                ".achievement-tier.completed"
+            );
+
+
+        const totalTiers =
+            tiers.length;
+
+
+        const completedCount =
+            completedTiers.length;
+
+
+        /*
+         * Remove previous progress states.
+         */
+
+        item.classList.remove(
+            "progress-low",
+            "progress-high"
+        );
+
+
+        /*
+         * Do not apply progress colour
+         * to a fully completed achievement.
+         */
+
+        if (
+            totalTiers === 0 ||
+            completedCount === totalTiers
+        ) {
+            return;
+        }
+
+
+        const progress =
+            completedCount / totalTiers;
+
+
+        let progressClass = null;
+
+
+        /*
+         * 1/3 or more, but below 2/3.
+         */
+
+        if (
+            progress >= 1 / 3 &&
+            progress < 2 / 3
+        ) {
+
+            progressClass =
+                "progress-low";
+
+        }
+
+
+        /*
+         * 2/3 complete or more,
+         * but not fully completed.
+         */
+
+        else if (progress >= 2 / 3) {
+
+            progressClass =
+                "progress-high";
+
+        }
+
+
+        /*
+         * Force the animation to restart.
+         */
+
+        if (progressClass) {
+
+            void item.offsetWidth;
+
+            item.classList.add(
+                progressClass
+            );
+
+        }
+
+    }
+
+    function updateLockedTiers(item) {
+
+        const tiers =
+            item.querySelectorAll(
+                ".achievement-tier"
+            );
+
+        let previousCompleted = true;
+
+
+        tiers.forEach(
+            tier => {
+
+                const button =
+                    tier.querySelector(
+                        ".achievement-complete-button"
+                    );
+
+
+                if (previousCompleted) {
+
+                    tier.classList.remove(
+                        "locked"
+                    );
+
+                    button.disabled = false;
+
+                } else {
+
+                    /*
+                     * A tier cannot be completed until
+                     * the previous tier is completed.
+                     */
+
+                    tier.classList.add(
+                        "locked"
+                    );
+
+                    tier.classList.remove(
+                        "completed"
+                    );
+
+                    button.classList.remove(
+                        "completed"
+                    );
+
+                    button.disabled = true;
+
+                    button.title =
+                        "Complete the previous tier first";
+
+                }
+
+
+                previousCompleted =
+                    tier.classList.contains(
+                        "completed"
+                    );
+
+            }
+        );
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE LARGE ACHIEVEMENT ICON
+         * ------------------------------------------
+         */
+
+        const mainIcon =
+            item.querySelector(
+                ".achievement-item-main-icon"
+            );
+
+
+        if (mainIcon) {
+
+            const totalTiers =
+                tiers.length;
+
+
+            let highestCompletedTier = 0;
+
+
+            tiers.forEach(
+                tier => {
+
+                    if (
+                        tier.classList.contains(
+                            "completed"
+                        )
+                    ) {
+
+                        const tierNumber =
+                            Number(
+                                tier.dataset.tier
+                            );
+
+
+                        if (
+                            tierNumber >
+                            highestCompletedTier
+                        ) {
+
+                            highestCompletedTier =
+                                tierNumber;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            mainIcon.src =
+                getTierImage(
+                    highestCompletedTier,
+                    totalTiers
+                );
+
+            mainIcon.alt =
+                `${highestCompletedTier}/${totalTiers}`;
+
+        }
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE WHOLE ACHIEVEMENT
+         * ------------------------------------------
+         */
+
+        const allTiersCompleted =
+            tiers.length > 0 &&
+            Array.from(tiers).every(
+                tier =>
+                    tier.classList.contains(
+                        "completed"
+                    )
+            );
+
+
+        item.classList.toggle(
+            "completed",
+            allTiersCompleted
+        );
+
+    }
+
+    function updateTierAvailability(item) {
+
+        const tiers =
+            item.querySelectorAll(
+                ".achievement-tier"
+            );
+
+        const mainIcon =
+            item.querySelector(
+                ".achievement-item-main-icon"
+            );
+
+
+        let previousCompleted = true;
+
+
+        tiers.forEach(
+            tier => {
+
+                const button =
+                    tier.querySelector(
+                        ".achievement-complete-button"
+                    );
+
+
+                /*
+                 * Lock tiers whose previous tier
+                 * has not been completed.
+                 */
+
+                if (previousCompleted) {
+
+                    tier.classList.remove(
+                        "locked"
+                    );
+
+                    button.disabled = false;
+
+                } else {
+
+                    tier.classList.remove(
+                        "completed"
+                    );
+
+                    button.classList.remove(
+                        "completed"
+                    );
+
+                    button.title =
+                        "Mark Completed";
+
+                    tier.classList.add(
+                        "locked"
+                    );
+
+                    button.disabled = true;
+
+                }
+
+
+                /*
+                 * The next tier is only available
+                 * when this tier is completed.
+                 */
+
+                previousCompleted =
+                    !tier.classList.contains(
+                        "locked"
+                    ) &&
+                    tier.classList.contains(
+                        "completed"
+                    );
+
+            }
+        );
+
+
+        /*
+         * Find the highest completed tier
+         * after locked tiers have been removed.
+         */
+
+        let highestCompletedTier = 0;
+
+
+        tiers.forEach(
+            tier => {
+
+                if (
+                    tier.classList.contains(
+                        "completed"
+                    )
+                ) {
+
+                    const tierNumber =
+                        Number(
+                            tier.dataset.tier
+                        );
+
+
+                    if (
+                        tierNumber >
+                        highestCompletedTier
+                    ) {
+
+                        highestCompletedTier =
+                            tierNumber;
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Update the large achievement icon.
+         */
+
+        if (mainIcon) {
+
+            const totalTiers =
+                tiers.length;
+
+
+            mainIcon.src =
+                getTierImage(
+                    highestCompletedTier,
+                    totalTiers
+                );
+
+
+            mainIcon.alt =
+                `${highestCompletedTier}/${totalTiers}`;
+
+        }
+
+        /*
+         * Update the entire achievement
+         * when every tier is completed.
+         */
+
+        const allTiersCompleted =
+            tiers.length > 0 &&
+            Array.from(tiers).every(
+                tier =>
+                    tier.classList.contains(
+                        "completed"
+                    )
+            );
+
+
+                if (allTiersCompleted) {
+
+                    item.classList.add(
+                        "completed"
+                    );
+
+                } else {
+
+                    item.classList.remove(
+                        "completed"
+                    );
+
+                }
+
+                updateAchievementProgress(item);
+
+            }
 
 
     /*
