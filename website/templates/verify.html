@@ -4,45 +4,19 @@
 
 {% block content %}
 
-<div class="page">
+<div class="page verification-page">
 
-    <section class="hero">
+    <section class="verification-panel">
 
-        <div class="hero-content">
+        <h1>
+            Verify your account
+        </h1>
 
-            <span class="eyebrow">
-                DISCORD CONNECTION
-            </span>
-
-            <h1>
-                Connect <span>Cyrene</span>
-            </h1>
-
-            <p>
-                Connect your Discord account to access your
-                Cyrene data and Planner.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <section class="panel">
-
-        <div class="panel-header">
-
-            <div>
-                <h2>Verify your account</h2>
-
-                <p>
-                    Use the code below with the
-                    <strong>/verify</strong> command in Discord.
-                </p>
-            </div>
-
-        </div>
-
+        <p class="verification-description">
+            Use the code below with the
+            <strong>/verify</strong>
+            command in Discord.
+        </p>
 
         <div class="verification-code">
             <span id="verification-code">
@@ -50,9 +24,11 @@
             </span>
         </div>
 
-
-        <p id="verification-status">
-            Waiting for verification...
+        <p
+            id="verification-status"
+            class="verification-status"
+        >
+            Awaiting Verification
         </p>
 
     </section>
@@ -65,31 +41,51 @@
     let verificationToken = null;
     let polling = null;
 
+    const returnUrl =
+        {{ next|default('', true)|tojson }};
+
 
     async function createVerification() {
 
-        const response = await fetch(
-            "/api/verify/create",
-            {
-                method: "POST"
-            }
-        );
+        try {
 
-        if (!response.ok) {
-            throw new Error(
-                "Failed to create verification request."
+            const response = await fetch(
+                "/api/verify/create",
+                {
+                    method: "POST"
+                }
             );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to create verification request."
+                );
+            }
+
+            const data =
+                await response.json();
+
+            verificationToken =
+                data.token;
+
+            document.getElementById(
+                "verification-code"
+            ).textContent =
+                data.code;
+
+            startPolling();
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "verification-status"
+            ).textContent =
+                "Unable to start verification.";
+
         }
 
-        const data = await response.json();
-
-        verificationToken = data.token;
-
-        document.getElementById(
-            "verification-code"
-        ).textContent = data.code;
-
-        startPolling();
     }
 
 
@@ -101,6 +97,7 @@
         );
 
         checkVerification();
+
     }
 
 
@@ -124,7 +121,8 @@
                 return;
             }
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
             if (!data.verified) {
                 return;
@@ -135,10 +133,13 @@
             document.getElementById(
                 "verification-status"
             ).textContent =
-                "✓ Successfully connected to Discord.";
+                "Successfully connected to Discord.";
 
             setTimeout(() => {
-                window.location.href = "/planner";
+
+                window.location.href =
+                    returnUrl || "/verify";
+
             }, 800);
 
         } catch (error) {
@@ -149,19 +150,11 @@
             );
 
         }
+
     }
 
 
-    createVerification().catch(
-        error => {
-            console.error(error);
-
-            document.getElementById(
-                "verification-status"
-            ).textContent =
-                "Unable to start verification.";
-        }
-    );
+    createVerification();
 
 </script>
 

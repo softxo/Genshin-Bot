@@ -88,13 +88,21 @@ async def settings(request: Request):
     response_class=HTMLResponse,
 )
 async def verify_page(
-    request: Request
+    request: Request,
+    next: str | None = None,
 ):
+    if next and (
+        not next.startswith("/")
+        or next.startswith("//")
+    ):
+        next = None
+
     return templates.TemplateResponse(
         request=request,
         name="verify.html",
         context={
             "request": request,
+            "next": next,
         },
     )
 
@@ -212,6 +220,7 @@ async def get_authenticated_user(
 
     return session.user_id
 
+
 @app.get(
     "/planner",
     response_class=HTMLResponse,
@@ -230,6 +239,7 @@ async def planner(
             name="verify.html",
             context={
                 "request": request,
+                "next": "/planner",
             },
         )
 
@@ -620,6 +630,7 @@ async def achievements(
             name="verify.html",
             context={
                 "request": request,
+                "next": "/achievements",
             },
         )
 

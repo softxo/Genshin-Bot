@@ -93,22 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 });
 
-            /*
-             * Initialize page-specific functionality.
-             */
-
-            if (
-                new URL(
-                    url,
-                    window.location.origin
-                ).pathname === "/planner" &&
-                typeof window.initPlanner === "function"
-            ) {
-
-                window.initPlanner();
-
-            }
-
 
             /*
              * Update browser history.

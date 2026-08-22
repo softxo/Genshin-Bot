@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.initAchievements = function () {
 
     const categories = document.getElementById(
         "achievement-categories"
@@ -2000,4 +2000,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadAchievements();
 
-});
+};
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            document.getElementById(
+                "achievement-categories"
+            )
+        ) {
+            window.initAchievements();
+        }
+
+    }
+);

@@ -1368,6 +1368,124 @@ body {
 }
 
 
+/* =========================================
+   VERIFICATION
+   ========================================= */
+
+.verification-page {
+    min-height: calc(100vh - 40px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+
+.verification-panel {
+    width: min(100%, 620px);
+
+    padding: 56px 48px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+.verification-panel h1 {
+    margin: 0;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    color: var(--text);
+}
+
+
+.verification-description {
+    margin: 14px auto 32px;
+
+    max-width: 460px;
+
+    color: var(--text-muted);
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+.verification-description strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+
+.verification-code {
+    width: 100%;
+
+    padding: 24px 20px;
+
+    box-sizing: border-box;
+
+    background: var(--background);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: var(--text);
+}
+
+
+.verification-status {
+    margin: 24px 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 17px;
+    font-weight: 500;
+}
+
+
+@media (max-width: 600px) {
+
+    .verification-page {
+        padding: 20px;
+    }
+
+
+    .verification-panel {
+        padding: 40px 24px;
+    }
+
+
+    .verification-panel h1 {
+        font-size: 30px;
+    }
+
+
+    .verification-code {
+        font-size: 26px;
+        letter-spacing: 3px;
+    }
+
+}
+
+
 /* =============================
    ACHIEVEMENT BROWSER
    ============================= */
