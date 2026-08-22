@@ -1220,6 +1220,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateAchievementProgress(item);
 
         updateCategoryProgress();
+        updateCategoryHeaderProgress();
         updateOverallAchievementProgress();
     }
 
@@ -1685,6 +1686,88 @@ document.addEventListener("DOMContentLoaded", () => {
          */
 
         progressFill.style.width =
+            `${percentage}%`;
+
+    }
+
+
+    function updateCategoryHeaderProgress() {
+
+        if (
+            !achievementData ||
+            !categoryTitle ||
+            !categoryPercent ||
+            !categoryProgressFill
+        ) {
+            return;
+        }
+
+
+        const category =
+            categoryTitle.textContent.trim();
+
+
+        const achievements =
+            achievementData.achievements.filter(
+                achievement =>
+                    achievement.category === category
+            );
+
+
+        let total = 0;
+        let completed = 0;
+
+
+        achievements.forEach(
+            achievement => {
+
+                if (
+                    !Array.isArray(
+                        achievement.tiers
+                    )
+                ) {
+                    return;
+                }
+
+
+                achievement.tiers.forEach(
+                    tier => {
+
+                        total++;
+
+
+                        if (
+                            tier.completed === true
+                        ) {
+
+                            completed++;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        const percentage =
+            total > 0
+                ? (completed / total) * 100
+                : 0;
+
+
+        const roundedPercentage =
+            Math.round(
+                percentage * 10
+            ) / 10;
+
+
+        categoryPercent.textContent =
+            `${roundedPercentage}% (${completed}/${total})`;
+
+
+        categoryProgressFill.style.width =
             `${percentage}%`;
 
     }
