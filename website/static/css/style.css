@@ -1347,7 +1347,7 @@ body {
 
     align-items: center;
 
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 
@@ -1358,7 +1358,7 @@ body {
 .achievement-category-content h3 {
     width: 100%;
 
-    height: auto;
+    height: 48px;
     min-height: 48px;
 
     margin: 0;
@@ -1385,31 +1385,46 @@ body {
 
 
 /* =============================
-   CATEGORY PERCENTAGE
+   CATEGORY STATS
    ============================= */
 
-.achievement-category-percent {
-    width: auto;
+.achievement-category-stats {
+    width: 100%;
 
-    height: 20px;
-    min-height: 20px;
+    height: 24px;
+    min-height: 24px;
 
-    margin: 0;
+    margin-top: 10px;
 
     display: flex;
 
     align-items: center;
-    justify-content: center;
+
+    justify-content: space-between;
+}
+
+
+/* =============================
+   CATEGORY PERCENTAGE
+   ============================= */
+
+.achievement-category-percent {
+    display: block;
+
+    margin: 0;
 
     color: var(--accent);
 
     font-family: inherit;
+
     font-size: 18px;
     font-weight: 700;
 
-    line-height: 1.2;
+    line-height: 20px;
 
     white-space: nowrap;
+
+    order: 2;
 }
 
 
@@ -1417,34 +1432,21 @@ body {
    CATEGORY COMPLETION
    ============================= */
 
-.achievement-category-content > span:not(.achievement-category-percent) {
-    width: 100%;
-
-    height: 20px;
-    min-height: 20px;
+.achievement-category-count {
+    display: block;
 
     margin: 0;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
     color: var(--text-muted);
 
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
 
-    line-height: 1.2;
-}
+    line-height: 18px;
 
+    white-space: nowrap;
 
-.achievement-category-count {
-    margin-left: 10px;
-
-    color: var(--text-muted);
-
-    font-weight: 600;
+    order: 1;
 }
 
 
@@ -1460,7 +1462,7 @@ body {
 
     flex: 0 0 8px;
 
-    margin-top: 4px;
+    margin-top: 10px;
 
     overflow: hidden;
 
@@ -2624,6 +2626,8 @@ body {
 
     cursor: pointer;
 
+    position: relative;
+
     -webkit-tap-highlight-color: transparent;
 
     transition:
@@ -2663,19 +2667,20 @@ body {
 
 
 .achievement-complete-button.completed::after {
-    content: "✓";
+    content: "";
 
-    display: flex;
+    position: absolute;
 
-    align-items: center;
-    justify-content: center;
+    inset: 0;
 
     width: 100%;
     height: 100%;
 
-    font-size: 12px;
+    background-color: currentColor;
 
-    font-weight: 700;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
 }
 
 
@@ -2737,13 +2742,14 @@ body {
     }
 
 
-    .achievement-category-content > span {
+    .achievement-category-percent {
         height: 18px;
         min-height: 18px;
 
-        margin-top: 13px;
+        margin-top: 8px;
 
-        font-size: 11px;
+        font-size: 18px;
+        font-weight: 700;
     }
 
 
@@ -2754,18 +2760,6 @@ body {
         flex-basis: 6px;
 
         margin-top: 10px;
-    }
-
-
-    .achievement-category-percent {
-        height: 18px;
-        min-height: 18px;
-
-        margin-top: 10px;
-
-        font-family: inherit;
-        font-size: 18px;
-        font-weight: 700;
     }
 
 
