@@ -1219,24 +1219,27 @@ body {
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(6, minmax(0, 1fr));
 
     gap: 14px;
 }
 
 
+/* =============================
+   ACHIEVEMENT CATEGORY CARD
+   ============================= */
+
 .achievement-category {
     display: flex;
 
+    flex-direction: column;
     align-items: center;
-
-    gap: 16px;
 
     width: 100%;
 
-    min-height: 110px;
+    min-height: 270px;
 
-    padding: 20px;
+    padding: 24px 22px;
 
     border: 1px solid var(--border);
 
@@ -1246,7 +1249,7 @@ body {
 
     color: var(--text);
 
-    text-align: left;
+    text-align: center;
 
     cursor: pointer;
 
@@ -1265,19 +1268,42 @@ body {
     transform: translateY(-2px);
 }
 
+.achievement-category-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+.achievement-category-stats span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.achievement-category-stats strong {
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+
+/* =============================
+   CATEGORY ICON
+   ============================= */
 
 .achievement-category-icon {
-    width: 72px;
-    height: 72px;
+    width: 112px;
+    height: 112px;
 
     flex-shrink: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    border-radius: 14px;
+    border-radius: 17px;
 
     background: var(--accent-soft);
 
@@ -1286,8 +1312,8 @@ body {
 
 
 .achievement-category-icon img {
-    width: 60px;
-    height: 60px;
+    width: 94px;
+    height: 94px;
 
     display: block;
 
@@ -1295,56 +1321,104 @@ body {
 }
 
 
+/* =============================
+   CATEGORY CONTENT
+   ============================= */
+
 .achievement-category-content {
-    flex: 1;
+    width: 100%;
 
     min-width: 0;
+
+    margin-top: 16px;
 }
 
+
+/* =============================
+   CATEGORY NAME
+   ============================= */
 
 .achievement-category-content h3 {
-    margin: 0 0 5px;
+    margin: 0 0 12px;
 
-    font-size: 15px;
+    font-size: 19px;
+    font-weight: 600;
 
-    white-space: nowrap;
+    line-height: 1.25;
 
-    overflow: hidden;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
 
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    word-break: normal;
 }
 
+
+/* =============================
+   CATEGORY COMPLETION TEXT
+   ============================= */
 
 .achievement-category-content > span {
     display: block;
 
-    margin-bottom: 9px;
+    margin-top: 9px;
 
     color: var(--text-muted);
 
-    font-size: 12px;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 
-.achievement-category-arrow {
-    flex-shrink: 0;
+/* =============================
+   CATEGORY PROGRESS BAR
+   ============================= */
 
-    color: var(--text-muted);
+.achievement-category-progress {
+    width: 100%;
 
-    font-size: 18px;
+    height: 8px;
 
-    transition:
-        transform 0.2s ease,
-        color 0.2s ease;
+    margin-top: 0;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: var(--background);
 }
 
 
-.achievement-category:hover .achievement-category-arrow {
+.achievement-category-progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--accent);
+
+    transition: width 0.3s ease;
+}
+
+
+/* =============================
+   CATEGORY PERCENTAGE
+   ============================= */
+
+.achievement-category-percent {
+    display: block;
+
+    margin-top: 5px;
+
     color: var(--accent);
 
-    transform: translateX(4px);
-}
+    font-size: 15px;
+    font-weight: 700;
 
+    line-height: 1.2;
+}
 
 /* ==================================================
    VERIFICATION PAGE
@@ -2050,7 +2124,7 @@ body {
 
     height: 6px;
 
-    margin-top: 12px;
+    margin-top: 0;
 
     overflow: hidden;
 
@@ -2610,11 +2684,6 @@ body {
     }
 
 
-    .achievement-category-arrow {
-        font-size: 16px;
-    }
-
-
     /* =============================
        ACHIEVEMENT CATEGORY CONTROLS
        ============================= */
@@ -2928,10 +2997,59 @@ body {
    ACHIEVEMENT RESPONSIVE
    ============================= */
 
-@media (max-width: 1200px) {
+/* 6 columns by default */
+
+
+/* 5 columns */
+@media (max-width: 1400px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+}
+
+
+/* 4 columns */
+@media (max-width: 1150px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+}
+
+
+/* 3 columns */
+@media (max-width: 950px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* 2 columns */
+@media (max-width: 700px) {
 
     .achievement-category-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
+
+}
+
+
+/* 1 column */
+@media (max-width: 500px) {
+
+    .achievement-category-grid {
+        grid-template-columns:
+            1fr;
+    }
+
 }

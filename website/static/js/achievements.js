@@ -1025,9 +1025,9 @@ window.initAchievements = function () {
 
 
                 button.innerHTML = `
-    
+
                     <div class="achievement-category-icon">
-    
+                
                         <img
                             src="${
                                 CATEGORY_ICONS[category]
@@ -1035,43 +1035,43 @@ window.initAchievements = function () {
                             }"
                             alt=""
                         >
-    
+                
                     </div>
-    
-    
+                
+                
                     <div class="achievement-category-content">
-    
+                
                         <h3>
                             ${escapeHTML(category)}
                         </h3>
-    
-                        <span>
-                            ${completed} /
-                            ${total}
-                            completed
-                        </span>
-    
-    
+                
+                
+                        <div class="achievement-category-stats">
+                
+                            <span>
+                                ${completed} / ${total} completed
+                            </span>
+                
+                            <strong>
+                                ${progress.toFixed(1)}%
+                            </strong>
+                
+                        </div>
+                
+                
                         <div
                             class="achievement-category-progress"
                         >
-    
+                
                             <div
                                 class="achievement-category-progress-fill"
                                 style="width: ${progress}%"
                             ></div>
-    
+                
                         </div>
-    
+                
                     </div>
-    
-    
-                    <span
-                        class="achievement-category-arrow"
-                    >
-                        →
-                    </span>
-    
+                
                 `;
 
 
