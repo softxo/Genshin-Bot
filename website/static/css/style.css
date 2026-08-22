@@ -1596,7 +1596,7 @@ body {
 }
 
 
-.achievement-content-title-row {
+.achievement-category-title-row {
     display: flex;
 
     align-items: center;
@@ -1607,7 +1607,7 @@ body {
 }
 
 
-.achievement-content-title-row h2 {
+.achievement-category-title-row h2 {
     margin: 0;
 
     min-width: 0;
@@ -1626,7 +1626,7 @@ body {
 }
 
 
-.achievement-content-title-row > span {
+.achievement-category-title-row > span {
     flex-shrink: 0;
 
     color: var(--text-muted);
@@ -1643,7 +1643,7 @@ body {
    CATEGORY PROGRESS BAR
    ============================= */
 
-.achievement-content-progress {
+.achievement-category-progress {
     width: 100%;
 
     height: 6px;
@@ -1658,7 +1658,7 @@ body {
 }
 
 
-.achievement-content-progress-fill {
+.achievement-category-progress-fill {
     width: 0%;
 
     height: 100%;

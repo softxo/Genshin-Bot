@@ -726,6 +726,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const data =
             achievementData.categories[category];
 
+        console.log("Opened category:", category);
+        console.log("Category data:", data);
+
 
         if (!data) {
             return;
@@ -847,7 +850,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                     return `
     
                                         <div
-                                            class="achievement-tier"
+                                            class="achievement-tier ${
+                                                tier.completed ? "completed" : ""
+                                            }"
                                             data-tier="${tier.tier}"
                                         >
     
@@ -879,9 +884,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
                                             <button
                                                 type="button"
-                                                class="achievement-complete-button"
+                                                class="achievement-complete-button ${
+                                                    tier.completed ? "completed" : ""
+                                                }"
                                                 aria-label="Mark tier ${tier.tier} completed"
-                                                title="Mark Completed"
+                                                title="${
+                                                    tier.completed
+                                                        ? "Mark Incomplete"
+                                                        : "Mark Completed"
+                                                }"
                                             >
                                             </button>
     
@@ -1208,8 +1219,8 @@ document.addEventListener("DOMContentLoaded", () => {
         updateLockedTiers(item);
         updateAchievementProgress(item);
 
+        updateCategoryProgress();
         updateOverallAchievementProgress();
-
     }
 
     function updateAchievementProgress(item) {
@@ -1297,6 +1308,89 @@ document.addEventListener("DOMContentLoaded", () => {
 
             item.classList.add(
                 "progress-high"
+            );
+
+        }
+
+    }
+
+    function updateCategoryProgress() {
+
+        if (!achievementData) {
+            return;
+        }
+
+
+        /*
+         * Recalculate every category from the
+         * current tier completion state.
+         */
+
+        Object.entries(
+            achievementData.categories
+        ).forEach(
+            ([category, data]) => {
+
+                let completed = 0;
+
+
+                achievementData.achievements.forEach(
+                    achievement => {
+
+                        if (
+                            achievement.category !== category ||
+                            !Array.isArray(
+                                achievement.tiers
+                            )
+                        ) {
+                            return;
+                        }
+
+
+                        achievement.tiers.forEach(
+                            tier => {
+
+                                if (
+                                    tier.completed === true
+                                ) {
+
+                                    completed++;
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                data.completed = completed;
+
+            }
+        );
+
+
+        /*
+         * Rebuild the category cards.
+         */
+
+        buildCategories();
+
+
+        /*
+         * Rebuild the sidebar if we are currently
+         * inside a category.
+         */
+
+        if (
+            browser &&
+            !browser.hidden &&
+            categoryTitle
+        ) {
+
+            buildSidebar(
+                categoryTitle.textContent
             );
 
         }
