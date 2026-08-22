@@ -1,10 +1,21 @@
 import typing
 import time
-from datetime import datetime, timezone
+from datetime import (
+    datetime,
+    timezone
+)
 from pathlib import Path
 from fastapi import Cookie
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    Request
+)
+from fastapi.responses import (
+    HTMLResponse,
+    JSONResponse,
+    RedirectResponse,
+)
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from genshin.models.auth.geetest import (
@@ -234,13 +245,8 @@ async def planner(
     )
 
     if session is None:
-        return templates.TemplateResponse(
-            request=request,
-            name="verify.html",
-            context={
-                "request": request,
-                "next": "/planner",
-            },
+        return RedirectResponse(
+            url="/verify"
         )
 
     return templates.TemplateResponse(
@@ -625,13 +631,8 @@ async def achievements(
     )
 
     if session is None:
-        return templates.TemplateResponse(
-            request=request,
-            name="verify.html",
-            context={
-                "request": request,
-                "next": "/achievements",
-            },
+        return RedirectResponse(
+            url="/verify"
         )
 
     return templates.TemplateResponse(

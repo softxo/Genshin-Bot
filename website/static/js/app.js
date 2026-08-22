@@ -12,6 +12,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const response = await fetch(url);
 
+            if (
+                response.redirected &&
+                new URL(response.url).pathname === "/verify"
+            ) {
+                history.pushState(
+                    {},
+                    "",
+                    "/verify"
+                );
+
+                window.location.href = "/verify";
+
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(
                     `Navigation failed: ${response.status}`
@@ -22,14 +37,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const parser = new DOMParser();
 
-            const document =
+            const newDocument =
                 parser.parseFromString(
                     html,
                     "text/html"
                 );
 
+            const requestedPath =
+                new URL(
+                    url,
+                    window.location.origin
+                ).pathname;
+
+            const returnedTitle =
+                newDocument.title;
+
             const newMain =
-                document.querySelector(
+                newDocument.querySelector(
                     ".main-content"
                 );
 
@@ -37,6 +61,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(
                     "New page does not contain .main-content"
                 );
+            }
+
+            const isVerificationPage =
+                newDocument.querySelector(
+                    ".verification-page"
+                );
+
+            if (
+                isVerificationPage &&
+                requestedPath !== "/verify"
+            ) {
+
+                history.pushState(
+                    {},
+                    "",
+                    "/verify"
+                );
+
             }
 
 
@@ -57,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .forEach(oldScript => {
 
                     const newScript =
-                        document.createElement("script");
+                        window.document.createElement("script");
 
                     /*
                      * Copy attributes.
