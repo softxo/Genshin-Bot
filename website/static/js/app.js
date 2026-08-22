@@ -17,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
+
+            /*
+             * Handle server-side redirects.
+             */
+
             if (
                 response.status === 301 ||
                 response.status === 302 ||
@@ -42,14 +47,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (!response.ok) {
+
                 throw new Error(
                     `Navigation failed: ${response.status}`
                 );
+
             }
 
-            const html = await response.text();
 
-            const parser = new DOMParser();
+            const html =
+                await response.text();
+
+
+            const parser =
+                new DOMParser();
+
 
             const newDocument =
                 parser.parseFromString(
@@ -57,40 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     "text/html"
                 );
 
-            const requestedPath =
-                new URL(
-                    url,
-                    window.location.origin
-                ).pathname;
-
-            const returnedTitle =
-                newDocument.title;
 
             const newMain =
                 newDocument.querySelector(
                     ".main-content"
                 );
 
+
             if (!newMain) {
+
                 throw new Error(
                     "New page does not contain .main-content"
-                );
-            }
-
-            const isVerificationPage =
-                newDocument.querySelector(
-                    ".verification-page"
-                );
-
-            if (
-                isVerificationPage &&
-                requestedPath !== "/verify"
-            ) {
-
-                history.pushState(
-                    {},
-                    "",
-                    "/verify"
                 );
 
             }
@@ -113,11 +102,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 .forEach(oldScript => {
 
                     const newScript =
-                        window.document.createElement("script");
+                        window.document.createElement(
+                            "script"
+                        );
 
-                    /*
-                     * Copy attributes.
-                     */
 
                     for (
                         const attribute
@@ -131,17 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     }
 
-                    /*
-                     * Copy inline JavaScript.
-                     */
 
                     newScript.textContent =
                         oldScript.textContent;
 
-                    /*
-                     * Replace the inert script with
-                     * an executable one.
-                     */
 
                     oldScript.replaceWith(
                         newScript
@@ -189,9 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-            window.location.href = url;
+
+            window.location.href =
+                url;
 
         }
+
     }
 
 
