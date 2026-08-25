@@ -2780,9 +2780,8 @@ body {
 
 
     .achievement-search-wrapper,
-    .achievement-version-wrapper,
-    .achievement-dropdown-wrapper,
-    .achievement-hide-completed,
+    .select-wrapper,
+    .achievement-filter-button,
     .achievement-import-button {
         width: 100%;
         flex: none;
