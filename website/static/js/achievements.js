@@ -44,6 +44,8 @@ window.initAchievements = function () {
 
     let hideCompletedAchievements = false;
 
+    let achievementSelectedVersion = "all";
+
     const CATEGORY_ICONS = {
 
         "Wonders of the World":
@@ -542,110 +544,222 @@ window.initAchievements = function () {
 
         function buildVersionOptions() {
 
-            if (
-                !achievementVersionSelect ||
-                !achievementData
-            ) {
+            const menu = document.getElementById(
+                "achievement-version-menu"
+            );
+
+            if (!menu) {
+                return;
+            }
+
+            const versions = new Set();
+
+            achievementData.forEach(achievement => {
+
+                getAchievementVersions(achievement).forEach(version => {
+                    versions.add(version);
+                });
+
+            });
+
+            const sortedVersions = [...versions].sort(
+                (a, b) => {
+                    return a.localeCompare(
+                        b,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base"
+                        }
+                    );
+                }
+            );
+
+
+            menu.innerHTML = "";
+
+
+            // All Versions
+
+            const allOption = document.createElement("button");
+
+            allOption.type = "button";
+            allOption.className =
+                "custom-select-option selected";
+
+            allOption.dataset.value = "all";
+
+            allOption.setAttribute(
+                "role",
+                "option"
+            );
+
+            allOption.setAttribute(
+                "aria-selected",
+                "true"
+            );
+
+            allOption.textContent = "All Versions";
+
+            menu.appendChild(allOption);
+
+
+            // Versions
+
+            sortedVersions.forEach(version => {
+
+                const option = document.createElement("button");
+
+                option.type = "button";
+
+                option.className =
+                    "custom-select-option";
+
+                option.dataset.value = version;
+
+                option.setAttribute(
+                    "role",
+                    "option"
+                );
+
+                option.setAttribute(
+                    "aria-selected",
+                    "false"
+                );
+
+                option.textContent = version;
+
+                menu.appendChild(option);
+
+            });
+
+
+            setupAchievementVersionDropdown();
+
+        }
+
+
+        function setupAchievementVersionDropdown() {
+
+            const select = document.getElementById(
+                "achievement-version-select"
+            );
+
+            const button = document.getElementById(
+                "achievement-version-button"
+            );
+
+            const value = document.getElementById(
+                "achievement-version-value"
+            );
+
+            const menu = document.getElementById(
+                "achievement-version-menu"
+            );
+
+            if (!select || !button || !value || !menu) {
                 return;
             }
 
 
-            const versions = new Set();
+            // Prevent duplicate event listeners
+
+            if (select.dataset.initialized === "true") {
+                return;
+            }
+
+            select.dataset.initialized = "true";
 
 
-            achievementData.achievements.forEach(
-                achievement => {
+            button.addEventListener("click", event => {
 
-                    getAchievementVersions(
-                        achievement
-                    ).forEach(
-                        version => {
+                event.stopPropagation();
 
-                            versions.add(version);
+                const isOpen =
+                    select.classList.toggle("open");
 
-                        }
+                button.setAttribute(
+                    "aria-expanded",
+                    String(isOpen)
+                );
+
+            });
+
+
+            menu.addEventListener("click", event => {
+
+                const option =
+                    event.target.closest(
+                        ".custom-select-option"
+                    );
+
+                if (!option || option.disabled) {
+                    return;
+                }
+
+
+                const selectedValue =
+                    option.dataset.value;
+
+                value.textContent =
+                    option.textContent;
+
+
+                menu.querySelectorAll(
+                    ".custom-select-option"
+                ).forEach(item => {
+
+                    const selected =
+                        item === option;
+
+                    item.classList.toggle(
+                        "selected",
+                        selected
+                    );
+
+                    item.setAttribute(
+                        "aria-selected",
+                        String(selected)
+                    );
+
+                });
+
+
+                select.classList.remove("open");
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                // Update the active achievement version
+
+                achievementSelectedVersion =
+                    selectedValue;
+
+
+                buildCategories();
+
+            });
+
+
+            // Close when clicking outside
+
+            document.addEventListener("click", event => {
+
+                if (!select.contains(event.target)) {
+
+                    select.classList.remove("open");
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        "false"
                     );
 
                 }
-            );
 
-
-            const sortedVersions =
-                Array.from(versions)
-                    .sort((a, b) => {
-
-                        const aParts =
-                            a.split(".").map(Number);
-
-                        const bParts =
-                            b.split(".").map(Number);
-
-
-                        for (
-                            let i = 0;
-                            i < Math.max(
-                                aParts.length,
-                                bParts.length
-                            );
-                            i++
-                        ) {
-
-                            const aValue =
-                                aParts[i] ?? 0;
-
-                            const bValue =
-                                bParts[i] ?? 0;
-
-
-                            if (
-                                aValue !== bValue
-                            ) {
-
-                                return bValue - aValue;
-
-                            }
-
-                        }
-
-
-                        return 0;
-
-                    });
-
-
-            achievementVersionSelect.innerHTML = `
-                <option value="all">
-                    All Versions
-                </option>
-            `;
-
-
-            sortedVersions.forEach(
-                version => {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        version;
-
-                    option.textContent =
-                        version;
-
-
-                    achievementVersionSelect.appendChild(
-                        option
-                    );
-
-                }
-            );
-
-
-            achievementVersionSelect.value =
-                achievementVersion;
+            });
 
         }
 
