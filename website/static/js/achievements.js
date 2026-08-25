@@ -40,8 +40,6 @@ window.initAchievements = function () {
 
     let achievementSearchQuery = "";
 
-    let achievementVersion = "all";
-
     let hideCompletedAchievements = false;
 
     let achievementSelectedVersion = "all";
@@ -238,7 +236,7 @@ window.initAchievements = function () {
             "/static/images/achievements/categories/Duelist_Series_III.png",
 
         "Repertoire of Myriad Melodies":
-            "/static/images/achievements/categories/Reperoire_of_Myriad_Melodies.png",
+            "/static/images/achievements/categories/Repertoire_of_Myriad_Melodies.png",
 
         "Sacred Mountain's Fading Glow":
             "/static/images/achievements/categories/Sacred_Mountains_Fading_Glow.png",
@@ -499,7 +497,7 @@ window.initAchievements = function () {
 
         const achievementVersionSelect =
             document.getElementById(
-                "achievement-version"
+                "achievement-version-select"
             );
 
         const achievementHideCompleted =
@@ -544,50 +542,103 @@ window.initAchievements = function () {
 
         function buildVersionOptions() {
 
-            const menu = document.getElementById(
-                "achievement-version-menu"
-            );
+            const select =
+                document.getElementById(
+                    "achievement-version-select"
+                );
 
-            if (!menu) {
+            if (
+                !select ||
+                !achievementData
+            ) {
                 return;
             }
 
-            const versions = new Set();
 
-            achievementData.forEach(achievement => {
+            const menu =
+                select.querySelector(
+                    ".custom-select-menu"
+                );
 
-                getAchievementVersions(achievement).forEach(version => {
-                    versions.add(version);
-                });
+            const value =
+                select.querySelector(
+                    ".custom-select-value"
+                );
 
-            });
 
-            const sortedVersions = [...versions].sort(
-                (a, b) => {
-                    return a.localeCompare(
-                        b,
-                        undefined,
-                        {
-                            numeric: true,
-                            sensitivity: "base"
+            if (
+                !menu ||
+                !value
+            ) {
+                return;
+            }
+
+
+            const versions =
+                new Set();
+
+
+            achievementData.achievements.forEach(
+                achievement => {
+
+                    getAchievementVersions(
+                        achievement
+                    ).forEach(
+                        version => {
+
+                            versions.add(
+                                version
+                            );
+
                         }
                     );
+
                 }
             );
+
+
+            const sortedVersions =
+                [...versions].sort(
+                    (a, b) => {
+
+                        return a.localeCompare(
+                            b,
+                            undefined,
+                            {
+                                numeric: true,
+                                sensitivity: "base"
+                            }
+                        );
+
+                    }
+                );
 
 
             menu.innerHTML = "";
 
 
-            // All Versions
+            /*
+             * ------------------------------------------
+             * ALL VERSIONS
+             * ------------------------------------------
+             */
 
-            const allOption = document.createElement("button");
+            const allOption =
+                document.createElement(
+                    "button"
+                );
 
-            allOption.type = "button";
+            allOption.type =
+                "button";
+
             allOption.className =
                 "custom-select-option selected";
 
-            allOption.dataset.value = "all";
+            allOption.dataset.value =
+                "all";
+
+            allOption.textContent =
+                "All Versions";
 
             allOption.setAttribute(
                 "role",
@@ -599,167 +650,245 @@ window.initAchievements = function () {
                 "true"
             );
 
-            allOption.textContent = "All Versions";
+            menu.appendChild(
+                allOption
+            );
 
-            menu.appendChild(allOption);
+
+            /*
+             * ------------------------------------------
+             * VERSION OPTIONS
+             * ------------------------------------------
+             */
+
+            sortedVersions.forEach(
+                version => {
+
+                    const option =
+                        document.createElement(
+                            "button"
+                        );
+
+                    option.type =
+                        "button";
+
+                    option.className =
+                        "custom-select-option";
+
+                    option.dataset.value =
+                        version;
+
+                    option.textContent =
+                        version;
+
+                    option.setAttribute(
+                        "role",
+                        "option"
+                    );
+
+                    option.setAttribute(
+                        "aria-selected",
+                        "false"
+                    );
+
+                    menu.appendChild(
+                        option
+                    );
+
+                }
+            );
 
 
-            // Versions
+            /*
+             * ------------------------------------------
+             * OPTION CLICK HANDLERS
+             * ------------------------------------------
+             */
 
-            sortedVersions.forEach(version => {
+            menu
+                .querySelectorAll(
+                    ".custom-select-option"
+                )
+                .forEach(
+                    option => {
 
-                const option = document.createElement("button");
+                        option.addEventListener(
+                            "click",
+                            () => {
 
-                option.type = "button";
+                                const selectedValue =
+                                    option.dataset.value;
 
-                option.className =
-                    "custom-select-option";
 
-                option.dataset.value = version;
+                                achievementSelectedVersion =
+                                    selectedValue;
 
-                option.setAttribute(
-                    "role",
-                    "option"
+
+                                value.textContent =
+                                    option.textContent;
+
+
+                                menu
+                                    .querySelectorAll(
+                                        ".custom-select-option"
+                                    )
+                                    .forEach(
+                                        otherOption => {
+
+                                            const selected =
+                                                otherOption ===
+                                                option;
+
+
+                                            otherOption.classList.toggle(
+                                                "selected",
+                                                selected
+                                            );
+
+
+                                            otherOption.setAttribute(
+                                                "aria-selected",
+                                                selected
+                                                    ? "true"
+                                                    : "false"
+                                            );
+
+                                        }
+                                    );
+
+
+                                select.classList.remove(
+                                    "open"
+                                );
+
+
+                                select
+                                    .querySelector(
+                                        ".custom-select-button"
+                                    )
+                                    .setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+
+
+                                buildCategories();
+
+                            }
+                        );
+
+                    }
                 );
-
-                option.setAttribute(
-                    "aria-selected",
-                    "false"
-                );
-
-                option.textContent = version;
-
-                menu.appendChild(option);
-
-            });
-
-
-            setupAchievementVersionDropdown();
 
         }
 
 
         function setupAchievementVersionDropdown() {
 
-            const select = document.getElementById(
-                "achievement-version-select"
-            );
+            const select =
+                document.getElementById(
+                    "achievement-version-select"
+                );
 
-            const button = document.getElementById(
-                "achievement-version-button"
-            );
-
-            const value = document.getElementById(
-                "achievement-version-value"
-            );
-
-            const menu = document.getElementById(
-                "achievement-version-menu"
-            );
-
-            if (!select || !button || !value || !menu) {
+            if (!select) {
                 return;
             }
 
 
-            // Prevent duplicate event listeners
+            /*
+             * Prevent duplicate initialization.
+             */
 
-            if (select.dataset.initialized === "true") {
+            if (
+                select.dataset.initialized === "true"
+            ) {
                 return;
             }
 
-            select.dataset.initialized = "true";
+            select.dataset.initialized =
+                "true";
 
 
-            button.addEventListener("click", event => {
-
-                event.stopPropagation();
-
-                const isOpen =
-                    select.classList.toggle("open");
-
-                button.setAttribute(
-                    "aria-expanded",
-                    String(isOpen)
-                );
-
-            });
-
-
-            menu.addEventListener("click", event => {
-
-                const option =
-                    event.target.closest(
-                        ".custom-select-option"
-                    );
-
-                if (!option || option.disabled) {
-                    return;
-                }
-
-
-                const selectedValue =
-                    option.dataset.value;
-
-                value.textContent =
-                    option.textContent;
-
-
-                menu.querySelectorAll(
-                    ".custom-select-option"
-                ).forEach(item => {
-
-                    const selected =
-                        item === option;
-
-                    item.classList.toggle(
-                        "selected",
-                        selected
-                    );
-
-                    item.setAttribute(
-                        "aria-selected",
-                        String(selected)
-                    );
-
-                });
-
-
-                select.classList.remove("open");
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "false"
+            const button =
+                select.querySelector(
+                    ".custom-select-button"
                 );
 
 
-                // Update the active achievement version
-
-                achievementSelectedVersion =
-                    selectedValue;
-
-
-                buildCategories();
-
-            });
+            if (!button) {
+                return;
+            }
 
 
-            // Close when clicking outside
+            button.addEventListener(
+                "click",
+                event => {
 
-            document.addEventListener("click", event => {
+                    event.stopPropagation();
 
-                if (!select.contains(event.target)) {
 
-                    select.classList.remove("open");
+                    const isOpen =
+                        select.classList.contains(
+                            "open"
+                        );
+
+
+                    /*
+                     * Close other custom selects.
+                     */
+
+                    document
+                        .querySelectorAll(
+                            ".custom-select.open"
+                        )
+                        .forEach(
+                            otherSelect => {
+
+                                if (
+                                    otherSelect !== select
+                                ) {
+
+                                    otherSelect.classList.remove(
+                                        "open"
+                                    );
+
+
+                                    const otherButton =
+                                        otherSelect.querySelector(
+                                            ".custom-select-button"
+                                        );
+
+
+                                    if (otherButton) {
+
+                                        otherButton.setAttribute(
+                                            "aria-expanded",
+                                            "false"
+                                        );
+
+                                    }
+
+                                }
+
+                            }
+                        );
+
+
+                    select.classList.toggle(
+                        "open",
+                        !isOpen
+                    );
+
 
                     button.setAttribute(
                         "aria-expanded",
-                        "false"
+                        !isOpen
+                            ? "true"
+                            : "false"
                     );
 
                 }
-
-            });
+            );
 
         }
 
@@ -848,7 +977,7 @@ window.initAchievements = function () {
              */
 
             if (
-                achievementVersion !== "all"
+                achievementSelectedVersion !== "all"
             ) {
 
                 const versions =
@@ -859,7 +988,7 @@ window.initAchievements = function () {
 
                 if (
                     !versions.includes(
-                        achievementVersion
+                        achievementSelectedVersion
                     )
                 ) {
 
@@ -917,23 +1046,6 @@ window.initAchievements = function () {
         }
 
 
-        if (achievementVersionSelect) {
-
-            achievementVersionSelect.addEventListener(
-                "change",
-                () => {
-
-                    achievementVersion =
-                        achievementVersionSelect.value;
-
-                    rebuildCategoryView();
-
-                }
-            );
-
-        }
-
-
         if (achievementHideCompleted) {
 
             achievementHideCompleted.addEventListener(
@@ -974,6 +1086,8 @@ window.initAchievements = function () {
             achievementData = await response.json();
 
             buildVersionOptions();
+
+            setupAchievementVersionDropdown();
 
             buildCategories();
 
@@ -1375,7 +1489,8 @@ window.initAchievements = function () {
         const achievements =
             achievementData.achievements.filter(
                 achievement =>
-                    achievement.category === category
+                    achievement.category === category &&
+                    achievementMatchesFilters(achievement)
             );
 
 
@@ -2601,6 +2716,52 @@ window.initAchievements = function () {
     loadAchievements();
 
 };
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        document
+            .querySelectorAll(
+                ".custom-select.open"
+            )
+            .forEach(
+                select => {
+
+                    if (
+                        !select.contains(
+                            event.target
+                        )
+                    ) {
+
+                        select.classList.remove(
+                            "open"
+                        );
+
+
+                        const button =
+                            select.querySelector(
+                                ".custom-select-button"
+                            );
+
+
+                        if (button) {
+
+                            button.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+);
 
 
 document.addEventListener(

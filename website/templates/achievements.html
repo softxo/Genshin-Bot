@@ -106,36 +106,34 @@
 
             <!-- Version -->
 
-            <div class="custom-select" id="achievement-version-select">
+            <div
+                class="custom-select"
+                id="achievement-version-select"
+            >
 
                 <button
                     type="button"
                     class="custom-select-button"
                     id="achievement-version-button"
-                    aria-haspopup="listbox"
-                    aria-expanded="false"
                 >
-                    <span id="achievement-version-value">
+                    <span class="custom-select-value">
                         All Versions
                     </span>
 
                     <span class="custom-select-arrow">
-                        ↓
+                        ⌄
                     </span>
                 </button>
 
                 <div
                     class="custom-select-menu"
                     id="achievement-version-menu"
-                    role="listbox"
                 >
 
                     <button
                         type="button"
                         class="custom-select-option selected"
-                        data-value="all"
-                        role="option"
-                        aria-selected="true"
+                        data-value=""
                     >
                         All Versions
                     </button>
@@ -143,6 +141,12 @@
                 </div>
 
             </div>
+
+            <input
+                type="hidden"
+                id="achievement-version"
+                value=""
+            >
 
             <!-- Hide Completed -->
 
