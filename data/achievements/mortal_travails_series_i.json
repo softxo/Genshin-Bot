@@ -1,0 +1,94 @@
+{
+  "achievements": [
+    {
+      "id": "travails_i_001",
+      "name": "The Wind and The Star Traveler",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Blow seeds off a Dandelion using Anemo.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_i_002",
+      "name": "Of Mountains High",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Obtain the power of Geo.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_i_003",
+      "name": "The Voice of Flowing Water",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Collect the entire \"Heart of Clear Springs\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_i_004",
+      "name": "The Divine Halberd Mocks the Heavens",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Collect the entire \"Legend of the Shattered Halberd\" series.\t",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_i_005",
+      "name": "The Drunkard and the Wolf",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Collect the entire \"A Drunkard's Tale\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_i_006",
+      "name": "Spring, White Horse and Moonlight",
+      "category": "Mortal Travails: Series I",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "1.0",
+          "description": "Collect the entire \"Moonlit Bamboo Forest\" series.",
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}

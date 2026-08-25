@@ -1,0 +1,49 @@
+{
+  "achievements": [
+    {
+      "id": "travails_vii_001",
+      "name": "Requiem of the Icewind",
+      "category": "Mortal Travails: Series VII",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "7.0",
+          "description": "Obtain the power of Cryo.\t",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vii_002",
+      "name": "Tales of the Departed",
+      "category": "Mortal Travails: Series VII",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "7.0",
+          "description": "Collect the entire \"General History of Snezhnaya\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vii_003",
+      "name": "When Song Tears the Night",
+      "category": "Mortal Travails: Series VII",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "7.0",
+          "description": "Collect the entire \"Polestar Ballet Anthology\" series.",
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}

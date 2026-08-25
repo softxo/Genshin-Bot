@@ -7,6 +7,7 @@
     "bonus_2pc": "Max HP increased by 1,000.",
     "bonus_4pc": "Opening a chest regenerates 30% Max HP over 5s."
   },
+
   "lucky_dog": {
     "name": "Lucky Dog",
     "emoji": "Lucky_Dog",
@@ -15,6 +16,7 @@
     "bonus_2pc": "DEF increased by 100.",
     "bonus_4pc": "Picking up Mora restores 300 HP."
   },
+
   "traveling_doctor": {
     "name": "Traveling Doctor",
     "emoji": "Traveling_Doctor",

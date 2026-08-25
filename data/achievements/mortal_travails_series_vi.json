@@ -1,0 +1,94 @@
+{
+  "achievements": [
+    {
+      "id": "travails_vi_001",
+      "name": "Dime Pulp Fiction",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"The Legends of Reed Miller, Thief Extraordinaire\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vi_002",
+      "name": "Faith Was for the Transience",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"Hymns of the Far North\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vi_003",
+      "name": "...As a Bee Produces Honey",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"Conch Echoes\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vi_004",
+      "name": "Part the Snow-Curtain of the Sky",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"Tales Carried by the Northwind\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vi_005",
+      "name": "The History of One City",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"A Brief History of the Pale Starborn\" series.",
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "travails_vi_006",
+      "name": "A Bewitched Place Beneath the Moon",
+      "category": "Mortal Travails: Series VI",
+      "region": [],
+      "hidden": false,
+      "tiers": [
+        {
+          "tier": 1,
+          "version": "\"Luna IV\" [6.3]",
+          "description": "Collect the entire \"Night Murmurs From the Far Border\" series.",
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}
