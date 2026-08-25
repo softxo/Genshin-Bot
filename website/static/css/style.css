@@ -2406,20 +2406,14 @@ body {
 }
 
 
-.achievement-category-controls .select-wrapper {
-    width: auto;
-
-    flex: 0 0 150px;
-}
-
-
-.achievement-category-controls .select {
-    width: 100%;
-}
-
-
 .achievement-category-controls .checkbox-control {
     flex: 0 0 auto;
+}
+
+.achievement-category-controls > .custom-select {
+    width: 150px;
+
+    flex: 0 0 150px;
 }
 
 
@@ -3067,12 +3061,27 @@ body {
     }
 
 
-    .achievement-search-wrapper,
-    .select-wrapper,
-    .achievement-filter-button,
-    .achievement-import-button {
+    .achievement-search-wrapper {
         width: 100%;
         flex: none;
+    }
+
+
+    .achievement-category-controls > .custom-select {
+        width: 100%;
+        flex: none;
+    }
+
+
+    .achievement-category-controls .checkbox-control {
+        width: 100%;
+        flex: none;
+    }
+
+
+    .achievement-import-button {
+        width: auto;
+        flex: 0 0 auto;
     }
 
     /* =============================
@@ -3395,4 +3404,21 @@ body {
             1fr;
     }
 
+}
+
+
+/* =============================
+   ACHIEVEMENT FILTER DROPDOWN
+   ============================= */
+
+.achievement-filter-button {
+    position: relative;
+
+    width: auto;
+    flex: 0 0 auto;
+}
+
+.achievement-filter-button .custom-select-button {
+    width: auto;
+    min-width: 120px;
 }

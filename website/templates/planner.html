@@ -801,6 +801,45 @@
         font-weight: 500;
     }
 
+    .reminder-form-actions {
+        grid-column: 3;
+
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .reminder-save-button {
+        background:
+            color-mix(
+                in srgb,
+                #e889b5 12%,
+                var(--surface)
+            );
+
+        border-color:
+            color-mix(
+                in srgb,
+                #e889b5 30%,
+                var(--border)
+            );
+
+        color: #e889b5;
+    }
+
+    .reminder-save-button:hover {
+        background:
+            color-mix(
+                in srgb,
+                #e889b5 20%,
+                var(--surface)
+            );
+
+        border-color: #e889b5;
+        color: #e889b5;
+    }
+
     /* ================================
        Resin
        ================================ */

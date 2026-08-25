@@ -723,6 +723,18 @@ window.initAchievements = function () {
                                 achievementSelectedVersion =
                                     selectedValue;
 
+                                const hiddenVersionInput =
+                                    document.getElementById(
+                                        "achievement-version"
+                                    );
+
+                                if (hiddenVersionInput) {
+
+                                    hiddenVersionInput.value =
+                                        selectedValue;
+                                
+                                }
+
 
                                 value.textContent =
                                     option.textContent;
@@ -820,6 +832,12 @@ window.initAchievements = function () {
             }
 
 
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+
             button.addEventListener(
                 "click",
                 event => {
@@ -834,7 +852,7 @@ window.initAchievements = function () {
 
 
                     /*
-                     * Close other custom selects.
+                     * Close every other custom select.
                      */
 
                     document
@@ -874,15 +892,23 @@ window.initAchievements = function () {
                         );
 
 
+                    /*
+                     * Toggle this dropdown.
+                     */
+
+                    const shouldOpen =
+                        !isOpen;
+
+
                     select.classList.toggle(
                         "open",
-                        !isOpen
+                        shouldOpen
                     );
 
 
                     button.setAttribute(
                         "aria-expanded",
-                        !isOpen
+                        shouldOpen
                             ? "true"
                             : "false"
                     );
