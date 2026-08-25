@@ -106,33 +106,57 @@
 
             <!-- Version -->
 
-            <div class="select-wrapper">
+            <div class="custom-select" id="achievement-version-select">
 
-                <select
-                    id="achievement-version"
-                    class="select achievement-version-select"
+                <button
+                    type="button"
+                    class="custom-select-button"
+                    id="achievement-version-button"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
                 >
-                    <option value="all">
+                    <span id="achievement-version-value">
                         All Versions
-                    </option>
-                </select>
+                    </span>
+
+                    <span class="custom-select-arrow">
+                        ↓
+                    </span>
+                </button>
+
+
+                <div
+                    class="custom-select-menu"
+                    id="achievement-version-menu"
+                    role="listbox"
+                >
+
+                    <button
+                        type="button"
+                        class="custom-select-option selected"
+                        data-value="all"
+                        role="option"
+                        aria-selected="true"
+                    >
+                        All Versions
+                    </button>
+
+                </div>
 
             </div>
 
             <!-- Hide Completed -->
 
-            <button
-                type="button"
-                class="button achievement-filter-button"
-                id="achievement-hide-completed"
-                aria-pressed="false"
-            >
-                <span class="achievement-filter-check">
-                    ✓
-                </span>
+            <label class="checkbox-control">
+                <input
+                    type="checkbox"
+                    id="achievement-hide-completed"
+                >
 
-                Hide Completed
-            </button>
+                <span>
+                    Hide Completed
+                </span>
+            </label>
 
 
             <!-- Import -->
