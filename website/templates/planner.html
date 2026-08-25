@@ -428,7 +428,6 @@
         height: 20px;
 
         object-fit: contain;
-
         vertical-align: middle;
 
         margin-right: 4px;
@@ -448,13 +447,10 @@
 
     .planner-card {
         background: var(--surface);
-
         border: 1px solid var(--border);
-
         border-radius: 14px;
 
         padding: 20px;
-
         box-sizing: border-box;
     }
 
@@ -464,7 +460,6 @@
 
     .planner-card p {
         margin: 6px 0;
-
         color: var(--text-muted);
     }
 
@@ -474,9 +469,7 @@
 
     .planner-card hr {
         border: 0;
-
-        border-top:
-            1px solid var(--border);
+        border-top: 1px solid var(--border);
 
         margin: 16px 0;
     }
@@ -487,9 +480,10 @@
         font-weight: 500;
     }
 
+
     /* ================================
-   Planner Buttons
-   ================================ */
+       Planner Buttons
+       ================================ */
 
     .planner-button {
         padding: 9px 15px;
@@ -520,9 +514,10 @@
         transform: scale(0.97);
     }
 
+
     /* ================================
-   Reminders
-   ================================ */
+       Reminders
+       ================================ */
 
     .reminders-list {
         position: relative;
@@ -553,15 +548,24 @@
         padding: 14px 20px;
 
         background: var(--surface);
-
         border: 1px solid var(--border);
-
         border-radius: 12px;
+
+        animation:
+            reminder-card-in 0.22s ease forwards;
+
+        transform-origin: center;
     }
 
+    .reminder-card.removing {
+        animation:
+            reminder-card-out 0.18s ease forwards;
+    }
+
+
     /* ================================
-   Reminder Delete Button
-   ================================ */
+       Reminder Delete Button
+       ================================ */
 
     .reminder-delete-button {
         width: 36px;
@@ -589,12 +593,19 @@
     }
 
     .reminder-delete-button:hover {
-        background: rgba(220, 90, 90, 0.10);
+        background: color-mix(
+            in srgb,
+            var(--error, #e98282) 10%,
+            transparent
+        );
 
-        border-color:
-            rgba(220, 90, 90, 0.30);
+        border-color: color-mix(
+            in srgb,
+            var(--error, #e98282) 30%,
+            transparent
+        );
 
-        color: #e98282;
+        color: var(--error, #e98282);
     }
 
     .reminder-delete-button:active {
@@ -606,7 +617,6 @@
         height: 19px;
 
         object-fit: contain;
-
         display: block;
 
         transition: filter 0.15s ease;
@@ -624,9 +634,10 @@
             contrast(95%);
     }
 
-    /*
-    --
-     */
+
+    /* ================================
+       Reminder Content
+       ================================ */
 
     .reminder-main {
         min-width: 0;
@@ -645,7 +656,6 @@
         margin-top: 3px;
 
         font-size: 12px;
-
         color: var(--text-muted);
     }
 
@@ -654,7 +664,6 @@
         flex-direction: column;
 
         gap: 3px;
-
         min-width: 0;
     }
 
@@ -670,10 +679,10 @@
     .reminder-value {
         display: flex;
         align-items: center;
+
         gap: 5px;
 
         font-size: 14px;
-
         color: var(--text);
     }
 
@@ -684,6 +693,7 @@
         object-fit: contain;
     }
 
+
     /* ================================
        Reminder Panel
        ================================ */
@@ -693,118 +703,34 @@
         z-index: 200;
 
         margin-top: 16px;
-
         padding: 20px;
 
         background: var(--surface);
-
         border: 1px solid var(--border);
-
         border-radius: 14px;
     }
-
 
     .reminder-panel[hidden] {
         display: none;
     }
 
-
     .reminder-panel:not([hidden]) {
-        animation: reminder-panel-open 0.22s ease forwards;
+        animation:
+            reminder-panel-open 0.22s ease forwards;
     }
-
 
     .reminder-panel.closing {
-        animation: reminder-panel-close 0.18s ease forwards;
+        animation:
+            reminder-panel-close 0.18s ease forwards;
     }
 
-
-    @keyframes reminder-panel-open {
-
-        from {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.98);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-    }
-
-
-    @keyframes reminder-panel-close {
-
-        from {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        to {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.98);
-        }
-
-    }
 
     /* ================================
-       Reminder Card Animations
+       Reminder Panel Header
        ================================ */
-
-    .reminder-card {
-        animation:
-            reminder-card-in 0.22s ease forwards;
-
-        transform-origin: center;
-    }
-
-    .reminder-card.removing {
-        animation:
-            reminder-card-out 0.18s ease forwards;
-    }
-
-
-    @keyframes reminder-card-in {
-
-        from {
-            opacity: 0;
-            transform:
-                translateY(-6px)
-                scale(0.98);
-        }
-
-        to {
-            opacity: 1;
-            transform:
-                translateY(0)
-                scale(1);
-        }
-
-    }
-
-
-    @keyframes reminder-card-out {
-
-        from {
-            opacity: 1;
-            transform:
-                translateY(0)
-                scale(1);
-        }
-
-        to {
-            opacity: 0;
-            transform:
-                translateY(-6px)
-                scale(0.98);
-        }
-
-    }
 
     .reminder-panel-header {
         display: flex;
-
         align-items: flex-start;
         justify-content: space-between;
 
@@ -813,7 +739,6 @@
 
     .reminder-panel-header h3 {
         margin: 5px 0 0;
-
         font-size: 18px;
     }
 
@@ -849,6 +774,10 @@
     }
 
 
+    /* ================================
+       Reminder Form
+       ================================ */
+
     .reminder-form {
         display: grid;
 
@@ -875,7 +804,6 @@
     .reminder-form select,
     .reminder-form input {
         width: 100%;
-
         box-sizing: border-box;
 
         padding: 10px 12px;
@@ -887,19 +815,21 @@
         color: var(--text);
 
         font: inherit;
-
         outline: none;
     }
 
+
+    /* ================================
+       Resin Input
+       ================================ */
+
     .resin-input {
         display: flex;
-
         align-items: center;
 
         gap: 8px;
 
         min-height: 39px;
-
         padding: 0 10px;
 
         box-sizing: border-box;
@@ -935,7 +865,6 @@
         padding-right: 0;
 
         border: 0;
-
         background: transparent;
     }
 
@@ -947,39 +876,13 @@
         white-space: nowrap;
 
         color: var(--text-muted);
-
         font-size: 12px;
     }
 
 
-    .reminder-form-actions {
-        display: flex;
-
-        justify-content: flex-end;
-
-        gap: 8px;
-
-        grid-column: 1 / -1;
-
-        padding-top: 4px;
-    }
-
-    .reminder-save-button {
-        background: var(--accent);
-        color: white;
-
-        border-color: var(--accent);
-    }
-
-    .reminder-save-button:hover {
-        background: var(--accent);
-        filter: brightness(1.08);
-    }
-
-
     /* ================================
-   Custom Account Select
-   ================================ */
+       Custom Select
+       ================================ */
 
     .custom-select {
         position: relative;
@@ -1007,7 +910,6 @@
         font-size: 13px;
 
         cursor: pointer;
-
         outline: none;
 
         transition:
@@ -1059,7 +961,9 @@
     }
 
 
-    /* Dropdown */
+    /* ================================
+       Custom Select Dropdown
+       ================================ */
 
     .custom-select-menu {
         position: absolute;
@@ -1080,7 +984,12 @@
         border-radius: 10px;
 
         box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.25);
+            0 10px 30px
+            color-mix(
+                in srgb,
+                var(--text) 15%,
+                transparent
+            );
 
         overflow: hidden;
     }
@@ -1088,9 +997,6 @@
     .custom-select.open .custom-select-menu {
         display: block;
     }
-
-
-    /* Individual options */
 
     .custom-select-option {
         width: 100%;
@@ -1135,7 +1041,6 @@
 
     .custom-select-option.disabled {
         color: var(--text-muted);
-
         opacity: 0.45;
 
         cursor: not-allowed;
@@ -1148,8 +1053,8 @@
 
 
     /* ================================
-   Custom Input
-   ================================ */
+       Custom Input
+       ================================ */
 
     .custom-input-wrapper {
         width: 100%;
@@ -1160,7 +1065,6 @@
         box-sizing: border-box;
 
         min-height: 39px;
-
         padding: 0 12px;
 
         border: 1px solid var(--border);
@@ -1200,7 +1104,6 @@
         object-fit: contain;
 
         flex-shrink: 0;
-
         margin-right: 8px;
     }
 
@@ -1208,7 +1111,6 @@
         flex: 1;
 
         min-width: 0;
-
         width: auto;
 
         padding: 0;
@@ -1229,35 +1131,19 @@
         box-shadow: none;
     }
 
-    .custom-input-wrapper span:not(.custom-select-arrow) {
+    .custom-input-wrapper > span {
         flex-shrink: 0;
 
         margin-left: 8px;
 
         color: var(--text-muted);
-
         font-size: 13px;
     }
 
-    .custom-input-wrapper .custom-select-arrow {
-        flex-shrink: 0;
 
-        margin-left: 8px;
-
-        color: var(--text-muted);
-
-        font-size: 16px;
-        line-height: 1;
-
-        transition:
-            color 0.15s ease,
-            transform 0.15s ease;
-    }
-
-    .custom-input-wrapper:hover .custom-select-arrow,
-    .custom-input-wrapper:focus-within .custom-select-arrow {
-        color: var(--accent);
-    }
+    /* ================================
+       Number Input
+       ================================ */
 
     .custom-input-wrapper input[type="number"] {
         appearance: textfield;
@@ -1272,111 +1158,12 @@
 
 
     /* ================================
-   Notify Me At
-   ================================ */
-
-    .custom-input-wrapper {
-        width: 100%;
-
-        display: flex;
-        align-items: center;
-
-        box-sizing: border-box;
-
-        min-height: 39px;
-
-        padding: 0 12px;
-
-        border: 1px solid var(--border);
-        border-radius: 10px;
-
-        background: var(--background);
-        color: var(--text);
-
-        transition:
-            background 0.15s ease,
-            border-color 0.15s ease,
-            box-shadow 0.15s ease;
-    }
-
-    .custom-input-wrapper:hover {
-        background: var(--surface-hover);
-    }
-
-    .custom-input-wrapper:focus-within {
-        border-color: var(--accent);
-
-        box-shadow:
-            0 0 0 2px
-            color-mix(
-                in srgb,
-                var(--accent) 15%,
-                transparent
-            );
-    }
-
-    .custom-input-wrapper img {
-        width: 20px;
-        height: 20px;
-
-        object-fit: contain;
-
-        flex-shrink: 0;
-
-        margin-right: 8px;
-    }
-
-    .custom-input-wrapper input {
-        flex: 1;
-
-        min-width: 0;
-
-        width: auto;
-
-        padding: 0;
-
-        border: 0;
-
-        background: transparent;
-        color: var(--text);
-
-        font: inherit;
-        font-size: 13px;
-
-        outline: none;
-    }
-
-    /* Keep the native number spinner */
-    .custom-input-wrapper input[type="number"] {
-        appearance: auto;
-        -webkit-appearance: auto;
-    }
-
-    .custom-input-wrapper input:focus {
-        border: 0;
-        box-shadow: none;
-    }
-
-    /* Resin text */
-    .custom-input-wrapper > span {
-        flex-shrink: 0;
-
-        margin-left: 8px;
-
-        color: var(--text-muted);
-
-        font-size: 13px;
-    }
-
-
-    /* ================================
-   Custom Number Spinner
-   ================================ */
+       Custom Number Spinner
+       ================================ */
 
     .number-spinner {
         display: flex;
         flex-direction: column;
-
         justify-content: center;
 
         width: 20px;
@@ -1434,19 +1221,13 @@
             transform 0.12s ease;
     }
 
-    /* Up */
-
     .number-spinner-button[data-direction="up"] .spinner-arrow {
         transform: rotate(225deg);
     }
 
-    /* Down */
-
     .number-spinner-button[data-direction="down"] .spinner-arrow {
         transform: rotate(45deg);
     }
-
-    /* Press animation */
 
     .number-spinner-button[data-direction="up"]:active .spinner-arrow {
         transform: rotate(225deg) translate(-1px, -1px);
@@ -1458,8 +1239,36 @@
 
 
     /* ================================
-   Planner Toast
-   ================================ */
+       Form Actions
+       ================================ */
+
+    .reminder-form-actions {
+        display: flex;
+        justify-content: flex-end;
+
+        gap: 8px;
+
+        grid-column: 1 / -1;
+
+        padding-top: 4px;
+    }
+
+    .reminder-save-button {
+        background: var(--accent);
+        color: #ffffff;
+
+        border-color: var(--accent);
+    }
+
+    .reminder-save-button:hover {
+        background: var(--accent);
+        filter: brightness(1.08);
+    }
+
+
+    /* ================================
+       Planner Toast
+       ================================ */
 
     .planner-toast {
         position: fixed;
@@ -1482,13 +1291,16 @@
         box-sizing: border-box;
 
         background: var(--surface);
-
         border: 1px solid var(--border);
-
         border-radius: 10px;
 
         box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.25);
+            0 10px 30px
+            color-mix(
+                in srgb,
+                var(--text) 15%,
+                transparent
+            );
 
         color: var(--text);
 
@@ -1497,8 +1309,7 @@
 
         opacity: 0;
 
-        transform:
-            translateY(12px);
+        transform: translateY(12px);
 
         pointer-events: none;
 
@@ -1507,14 +1318,10 @@
             transform 0.2s ease;
     }
 
-
     .planner-toast.show {
         opacity: 1;
-
-        transform:
-            translateY(0);
+        transform: translateY(0);
     }
-
 
     .planner-toast-icon {
         width: 20px;
@@ -1541,27 +1348,11 @@
         font-weight: 700;
     }
 
-
     .planner-toast-message {
         min-width: 0;
-
         line-height: 1.4;
     }
 
-
-    @media (max-width: 700px) {
-
-        .planner-toast {
-            right: 16px;
-            bottom: 16px;
-
-            left: 16px;
-
-            max-width: none;
-            min-width: 0;
-        }
-
-    }
 
     /* ================================
        Empty State
@@ -1571,9 +1362,7 @@
         padding: 24px;
 
         background: var(--surface);
-
         border: 1px solid var(--border);
-
         border-radius: 12px;
 
         color: var(--text-muted);
@@ -1595,7 +1384,68 @@
     }
 
     .planner-error {
-        color: #e98282;
+        color: var(--error, #e98282);
+    }
+
+
+    /* ================================
+       Animations
+       ================================ */
+
+    @keyframes reminder-panel-open {
+        from {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes reminder-panel-close {
+        from {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+        }
+    }
+
+    @keyframes reminder-card-in {
+        from {
+            opacity: 0;
+            transform:
+                translateY(-6px)
+                scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform:
+                translateY(0)
+                scale(1);
+        }
+    }
+
+    @keyframes reminder-card-out {
+        from {
+            opacity: 1;
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+        to {
+            opacity: 0;
+            transform:
+                translateY(-6px)
+                scale(0.98);
+        }
     }
 
 
@@ -1640,24 +1490,14 @@
             min-width: 0;
         }
 
-    }
+        .planner-toast {
+            right: 16px;
+            bottom: 16px;
+            left: 16px;
 
-
-    /* ================================
-       Light Theme Planner Icons
-       ================================ */
-
-    [data-theme="light-blue"] .resin-icon,
-    [data-theme="light-blue"] .reminder-resin-icon,
-    [data-theme="light-pink"] .resin-icon,
-    [data-theme="light-pink"] .reminder-resin-icon {
-        filter: brightness(0.88) saturate(0.9);
-    }
-
-
-    [data-theme="light-blue"] .reminder-delete-button img,
-    [data-theme="light-pink"] .reminder-delete-button img {
-        filter: brightness(0.62) saturate(0.85);
+            max-width: none;
+            min-width: 0;
+        }
     }
 
 </style>

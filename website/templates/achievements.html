@@ -86,6 +86,8 @@
         <!-- Category Controls -->
         <div class="achievement-category-controls">
 
+            <!-- Search -->
+
             <div class="achievement-search-wrapper">
 
                 <span class="achievement-search-icon">
@@ -103,11 +105,13 @@
             </div>
 
 
-            <div class="achievement-version-wrapper">
+            <!-- Version -->
+
+            <div class="select-wrapper">
 
                 <select
                     id="achievement-version"
-                    class="achievement-version"
+                    class="select achievement-version-select"
                 >
                     <option value="all">
                         All Versions
@@ -116,20 +120,23 @@
 
             </div>
 
+            <!-- Hide Completed -->
 
-            <label class="achievement-hide-completed">
-
-                <input
-                    type="checkbox"
-                    id="achievement-hide-completed"
-                >
-
-                <span>
-                    Hide Completed
+            <button
+                type="button"
+                class="achievement-filter-button"
+                id="achievement-hide-completed"
+                aria-pressed="false"
+            >
+                <span class="achievement-filter-check">
+                    ✓
                 </span>
 
-            </label>
+                Hide Completed
+            </button>
 
+
+            <!-- Import -->
 
             <button
                 type="button"
@@ -195,36 +202,29 @@
 
             <div class="achievement-content-header">
 
-                <div class="achievement-category-heading">
+                <span class="eyebrow">
+                    CATEGORY
+                </span>
 
-                    <span class="eyebrow">
-                        CATEGORY
+                <div class="achievement-category-title-row">
+
+                    <h2 id="achievement-category-title">
+                        Wonders of the World
+                    </h2>
+
+                    <span id="achievement-category-percent">
+                        0% (0/0)
                     </span>
 
-                   <div class="achievement-category-title">
+                </div>
 
-                       <h2 id="achievement-category-title">
-                           Wonders of the World
-                       </h2>
+                <div class="achievement-category-progress">
 
-                       <span
-                           class="achievement-category-percent"
-                           id="achievement-category-percent"
-                       >
-                           0% (0/0)
-                       </span>
-
-                   </div>
-
-                   <div class="achievement-category-progress">
-
-                       <div
-                           class="achievement-category-progress-fill"
-                           id="achievement-category-progress-fill"
-                           style="width: 0%;"
-                       ></div>
-
-                   </div>
+                    <div
+                        class="achievement-category-progress-fill"
+                        id="achievement-category-progress-fill"
+                        style="width: 0%;"
+                    ></div>
 
                 </div>
 
