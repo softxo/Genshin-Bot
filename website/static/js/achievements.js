@@ -495,11 +495,6 @@ window.initAchievements = function () {
                 "achievement-search"
             );
 
-        const achievementVersionSelect =
-            document.getElementById(
-                "achievement-version-select"
-            );
-
         const achievementHideCompleted =
             document.getElementById(
                 "achievement-hide-completed"
@@ -514,6 +509,23 @@ window.initAchievements = function () {
             document.getElementById(
                 "achievement-import-input"
             );
+
+
+        if (
+            achievementImportButton &&
+            achievementImportInput
+        ) {
+
+            achievementImportButton.addEventListener(
+                "click",
+                () => {
+
+                    achievementImportInput.click();
+
+                }
+            );
+
+        }
 
 
         /*
@@ -574,6 +586,9 @@ window.initAchievements = function () {
             }
 
 
+            menu.innerHTML = "";
+
+
             const versions =
                 new Set();
 
@@ -597,24 +612,137 @@ window.initAchievements = function () {
             );
 
 
-            const sortedVersions =
-                [...versions].sort(
-                    (a, b) => {
+            /*
+             * ------------------------------------------
+             * VERSION POSITION
+             * ------------------------------------------
+             */
 
-                        return a.localeCompare(
-                            b,
-                            undefined,
-                            {
-                                numeric: true,
-                                sensitivity: "base"
-                            }
+            function getVersionPosition(version) {
+
+                const value =
+                    String(version).trim();
+
+
+                /*
+                 * Normal versions:
+                 *
+                 * 1.0
+                 * 2.4
+                 * 6.2
+                 */
+
+                const normalMatch =
+                    value.match(/^(\d+)\.(\d+)$/);
+
+
+                if (normalMatch) {
+
+                    return {
+                        major: Number(normalMatch[1]),
+                        minor: Number(normalMatch[2])
+                    };
+
+                }
+
+
+                /*
+                 * Luna:
+                 *
+                 * "Luna IV" [6.3]
+                 */
+
+                const lunaMatch =
+                    value.match(/\[(\d+)\.(\d+)\]/);
+
+
+                if (lunaMatch) {
+
+                    return {
+                        major: Number(lunaMatch[1]),
+                        minor: Number(lunaMatch[2])
+                    };
+
+                }
+
+
+                return {
+                    major: 999,
+                    minor: 999
+                };
+
+            }
+
+
+            function formatVersionLabel(version) {
+
+                const value =
+                    String(version).trim();
+
+
+                const lunaMatch =
+                    value.match(/^"?(Luna[^"]*)"?.*\[(\d+\.\d+)\]/i);
+
+
+                if (lunaMatch) {
+
+                    return lunaMatch[1];
+
+                }
+
+
+                return value;
+
+            }
+
+
+            /*
+             * ------------------------------------------
+             * SORT VERSIONS
+             * ------------------------------------------
+             */
+
+            const sortedVersions =
+                [...versions].sort((a, b) => {
+
+                    const aPosition =
+                        getVersionPosition(a);
+
+                    const bPosition =
+                        getVersionPosition(b);
+
+
+                    /*
+                     * Sort by major version first.
+                     *
+                     * 1.x
+                     * 2.x
+                     * 3.x
+                     * ...
+                     *
+                     * Then sort by minor version
+                     * inside each major version.
+                     */
+
+                    if (
+                        aPosition.major !==
+                        bPosition.major
+                    ) {
+
+                        return (
+                            aPosition.major -
+                            bPosition.major
                         );
 
                     }
-                );
 
 
-            menu.innerHTML = "";
+                    return (
+                        aPosition.minor -
+                        bPosition.minor
+                    );
+
+                });
 
 
             /*
@@ -634,6 +762,12 @@ window.initAchievements = function () {
             allOption.className =
                 "custom-select-option selected";
 
+            allOption.classList.add(
+                "version-all-option"
+            );
+
+            allOption.style.gridColumn = "1 / -1";
+
             allOption.dataset.value =
                 "all";
 
@@ -650,67 +784,284 @@ window.initAchievements = function () {
                 "true"
             );
 
+            allOption.addEventListener(
+            "click",
+            () => {
+
+                achievementSelectedVersion = "all";
+
+
+                const hiddenVersionInput =
+                    document.getElementById(
+                        "achievement-version"
+                    );
+
+
+                if (hiddenVersionInput) {
+
+                    hiddenVersionInput.value = "all";
+
+                }
+
+
+                value.textContent =
+                    "All Versions";
+
+
+                menu
+                    .querySelectorAll(
+                        ".custom-select-option"
+                    )
+                    .forEach(
+                        otherOption => {
+
+                            const selected =
+                                otherOption ===
+                                allOption;
+
+
+                            otherOption.classList.toggle(
+                                "selected",
+                                selected
+                            );
+
+
+                            otherOption.setAttribute(
+                                "aria-selected",
+                                selected
+                                    ? "true"
+                                    : "false"
+                            );
+
+                        }
+                    );
+
+
+                select.classList.remove(
+                    "open"
+                );
+
+
+                const button =
+                    select.querySelector(
+                        ".custom-select-button"
+                    );
+
+
+                if (button) {
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+
+                buildCategories();
+
+            }
+        );
+
             menu.appendChild(
                 allOption
             );
 
-
             /*
              * ------------------------------------------
-             * VERSION OPTIONS
+             * BUILD VERSION GRID
              * ------------------------------------------
+             *
+             * Versions are arranged by:
+             *
+             *       1.x    2.x    3.x
+             *       ─────────────────
+             *  .0   1.0    2.0
+             *  .1   1.1    2.1
+             *  .2   1.2    2.2
+             *  .3   1.3    2.3
+             *
+             * Missing versions leave an empty space.
              */
 
-            sortedVersions.forEach(
-                version => {
+            const versionGroups = new Map();
 
-                    const option =
-                        document.createElement(
-                            "button"
-                        );
 
-                    option.type =
-                        "button";
+            sortedVersions.forEach(version => {
 
-                    option.className =
-                        "custom-select-option";
+                const position =
+                    getVersionPosition(version);
 
-                    option.dataset.value =
-                        version;
+                if (
+                    position.major === 999
+                ) {
+                    return;
+                }
 
-                    option.textContent =
-                        version;
+                if (!versionGroups.has(position.major)) {
 
-                    option.setAttribute(
-                        "role",
-                        "option"
-                    );
-
-                    option.setAttribute(
-                        "aria-selected",
-                        "false"
-                    );
-
-                    menu.appendChild(
-                        option
+                    versionGroups.set(
+                        position.major,
+                        []
                     );
 
                 }
-            );
+
+                versionGroups
+                    .get(position.major)
+                    .push({
+                        version,
+                        minor: position.minor
+                    });
+
+            });
 
 
             /*
-             * ------------------------------------------
-             * OPTION CLICK HANDLERS
-             * ------------------------------------------
+             * Sort the major-version columns.
              */
 
-            menu
-                .querySelectorAll(
-                    ".custom-select-option"
-                )
-                .forEach(
-                    option => {
+            const majorVersions =
+                [...versionGroups.keys()]
+                    .sort(
+                        (a, b) => a - b
+                    );
+
+
+            /*
+             * Find the highest minor version.
+             *
+             * This determines how many rows
+             * the grid needs.
+             */
+
+            const maxMinor =
+                Math.max(
+                    ...[
+                        ...versionGroups.values()
+                    ].flatMap(
+                        versions =>
+                            versions.map(
+                                entry => entry.minor
+                            )
+                    ),
+                    0
+                );
+
+
+            /*
+             * Build the grid row-by-row.
+             *
+             * This is important:
+             *
+             * Row 0:
+             * 1.0   2.0
+             *
+             * Row 1:
+             * 1.1   2.1
+             *
+             * Row 2:
+             * 1.2   2.2
+             *
+             * etc.
+             *
+             * Missing versions are represented by
+             * empty grid cells.
+             */
+
+            for (
+                let minor = 0;
+                minor <= maxMinor;
+                minor++
+            ) {
+
+                majorVersions.forEach(
+                    major => {
+
+                        const versionsForMajor =
+                            versionGroups.get(
+                                major
+                            );
+
+
+                        const versionEntry =
+                            versionsForMajor.find(
+                                entry =>
+                                    entry.minor === minor
+                            );
+
+
+                        /*
+                         * No version exists at this
+                         * position.
+                         *
+                         * Leave the grid cell empty.
+                         */
+
+                        if (!versionEntry) {
+
+                            const spacer =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            spacer.className =
+                                "custom-select-option-spacer";
+
+                            menu.appendChild(
+                                spacer
+                            );
+
+                            return;
+
+                        }
+
+
+                        const version =
+                            versionEntry.version;
+
+
+                        const option =
+                            document.createElement(
+                                "button"
+                            );
+
+                        if (minor === 0) {
+                            option.classList.add(
+                                "achievement-version-first-row"
+                            );
+                        }
+
+
+                        option.type =
+                            "button";
+
+
+                        option.className =
+                            "custom-select-option";
+
+
+                        option.setAttribute(
+                            "role",
+                            "option"
+                        );
+
+
+                        option.setAttribute(
+                            "aria-selected",
+                            "false"
+                        );
+
+
+                        option.dataset.value =
+                            version;
+
+
+                        option.textContent =
+                            formatVersionLabel(
+                                version
+                            );
+
 
                         option.addEventListener(
                             "click",
@@ -723,16 +1074,18 @@ window.initAchievements = function () {
                                 achievementSelectedVersion =
                                     selectedValue;
 
+
                                 const hiddenVersionInput =
                                     document.getElementById(
                                         "achievement-version"
                                     );
 
+
                                 if (hiddenVersionInput) {
 
                                     hiddenVersionInput.value =
                                         selectedValue;
-                                
+
                                 }
 
 
@@ -789,70 +1142,40 @@ window.initAchievements = function () {
                             }
                         );
 
+
+                        menu.appendChild(
+                            option
+                        );
+
                     }
                 );
 
-        }
-
-
-        function setupAchievementVersionDropdown() {
-
-            const select =
-                document.getElementById(
-                    "achievement-version-select"
-                );
-
-            if (!select) {
-                return;
             }
-
 
             /*
-             * Prevent duplicate initialization.
+             * ------------------------------------------
+             * DROPDOWN BUTTON
+             * ------------------------------------------
              */
-
-            if (
-                select.dataset.initialized === "true"
-            ) {
-                return;
-            }
-
-            select.dataset.initialized =
-                "true";
-
 
             const button =
                 select.querySelector(
                     ".custom-select-button"
                 );
 
+            if (button) {
 
-            if (!button) {
-                return;
-            }
+                button.onclick = function (event) {
 
-
-            button.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-
-            button.addEventListener(
-                "click",
-                event => {
-
+                    event.preventDefault();
                     event.stopPropagation();
 
-
-                    const isOpen =
-                        select.classList.contains(
-                            "open"
-                        );
+                    const shouldOpen =
+                        !select.classList.contains("open");
 
 
                     /*
-                     * Close every other custom select.
+                     * Close every other custom dropdown.
                      */
 
                     document
@@ -870,12 +1193,10 @@ window.initAchievements = function () {
                                         "open"
                                     );
 
-
                                     const otherButton =
                                         otherSelect.querySelector(
                                             ".custom-select-button"
                                         );
-
 
                                     if (otherButton) {
 
@@ -896,10 +1217,6 @@ window.initAchievements = function () {
                      * Toggle this dropdown.
                      */
 
-                    const shouldOpen =
-                        !isOpen;
-
-
                     select.classList.toggle(
                         "open",
                         shouldOpen
@@ -913,8 +1230,9 @@ window.initAchievements = function () {
                             : "false"
                     );
 
-                }
-            );
+                };
+
+            }
 
         }
 
@@ -1103,17 +1421,20 @@ window.initAchievements = function () {
                 "/api/achievements"
             );
 
+
             if (!response.ok) {
+
                 throw new Error(
                     "Failed to load achievements."
                 );
+
             }
 
-            achievementData = await response.json();
+
+            achievementData =
+                await response.json();
 
             buildVersionOptions();
-
-            setupAchievementVersionDropdown();
 
             buildCategories();
 
@@ -1122,7 +1443,7 @@ window.initAchievements = function () {
         } catch (error) {
 
             console.error(
-                "Failed to load achievements:",
+                "[Achievements] INITIALIZATION ERROR:",
                 error
             );
 
@@ -1449,9 +1770,6 @@ window.initAchievements = function () {
 
         const data =
             achievementData.categories[category];
-
-        console.log("Opened category:", category);
-        console.log("Category data:", data);
 
 
         if (!data) {
@@ -2790,17 +3108,22 @@ document.addEventListener(
 );
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+function tryInitAchievements() {
 
-        if (
-            document.getElementById(
-                "achievement-categories"
-            )
-        ) {
-            window.initAchievements();
-        }
+    if (
+        document.getElementById(
+            "achievement-categories"
+        )
+    ) {
+
+        window.initAchievements();
 
     }
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    tryInitAchievements
 );
