@@ -162,6 +162,8 @@ body {
 
     z-index: 300;
 
+    display: grid;
+
     padding: 5px;
 
     background: var(--surface);
@@ -3569,14 +3571,9 @@ body {
 
 .achievement-category-controls {
     position: relative;
-    z-index: 9999;
-}
-
-
-.achievement-category-controls {
-    position: relative;
     z-index: 1000;
 }
+
 
 #achievement-version-select {
     position: relative;
