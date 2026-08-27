@@ -2184,7 +2184,7 @@ window.initAchievements = function () {
 
         const day =
             String(date.getDate()).padStart(2, "0");
-
+    
         const month =
             String(date.getMonth() + 1).padStart(2, "0");
 
@@ -2349,11 +2349,11 @@ window.initAchievements = function () {
                                                 }
                                                 
                                                 ${
-                                                    tier.completed && tier.completed_at
+                                                    tier.completed && tier.timestamp
                                                         ? `
                                                             <div class="achievement-tier-completed-at">
                                                                 Completed at ${formatCompletedAt(
-                                                                    tier.completed_at
+                                                                    tier.timestamp
                                                                 )}
                                                             </div>
                                                         `
