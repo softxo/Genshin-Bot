@@ -148,8 +148,11 @@
 
             setTimeout(() => {
 
+                const next =
+                    {{ next | tojson }};
+
                 window.location.href =
-                    "/planner";
+                    next || "/planner";
 
             }, 800);
 
