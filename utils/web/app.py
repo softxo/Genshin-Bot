@@ -637,7 +637,7 @@ async def achievements(
 
     if session is None:
         return RedirectResponse(
-            url="/verify?next=/planner",
+            url="/verify?next=/achievements",
             status_code=303,
         )
 
