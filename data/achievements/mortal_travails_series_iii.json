@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "travails_iii_001",
+      "genshin_ids": [
+        80175
+      ],
       "name": "The Essence of Flora",
       "category": "Mortal Travails: Series III",
       "region": [],
       "hidden": false,
+      "version": "3.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.0",
           "description": "Obtain the power of Dendro.",
           "primogems": 5
         }
@@ -17,14 +20,17 @@
     },
     {
       "id": "travails_iii_002",
+      "genshin_ids": [
+        80176
+      ],
       "name": "Reminiscence of Gurabad",
       "category": "Mortal Travails: Series III",
       "region": [],
       "hidden": false,
+      "version": "3.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.0",
           "description": "Collect the entire \"The Tale of Shiruyeh and Shirin\" series.",
           "primogems": 5
         }
@@ -32,14 +38,17 @@
     },
     {
       "id": "travails_iii_003",
+      "genshin_ids": [
+        80177
+      ],
       "name": "Bright as a Flame",
       "category": "Mortal Travails: Series III",
       "region": [],
       "hidden": false,
+      "version": "3.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.0",
           "description": "Collect the entire \"The Folio of Foliage\" series.",
           "primogems": 5
         }
@@ -47,14 +56,17 @@
     },
     {
       "id": "travails_iii_004",
+      "genshin_ids": [
+        80178
+      ],
       "name": "Farris' Journey",
       "category": "Mortal Travails: Series III",
       "region": [],
       "hidden": false,
+      "version": "3.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.0",
           "description": "Collect the entire \"Scroll of Streaming Song\" series.",
           "primogems": 5
         }

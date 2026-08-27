@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "travails_ii_001",
+      "genshin_ids": [
+        80069
+      ],
       "name": "Unlimited Power!",
       "category": "Mortal Travails: Series II",
       "region": [],
       "hidden": false,
+      "version": "2.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.0",
           "description": "Obtain the power of Electro.",
           "primogems": 5
         }
@@ -17,14 +20,17 @@
     },
     {
       "id": "travails_ii_002",
+      "genshin_ids": [
+        80070
+      ],
       "name": "Land of Dandelions",
       "category": "Mortal Travails: Series II",
       "region": [],
       "hidden": false,
+      "version": "2.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.0",
           "description": "Collect the entire \"The Fox in the Dandelion Sea\" series.",
           "primogems": 5
         }
@@ -32,14 +38,17 @@
     },
     {
       "id": "travails_ii_003",
+      "genshin_ids": [
+        80071
+      ],
       "name": "True Friendship Takes Sacrifice",
       "category": "Mortal Travails: Series II",
       "region": [],
       "hidden": false,
+      "version": "2.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.0",
           "description": "Collect the entire \"The Boar Princess\" series.",
           "primogems": 5
         }
@@ -47,14 +56,17 @@
     },
     {
       "id": "travails_ii_004",
+      "genshin_ids": [
+        80072
+      ],
       "name": "Eternal Youth",
       "category": "Mortal Travails: Series II",
       "region": [],
       "hidden": false,
+      "version": "2.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.0",
           "description": "Collect the entire \"Vera's Melancholy\" series.",
           "primogems": 5
         }
@@ -62,14 +74,17 @@
     },
     {
       "id": "travails_ii_005",
+      "genshin_ids": [
+        80073
+      ],
       "name": "Hilichurlian Studies Expert",
       "category": "Mortal Travails: Series II",
       "region": [],
       "hidden": false,
+      "version": "2.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.0",
           "description": "Collect the entire \"Hilichurl Cultural Customs\" series.",
           "primogems": 5
         }

@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "travails_iv_001",
+      "genshin_ids": [
+        80268
+      ],
       "name": "Land of Fair Springs",
       "category": "Mortal Travails: Series IV",
       "region": [],
       "hidden": false,
+      "version": "4.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.0",
           "description": "Obtain the power of Hydro.",
           "primogems": 5
         }
@@ -17,14 +20,17 @@
     },
     {
       "id": "travails_iv_002",
+      "genshin_ids": [
+        80269
+      ],
       "name": "Renart the Deceiver",
       "category": "Mortal Travails: Series IV",
       "region": [],
       "hidden": false,
+      "version": "4.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.0",
           "description": "Collect the entire \"Fables de Fontaine\" series.",
           "primogems": 5
         }
@@ -32,14 +38,17 @@
     },
     {
       "id": "travails_iv_003",
+      "genshin_ids": [
+        80270
+      ],
       "name": "Robben versus Chesterton",
       "category": "Mortal Travails: Series IV",
       "region": [],
       "hidden": false,
+      "version": "4.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.0",
           "description": "Collect the entire \"Robben versus Chesterton: Iridescent Brooch\" series.",
           "primogems": 5
         }
@@ -47,14 +56,17 @@
     },
     {
       "id": "travails_iv_004",
+      "genshin_ids": [
+        80271
+      ],
       "name": "Compendium of Misery",
       "category": "Mortal Travails: Series IV",
       "region": [],
       "hidden": false,
+      "version": "4.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.0",
           "description": "Collect the entire \"The History of the Decline and Fall of Remuria\" series.",
           "primogems": 5
         }

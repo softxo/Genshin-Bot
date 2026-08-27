@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "memories_001",
+      "genshin_ids": [
+        84026
+      ],
       "name": "Fantastic Voyage: Prologue",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Complete \"Fantastic Voyage\" and unlock all endings.",
           "primogems": 20
         }
@@ -17,14 +20,17 @@
     },
     {
       "id": "memories_002",
+      "genshin_ids": [
+        84100
+      ],
       "name": "Archaic Lord of Lightning and Blitz",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Witness the awesome meteorological power of Bennett's phenomenally bad luck.",
           "primogems": 5
         }
@@ -32,14 +38,17 @@
     },
     {
       "id": "memories_003",
+      "genshin_ids": [
+        84101
+      ],
       "name": "The Power of Luck",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Activate the mechanisms and obtain the treasure without making any mistakes.",
           "primogems": 5
         }
@@ -47,14 +56,17 @@
     },
     {
       "id": "memories_004",
+      "genshin_ids": [
+        84104
+      ],
       "name": "Evil Is Banished",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Complete \"Signs of Evil\" and unlock all endings.",
           "primogems": 20
         }
@@ -62,14 +74,17 @@
     },
     {
       "id": "memories_005",
+      "genshin_ids": [
+        84028
+      ],
       "name": "Behold, Mine Evil-Espying Eye!",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Correctly interpret all clues.",
           "primogems": 5
         }
@@ -77,14 +92,17 @@
     },
     {
       "id": "memories_006",
+      "genshin_ids": [
+        84107
+      ],
       "name": "Red Hot Chili Popsicles",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Make a popsicle using the wrong recipe and provoke Chongyun's Pure-Yang spirit.",
           "primogems": 5
         }
@@ -92,14 +110,17 @@
     },
     {
       "id": "memories_007",
+      "genshin_ids": [
+        84102
+      ],
       "name": "A Line That May Be Crossed",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Complete \"Wellspring of Healing\" and unlock all endings.",
           "primogems": 20
         }
@@ -107,14 +128,17 @@
     },
     {
       "id": "memories_008",
+      "genshin_ids": [
+        84108
+      ],
       "name": "An Idol's Last Line of Defense",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Successfully persuade Albert and Barbara's other fans to leave.",
           "primogems": 5
         }
@@ -122,14 +146,17 @@
     },
     {
       "id": "memories_009",
+      "genshin_ids": [
+        84105
+      ],
       "name": "Mondstadt's Spiciest Surprise",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Sample Barbara's Chilibrew.",
           "primogems": 5
         }
@@ -137,14 +164,17 @@
     },
     {
       "id": "memories_010",
+      "genshin_ids": [
+        84103
+      ],
       "name": "A Maid of Strength and Virtue",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Complete \"Chivalric Training\" and unlock all endings.",
           "primogems": 20
         }
@@ -152,14 +182,17 @@
     },
     {
       "id": "memories_011",
+      "genshin_ids": [
+        84106
+      ],
       "name": "\"...For I Am Duty Bound\"",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Help Noelle discover the source of her strength.",
           "primogems": 5
         }
@@ -167,14 +200,17 @@
     },
     {
       "id": "memories_012",
+      "genshin_ids": [
+        84109
+      ],
       "name": "A World Known Only Unto Roses",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.4",
           "description": "Read Noelle's study notes.",
           "primogems": 5
         }
@@ -182,14 +218,17 @@
     },
     {
       "id": "memories_013",
+      "genshin_ids": [
+        84110
+      ],
       "name": "Stress Relief",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Complete \"Knightly Exam Prep\" and unlock all endings.",
           "primogems": 20
         }
@@ -197,14 +236,17 @@
     },
     {
       "id": "memories_014",
+      "genshin_ids": [
+        84111
+      ],
       "name": "Invulnerable Maid-Knight",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Listen to \"A Knight's Journey Through Liyue\" with Noelle.",
           "primogems": 5
         }
@@ -212,14 +254,17 @@
     },
     {
       "id": "memories_015",
+      "genshin_ids": [
+        84112
+      ],
       "name": "Mondstadt's Note-Taker General",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Read Noelle's study notes.",
           "primogems": 5
         }
@@ -227,14 +272,17 @@
     },
     {
       "id": "memories_016",
+      "genshin_ids": [
+        84113
+      ],
       "name": "Diona Special, Stirred, Not Shaken",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Complete \"The Cat and the Cocktail\" and unlock all endings.",
           "primogems": 20
         }
@@ -242,14 +290,17 @@
     },
     {
       "id": "memories_017",
+      "genshin_ids": [
+        84114
+      ],
       "name": "But There's a Catch...",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Help Diona find a special base drink.",
           "primogems": 5
         }
@@ -257,14 +308,17 @@
     },
     {
       "id": "memories_018",
+      "genshin_ids": [
+        84115
+      ],
       "name": "Kitten Queen",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "1.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.5",
           "description": "Bring all the cats back to The Cat's Tail.",
           "primogems": 5
         }
@@ -272,14 +326,17 @@
     },
     {
       "id": "memories_019",
+      "genshin_ids": [
+        84116
+      ],
       "name": "Everyone's Happy",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "Complete \"A Housekeeper's Daily Chores\" and unlock all endings.",
           "primogems": 20
         }
@@ -287,14 +344,17 @@
     },
     {
       "id": "memories_020",
+      "genshin_ids": [
+        84117
+      ],
       "name": "Housekeeper Extraordinaire",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "Complete the big cleanup within the time limit",
           "primogems": 5
         }
@@ -302,14 +362,17 @@
     },
     {
       "id": "memories_021",
+      "genshin_ids": [
+        84118
+      ],
       "name": "From the Sea Never Returning",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "Learn of Inu Shoushou's story together with Thoma",
           "primogems": 5
         }
@@ -317,14 +380,17 @@
     },
     {
       "id": "memories_022",
+      "genshin_ids": [
+        84119
+      ],
       "name": "Taller by Half",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "Complete \"Yoohoo Art: Seichou no Jutsu\" and unlock all endings.",
           "primogems": 20
         }
@@ -332,14 +398,17 @@
     },
     {
       "id": "memories_023",
+      "genshin_ids": [
+        84120
+      ],
       "name": "Mujina-Class Ninja",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "Obtain Sayu's highest rating during agility training.",
           "primogems": 5
         }
@@ -347,14 +416,17 @@
     },
     {
       "id": "memories_024",
+      "genshin_ids": [
+        84121
+      ],
       "name": "Dish Effect: Mobility Decreased",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.2",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.2",
           "description": "You were unable to prevent Sayu's reckless consumption...",
           "primogems": 5
         }
@@ -362,14 +434,17 @@
     },
     {
       "id": "memories_025",
+      "genshin_ids": [
+        84125
+      ],
       "name": "General of Watatsumi",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Complete \"The Canine General's Special Operations\" and unlock all endings.",
           "primogems": 20
         }
@@ -377,14 +452,17 @@
     },
     {
       "id": "memories_026",
+      "genshin_ids": [
+        84126
+      ],
       "name": "Changing Times",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Draw all fortune slips at the Grand Narukami Shrine.",
           "primogems": 5
         }
@@ -392,14 +470,17 @@
     },
     {
       "id": "memories_027",
+      "genshin_ids": [
+        84127
+      ],
       "name": "To Tell or Not to Tell, That Is the Question",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Discover Ms. Hina's true identity at the Yae Publishing House.",
           "primogems": 5
         }
@@ -407,14 +488,17 @@
     },
     {
       "id": "memories_028",
+      "genshin_ids": [
+        84122
+      ],
       "name": "Honorary Crux Member",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Complete \"When the Crux Shines Bright\" and unlock all endings.",
           "primogems": 20
         }
@@ -422,14 +506,17 @@
     },
     {
       "id": "memories_029",
+      "genshin_ids": [
+        84123
+      ],
       "name": "Wine Unburdens",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Take part in the Qingce banquet with Beidou.",
           "primogems": 5
         }
@@ -437,14 +524,17 @@
     },
     {
       "id": "memories_030",
+      "genshin_ids": [
+        84124
+      ],
       "name": "Guyun Buyers' Club",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.3",
           "description": "Find out the truth behind the deal Beidou's making.",
           "primogems": 5
         }
@@ -452,14 +542,17 @@
     },
     {
       "id": "memories_031",
+      "genshin_ids": [
+        84128
+      ],
       "name": "Megrez's Companion Star",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "Complete \"The Jade Chamber's Returning Guest\" and unlock all endings.",
           "primogems": 20
         }
@@ -467,14 +560,17 @@
     },
     {
       "id": "memories_032",
+      "genshin_ids": [
+        84129
+      ],
       "name": "You've Got to Have Reserves",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "Fish? The more the merrier, of course",
           "primogems": 5
         }
@@ -482,14 +578,17 @@
     },
     {
       "id": "memories_033",
+      "genshin_ids": [
+        84130
+      ],
       "name": "Overprotectiveness",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "A single stone births a thousand ripples. It seems like Ningguang's day off is not to be.",
           "primogems": 5
         }
@@ -497,14 +596,17 @@
     },
     {
       "id": "memories_034",
+      "genshin_ids": [
+        84131
+      ],
       "name": "The Lingering Song",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "Complete \"A Song That Knows Grace\" and unlock all endings.",
           "primogems": 20
         }
@@ -512,14 +614,17 @@
     },
     {
       "id": "memories_035",
+      "genshin_ids": [
+        84132
+      ],
       "name": "May This Moment Be Made to Last",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "Take a commemorative photo with Yun Jin.",
           "primogems": 5
         }
@@ -527,14 +632,17 @@
     },
     {
       "id": "memories_036",
+      "genshin_ids": [
+        84133
+      ],
       "name": "A Strict Master Trains a Talented Pupil",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.4",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.4",
           "description": "Complete the practice session without hitting a single blue scarecrow.",
           "primogems": 5
         }
@@ -542,14 +650,17 @@
     },
     {
       "id": "memories_037",
+      "genshin_ids": [
+        84134
+      ],
       "name": "Arataki Gang Chief Advisor",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.7",
           "description": "Complete \"The Gang's Daily Deeds\" and unlock all endings.",
           "primogems": 20
         }
@@ -557,14 +668,17 @@
     },
     {
       "id": "memories_038",
+      "genshin_ids": [
+        84135
+      ],
       "name": "One More Look!",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.7",
           "description": "Gaze upon the glory that is Kuki Shinobu in a shrine maiden outfit.",
           "primogems": 5
         }
@@ -572,14 +686,17 @@
     },
     {
       "id": "memories_039",
+      "genshin_ids": [
+        84136
+      ],
       "name": "\"Upstairs...\"",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.7",
           "description": "Be dissuaded before alerting Kujou Sara and Kuki Shinobu.",
           "primogems": 5
         }
@@ -587,14 +704,17 @@
     },
     {
       "id": "memories_040",
+      "genshin_ids": [
+        84137
+      ],
       "name": "You Thought We Were For Real, Eh?",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "2.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.8",
           "description": "Complete \"Trap 'Em by Storm\" and unlock all endings.",
           "primogems": 20
         }
@@ -602,14 +722,17 @@
     },
     {
       "id": "memories_041",
+      "genshin_ids": [
+        84138
+      ],
       "name": "An Ideal Detective Am I",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.8",
           "description": "Correctly analyze the motives and the truth behind the crime the first time.",
           "primogems": 5
         }
@@ -617,14 +740,17 @@
     },
     {
       "id": "memories_042",
+      "genshin_ids": [
+        84139
+      ],
       "name": "Sangonomiya Supplications",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "2.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "2.8",
           "description": "Ask Gorou whether Kokomi knows about the happenings on Watatsumi Island.",
           "primogems": 5
         }
@@ -632,14 +758,17 @@
     },
     {
       "id": "memories_043",
+      "genshin_ids": [
+        84140
+      ],
       "name": "Optimal Solution",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "3.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.5",
           "description": "Complete \"A Confounding Conundrum\" and unlock all endings.",
           "primogems": 20
         }
@@ -647,14 +776,17 @@
     },
     {
       "id": "memories_044",
+      "genshin_ids": [
+        84141
+      ],
       "name": "To You in a Hundred Years",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.5",
           "description": "Read all the letters sent to Faruzan.",
           "primogems": 5
         }
@@ -662,14 +794,17 @@
     },
     {
       "id": "memories_045",
+      "genshin_ids": [
+        84142
+      ],
       "name": "Mechanics: From Beginner to...?",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.5",
           "description": "Guess correctly the smallest number of moves it will take to solve a seven-layer Pagoda Stack.",
           "primogems": 5
         }
@@ -677,14 +812,17 @@
     },
     {
       "id": "memories_046",
+      "genshin_ids": [
+        84143
+      ],
       "name": "The Name Is Layla",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "3.6",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.6",
           "description": "Complete \"Ever Silent Stars\" and unlock all endings.",
           "primogems": 20
         }
@@ -692,14 +830,17 @@
     },
     {
       "id": "memories_047",
+      "genshin_ids": [
+        84144
+      ],
       "name": "She's Already Tense",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.6",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.6",
           "description": "Help Layla finish her thesis without causing her further anxiety.",
           "primogems": 5
         }
@@ -707,14 +848,17 @@
     },
     {
       "id": "memories_048",
+      "genshin_ids": [
+        84145
+      ],
       "name": "Secret of Seelie and the Star-Lit Sky",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.6",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.6",
           "description": "Obtain the authentic letter of the Wisdom Seelie.",
           "primogems": 5
         }
@@ -722,14 +866,17 @@
     },
     {
       "id": "memories_049",
+      "genshin_ids": [
+        84146
+      ],
       "name": "Art and Life",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "3.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.7",
           "description": "Complete \"The Pendulum of Weal and Woe\" and unlock all endings.",
           "primogems": 20
         }
@@ -737,14 +884,17 @@
     },
     {
       "id": "memories_050",
+      "genshin_ids": [
+        84147
+      ],
       "name": "School Days",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.7",
           "description": "Find the annotated books in the House of Daena.",
           "primogems": 5
         }
@@ -752,14 +902,17 @@
     },
     {
       "id": "memories_051",
+      "genshin_ids": [
+        84148
+      ],
       "name": "An Architect's Romanticism",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "3.7",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.7",
           "description": "Chat about the future with Kaveh in the desert.",
           "primogems": 5
         }
@@ -767,14 +920,17 @@
     },
     {
       "id": "memories_052",
+      "genshin_ids": [
+        84149
+      ],
       "name": "Make Merry",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "3.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.8",
           "description": "Complete \"Shenanigans and Sweet Wine\" and unlock all endings.",
           "primogems": 5
         }
@@ -782,14 +938,17 @@
     },
     {
       "id": "memories_053",
+      "genshin_ids": [
+        84150
+      ],
       "name": "Lucky Coin",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.8",
           "description": "Participate in the wager set up by Kaeya.",
           "primogems": 5
         }
@@ -797,14 +956,17 @@
     },
     {
       "id": "memories_054",
+      "genshin_ids": [
+        84151
+      ],
       "name": "Shh... Listen!",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "3.8",
       "tiers": [
         {
           "tier": 1,
-          "version": "3.8",
           "description": "Listen to the voice coming from the confinement room.",
           "primogems": 5
         }
@@ -812,14 +974,17 @@
     },
     {
       "id": "memories_055",
+      "genshin_ids": [
+        84152
+      ],
       "name": "Indicators of Fate",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": false,
+      "version": "4.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.5",
           "description": "Complete \"Checks & Cats\" and unlock all endings.",
           "primogems": 20
         }
@@ -827,14 +992,17 @@
     },
     {
       "id": "memories_056",
+      "genshin_ids": [
+        84153
+      ],
       "name": "Speedrun",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "4.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.5",
           "description": "Persuade Lynette to spend a leisurely, peaceful day with you.",
           "primogems": 5
         }
@@ -842,14 +1010,17 @@
     },
     {
       "id": "memories_057",
+      "genshin_ids": [
+        84154
+      ],
       "name": "Decks & Detectives",
       "category": "Memories of the Heart",
       "region": [],
       "hidden": true,
+      "version": "4.5",
       "tiers": [
         {
           "tier": 1,
-          "version": "4.5",
           "description": "Have a peaceful tea party with Lynette after solving the smuggling case.",
           "primogems": 5
         }

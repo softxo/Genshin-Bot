@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "art_of_adventure_001",
+      "genshin_ids": [
+        80007
+      ],
       "name": "Taking Shape",
       "category": "The Art of Adventure",
       "region": [],
       "hidden": false,
+      "version": "1.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.0",
           "description": "Forge a 4-star weapon.",
           "primogems": 10
         }
@@ -17,26 +20,29 @@
     },
     {
       "id": "art_of_adventure_002",
+      "genshin_ids": [
+        80008,
+        80009,
+        80010
+      ],
       "name": "Survival Expert",
       "category": "The Art of Adventure",
       "region": [],
       "hidden": false,
+      "version": "1.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.0",
           "description": "Grasp how 10 different dishes are made.",
           "primogems": 5
         },
         {
           "tier": 2,
-          "version": "1.0",
           "description": "Grasp how 20 different dishes are made.",
           "primogems": 10
         },
         {
           "tier": 3,
-          "version": "1.0",
           "description": "Grasp how 40 different dishes are made.",
           "primogems": 20
         }
@@ -44,26 +50,29 @@
     },
     {
       "id": "art_of_adventure_003",
+      "genshin_ids": [
+        80011,
+        80012,
+        80013
+      ],
       "name": "Star Chef",
       "category": "The Art of Adventure",
       "region": [],
       "hidden": false,
+      "version": "1.0",
       "tiers": [
         {
           "tier": 1,
-          "version": "1.0",
           "description": "Master 10 Recipes.",
           "primogems": 5
         },
         {
           "tier": 2,
-          "version": "1.0",
           "description": "Master 20 Recipes.",
           "primogems": 10
         },
         {
           "tier": 3,
-          "version": "1.0",
           "description": "Master 40 Recipes.",
           "primogems": 20
         }

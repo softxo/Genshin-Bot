@@ -15,3 +15,4 @@ uvicorn
 psycopg[binary]
 psycopg[pool]
 Jinja2
+requests

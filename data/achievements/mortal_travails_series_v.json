@@ -2,14 +2,17 @@
   "achievements": [
     {
       "id": "travails_v_001",
+      "genshin_ids": [
+        80364
+      ],
       "name": "Memory of Fire",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Obtain the power of Pyro.",
           "primogems": 5
         }
@@ -17,14 +20,17 @@
     },
     {
       "id": "travails_v_002",
+      "genshin_ids": [
+        80365
+      ],
       "name": "Dance Into Night's Unfolding",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"Mt. Lingmeng Gossip\" series.",
           "primogems": 5
         }
@@ -32,14 +38,17 @@
     },
     {
       "id": "travails_v_003",
+      "genshin_ids": [
+        80366
+      ],
       "name": "Chakana's Dangling Bough",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"Records of Hanan Pacha\" series.",
           "primogems": 5
         }
@@ -47,14 +56,17 @@
     },
     {
       "id": "travails_v_004",
+      "genshin_ids": [
+        80367
+      ],
       "name": "Springside Reverie",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"Springs of Hidden Jade\" series.",
           "primogems": 5
         }
@@ -62,14 +74,17 @@
     },
     {
       "id": "travails_v_005",
+      "genshin_ids": [
+        80368
+      ],
       "name": "Advent of the Hot Springs",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"Maawe and Monetoo\" series.",
           "primogems": 5
         }
@@ -77,14 +92,17 @@
     },
     {
       "id": "travails_v_006",
+      "genshin_ids": [
+        80369
+      ],
       "name": "Volcanic Emblem: The Blazing Pins",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"The Volcano Lord and the Shadow Pins\" series.",
           "primogems": 5
         }
@@ -92,14 +110,17 @@
     },
     {
       "id": "travails_v_007",
+      "genshin_ids": [
+        80370
+      ],
       "name": "Dragonbolt Chronicles",
       "category": "Mortal Travails: Series V",
       "region": [],
       "hidden": false,
+      "version": "5.3",
       "tiers": [
         {
           "tier": 1,
-          "version": "5.3",
           "description": "Collect the entire \"Fires of Autumn Twilight\" series.",
           "primogems": 5
         }
