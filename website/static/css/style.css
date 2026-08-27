@@ -2821,7 +2821,6 @@ body {
 }
 
 
-
 /* =============================
    SEARCH
    ============================= */
@@ -3668,16 +3667,14 @@ body {
    ============================= */
 
 .achievement-tier-completed-at {
-    display: inline-block;
-
-    margin-top: 4px;
-
     color: var(--text-muted);
 
     font-size: 10px;
     font-weight: 500;
 
-    line-height: 1;
+    line-height: 23px;
+
+    white-space: nowrap;
 
     opacity: 0.7;
 }

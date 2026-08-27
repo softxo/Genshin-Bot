@@ -2172,30 +2172,77 @@ window.initAchievements = function () {
 
     function formatCompletedAt(timestamp) {
 
-        if (!timestamp) {
+        if (
+            timestamp === null ||
+            timestamp === undefined ||
+            timestamp === ""
+        ) {
             return "";
         }
 
-        const date = new Date(timestamp);
+        let date;
+
+        /*
+         * Unix timestamp.
+         *
+         * If the value is small enough to be seconds,
+         * convert it to milliseconds first.
+         */
+
+        if (
+            typeof timestamp === "number" ||
+            /^\d+$/.test(String(timestamp))
+        ) {
+
+            const numericTimestamp =
+                Number(timestamp);
+
+            date =
+                new Date(
+                    numericTimestamp < 100000000000
+                        ? numericTimestamp * 1000
+                        : numericTimestamp
+                );
+
+        } else {
+
+            /*
+             * ISO timestamp, e.g.
+             *
+             * 2026-08-27T11:28:16.904Z
+             */
+
+            date =
+                new Date(timestamp);
+
+        }
 
         if (Number.isNaN(date.getTime())) {
             return "";
         }
 
         const day =
-            String(date.getDate()).padStart(2, "0");
-    
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
         const month =
-            String(date.getMonth() + 1).padStart(2, "0");
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
 
         const year =
             date.getFullYear();
 
         const hours =
-            String(date.getHours()).padStart(2, "0");
+            String(
+                date.getHours()
+            ).padStart(2, "0");
 
         const minutes =
-            String(date.getMinutes()).padStart(2, "0");
+            String(
+                date.getMinutes()
+            ).padStart(2, "0");
 
         return `${day}-${month}-${year} ${hours}:${minutes}`;
     }
@@ -2331,30 +2378,42 @@ window.initAchievements = function () {
                                                 </div>
                                             
                                                 ${
-                                                    tier.progress !== 1
+                                                    tier.progress !== 1 || (tier.completed && tier.timestamp)
                                                         ? `
-                                                            <div class="achievement-tier-progress">
-                                                                <span class="achievement-tier-progress-current">
-                                                                    ${tier.current ?? 0}
-                                                                </span>
-                                                                <span class="achievement-tier-progress-separator">
-                                                                    /
-                                                                </span>
-                                                                <span class="achievement-tier-progress-total">
-                                                                    ${tier.progress ?? 0}
-                                                                </span>
-                                                            </div>
-                                                        `
-                                                        : ""
-                                                }
+                                                            <div class="achievement-tier-progress-row">
                                                 
-                                                ${
-                                                    tier.completed && tier.timestamp
-                                                        ? `
-                                                            <div class="achievement-tier-completed-at">
-                                                                Completed at ${formatCompletedAt(
-                                                                    tier.timestamp
-                                                                )}
+                                                                ${
+                                                                    tier.progress !== 1
+                                                                        ? `
+                                                                            <div class="achievement-tier-progress">
+                                                                                <span class="achievement-tier-progress-current">
+                                                                                    ${tier.current ?? 0}
+                                                                                </span>
+                                                
+                                                                                <span class="achievement-tier-progress-separator">
+                                                                                    /
+                                                                                </span>
+                                                
+                                                                                <span class="achievement-tier-progress-total">
+                                                                                    ${tier.progress ?? 0}
+                                                                                </span>
+                                                                            </div>
+                                                                        `
+                                                                        : ""
+                                                                }
+                                                
+                                                                ${
+                                                                    tier.completed && tier.timestamp
+                                                                        ? `
+                                                                            <span class="achievement-tier-completed-at">
+                                                                                ${formatCompletedAt(
+                                                                                    tier.timestamp
+                                                                                )}
+                                                                            </span>
+                                                                        `
+                                                                        : ""
+                                                                }
+                                                
                                                             </div>
                                                         `
                                                         : ""
@@ -3404,6 +3463,23 @@ window.initAchievements = function () {
                     );
 
 
+                if (!button) {
+                    return;
+                }
+
+
+                const isCompleted =
+                    tier.classList.contains(
+                        "completed"
+                    );
+
+
+                /*
+                 * ------------------------------------------
+                 * FIRST TIER / PREVIOUS TIER COMPLETED
+                 * ------------------------------------------
+                 */
+
                 if (previousCompleted) {
 
                     tier.classList.remove(
@@ -3412,37 +3488,58 @@ window.initAchievements = function () {
 
                     button.disabled = false;
 
-                } else {
 
                     /*
-                     * A tier cannot be completed until
-                     * the previous tier is completed.
+                     * Restore the correct title.
                      */
+
+                    button.title =
+                        isCompleted
+                            ? "Mark Incomplete"
+                            : "Mark Completed";
+
+                }
+
+
+                /*
+                 * ------------------------------------------
+                 * PREVIOUS TIER NOT COMPLETED
+                 * ------------------------------------------
+                 */
+
+                else {
 
                     tier.classList.add(
                         "locked"
                     );
 
-                    tier.classList.remove(
-                        "completed"
-                    );
+                    /*
+                     * A locked tier cannot be completed.
+                     */
 
-                    button.classList.remove(
-                        "completed"
-                    );
+                    if (!isCompleted) {
 
-                    button.disabled = true;
+                        button.classList.remove(
+                            "completed"
+                        );
 
-                    button.title =
-                        "Complete the previous tier first";
+                        button.disabled = true;
+
+                        button.title =
+                            "Complete the previous tier first";
+
+                    }
 
                 }
 
 
+                /*
+                 * The current tier determines whether
+                 * the NEXT tier becomes unlocked.
+                 */
+
                 previousCompleted =
-                    tier.classList.contains(
-                        "completed"
-                    );
+                    isCompleted;
 
             }
         );
