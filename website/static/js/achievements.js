@@ -2070,18 +2070,22 @@ window.initAchievements = function () {
                                                 >
                                             
                                             </div>
-    
-    
+                                            
+                                            
+                                            <button
+                                                type="button"
+                                                class="achievement-notes-button"
+                                                aria-label="Add note"
+                                                title="Add Note"
+                                            >
+                                                Notes
+                                            </button>
+                                            
+                                            
                                             <button
                                                 type="button"
                                                 class="achievement-complete-button ${
                                                     tier.completed ? "completed" : ""
-                                                }"
-                                                aria-label="Mark tier ${tier.tier} completed"
-                                                title="${
-                                                    tier.completed
-                                                        ? "Mark Incomplete"
-                                                        : "Mark Completed"
                                                 }"
                                             >
                                             </button>

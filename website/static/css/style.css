@@ -2579,19 +2579,67 @@ body {
 
     color: var(--text-muted);
 
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
 
     white-space: nowrap;
 }
 
 .achievement-tier-reward img {
-    width: 18px;
-    height: 18px;
+    width: 30px;
+    height: 30px;
 
     display: block;
 
     object-fit: contain;
+}
+
+/* =============================
+   ACHIEVEMENT NOTES BUTTON
+   ============================= */
+
+.achievement-notes-button {
+    height: 28px;
+
+    padding: 0 10px;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border);
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.achievement-notes-button:hover {
+    background: var(--accent-soft);
+
+    border-color: var(--accent-border);
+
+    color: var(--accent);
+
+    transform: translateY(-1px);
+}
+
+
+.achievement-notes-button:active {
+    transform: translateY(0);
 }
 
 
