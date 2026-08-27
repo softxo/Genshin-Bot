@@ -1,0 +1,61 @@
+{
+  "achievements": [
+    {
+      "id": "marksmanship_001",
+      "genshin_ids": [
+
+      ],
+      "name": "Nothing Special, Just Practice",
+      "category": "Marksmanship",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Hit a falcon mid-flight with your bow.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "marksmanship_002",
+      "genshin_ids": [
+
+      ],
+      "name": "Master Sniper",
+      "category": "Marksmanship",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Strike an opponent's weak point from afar with an Aimed Shot.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "marksmanship_003",
+      "genshin_ids": [
+
+      ],
+      "name": "Der Freischütz",
+      "category": "Marksmanship",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Strike an opponent's weak point from extremely far away with an Aimed Shot.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}

@@ -2732,6 +2732,22 @@ body {
     line-height: 1.5;
 }
 
+
+.achievement-tier-note-text ul {
+    margin: 2px 0 2px 18px;
+    padding: 0;
+}
+
+.achievement-tier-note-text li {
+    margin: 0;
+    padding: 0;
+    line-height: 1.35;
+}
+
+.achievement-tier-note-text > br {
+    line-height: 0.6;
+}
+
 /* =============================
    ACHIEVEMENT NOTE REMOVE BUTTON
    ============================= */

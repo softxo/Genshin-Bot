@@ -2248,6 +2248,59 @@ window.initAchievements = function () {
     }
 
 
+    function formatAchievementNote(note) {
+
+        if (!note) {
+            return "";
+        }
+
+        const lines =
+            escapeHTML(note)
+                .split(/\r?\n/);
+
+        let html = "";
+        let inList = false;
+
+        lines.forEach(line => {
+
+            const bulletMatch =
+                line.match(/^\s*-\s+(.*)$/);
+
+            if (bulletMatch) {
+
+                if (!inList) {
+                    html += "<ul>";
+                    inList = true;
+                }
+
+                html += `
+                    <li>${bulletMatch[1]}</li>
+                `;
+
+                return;
+            }
+
+            if (inList) {
+                html += "</ul>";
+                inList = false;
+            }
+
+            if (line.trim() === "") {
+                html += "<br>";
+            } else {
+                html += `${line}<br>`;
+            }
+
+        });
+
+        if (inList) {
+            html += "</ul>";
+        }
+
+        return html;
+    }
+
+
     /*
      * --------------------------------------------------
      * BUILD ACHIEVEMENTS
@@ -2378,25 +2431,30 @@ window.initAchievements = function () {
                                                 </div>
                                             
                                                 ${
-                                                    tier.show_progress || (tier.completed && tier.timestamp)
+                                                    achievement.show_progress ||
+                                                    tier.progress !== 1 ||
+                                                    (tier.completed && tier.timestamp)
                                                         ? `
                                                             <div class="achievement-tier-progress-row">
                                                 
                                                                 ${
-                                                                    tier.show_progress
+                                                                    achievement.show_progress ||
+                                                                    tier.progress !== 1
                                                                         ? `
                                                                             <div class="achievement-tier-progress">
+                                                
                                                                                 <span class="achievement-tier-progress-current">
                                                                                     ${tier.current ?? 0}
                                                                                 </span>
-                                                                
+                                                
                                                                                 <span class="achievement-tier-progress-separator">
                                                                                     /
                                                                                 </span>
-                                                                
+                                                
                                                                                 <span class="achievement-tier-progress-total">
                                                                                     ${tier.progress ?? 0}
                                                                                 </span>
+                                                
                                                                             </div>
                                                                         `
                                                                         : ""
@@ -2424,9 +2482,9 @@ window.initAchievements = function () {
                                                         ? `
                                                             <div class="achievement-tier-note">
                                                                 
-                                                                <span class="achievement-tier-note-text">
-                                                                    ${escapeHTML(tier.note)}
-                                                                </span>
+                                                                <div class="achievement-tier-note-text">
+                                                                    ${formatAchievementNote(tier.note)}
+                                                                </div>
                                                 
                                                                 <button
                                                                     type="button"
