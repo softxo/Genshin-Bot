@@ -1,0 +1,221 @@
+{
+  "achievements": [
+    {
+      "id": "elemental_i_001",
+      "genshin_ids": [
+
+      ],
+      "name": "Cool It!",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Keep an opponent Frozen for over 10s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Keep an opponent Frozen for over 10s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Keep an opponent Frozen for over 10s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_002",
+      "genshin_ids": [
+
+      ],
+      "name": "Go With the Wind!",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Trigger Cryo, Hydro, Pyro and Electro Swirl Reactions at least once each within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Trigger Cryo, Hydro, Pyro and Electro Swirl Reactions at least once each within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Trigger Cryo, Hydro, Pyro and Electro Swirl Reactions at least once each within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_003",
+      "genshin_ids": [
+
+      ],
+      "name": "Season's Greetings",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Freeze 4 opponents within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Freeze 4 opponents within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Freeze 4 opponents within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_004",
+      "genshin_ids": [
+
+      ],
+      "name": "Performance May Decline in Low Temperatures",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Superconduct within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Superconduct within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Superconduct within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_005",
+      "genshin_ids": [
+
+      ],
+      "name": "The Art of War",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Overloaded within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Overloaded within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Overloaded within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_006",
+      "genshin_ids": [
+
+      ],
+      "name": "Melt You Down Like Ice Cream",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Melt within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Melt within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Melt within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_i_007",
+      "genshin_ids": [
+
+      ],
+      "name": "A Little Less Shocking Than Love at First Sight",
+      "category": "Elemental Specialist: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Electro-Charged within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Electro-Charged within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Electro-Charged within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    }
+  ]
+}

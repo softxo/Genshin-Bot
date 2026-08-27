@@ -1,0 +1,85 @@
+{
+  "achievements": [
+    {
+      "id": "elemental_ii_001",
+      "genshin_ids": [
+
+      ],
+      "name": "Grassy Blasty, Sparks 'n' Splash",
+      "category": "Elemental Specialist: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "3.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Burgeon within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Burgeon within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Burgeon within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_ii_002",
+      "genshin_ids": [
+
+      ],
+      "name": "Hyperblooming Circus",
+      "category": "Elemental Specialist: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "3.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat 4 opponents with Hyperbloom within 2s (×1).",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat 4 opponents with Hyperbloom within 2s (×5).",
+          "progress": 5,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat 4 opponents with Hyperbloom within 2s (×10).",
+          "progress": 10,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "elemental_ii_003",
+      "genshin_ids": [
+
+      ],
+      "name": "Active Camouflage",
+      "category": "Elemental Specialist: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "3.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Remove the invisibility of at least 2 Primal Constructs using Quicken, Aggravate, Spread, or Truesense Pulses within 3 seconds.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}
