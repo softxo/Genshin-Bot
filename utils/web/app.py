@@ -827,7 +827,7 @@ async def update_achievement_tier_note_api(
         if not note:
             note = None
 
-    updated = await update_achievement_tier_note(
+    updated = await update_achievement_tier(
         discord_user_id=user_id,
         achievement_id=achievement_id,
         tier=tier,

@@ -1057,7 +1057,8 @@ async def update_achievement_tier(
     *,
     completed: bool | None = None,
     current: int | None = None,
-    completed_at: datetime | None | object = _UNSET
+    completed_at: datetime | None | object = _UNSET,
+    note: str | None | object = _UNSET
 ) -> bool:
 
     existing = await get_achievement_tier_progress(
@@ -1089,10 +1090,11 @@ async def update_achievement_tier(
                     tier,
                     completed,
                     current,
-                    completed_at
+                    completed_at,
+                    note
                 )
                 VALUES (
-                    %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s
                 )
                 """,
                 (
@@ -1101,7 +1103,8 @@ async def update_achievement_tier(
                     tier,
                     completed,
                     current,
-                    completed_at
+                    completed_at,
+                    note
                 )
             )
 
@@ -1121,6 +1124,10 @@ async def update_achievement_tier(
     if completed_at is not _UNSET:
         updates.append("completed_at = %s")
         values.append(completed_at)
+
+    if note is not _UNSET:
+        updates.append("note = %s")
+        values.append(note)
 
     if not updates:
         return False
