@@ -32,6 +32,7 @@ async def load_progress(
             "completed": row["completed"],
             "current": row["current"],
             "timestamp": timestamp,
+            "note": row["note"],
         }
 
     return progress

@@ -3550,6 +3550,49 @@ body {
     white-space: nowrap;
 }
 
+/* =============================
+   ACHIEVEMENT TIER PROGRESS
+   ============================= */
+
+.achievement-tier-progress {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    min-width: 0;
+
+    height: 23px;
+
+    padding: 0 5px;
+
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+
+.achievement-tier-progress-current {
+    color: var(--accent);
+}
+
+.achievement-tier-progress-separator {
+    margin: 0 3px;
+    color: rgba(255, 255, 255, 0.28);
+}
+
+.achievement-tier-progress-total {
+    color: rgba(255, 255, 255, 0.65);
+}
+
 
 /* =============================
    LOCKED ACHIEVEMENT TIERS

@@ -96,43 +96,109 @@ window.initAchievements = function () {
         closeAchievementNotesModal
     );
 
-    achievementNotesModalAdd.addEventListener("click", () => {
+    achievementNotesModalAdd.addEventListener(
+        "click",
+        async () => {
 
-        const note =
-            achievementNotesInput.value.trim();
+            const note =
+                achievementNotesInput.value.trim();
+    
+            if (!note) {
+                achievementNotesInput.focus();
+                return;
+            }
 
-        if (!note) {
-            achievementNotesInput.focus();
-            return;
+            if (!achievementNoteTarget) {
+                return;
+            }
+
+            const {
+                achievement,
+                tier
+            } = achievementNoteTarget;
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/achievements/${encodeURIComponent(
+                            achievement.id
+                        )}/tiers/${tier.tier}/note`,
+                        {
+                            method: "PATCH",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                note: note
+                            })
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    const result =
+                        await response.json();
+
+                    throw new Error(
+                        result.detail ||
+                        "Failed to save note."
+                    );
+
+                }
+
+
+                /*
+                 * Update the local achievement state
+                 * only after the database save succeeds.
+                 */
+
+                tier.note =
+                    note;
+
+
+                /*
+                 * Rebuild the achievement so the
+                 * note immediately appears.
+                 */
+
+                buildAchievements(
+                    achievement.category
+                );
+
+
+                console.log(
+                    "Achievement note saved:",
+                    achievement.name,
+                    tier.tier,
+                    note
+                );
+
+
+                closeAchievementNotesModal();
+
+                achievementNoteTarget =
+                    null;
+
+            } catch (error) {
+
+                console.error(
+                    "[Achievements] Failed to save note:",
+                    error
+                );
+
+                alert(
+                    error.message
+                );
+
+            }
+
         }
-
-        if (!achievementNoteTarget) {
-            return;
-        }
-
-        /*
-         * Store the note on the selected tier.
-         */
-
-        achievementNoteTarget.tier.note =
-            note;
-
-        buildAchievements(
-            achievementNoteTarget.achievement.category
-        );
-
-        console.log(
-            "Achievement note:",
-            achievementNoteTarget.achievement.name,
-            achievementNoteTarget.tier.tier,
-            note
-        );
-
-        closeAchievementNotesModal();
-
-        achievementNoteTarget = null;
-
-    });
+    );
 
     let achievementData = null;
 
@@ -2229,9 +2295,23 @@ window.initAchievements = function () {
                                                     </p>
                                                 </div>
                                             
-                                                <div class="achievement-tier-progress">
-                                                    ${tier.current ?? 0}/${tier.progress ?? 0}
-                                                </div>
+                                                ${
+                                                    tier.progress !== 1
+                                                        ? `
+                                                            <div class="achievement-tier-progress">
+                                                                <span class="achievement-tier-progress-current">
+                                                                    ${tier.current ?? 0}
+                                                                </span>
+                                                                <span class="achievement-tier-progress-separator">
+                                                                    /
+                                                                </span>
+                                                                <span class="achievement-tier-progress-total">
+                                                                    ${tier.progress ?? 0}
+                                                                </span>
+                                                            </div>
+                                                        `
+                                                        : ""
+                                                }
                                             
                                                 ${
                                                     tier.note

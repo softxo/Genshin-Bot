@@ -1005,7 +1005,8 @@ async def get_achievement_progress(
                 tier,
                 completed,
                 current,
-                completed_at
+                completed_at,
+                note
             FROM achievement_progress
             WHERE discord_user_id = %s
             ORDER BY achievement_id, tier
@@ -1021,7 +1022,9 @@ async def get_achievement_tier_progress(
     achievement_id: str,
     tier: int
 ) -> dict | None:
+
     async with get_pool().connection() as connection:
+
         result = await connection.execute(
             """
             SELECT
@@ -1029,7 +1032,8 @@ async def get_achievement_tier_progress(
                 tier,
                 completed,
                 current,
-                completed_at
+                completed_at,
+                note
             FROM achievement_progress
             WHERE discord_user_id = %s
             AND achievement_id = %s
@@ -1139,6 +1143,52 @@ async def update_achievement_tier(
             AND tier = %s
             """,
             tuple(values)
+        )
+
+    return result.rowcount > 0
+
+
+async def update_achievement_tier_note(
+    discord_user_id: int,
+    achievement_id: str,
+    tier: int,
+    note: str | None,
+) -> bool:
+
+    existing = await get_achievement_tier_progress(
+        discord_user_id,
+        achievement_id,
+        tier
+    )
+
+    if existing is None:
+
+        await update_achievement_tier(
+            discord_user_id=discord_user_id,
+            achievement_id=achievement_id,
+            tier=tier,
+            completed=False,
+            current=0,
+        )
+
+    async with get_pool().connection() as connection:
+
+        result = await connection.execute(
+            """
+            UPDATE achievement_progress
+            SET
+                note = %s,
+                updated_at = NOW()
+            WHERE discord_user_id = %s
+            AND achievement_id = %s
+            AND tier = %s
+            """,
+            (
+                note,
+                discord_user_id,
+                achievement_id,
+                tier
+            )
         )
 
     return result.rowcount > 0

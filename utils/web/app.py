@@ -721,10 +721,15 @@ async def achievements_data(
                 "timestamp"
             )
 
+            note = saved_tier.get(
+                "note"
+            )
+
             tier["progress"] = progress
             tier["completed"] = completed
             tier["current"] = current
             tier["timestamp"] = timestamp
+            tier["note"] = note
 
             total_tiers += 1
             categories[category]["total"] += 1
@@ -786,6 +791,55 @@ async def update_achievement_tier_api(
         "achievement_id": achievement_id,
         "tier": tier,
         "completed": completed,
+    }
+
+
+@app.patch("/api/achievements/{achievement_id}/tiers/{tier}/note")
+async def update_achievement_tier_note_api(
+    achievement_id: str,
+    tier: int,
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None),
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    if user_id is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated."
+        )
+
+    body = await request.json()
+
+    note = body.get("note")
+
+    if note is not None and not isinstance(note, str):
+        raise HTTPException(
+            status_code=400,
+            detail="The 'note' field must be a string or null."
+        )
+
+    if isinstance(note, str):
+        note = note.strip()
+
+        if not note:
+            note = None
+
+    updated = await update_achievement_tier_note(
+        discord_user_id=user_id,
+        achievement_id=achievement_id,
+        tier=tier,
+        note=note,
+    )
+
+    return {
+        "success": True,
+        "updated": updated,
+        "achievement_id": achievement_id,
+        "tier": tier,
+        "note": note,
     }
 
 
