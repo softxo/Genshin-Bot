@@ -1067,6 +1067,10 @@ async def update_achievement_tier(
         tier
     )
 
+    # =========================================================
+    # INSERT NEW TIER PROGRESS
+    # =========================================================
+
     if existing is None:
 
         if completed is None:
@@ -1075,16 +1079,47 @@ async def update_achievement_tier(
         if current is None:
             current = 0
 
-        if completed_at is _UNSET:
+        # -----------------------------------------------------
+        # COMPLETED AT
+        # -----------------------------------------------------
 
+        if completed_at is _UNSET:
             completed_at = (
                 datetime.now(timezone.utc)
                 if completed
                 else None
             )
 
+        # -----------------------------------------------------
+        # NOTE
+        # -----------------------------------------------------
+
         if note is _UNSET:
             note = None
+
+        # -----------------------------------------------------
+        # SAFETY
+        # -----------------------------------------------------
+        
+        if not (
+            completed_at is None
+            or isinstance(completed_at, datetime)
+        ):
+            completed_at = (
+                datetime.now(timezone.utc)
+                if completed
+                else None
+            )
+
+        if not (
+            note is None
+            or isinstance(note, str)
+        ):
+            note = None
+
+        # -----------------------------------------------------
+        # INSERT
+        # -----------------------------------------------------
 
         async with get_pool().connection() as connection:
 
@@ -1116,8 +1151,16 @@ async def update_achievement_tier(
 
         return True
 
+    # =========================================================
+    # UPDATE EXISTING TIER PROGRESS
+    # =========================================================
+
     updates = []
     values = []
+
+    # =========================================================
+    # COMPLETED
+    # =========================================================
 
     if completed is not None:
 
@@ -1137,6 +1180,10 @@ async def update_achievement_tier(
                 else None
             )
 
+    # =========================================================
+    # CURRENT
+    # =========================================================
+
     if current is not None:
 
         updates.append(
@@ -1147,38 +1194,91 @@ async def update_achievement_tier(
             current
         )
 
+    # =========================================================
+    # COMPLETED AT
+    # =========================================================
+
     if completed_at is not _UNSET:
 
-        updates.append(
-            "completed_at = %s"
-        )
+        if (
+            completed_at is None
+            or isinstance(completed_at, datetime)
+        ):
 
-        values.append(
-            completed_at
-        )
+            updates.append(
+                "completed_at = %s"
+            )
+
+            values.append(
+                completed_at
+            )
+
+        else:
+
+            # Unexpected object/sentinel.
+            # Derive the timestamp from completion state.
+
+            derived_completed_at = (
+                datetime.now(timezone.utc)
+                if completed
+                else None
+            )
+
+            updates.append(
+                "completed_at = %s"
+            )
+
+            values.append(
+                derived_completed_at
+            )
+
+    # =========================================================
+    # NOTE
+    # =========================================================
 
     if note is not _UNSET:
 
-        updates.append(
-            "note = %s"
-        )
+        if (
+            note is None
+            or isinstance(note, str)
+        ):
 
-        values.append(
-            note
-        )
+            updates.append(
+                "note = %s"
+            )
+
+            values.append(
+                note
+            )
+
+    # =========================================================
+    # NOTHING TO UPDATE
+    # =========================================================
 
     if not updates:
         return False
 
+    # =========================================================
+    # UPDATED AT
+    # =========================================================
+
     updates.append(
         "updated_at = NOW()"
     )
+
+    # =========================================================
+    # WHERE PARAMETERS
+    # =========================================================
 
     values.extend([
         discord_user_id,
         achievement_id,
         tier
     ])
+
+    # =========================================================
+    # DATABASE UPDATE
+    # =========================================================
 
     async with get_pool().connection() as connection:
 
