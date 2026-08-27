@@ -3,7 +3,7 @@
     {
       "id": "marksmanship_001",
       "genshin_ids": [
-
+        82001
       ],
       "name": "Nothing Special, Just Practice",
       "category": "Marksmanship",
@@ -22,7 +22,7 @@
     {
       "id": "marksmanship_002",
       "genshin_ids": [
-
+        82002
       ],
       "name": "Master Sniper",
       "category": "Marksmanship",
@@ -41,7 +41,7 @@
     {
       "id": "marksmanship_003",
       "genshin_ids": [
-
+        82003
       ],
       "name": "Der Freischütz",
       "category": "Marksmanship",

@@ -1,0 +1,171 @@
+{
+  "achievements": [
+    {
+      "id": "challenger_ii_001",
+      "genshin_ids": [
+        82053
+      ],
+      "name": "Hydro Hunter",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat every type of Hydro Mimic that an Oceanid can summon.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_002",
+      "genshin_ids": [
+        82054
+      ],
+      "name": "Dip, Duck, Dive, Dodge, Defeat",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat an Oceanid without being hit by water bombs left behind by certain Hydro Mimics.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_003",
+      "genshin_ids": [
+        82055,
+        82056,
+        82057
+      ],
+      "name": "...Well, That Was Strange",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "show_progress": true,
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Unusual Hilichurl 1 time.",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Defeat the Unusual Hilichurl 20 times.",
+          "progress": 20,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Defeat the Unusual Hilichurl 50 times.",
+          "progress": 1,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_004",
+      "genshin_ids": [
+        82058
+      ],
+      "name": "Extreme Gardening",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Paralyze a Cryo Regisvine by attacking its corolla.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_005",
+      "genshin_ids": [
+        82059
+      ],
+      "name": "Gardener Extraordinaire",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Paralyze a Pyro Regisvine by attacking its corolla.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_006",
+      "genshin_ids": [
+        82060
+      ],
+      "name": "Geronimo!",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Hit an opponent with a Plunging Attack after plunging for more than 5 seconds.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_007",
+      "genshin_ids": [
+        82061
+      ],
+      "name": "Vicious Circle",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Unleash 5 Elemental Bursts within 15 seconds.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_ii_008",
+      "genshin_ids": [
+        82062
+      ],
+      "name": "Shield Me From the World",
+      "category": "Challenger: Series II",
+      "region": [],
+      "hidden": false,
+      "version": "1.1",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Have a single character be protected by 3 different types of shield at once.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    }
+  ]
+}

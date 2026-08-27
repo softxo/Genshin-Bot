@@ -1,0 +1,157 @@
+{
+  "achievements": [
+    {
+      "id": "challenger_iii_001",
+      "genshin_ids": [
+        82066
+      ],
+      "name": "Turnover",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Knock a Cryo Slime out of the hands of a Cryo Hilichurl Grenadier.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_002",
+      "genshin_ids": [
+        82067
+      ],
+      "name": "Tear Down This Wall!",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Destroy an Ice Shieldwall Mitachurl's shield.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_003",
+      "genshin_ids": [
+        82068
+      ],
+      "name": "No Ice for Me, Thanks",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "show_progress": true,
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat a Cryo Samachurl before it is able to create an ice pillar.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_004",
+      "genshin_ids": [
+        82069
+      ],
+      "name": "...The Harder They Fall",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Destroy a Cryo Samachurl's ice pillar.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_005",
+      "genshin_ids": [
+        82070
+      ],
+      "name": "Chilly-Churl",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat a Frostarm Lawachurl before its Infused Form can expire.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_006",
+      "genshin_ids": [
+        82071
+      ],
+      "name": "\"Rosebud...\"",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Break a Cryo Cicin Mage's shield.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_007",
+      "genshin_ids": [
+        82072
+      ],
+      "name": "Assassin of Kings",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the true ruler of Dragonspine?",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_iii_008",
+      "genshin_ids": [
+        82073
+      ],
+      "name": "David and Goliath",
+      "category": "Challenger: Series III",
+      "region": [],
+      "hidden": false,
+      "version": "1.2",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Paralyze a Ruin Grader by attacking its weak point.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "achievements": [
+    {
+      "id": "challenger_i_001",
+      "genshin_ids": [
+        82004
+      ],
+      "name": "Full Metal What Now?",
+      "category": "Challenger: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Shatter the Geo Crystal Shield of a Large Geo Slime.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_i_002",
+      "genshin_ids": [
+        82005
+      ],
+      "name": "Are Plasma Globes Still in Fashion?",
+      "category": "Challenger: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Break an Electro Cicin Mage's shield.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_i_003",
+      "genshin_ids": [
+        82006
+      ],
+      "name": "Rhythm Tengoku",
+      "category": "Challenger: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Stop an Abyss Mage from regenerating its shield.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_i_004",
+      "genshin_ids": [
+        82007
+      ],
+      "name": "Blazing Dadaupa",
+      "category": "Challenger: Series I",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Set a Wooden Shieldwall Mitachurl's shield on fire.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}
