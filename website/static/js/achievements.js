@@ -2378,22 +2378,22 @@ window.initAchievements = function () {
                                                 </div>
                                             
                                                 ${
-                                                    tier.progress !== 1 || (tier.completed && tier.timestamp)
+                                                    tier.show_progress || (tier.completed && tier.timestamp)
                                                         ? `
                                                             <div class="achievement-tier-progress-row">
                                                 
                                                                 ${
-                                                                    tier.progress !== 1
+                                                                    tier.show_progress
                                                                         ? `
                                                                             <div class="achievement-tier-progress">
                                                                                 <span class="achievement-tier-progress-current">
                                                                                     ${tier.current ?? 0}
                                                                                 </span>
-                                                
+                                                                
                                                                                 <span class="achievement-tier-progress-separator">
                                                                                     /
                                                                                 </span>
-                                                
+                                                                
                                                                                 <span class="achievement-tier-progress-total">
                                                                                     ${tier.progress ?? 0}
                                                                                 </span>

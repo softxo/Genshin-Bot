@@ -12,6 +12,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -45,6 +46,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -78,6 +80,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -111,6 +114,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -144,6 +148,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -177,6 +182,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -210,6 +216,7 @@
       "region": [],
       "hidden": false,
       "version": "1.0",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,

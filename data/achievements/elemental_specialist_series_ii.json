@@ -12,6 +12,7 @@
       "region": [],
       "hidden": false,
       "version": "3.1",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
@@ -45,6 +46,7 @@
       "region": [],
       "hidden": false,
       "version": "3.1",
+      "show_progress": true,
       "tiers": [
         {
           "tier": 1,
