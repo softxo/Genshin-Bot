@@ -1,9 +1,15 @@
 import json
 import asyncio
+from dotenv import load_dotenv
 from pathlib import Path
 from utils.achievements.achievements import load_achievements
-from utils.hoyolab.database import import_achievement_progress
+from utils.hoyolab.database import (
+    initialise_database,
+    import_achievement_progress,
+)
 
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -175,6 +181,8 @@ async def import_achievements(
 if __name__ == "__main__":
 
     import sys
+    import asyncio
+    import selectors
 
     if len(sys.argv) < 2:
         print(
@@ -188,11 +196,21 @@ if __name__ == "__main__":
         sys.argv[1]
     )
 
-    result = asyncio.run(
-        import_achievements(
+    async def main():
+
+        await initialise_database()
+
+        result = await import_achievements(
             user_id=1,
             export_file=export_file,
         )
-    )
 
-    print(result)
+        print(result)
+
+
+    asyncio.run(
+        main(),
+        loop_factory=lambda: asyncio.SelectorEventLoop(
+            selectors.SelectSelector()
+        )
+    )
