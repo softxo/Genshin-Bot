@@ -1,6 +1,8 @@
 import secrets
 import time
+from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass
+from utils.hoyolab.database import get_pool
 
 
 VERIFICATION_TIMEOUT = 5 * 60
@@ -23,7 +25,6 @@ class WebSession:
 
 
 _verifications: dict[str, VerificationRequest] = {}
-_sessions: dict[str, WebSession] = {}
 
 
 def _cleanup() -> None:
@@ -104,36 +105,89 @@ def claim_verification(
     return False
 
 
-def create_web_session(
+async def create_web_session(
     user_id: int,
 ) -> WebSession:
-    _cleanup()
 
     token = secrets.token_urlsafe(48)
 
-    session = WebSession(
-        token=token,
-        user_id=user_id,
-        created_at=time.time(),
+    now = datetime.now(timezone.utc)
+    expires_at = now + timedelta(
+        seconds=WEB_SESSION_TIMEOUT
     )
 
-    _sessions[token] = session
+    async with get_pool().connection() as connection:
+        await connection.execute(
+            """
+            INSERT INTO web_sessions (
+                token,
+                discord_user_id,
+                created_at,
+                expires_at
+            )
+            VALUES (
+                %s, %s, %s, %s
+            )
+            """,
+            (
+                token,
+                user_id,
+                now,
+                expires_at
+            )
+        )
 
-    return session
+    return WebSession(
+        token=token,
+        user_id=user_id,
+        created_at=now.timestamp(),
+    )
 
 
-def get_web_session(
+async def get_web_session(
     token: str | None,
 ) -> WebSession | None:
+
     if not token:
         return None
 
-    _cleanup()
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT
+                token,
+                discord_user_id,
+                created_at,
+                expires_at
+            FROM web_sessions
+            WHERE token = %s
+            AND expires_at > NOW()
+            LIMIT 1
+            """,
+            (token,)
+        )
 
-    return _sessions.get(token)
+        row = await result.fetchone()
+
+    if row is None:
+        return None
+
+    return WebSession(
+        token=row["token"],
+        user_id=row["discord_user_id"],
+        created_at=row["created_at"].timestamp(),
+    )
 
 
-def delete_web_session(
+async def delete_web_session(
     token: str,
 ) -> None:
-    _sessions.pop(token, None)
+
+    async with get_pool().connection() as connection:
+        await connection.execute(
+            """
+            DELETE FROM web_sessions
+            WHERE token = %s
+            """,
+            (token,)
+        )

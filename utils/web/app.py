@@ -152,7 +152,7 @@ async def verification_status(
             "verified": False,
         }
 
-    session = create_web_session(
+    session = await create_web_session(
         verification.user_id
     )
 
@@ -181,7 +181,7 @@ async def logout(
     )
 ):
     if cyrene_session:
-        delete_web_session(
+        await delete_web_session(
             cyrene_session
         )
 
@@ -204,7 +204,7 @@ async def auth_status(
         default=None
     )
 ):
-    session = get_web_session(
+    session = await get_web_session(
         cyrene_session
     )
 
@@ -223,7 +223,7 @@ async def get_authenticated_user(
     cyrene_session: str | None
 ) -> int:
 
-    session = get_web_session(
+    session = await get_web_session(
         cyrene_session
     )
 

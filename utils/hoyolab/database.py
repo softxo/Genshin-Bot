@@ -192,6 +192,34 @@ async def initialise_database() -> None:
             """
         )
 
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS web_sessions (
+                token TEXT PRIMARY KEY,
+
+                discord_user_id BIGINT NOT NULL,
+
+                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+                expires_at TIMESTAMPTZ NOT NULL
+            )
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_web_sessions_user
+                ON web_sessions(discord_user_id)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_web_sessions_expires
+                ON web_sessions(expires_at)
+            """
+        )
+
 
 def get_pool() -> AsyncConnectionPool:
     if _pool is None:
