@@ -35,14 +35,22 @@
 
 </div>
 
+<div
+    id="verification-data"
+    data-next="{{ next or '/planner' }}"
+></div>
 
 <script>
 
 (() => {
 
+    const nextUrl =
+        document.getElementById(
+            "verification-data"
+        ).dataset.next;
+
     let verificationToken = null;
     let polling = null;
-
 
     async function createVerification() {
 
@@ -148,11 +156,8 @@
 
             setTimeout(() => {
 
-                const next =
-                    "{{ next or '/planner' }}";
-
                 window.location.href =
-                    next;
+                    nextUrl;
 
             }, 800);
 
