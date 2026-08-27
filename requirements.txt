@@ -16,3 +16,4 @@ psycopg[binary]
 psycopg[pool]
 Jinja2
 requests
+python-multipart

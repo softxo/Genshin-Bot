@@ -625,6 +625,83 @@ window.initAchievements = function () {
                 }
             );
 
+
+            achievementImportInput.addEventListener(
+                "change",
+                async () => {
+
+                    const file =
+                        achievementImportInput.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+
+                    const formData =
+                        new FormData();
+
+                    formData.append(
+                        "file",
+                        file
+                    );
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "/api/achievements/import",
+                                {
+                                    method: "POST",
+                                    body: formData,
+                                }
+                            );
+
+
+                        const result =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                result.detail ||
+                                "Failed to import achievements."
+                            );
+
+                        }
+
+
+                        console.log(
+                            "Achievement import:",
+                            result
+                        );
+
+
+                        achievementImportInput.value = "";
+
+
+                        await loadAchievements();
+
+                    } catch (error) {
+
+                        console.error(
+                            "Achievement import failed:",
+                            error
+                        );
+
+                        achievementImportInput.value = "";
+
+                        alert(
+                            error.message
+                        );
+
+                    }
+
+                }
+            );
+
         }
 
 

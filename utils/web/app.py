@@ -734,6 +734,75 @@ async def achievements_data(
     }
 
 
+@app.post("/api/achievements/import")
+async def import_achievements_api(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None),
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    if user_id is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated."
+        )
+
+    form = await request.form()
+
+    uploaded_file = form.get(
+        "file"
+    )
+
+    if uploaded_file is None:
+        raise HTTPException(
+            status_code=400,
+            detail="No achievement export was provided."
+        )
+
+    if not hasattr(
+        uploaded_file,
+        "read"
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid upload."
+        )
+
+    from utils.achievements.importer import (
+        import_achievements
+    )
+
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(
+        suffix=".json",
+        delete=False
+    ) as temp_file:
+
+        content = await uploaded_file.read()
+
+        temp_file.write(content)
+
+        temp_path = temp_file.name
+
+    try:
+
+        result = await import_achievements(
+            user_id=user_id,
+            export_file=temp_path,
+        )
+
+    finally:
+
+        Path(temp_path).unlink(
+            missing_ok=True
+        )
+
+    return result
+
+
 @app.get(
     "/challenge/{token}",
     response_class=HTMLResponse,
