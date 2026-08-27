@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Obtain the power of Hydro.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Fables de Fontaine\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Robben versus Chesterton: Iridescent Brooch\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The History of the Decline and Fall of Remuria\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]

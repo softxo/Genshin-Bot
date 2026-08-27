@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Legends of Reed Miller, Thief Extraordinaire\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Hymns of the Far North\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Conch Echoes\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Tales Carried by the Northwind\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -86,6 +90,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"A Brief History of the Pale Starborn\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -104,6 +109,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Night Murmurs From the Far Border\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]

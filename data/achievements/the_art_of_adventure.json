@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Forge a 4-star weapon.",
+          "progress": 1,
           "primogems": 10
         }
       ]
@@ -34,16 +35,19 @@
         {
           "tier": 1,
           "description": "Grasp how 10 different dishes are made.",
+          "progress": 10,
           "primogems": 5
         },
         {
           "tier": 2,
           "description": "Grasp how 20 different dishes are made.",
+          "progress": 20,
           "primogems": 10
         },
         {
           "tier": 3,
           "description": "Grasp how 40 different dishes are made.",
+          "progress": 40,
           "primogems": 20
         }
       ]
@@ -64,16 +68,19 @@
         {
           "tier": 1,
           "description": "Master 10 Recipes.",
+          "progress": 10,
           "primogems": 5
         },
         {
           "tier": 2,
           "description": "Master 20 Recipes.",
+          "progress": 20,
           "primogems": 10
         },
         {
           "tier": 3,
           "description": "Master 40 Recipes.",
+          "progress": 40,
           "primogems": 20
         }
       ]

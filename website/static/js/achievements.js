@@ -2009,7 +2009,7 @@ window.initAchievements = function () {
                 
                                 <div
                                     class="achievement-sidebar-progress-fill"
-                                    style="width: 0%"
+                                    style="width: ${progress}%"
                                 ></div>
                 
                             </div>
@@ -2500,7 +2500,7 @@ window.initAchievements = function () {
      * --------------------------------------------------
      */
 
-    function toggleTierCompleted(
+    async function toggleTierCompleted(
         achievement,
         tier,
         item,
@@ -2531,7 +2531,7 @@ window.initAchievements = function () {
 
         /*
          * ------------------------------------------
-         * TOGGLE CURRENT TIER
+         * UPDATE LOCAL STATE
          * ------------------------------------------
          */
 
@@ -2556,10 +2556,106 @@ window.initAchievements = function () {
                 }
             );
 
+        } else {
+
+            tier.completed = true;
+
+        }
+
+
+        /*
+         * ------------------------------------------
+         * SAVE TO DATABASE
+         * ------------------------------------------
+         */
+
+        try {
 
             /*
-             * Update the clicked tier visually.
+             * When completing:
+             *
+             * Only the clicked tier changes.
+             *
+             * When uncompleting:
+             *
+             * The clicked tier and every tier after
+             * it must be saved as incomplete.
              */
+
+            const tiersToSave =
+                isCompleted
+                    ? achievement.tiers.filter(
+                        achievementTier =>
+                            achievementTier.tier >= tier.tier
+                    )
+                    : [tier];
+
+
+            for (
+                const achievementTier
+                of tiersToSave
+            ) {
+
+                const response =
+                    await fetch(
+                        `/api/achievements/${encodeURIComponent(
+                            achievement.id
+                        )}/tiers/${achievementTier.tier}`,
+                        {
+                            method: "PATCH",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                completed:
+                                    achievementTier.completed
+                            })
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Failed to save Tier ${achievementTier.tier}.`
+                    );
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "[Achievements] Failed to save completion:",
+                error
+            );
+
+
+            /*
+             * The database update failed.
+             *
+             * Reload the achievement data so the UI
+             * returns to the actual saved state.
+             */
+
+            await loadAchievements();
+
+            return;
+
+        }
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE CURRENT TIER VISUALLY
+         * ------------------------------------------
+         */
+
+        if (isCompleted) {
 
             tierContainer.classList.remove(
                 "completed"
@@ -2603,98 +2699,89 @@ window.initAchievements = function () {
             button.title =
                 "Mark Incomplete";
 
-            tier.completed = true;
-
         }
 
 
         /*
          * ------------------------------------------
-         * CHECK WHETHER ENTIRE ACHIEVEMENT
-         * IS COMPLETED
+         * UPDATE OTHER TIERS
          * ------------------------------------------
          */
 
-        const tierContainers =
-            item.querySelectorAll(
-                ".achievement-tier"
-            );
+        if (isCompleted) {
+
+            achievement.tiers.forEach(
+                achievementTier => {
+
+                    if (
+                        achievementTier.tier <= tier.tier
+                    ) {
+                        return;
+                    }
 
 
-        const completedTiers =
-            item.querySelectorAll(
-                ".achievement-tier.completed"
-            );
-
-
-        const achievementCompleted =
-            completedTiers.length ===
-            tierContainers.length;
-
-
-        /*
-         * ------------------------------------------
-         * UPDATE ACHIEVEMENT BOX
-         * ------------------------------------------
-         */
-
-        item.classList.toggle(
-            "completed",
-            achievementCompleted
-        );
-
-
-        /*
-         * ------------------------------------------
-         * UPDATE LARGE ICON
-         * ------------------------------------------
-         */
-
-        const largeIcon =
-            item.querySelector(
-                ".achievement-item-icon img"
-            );
-
-
-        if (largeIcon) {
-
-            let highestCompletedTier = 0;
-
-
-            completedTiers.forEach(
-                completedTier => {
-
-                    const tierNumber =
-                        Number(
-                            completedTier.dataset.tier
+                    const otherTier =
+                        item.querySelector(
+                            `.achievement-tier[data-tier="${achievementTier.tier}"]`
                         );
 
 
-                    if (
-                        tierNumber >
-                        highestCompletedTier
-                    ) {
+                    if (!otherTier) {
+                        return;
+                    }
 
-                        highestCompletedTier =
-                            tierNumber;
+
+                    const otherButton =
+                        otherTier.querySelector(
+                            ".achievement-complete-button"
+                        );
+
+
+                    const otherImage =
+                        otherTier.querySelector(
+                            ".achievement-tier-icon img"
+                        );
+
+
+                    otherTier.classList.remove(
+                        "completed"
+                    );
+
+                    if (otherButton) {
+
+                        otherButton.classList.remove(
+                            "completed"
+                        );
+
+                        otherButton.title =
+                            "Mark Completed";
+
+                    }
+
+                    if (otherImage) {
+
+                        otherImage.src =
+                            getTierImage(
+                                achievementTier.tier,
+                                totalTiers
+                            );
+
+                        otherImage.alt =
+                            `${achievementTier.tier}/${totalTiers}`;
 
                     }
 
                 }
             );
 
-
-            largeIcon.src =
-                getTierImage(
-                    highestCompletedTier,
-                    totalTiers
-                );
-
-
-            largeIcon.alt =
-                `${highestCompletedTier}/${totalTiers}`;
-
         }
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE ALL OTHER UI
+         * ------------------------------------------
+         */
 
         updateLockedTiers(item);
         updateAchievementProgress(item);
@@ -2702,6 +2789,7 @@ window.initAchievements = function () {
         updateCategoryProgress();
         updateCategoryHeaderProgress();
         updateOverallAchievementProgress();
+
     }
 
     function updateAchievementProgress(item) {

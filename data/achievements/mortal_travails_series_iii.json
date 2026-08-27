@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Obtain the power of Dendro.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Tale of Shiruyeh and Shirin\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Folio of Foliage\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Scroll of Streaming Song\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]

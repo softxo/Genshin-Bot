@@ -1,17 +1,16 @@
-import json
 import asyncio
-from dotenv import load_dotenv
+import json
+import selectors
+import sys
 from pathlib import Path
+from dotenv import load_dotenv
 from utils.achievements.achievements import load_achievements
 from utils.hoyolab.database import (
     initialise_database,
     import_achievement_progress,
 )
 
-
 load_dotenv()
-
-BASE_DIR = Path(__file__).resolve().parents[2]
 
 
 async def import_achievements(
@@ -133,14 +132,12 @@ async def import_achievements(
             "tier"
         ]
 
-        # Create achievement entry
         if achievement_id not in progress:
 
             progress[achievement_id] = {
                 "tiers": {}
             }
 
-        # Store this tier's progress
         progress[
             achievement_id
         ][
@@ -180,10 +177,6 @@ async def import_achievements(
 
 if __name__ == "__main__":
 
-    import sys
-    import asyncio
-    import selectors
-
     if len(sys.argv) < 2:
         print(
             "Usage: python -m "
@@ -206,7 +199,6 @@ if __name__ == "__main__":
         )
 
         print(result)
-
 
     asyncio.run(
         main(),

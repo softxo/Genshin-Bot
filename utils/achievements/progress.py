@@ -1,6 +1,4 @@
-from utils.hoyolab.database import (
-    get_achievement_progress
-)
+from utils.hoyolab.database import get_achievement_progress
 
 
 async def load_progress(

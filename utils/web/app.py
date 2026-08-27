@@ -1,5 +1,6 @@
 import typing
 import time
+import tempfile
 from datetime import (
     datetime,
     timezone
@@ -46,6 +47,7 @@ from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.daily_note import get_resin
 from utils.achievements.achievements import load_achievements
 from utils.achievements.progress import load_progress
+from utils.achievements.importer import import_achievements
 
 
 
@@ -710,11 +712,15 @@ async def achievements_data(
                 0
             )
 
+            progress = tier.get(
+                "progress"
+            )
+
             timestamp = saved_tier.get(
                 "timestamp"
             )
 
-            # Add imported progress to the tier
+            tier["progress"] = progress
             tier["completed"] = completed
             tier["current"] = current
             tier["timestamp"] = timestamp
@@ -731,6 +737,54 @@ async def achievements_data(
         "categories": categories,
         "total": total_tiers,
         "completed": completed_tiers,
+    }
+
+
+@app.patch("/api/achievements/{achievement_id}/tiers/{tier}")
+async def update_achievement_tier_api(
+    achievement_id: str,
+    tier: int,
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None),
+):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    if user_id is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated."
+        )
+
+    body = await request.json()
+
+    completed = body.get("completed")
+
+    if not isinstance(completed, bool):
+        raise HTTPException(
+            status_code=400,
+            detail="The 'completed' field must be a boolean."
+        )
+
+    updated = await update_achievement_tier(
+        discord_user_id=user_id,
+        achievement_id=achievement_id,
+        tier=tier,
+        completed=completed,
+        completed_at=(
+            datetime.now(timezone.utc)
+            if completed
+            else None
+        ),
+    )
+
+    return {
+        "success": True,
+        "updated": updated,
+        "achievement_id": achievement_id,
+        "tier": tier,
+        "completed": completed,
     }
 
 
@@ -769,12 +823,6 @@ async def import_achievements_api(
             status_code=400,
             detail="Invalid upload."
         )
-
-    from utils.achievements.importer import (
-        import_achievements
-    )
-
-    import tempfile
 
     with tempfile.NamedTemporaryFile(
         suffix=".json",

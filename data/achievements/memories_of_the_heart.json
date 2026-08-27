@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Complete \"Fantastic Voyage\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Witness the awesome meteorological power of Bennett's phenomenally bad luck.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Activate the mechanisms and obtain the treasure without making any mistakes.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Complete \"Signs of Evil\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -86,6 +90,7 @@
         {
           "tier": 1,
           "description": "Correctly interpret all clues.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -104,6 +109,7 @@
         {
           "tier": 1,
           "description": "Make a popsicle using the wrong recipe and provoke Chongyun's Pure-Yang spirit.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -122,6 +128,7 @@
         {
           "tier": 1,
           "description": "Complete \"Wellspring of Healing\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -140,6 +147,7 @@
         {
           "tier": 1,
           "description": "Successfully persuade Albert and Barbara's other fans to leave.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -158,6 +166,7 @@
         {
           "tier": 1,
           "description": "Sample Barbara's Chilibrew.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -176,6 +185,7 @@
         {
           "tier": 1,
           "description": "Complete \"Chivalric Training\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -194,6 +204,7 @@
         {
           "tier": 1,
           "description": "Help Noelle discover the source of her strength.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -212,6 +223,7 @@
         {
           "tier": 1,
           "description": "Read Noelle's study notes.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -230,6 +242,7 @@
         {
           "tier": 1,
           "description": "Complete \"Knightly Exam Prep\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -248,6 +261,7 @@
         {
           "tier": 1,
           "description": "Listen to \"A Knight's Journey Through Liyue\" with Noelle.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -266,6 +280,7 @@
         {
           "tier": 1,
           "description": "Read Noelle's study notes.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -284,6 +299,7 @@
         {
           "tier": 1,
           "description": "Complete \"The Cat and the Cocktail\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -302,6 +318,7 @@
         {
           "tier": 1,
           "description": "Help Diona find a special base drink.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -320,6 +337,7 @@
         {
           "tier": 1,
           "description": "Bring all the cats back to The Cat's Tail.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -338,6 +356,7 @@
         {
           "tier": 1,
           "description": "Complete \"A Housekeeper's Daily Chores\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -356,6 +375,7 @@
         {
           "tier": 1,
           "description": "Complete the big cleanup within the time limit",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -374,6 +394,7 @@
         {
           "tier": 1,
           "description": "Learn of Inu Shoushou's story together with Thoma",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -392,6 +413,7 @@
         {
           "tier": 1,
           "description": "Complete \"Yoohoo Art: Seichou no Jutsu\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -410,6 +432,7 @@
         {
           "tier": 1,
           "description": "Obtain Sayu's highest rating during agility training.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -428,6 +451,7 @@
         {
           "tier": 1,
           "description": "You were unable to prevent Sayu's reckless consumption...",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -446,6 +470,7 @@
         {
           "tier": 1,
           "description": "Complete \"The Canine General's Special Operations\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -464,6 +489,7 @@
         {
           "tier": 1,
           "description": "Draw all fortune slips at the Grand Narukami Shrine.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -482,6 +508,7 @@
         {
           "tier": 1,
           "description": "Discover Ms. Hina's true identity at the Yae Publishing House.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -500,6 +527,7 @@
         {
           "tier": 1,
           "description": "Complete \"When the Crux Shines Bright\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -518,6 +546,7 @@
         {
           "tier": 1,
           "description": "Take part in the Qingce banquet with Beidou.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -536,6 +565,7 @@
         {
           "tier": 1,
           "description": "Find out the truth behind the deal Beidou's making.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -554,6 +584,7 @@
         {
           "tier": 1,
           "description": "Complete \"The Jade Chamber's Returning Guest\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -572,6 +603,7 @@
         {
           "tier": 1,
           "description": "Fish? The more the merrier, of course",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -590,6 +622,7 @@
         {
           "tier": 1,
           "description": "A single stone births a thousand ripples. It seems like Ningguang's day off is not to be.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -608,6 +641,7 @@
         {
           "tier": 1,
           "description": "Complete \"A Song That Knows Grace\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -626,6 +660,7 @@
         {
           "tier": 1,
           "description": "Take a commemorative photo with Yun Jin.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -644,6 +679,7 @@
         {
           "tier": 1,
           "description": "Complete the practice session without hitting a single blue scarecrow.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -662,6 +698,7 @@
         {
           "tier": 1,
           "description": "Complete \"The Gang's Daily Deeds\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -680,6 +717,7 @@
         {
           "tier": 1,
           "description": "Gaze upon the glory that is Kuki Shinobu in a shrine maiden outfit.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -698,6 +736,7 @@
         {
           "tier": 1,
           "description": "Be dissuaded before alerting Kujou Sara and Kuki Shinobu.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -716,6 +755,7 @@
         {
           "tier": 1,
           "description": "Complete \"Trap 'Em by Storm\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -734,6 +774,7 @@
         {
           "tier": 1,
           "description": "Correctly analyze the motives and the truth behind the crime the first time.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -752,6 +793,7 @@
         {
           "tier": 1,
           "description": "Ask Gorou whether Kokomi knows about the happenings on Watatsumi Island.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -770,6 +812,7 @@
         {
           "tier": 1,
           "description": "Complete \"A Confounding Conundrum\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -788,6 +831,7 @@
         {
           "tier": 1,
           "description": "Read all the letters sent to Faruzan.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -806,6 +850,7 @@
         {
           "tier": 1,
           "description": "Guess correctly the smallest number of moves it will take to solve a seven-layer Pagoda Stack.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -824,6 +869,7 @@
         {
           "tier": 1,
           "description": "Complete \"Ever Silent Stars\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -842,6 +888,7 @@
         {
           "tier": 1,
           "description": "Help Layla finish her thesis without causing her further anxiety.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -860,6 +907,7 @@
         {
           "tier": 1,
           "description": "Obtain the authentic letter of the Wisdom Seelie.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -878,6 +926,7 @@
         {
           "tier": 1,
           "description": "Complete \"The Pendulum of Weal and Woe\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -896,6 +945,7 @@
         {
           "tier": 1,
           "description": "Find the annotated books in the House of Daena.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -914,6 +964,7 @@
         {
           "tier": 1,
           "description": "Chat about the future with Kaveh in the desert.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -932,6 +983,7 @@
         {
           "tier": 1,
           "description": "Complete \"Shenanigans and Sweet Wine\" and unlock all endings.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -950,6 +1002,7 @@
         {
           "tier": 1,
           "description": "Participate in the wager set up by Kaeya.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -968,6 +1021,7 @@
         {
           "tier": 1,
           "description": "Listen to the voice coming from the confinement room.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -986,6 +1040,7 @@
         {
           "tier": 1,
           "description": "Complete \"Checks & Cats\" and unlock all endings.",
+          "progress": 1,
           "primogems": 20
         }
       ]
@@ -1004,6 +1059,7 @@
         {
           "tier": 1,
           "description": "Persuade Lynette to spend a leisurely, peaceful day with you.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -1022,6 +1078,7 @@
         {
           "tier": 1,
           "description": "Have a peaceful tea party with Lynette after solving the smuggling case.",
+          "progress": 1,
           "primogems": 5
         }
       ]

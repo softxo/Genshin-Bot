@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Obtain the power of Pyro.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Mt. Lingmeng Gossip\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Records of Hanan Pacha\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Springs of Hidden Jade\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -86,6 +90,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Maawe and Monetoo\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -104,6 +109,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Volcano Lord and the Shadow Pins\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -122,6 +128,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Fires of Autumn Twilight\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]

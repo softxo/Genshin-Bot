@@ -1027,6 +1027,54 @@ async def update_achievement_tier(
     current: int | None = None,
     completed_at: datetime | None | object = _UNSET
 ) -> bool:
+
+    existing = await get_achievement_tier_progress(
+        discord_user_id,
+        achievement_id,
+        tier
+    )
+
+    if existing is None:
+        if completed is None:
+            completed = False
+
+        if current is None:
+            current = 0
+
+        if completed_at is _UNSET:
+            completed_at = (
+                datetime.now(timezone.utc)
+                if completed
+                else None
+            )
+
+        async with get_pool().connection() as connection:
+            await connection.execute(
+                """
+                INSERT INTO achievement_progress (
+                    discord_user_id,
+                    achievement_id,
+                    tier,
+                    completed,
+                    current,
+                    completed_at
+                )
+                VALUES (
+                    %s, %s, %s, %s, %s, %s
+                )
+                """,
+                (
+                    discord_user_id,
+                    achievement_id,
+                    tier,
+                    completed,
+                    current,
+                    completed_at
+                )
+            )
+
+        return True
+
     updates = []
     values = []
 

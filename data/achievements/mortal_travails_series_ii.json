@@ -14,6 +14,7 @@
         {
           "tier": 1,
           "description": "Obtain the power of Electro.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -32,6 +33,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Fox in the Dandelion Sea\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -50,6 +52,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"The Boar Princess\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -68,6 +71,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Vera's Melancholy\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
@@ -86,6 +90,7 @@
         {
           "tier": 1,
           "description": "Collect the entire \"Hilichurl Cultural Customs\" series.",
+          "progress": 1,
           "primogems": 5
         }
       ]
