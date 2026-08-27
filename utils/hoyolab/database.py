@@ -143,6 +143,55 @@ async def initialise_database() -> None:
             """
         )
 
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS achievement_progress (
+                id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                discord_user_id BIGINT NOT NULL,
+
+                achievement_id TEXT NOT NULL,
+
+                tier INTEGER NOT NULL,
+
+                completed BOOLEAN NOT NULL DEFAULT FALSE,
+
+                current INTEGER NOT NULL DEFAULT 0,
+
+                completed_at TIMESTAMPTZ,
+
+                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+                UNIQUE(discord_user_id, achievement_id, tier)
+            )
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_achievement_progress_user
+                ON achievement_progress(discord_user_id)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_achievement_progress_user_completed
+                ON achievement_progress(discord_user_id, completed)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_achievement_progress_achievement
+                ON achievement_progress(
+                    discord_user_id,
+                    achievement_id
+                )
+            """
+        )
+
 
 def get_pool() -> AsyncConnectionPool:
     if _pool is None:
@@ -915,3 +964,170 @@ async def get_due_reminders() -> list[dict]:
         )
 
         return await result.fetchall()
+
+
+async def get_achievement_progress(
+    discord_user_id: int
+) -> list[dict]:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT
+                achievement_id,
+                tier,
+                completed,
+                current,
+                completed_at
+            FROM achievement_progress
+            WHERE discord_user_id = %s
+            ORDER BY achievement_id, tier
+            """,
+            (discord_user_id,)
+        )
+
+        return await result.fetchall()
+
+
+async def get_achievement_tier_progress(
+    discord_user_id: int,
+    achievement_id: str,
+    tier: int
+) -> dict | None:
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            """
+            SELECT
+                achievement_id,
+                tier,
+                completed,
+                current,
+                completed_at
+            FROM achievement_progress
+            WHERE discord_user_id = %s
+            AND achievement_id = %s
+            AND tier = %s
+            LIMIT 1
+            """,
+            (
+                discord_user_id,
+                achievement_id,
+                tier
+            )
+        )
+
+        return await result.fetchone()
+
+
+async def update_achievement_tier(
+    discord_user_id: int,
+    achievement_id: str,
+    tier: int,
+    *,
+    completed: bool | None = None,
+    current: int | None = None,
+    completed_at: datetime | None | object = _UNSET
+) -> bool:
+    updates = []
+    values = []
+
+    if completed is not None:
+        updates.append("completed = %s")
+        values.append(completed)
+
+    if current is not None:
+        updates.append("current = %s")
+        values.append(current)
+
+    if completed_at is not _UNSET:
+        updates.append("completed_at = %s")
+        values.append(completed_at)
+
+    if not updates:
+        return False
+
+    updates.append("updated_at = NOW()")
+
+    values.extend([
+        discord_user_id,
+        achievement_id,
+        tier
+    ])
+
+    async with get_pool().connection() as connection:
+        result = await connection.execute(
+            f"""
+            UPDATE achievement_progress
+            SET {", ".join(updates)}
+            WHERE discord_user_id = %s
+            AND achievement_id = %s
+            AND tier = %s
+            """,
+            tuple(values)
+        )
+
+    return result.rowcount > 0
+
+
+async def import_achievement_progress(
+    discord_user_id: int,
+    progress_data: dict
+) -> None:
+    async with get_pool().connection() as connection:
+        for achievement_id, achievement_data in progress_data.items():
+            tiers = achievement_data.get("tiers", {})
+
+            for tier_number, tier_data in tiers.items():
+                tier = int(tier_number)
+
+                completed = bool(
+                    tier_data.get("completed", False)
+                )
+
+                current = int(
+                    tier_data.get("current", 0)
+                )
+
+                timestamp = tier_data.get("timestamp")
+
+                completed_at = None
+
+                if timestamp:
+                    completed_at = datetime.fromtimestamp(
+                        timestamp,
+                        tz=timezone.utc
+                    )
+
+                await connection.execute(
+                    """
+                    INSERT INTO achievement_progress (
+                        discord_user_id,
+                        achievement_id,
+                        tier,
+                        completed,
+                        current,
+                        completed_at
+                    )
+                    VALUES (
+                        %s, %s, %s, %s, %s, %s
+                    )
+
+                    ON CONFLICT (
+                        discord_user_id,
+                        achievement_id,
+                        tier
+                    )
+                    DO UPDATE SET
+                        completed = EXCLUDED.completed,
+                        current = EXCLUDED.current,
+                        completed_at = EXCLUDED.completed_at,
+                        updated_at = NOW()
+                    """,
+                    (
+                        discord_user_id,
+                        achievement_id,
+                        tier,
+                        completed,
+                        current,
+                        completed_at
+                    )
+                )

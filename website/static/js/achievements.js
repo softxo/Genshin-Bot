@@ -636,17 +636,12 @@ window.initAchievements = function () {
 
         function getAchievementVersions(achievement) {
 
-            if (!Array.isArray(achievement.tiers)) {
+            if (!achievement.version) {
                 return [];
             }
 
             return [
-                ...new Set(
-                    achievement.tiers
-                        .map(tier => tier.version)
-                        .filter(Boolean)
-                        .map(String)
-                )
+                String(achievement.version)
             ];
 
         }
@@ -2102,11 +2097,11 @@ window.initAchievements = function () {
                                 </h3>
                         
                                 ${
-                                    achievement.tiers?.[0]?.version
+                                    achievement.version
                                         ? `
                                             <span class="achievement-version-badge">
                                                 ${escapeHTML(
-                                                    achievement.tiers[0].version
+                                                    achievement.version
                                                 )}
                                             </span>
                                         `

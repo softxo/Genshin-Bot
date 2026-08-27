@@ -16,24 +16,44 @@ def get_progress_file(user_id: int) -> Path:
     return PROGRESS_DIR / f"{user_id}.json"
 
 
-def load_progress(user_id: int) -> dict:
-    path = get_progress_file(user_id)
+async def load_progress(
+    user_id: int,
+) -> dict:
 
-    if not path.exists():
-        return {}
+    from utils.hoyolab.database import (
+        get_achievement_progress
+    )
 
-    try:
-        with path.open(
-            "r",
-            encoding="utf-8"
-        ) as file:
-            return json.load(file)
+    rows = await get_achievement_progress(
+        user_id
+    )
 
-    except (
-        json.JSONDecodeError,
-        OSError,
-    ):
-        return {}
+    progress = {}
+
+    for row in rows:
+
+        achievement_id = row["achievement_id"]
+        tier = str(row["tier"])
+
+        if achievement_id not in progress:
+            progress[achievement_id] = {
+                "tiers": {}
+            }
+
+        timestamp = None
+
+        if row["completed_at"] is not None:
+            timestamp = int(
+                row["completed_at"].timestamp()
+            )
+
+        progress[achievement_id]["tiers"][tier] = {
+            "completed": row["completed"],
+            "current": row["current"],
+            "timestamp": timestamp,
+        }
+
+    return progress
 
 
 def save_progress(

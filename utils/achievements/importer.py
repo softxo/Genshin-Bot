@@ -1,14 +1,14 @@
 import json
+import asyncio
 from pathlib import Path
-
 from utils.achievements.achievements import load_achievements
-from utils.achievements.progress import save_progress
+from utils.hoyolab.database import import_achievement_progress
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 
-def import_achievements(
+async def import_achievements(
     user_id: int,
     export_file: str | Path,
 ) -> dict:
@@ -47,8 +47,7 @@ def import_achievements(
     achievements = load_achievements()
 
     # --------------------------------
-    # Build Genshin ID -> achievement
-    # + tier map
+    # Build Genshin ID -> achievement + tier map
     # --------------------------------
 
     achievement_map = {}
@@ -158,10 +157,10 @@ def import_achievements(
         matched += 1
 
     # --------------------------------
-    # Save
+    # Save to database
     # --------------------------------
 
-    save_progress(
+    await import_achievement_progress(
         user_id,
         progress,
     )
@@ -189,9 +188,11 @@ if __name__ == "__main__":
         sys.argv[1]
     )
 
-    result = import_achievements(
-        user_id=1,
-        export_file=export_file,
+    result = asyncio.run(
+        import_achievements(
+            user_id=1,
+            export_file=export_file,
+        )
     )
 
     print(result)

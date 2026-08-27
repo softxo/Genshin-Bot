@@ -656,7 +656,7 @@ async def achievements_data(
     )
 
     achievements = load_achievements()
-    progress = load_progress(user_id)
+    progress = await load_progress(user_id)
 
     categories = {}
 
@@ -725,18 +725,6 @@ async def achievements_data(
             if completed:
                 completed_tiers += 1
                 categories[category]["completed"] += 1
-
-    print(
-        "SURVIVAL EXPERT:",
-        next(
-            (
-                achievement
-                for achievement in achievements
-                if achievement.get("id") == "art_of_adventure_002"
-            ),
-            None
-        )
-    )
 
     return {
         "achievements": achievements,
