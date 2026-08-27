@@ -93,6 +93,7 @@ async def import_achievements(
             ] = {
                 "achievement_id": achievement_id,
                 "tier": tier.get("tier"),
+                "progress": tier.get("progress"),
             }
 
     # --------------------------------
@@ -151,6 +152,9 @@ async def import_achievements(
             "current": entry.get(
                 "current",
                 0
+            ),
+            "progress": mapping.get(
+                "progress"
             ),
             "timestamp": entry.get(
                 "timestamp"

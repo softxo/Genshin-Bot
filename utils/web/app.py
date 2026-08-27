@@ -658,7 +658,7 @@ async def achievements_data(
     )
 
     achievements = load_achievements()
-    progress = await load_progress(user_id)
+    saved_progress = await load_progress(user_id)
 
     categories = {}
 
@@ -681,7 +681,7 @@ async def achievements_data(
                 "completed": 0,
             }
 
-        achievement_progress = progress.get(
+        achievement_progress = saved_progress.get(
             achievement_id,
             {}
         )

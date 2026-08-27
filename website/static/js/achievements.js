@@ -2166,13 +2166,13 @@ window.initAchievements = function () {
                         <div class="achievement-item-header">
 
                             <div class="achievement-title-row">
-                        
+
                                 <h3>
                                     ${escapeHTML(
                                         achievement.name
                                     )}
                                 </h3>
-                        
+                            
                                 ${
                                     achievement.version
                                         ? `
@@ -2184,7 +2184,15 @@ window.initAchievements = function () {
                                         `
                                         : ""
                                 }
-                        
+                            
+                                <span class="achievement-tier-count">
+                                    ${
+                                        achievement.tiers.filter(
+                                            tier => tier.completed === true
+                                        ).length
+                                    }/${totalTiers}
+                                </span>
+                            
                             </div>
                         
                         </div>
@@ -2812,6 +2820,19 @@ window.initAchievements = function () {
 
         const completedCount =
             completedTiers.length;
+
+
+        const achievementTierCount =
+            item.querySelector(
+                ".achievement-tier-count"
+            );
+
+        if (achievementTierCount) {
+
+            achievementTierCount.textContent =
+                `${completedCount}/${totalTiers}`;
+
+        }
 
 
         /*

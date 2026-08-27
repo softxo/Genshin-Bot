@@ -3543,6 +3543,14 @@ body {
 }
 
 
+.achievement-tier-count {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+
 /* =============================
    LOCKED ACHIEVEMENT TIERS
    ============================= */
