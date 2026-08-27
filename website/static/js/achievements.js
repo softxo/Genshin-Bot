@@ -2933,9 +2933,10 @@ window.initAchievements = function () {
                     ) {
 
                         achievementTier.completed = false;
+                        achievementTier.timestamp = null;
 
                     }
-
+            
                 }
             );
 
