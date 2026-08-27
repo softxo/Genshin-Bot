@@ -650,6 +650,86 @@ window.initAchievements = function () {
 
     };
 
+
+    const CATEGORY_ORDER = [
+        "Wonders of the World",
+        "Memories of the Heart",
+        "Mortal Travails: Series I",
+        "Mortal Travails: Series II",
+        "Mortal Travails: Series III",
+        "Mortal Travails: Series IV",
+        "Mortal Travails: Series V",
+        "Mortal Travails: Series VI",
+        "Mortal Travails: Series VII",
+        "The Art of Adventure",
+        "The Hero's Journey",
+        "Mondstadt: The City of Wind and Song",
+        "Liyue: The Harbor of Stone and Contracts",
+        "Elemental Specialist: Series I",
+        "Elemental Specialist: Series II",
+        "Marksmanship",
+        "Challenger: Series I",
+        "Challenger: Series II",
+        "Challenger: Series III",
+        "Challenger: Series IV",
+        "Challenger: Series V",
+        "Challenger: Series VI",
+        "Challenger: Series VII",
+        "Challenger: Series VIII",
+        "Challenger: Series IX",
+        "Challenger: Series X",
+        "Domain and Spiral Abyss: Series I",
+        "Olah!: Series I",
+        "Snezhnaya Does Not Believe in Tears: Series I",
+        "Stone Harbor's Nostalgia: Series I",
+        "Meetings in Outrealm: Series I",
+        "Meetings in Outrealm: Series II",
+        "Meetings in Outrealm: Series III",
+        "Meetings in Outrealm: Series IV",
+        "Meetings in Outrealm: Series V",
+        "Meetings in Outrealm: Series VI",
+        "Meetings in Outrealm: Series VII",
+        "Visitors on the Icy Mountain",
+        "A Realm Beyond: Series I",
+        "A Realm Beyond: Series II",
+        "A Realm Beyond: Series III",
+        "Inazuma: The Islands of Thunder and Eternity - Series I",
+        "Inazuma: The Islands of Thunder and Eternity - Series II",
+        "Inazuma: The Islands of Thunder and Eternity - Series III",
+        "The Chronicles of the Sea of Fog",
+        "Teyvat Fishing Guide: Series I",
+        "The Light of Day",
+        "Chasmlighter",
+        "Sumeru: The Rainforest of Lore",
+        "Sumeru: The Gilded Desert I - Series I",
+        "Sumeru: The Gilded Desert I - Series II",
+        "Genius Invokation TCG",
+        "Blessed Hamada",
+        "Fontaine: Dance of the Dew-White Springs (I)",
+        "Fontaine: Dance of the Dew-White Springs (II)",
+        "Fontaine: Dance of the Dew-White Springs (III)",
+        "Chenyu's Splendor",
+        "Rhapsodia in the Ancient Sea",
+        "Imaginarium Theater: The First Folio",
+        "Imaginarium Theater: The Second Folio",
+        "Natlan: The Land of Fire and Competition (I)",
+        "Natlan: The Land of Fire and Competition (II)",
+        "Duelist: Series I",
+        "Duelist: Series II",
+        "Duelist: Series III",
+        "Repertoire of Myriad Melodies",
+        "Sacred Mountain's Fading Glow",
+        "A Summer of Ash and Prickly Pears",
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (I)",
+        "Nod-Krai: An Elysium of Moonlight and Wanderings (II)",
+        "Demon Mountain's Breath",
+        "Unfettered Crescent",
+        "Snezhnaya: Sacred city of ice and pale star (I)",
+        "Land of Surging Shadows"
+    ];
+
+
+
         /*
          * --------------------------------------------------
          * CATEGORY PAGE CONTROLS
@@ -1800,10 +1880,15 @@ window.initAchievements = function () {
 
 
         const categoryEntries =
-            Object.entries(
-                achievementData.categories
-            ).map(
-                ([category, data]) => {
+            CATEGORY_ORDER.map(
+                category => {
+
+                    const data =
+                        achievementData.categories[category];
+
+                    if (!data) {
+                        return null;
+                    }
 
                     /*
                      * Get only achievements belonging
@@ -2861,6 +2946,7 @@ window.initAchievements = function () {
                 achievementList.appendChild(item);
 
                 updateLockedTiers(item);
+                updateAchievementProgress(item);
 
             }
         );
