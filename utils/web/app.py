@@ -778,11 +778,6 @@ async def update_achievement_tier_api(
         achievement_id=achievement_id,
         tier=tier,
         completed=completed,
-        completed_at=(
-            datetime.now(timezone.utc)
-            if completed
-            else None
-        ),
     )
 
     return {
@@ -790,7 +785,7 @@ async def update_achievement_tier_api(
         "updated": updated,
         "achievement_id": achievement_id,
         "tier": tier,
-        "completed": completed,
+        "completed": completed
     }
 
 

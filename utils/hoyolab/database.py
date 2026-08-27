@@ -1067,6 +1067,10 @@ async def update_achievement_tier(
         tier
     )
 
+    # --------------------------------
+    # CREATE NEW PROGRESS ROW
+    # --------------------------------
+
     if existing is None:
 
         if completed is None:
@@ -1131,6 +1135,10 @@ async def update_achievement_tier(
 
         return True
 
+    # --------------------------------
+    # UPDATE EXISTING PROGRESS
+    # --------------------------------
+
     updates = []
     values = []
 
@@ -1144,13 +1152,17 @@ async def update_achievement_tier(
             completed
         )
 
-        if completed_at is _UNSET:
 
-            completed_at = (
-                datetime.now(timezone.utc)
-                if completed
-                else None
+        if completed:
+
+            completed_at = datetime.now(
+                timezone.utc
             )
+
+        else:
+
+            completed_at = None
+
 
     if current is not None:
 
@@ -1161,6 +1173,7 @@ async def update_achievement_tier(
         values.append(
             current
         )
+
 
     if completed_at is not _UNSET:
 
@@ -1177,20 +1190,6 @@ async def update_achievement_tier(
                 completed_at
             )
 
-        else:
-            derived_completed_at = (
-                datetime.now(timezone.utc)
-                if completed
-                else None
-            )
-
-            updates.append(
-                "completed_at = %s"
-            )
-
-            values.append(
-                derived_completed_at
-            )
 
     if note is not _UNSET:
 
@@ -1207,8 +1206,10 @@ async def update_achievement_tier(
                 note
             )
 
+
     if not updates:
         return False
+
 
     updates.append(
         "updated_at = NOW()"
@@ -1219,6 +1220,7 @@ async def update_achievement_tier(
         achievement_id,
         tier
     ])
+
 
     async with get_pool().connection() as connection:
 
@@ -1232,6 +1234,7 @@ async def update_achievement_tier(
             """,
             tuple(values)
         )
+
 
     return result.rowcount > 0
 

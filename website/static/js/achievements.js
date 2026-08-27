@@ -2936,7 +2936,7 @@ window.initAchievements = function () {
                         achievementTier.timestamp = null;
 
                     }
-            
+
                 }
             );
 
@@ -3126,6 +3126,178 @@ window.initAchievements = function () {
 
             }
         );
+
+
+        /*
+         * ------------------------------------------
+         * UPDATE COMPLETED AT
+         * ------------------------------------------
+         */
+
+        const updatedTier =
+            tierContainer;
+
+        const tierContent =
+            updatedTier.querySelector(
+                ".achievement-tier-content"
+            );
+
+        if (tierContent) {
+
+            const descriptionContainer =
+                tierContent.querySelector(
+                    ".achievement-tier-description"
+                );
+
+            let progressRow =
+                tierContent.querySelector(
+                    ".achievement-tier-progress-row"
+                );
+
+            /*
+             * ------------------------------------------
+             * COMPLETED
+             * ------------------------------------------
+             *
+             * The achievement was just checked.
+             *
+             * Create/update the Completed At display.
+             */
+
+            if (achievement.tiers.find(
+                achievementTier =>
+                    achievementTier.tier === tier.tier
+            )?.completed) {
+
+                const completedAt =
+                    new Date();
+
+                const formattedCompletedAt =
+                    formatCompletedAt(
+                        completedAt.toISOString()
+                    );
+
+                /*
+                 * Create the progress row if it
+                 * doesn't already exist.
+                 */
+
+                if (!progressRow) {
+
+                    progressRow =
+                        document.createElement(
+                            "div"
+                        );
+
+                    progressRow.className =
+                        "achievement-tier-progress-row";
+
+                    /*
+                     * The progress row belongs directly
+                     * after the description.
+                     */
+
+                    if (descriptionContainer) {
+
+                        descriptionContainer.insertAdjacentElement(
+                            "afterend",
+                            progressRow
+                        );
+
+                    } else {
+
+                        tierContent.prepend(
+                            progressRow
+                        );
+
+                    }
+
+                }
+
+                /*
+                 * Remove an old completion timestamp.
+                 *
+                 * We don't want duplicate timestamps.
+                 */
+
+                const oldCompletedAt =
+                    progressRow.querySelector(
+                        ".achievement-tier-completed-at"
+                    );
+
+                if (oldCompletedAt) {
+
+                    oldCompletedAt.remove();
+
+                }
+
+                /*
+                 * Create the new timestamp.
+                 */
+
+                const completedAtElement =
+                    document.createElement(
+                        "span"
+                    );
+
+                completedAtElement.className =
+                    "achievement-tier-completed-at";
+
+                completedAtElement.textContent =
+                    formattedCompletedAt;
+
+                progressRow.appendChild(
+                    completedAtElement
+                );
+
+            }
+
+            /*
+             * ------------------------------------------
+             * UNCOMPLETED
+             * ------------------------------------------
+             *
+             * The achievement was just unchecked.
+             *
+             * Remove the Completed At display.
+             */
+
+            else {
+
+                if (progressRow) {
+
+                    const completedAtElement =
+                        progressRow.querySelector(
+                            ".achievement-tier-completed-at"
+                        );
+
+                    if (completedAtElement) {
+
+                        completedAtElement.remove();
+
+                    }
+
+                    /*
+                     * If there is no progress counter
+                     * left in this row, remove the row too.
+                     */
+
+                    const hasProgress =
+                        progressRow.querySelector(
+                            ".achievement-tier-progress"
+                        );
+
+                    if (!hasProgress) {
+
+                        progressRow.remove();
+
+                    }
+
+                }
+
+            }
+
+        }
 
 
         /*
