@@ -1,0 +1,223 @@
+{
+  "achievements": [
+    {
+      "id": "heros_journey_001",
+      "genshin_ids": [
+
+      ],
+      "name": "Onward and Upward",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Ascend a character to Phase 2 for the first time.",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Ascend a character to Phase 4 for the first time.",
+          "progress": 1,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Ascend a character to Phase 6 for the first time.",
+          "progress": 1,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_002",
+      "genshin_ids": [
+
+      ],
+      "name": "Re-Armed, Re-Forged",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Ascend a weapon to Phase 2.",
+          "progress": 1,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Ascend a weapon to Phase 4.",
+          "progress": 1,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Ascend a weapon to Phase 6.",
+          "progress": 1,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_003",
+      "genshin_ids": [
+
+      ],
+      "name": "Hitherto Unknown",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Reach Friendship 10 with 4 characters.",
+          "progress": 4,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Reach Friendship 10 with 8 characters.",
+          "progress": 8,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Reach Friendship 10 with 16 characters.",
+          "progress": 16,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_004",
+      "genshin_ids": [
+
+      ],
+      "name": "Bounty of the Earth",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Collect 200 rewards from blossoms of wealth or blossoms of revelation.",
+          "progress": 200,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Collect 400 rewards from blossoms of wealth or blossoms of revelation.",
+          "progress": 400,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Collect 800 rewards from blossoms of wealth or blossoms of revelation.",
+          "progress": 800,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_005",
+      "genshin_ids": [
+
+      ],
+      "name": "Hero's Gift",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Obtain a 4-star artifact.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_006",
+      "genshin_ids": [
+
+      ],
+      "name": "Echoing Song",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Enhance a 4-star artifact to its highest level.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_007",
+      "genshin_ids": [
+
+      ],
+      "name": "Legendary Treasure",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Obtain a 5-star artifact.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_008",
+      "genshin_ids": [
+
+      ],
+      "name": "Sacred Canto",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "heros_journey_001",
+      "genshin_ids": [
+
+      ],
+      "name": "",
+      "category": "The Hero's Journey",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Enhance a 5-star artifact to its highest level.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    }
+  ]
+}
