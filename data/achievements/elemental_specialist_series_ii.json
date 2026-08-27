@@ -3,7 +3,9 @@
     {
       "id": "elemental_ii_001",
       "genshin_ids": [
-
+        82146,
+        82147,
+        82148
       ],
       "name": "Grassy Blasty, Sparks 'n' Splash",
       "category": "Elemental Specialist: Series II",
@@ -34,7 +36,9 @@
     {
       "id": "elemental_ii_002",
       "genshin_ids": [
-
+        82149,
+        82150,
+        82151
       ],
       "name": "Hyperblooming Circus",
       "category": "Elemental Specialist: Series II",
@@ -65,7 +69,7 @@
     {
       "id": "elemental_ii_003",
       "genshin_ids": [
-
+        82159
       ],
       "name": "Active Camouflage",
       "category": "Elemental Specialist: Series II",
