@@ -1947,7 +1947,11 @@ window.initAchievements = function () {
                 
                     <div class="achievement-category-content">
                 
-                        <h3>
+                        <h3 class="${
+                            category.length > 30
+                                ? "long-category-name"
+                                : ""
+                        }">
                             ${escapeHTML(category)}
                         </h3>
                 

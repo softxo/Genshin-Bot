@@ -202,23 +202,6 @@
       "tiers": [
         {
           "tier": 1,
-          "description": "",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "heros_journey_001",
-      "genshin_ids": [],
-      "name": "",
-      "category": "The Hero's Journey",
-      "region": [],
-      "hidden": false,
-      "version": "1.0",
-      "tiers": [
-        {
-          "tier": 1,
           "description": "Enhance a 5-star artifact to its highest level.",
           "progress": 1,
           "primogems": 10

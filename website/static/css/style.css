@@ -1948,10 +1948,18 @@ body {
 
     white-space: normal;
 
-    overflow: hidden;
-
     overflow-wrap: break-word;
     word-break: normal;
+}
+
+.achievement-category-content h3.long-category-name {
+    font-size: 15px;
+}
+
+.achievement-category-content h3 {
+    width: calc(100% + 20px);
+    margin-left: -10px;
+    margin-right: -10px;
 }
 
 
