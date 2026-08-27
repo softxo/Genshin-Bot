@@ -2567,29 +2567,52 @@ body {
 }
 
 /* =============================
-   PRIMOGEM REWARD
+   ACHIEVEMENT PRIMOGEM REWARD
    ============================= */
 
 .achievement-tier-reward {
+    position: relative;
+    top: -2px;
+
     display: inline-flex;
-
     align-items: center;
+    justify-content: center;
+    gap: 6px;
 
-    flex-shrink: 0;
+    min-width: 58px;
+    height: 34px;
 
-    color: var(--text-muted);
+    padding: 0 9px;
 
-    font-size: 16px;
-    font-weight: 600;
+     border: 1px solid
+        color-mix(
+            in srgb,
+            var(--accent) 5%,
+            var(--border)
+        );
+
+    border-radius: 8px;
+
+    background:
+        color-mix(
+            in srgb,
+            var(--accent) 5%,
+            var(--surface)
+        );
+
+    color: var(--text);;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
 
     white-space: nowrap;
 }
 
 .achievement-tier-reward img {
-    width: 30px;
-    height: 30px;
-
-    display: block;
+    width: 28px;
+    height: 28px;
 
     object-fit: contain;
 }
@@ -2599,8 +2622,8 @@ body {
    ============================= */
 
 .achievement-notes-button {
-    width: 34px;
-    height: 34px;
+    width: 29px;
+    height: 29px;
 
     display: flex;
     align-items: center;
@@ -2611,7 +2634,7 @@ body {
     padding: 0;
 
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 7px;
     box-shadow: none;
 
     background: transparent;
@@ -2626,8 +2649,8 @@ body {
 }
 
 .achievement-notes-button svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 
     display: block;
 }
@@ -2637,6 +2660,70 @@ body {
     border-color: var(--accent);
     color: var(--accent);
 }
+
+.achievement-tier-note {
+    margin-top: 10px;
+    padding: 10px 12px;
+
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--accent) 35%,
+            var(--border)
+        );
+
+    border-radius: 8px;
+
+    background:
+        color-mix(
+            in srgb,
+            var(--accent) 7%,
+            var(--surface)
+        );
+
+    color: var(--text);
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    box-shadow:
+        inset 0 0 0 1px
+        color-mix(
+            in srgb,
+            var(--accent) 4%,
+            transparent
+        );
+}
+
+.achievement-tier.completed .achievement-tier-note {
+    margin-top: 10px;
+    padding: 11px 13px;
+
+    border: 1px solid #e889b5;
+    border-radius: 8px;
+
+    background:
+        color-mix(
+            in srgb,
+            #e889b5 18%,
+            var(--surface)
+        );
+
+    color: #f0a9c9;
+
+    box-shadow:
+        0 0 12px
+        color-mix(
+            in srgb,
+            #e889b5 14%,
+            transparent
+        );
+
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
 
 /* =============================
    ACHIEVEMENT TIER ACTIONS
@@ -2652,6 +2739,19 @@ body {
 
 .achievement-complete-button {
     margin-left: 0;
+}
+
+.achievement-tier-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-tier-description {
+    display: flex;
+
+    align-items: center;
+
+    min-height: 32px;
 }
 
 
@@ -2858,6 +2958,268 @@ body {
     margin: 0;
 
     font-weight: 600;
+}
+
+
+/* =========================================================
+   ACHIEVEMENT NOTES MODAL
+   ========================================================= */
+
+.achievement-notes-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* =============================
+   BACKDROP
+   ============================= */
+
+.achievement-notes-modal-backdrop {
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+
+/* =============================
+   MODAL PANEL
+   ============================= */
+
+.achievement-notes-modal-panel {
+    position: relative;
+
+    z-index: 1;
+
+    width: min(520px, 100%);
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    overflow: hidden;
+}
+
+
+/* =============================
+   HEADER
+   ============================= */
+
+.achievement-notes-modal-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.achievement-notes-modal-header h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+/* =============================
+   CLOSE BUTTON
+   ============================= */
+
+.achievement-notes-modal-close {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.achievement-notes-modal-close:hover {
+    background: var(--surface-hover);
+
+    color: var(--text);
+}
+
+
+/* =============================
+   BODY
+   ============================= */
+
+.achievement-notes-modal-body {
+    padding: 20px;
+}
+
+
+/* =============================
+   TEXT AREA
+   ============================= */
+
+.achievement-notes-input {
+    display: block;
+
+    width: 100%;
+
+    min-height: 120px;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font: inherit;
+    font-size: 14px;
+
+    resize: vertical;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.achievement-notes-input::placeholder {
+    color: var(--text-muted);
+}
+
+
+.achievement-notes-input:hover {
+    background: var(--surface-hover);
+}
+
+
+.achievement-notes-input:focus {
+    border-color: var(--accent);
+
+    background: var(--background);
+
+    box-shadow:
+        0 0 0 3px var(--accent-soft);
+}
+
+
+/* =============================
+   FOOTER
+   ============================= */
+
+.achievement-notes-modal-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =============================
+   ADD NOTE MODAL ACTIONS
+   ============================= */
+
+.achievement-notes-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.achievement-notes-add {
+    background:
+        color-mix(
+            in srgb,
+            #e889b5 12%,
+            var(--surface)
+        );
+
+    border-color:
+        color-mix(
+            in srgb,
+            #e889b5 30%,
+            var(--border)
+        );
+
+    color: #e889b5;
+}
+
+.achievement-notes-add:hover {
+    background:
+        color-mix(
+            in srgb,
+            #e889b5 20%,
+            var(--surface)
+        );
+
+    border-color: #e889b5;
+    color: #e889b5;
+}
+
+
+/* =============================
+   HIDDEN MODAL
+   ============================= */
+
+.achievement-notes-modal[hidden] {
+    display: none;
 }
 
 
@@ -3165,7 +3527,7 @@ body {
 .achievement-tier {
     display: flex;
 
-    align-items: center;
+    align-items: flex-start;
 
     gap: 14px;
 
@@ -3173,6 +3535,7 @@ body {
 
     padding: 8px 0;
 }
+
 
 
 .achievement-tier + .achievement-tier {
@@ -3213,7 +3576,7 @@ body {
 
 .achievement-tier-icon {
     width: 30px;
-    height: 30px;
+    height: 32px;
 
     flex: 0 0 30px;
 

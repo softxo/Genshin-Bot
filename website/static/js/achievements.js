@@ -36,6 +36,104 @@ window.initAchievements = function () {
         "achievement-category-progress-fill"
     );
 
+    /* =========================================================
+       ACHIEVEMENT NOTES MODAL
+       ========================================================= */
+
+    const achievementNotesModal = document.getElementById(
+        "achievement-notes-modal"
+    );
+
+    const achievementNotesModalClose = document.getElementById(
+        "achievement-notes-modal-close"
+    );
+
+    const achievementNotesModalCancel = document.getElementById(
+        "achievement-notes-cancel"
+    );
+
+    const achievementNotesModalAdd = document.getElementById(
+        "achievement-notes-add"
+    );
+
+    const achievementNotesModalBackdrop = document.getElementById(
+        "achievement-notes-modal-backdrop"
+    );
+
+    const achievementNotesInput = document.getElementById(
+        "achievement-notes-input"
+    );
+
+    function openAchievementNotesModal() {
+        achievementNotesModal.hidden = false;
+
+        achievementNotesInput.value = "";
+
+        requestAnimationFrame(() => {
+            achievementNotesInput.focus();
+        });
+    }
+
+
+    function closeAchievementNotesModal() {
+        achievementNotesModal.hidden = true;
+
+        achievementNotesInput.value = "";
+    }
+
+    achievementNotesModalClose.addEventListener(
+        "click",
+        closeAchievementNotesModal
+    );
+
+    achievementNotesModalCancel.addEventListener(
+        "click",
+        closeAchievementNotesModal
+    );
+
+    achievementNotesModalBackdrop.addEventListener(
+        "click",
+        closeAchievementNotesModal
+    );
+
+    achievementNotesModalAdd.addEventListener("click", () => {
+
+        const note =
+            achievementNotesInput.value.trim();
+
+        if (!note) {
+            achievementNotesInput.focus();
+            return;
+        }
+
+        if (!achievementNoteTarget) {
+            return;
+        }
+
+        /*
+         * Store the note on the selected tier.
+         */
+
+        achievementNoteTarget.tier.note =
+            note;
+
+        buildAchievements(
+            achievementNoteTarget.achievement.category
+        );
+
+        console.log(
+            "Achievement note:",
+            achievementNoteTarget.achievement.name,
+            achievementNoteTarget.tier.tier,
+            note
+        );
+
+        closeAchievementNotesModal();
+
+        achievementNoteTarget = null;
+
+    });
+
     let achievementData = null;
 
     let achievementSearchQuery = "";
@@ -43,6 +141,8 @@ window.initAchievements = function () {
     let hideCompletedAchievements = false;
 
     let achievementSelectedVersion = "all";
+
+    let achievementNoteTarget = null;
 
     const CATEGORY_ICONS = {
 
@@ -1759,7 +1859,6 @@ window.initAchievements = function () {
 
             }
         );
-
     }
 
 
@@ -2049,13 +2148,25 @@ window.initAchievements = function () {
     
     
                                             <div class="achievement-tier-content">
-    
-                                                <p>
-                                                    ${escapeHTML(
-                                                        tier.description
-                                                    )}
-                                                </p>
-    
+
+                                                <div class="achievement-tier-description">
+                                                    <p>
+                                                        ${escapeHTML(
+                                                            tier.description
+                                                        )}
+                                                    </p>
+                                                </div>
+                                            
+                                                ${
+                                                    tier.note
+                                                        ? `
+                                                            <div class="achievement-tier-note">
+                                                                ${escapeHTML(tier.note)}
+                                                            </div>
+                                                        `
+                                                        : ""
+                                                }
+                                            
                                             </div>
                                             
                                             <div class="achievement-tier-reward">
@@ -2070,6 +2181,26 @@ window.initAchievements = function () {
                                                 >
                                             
                                             </div>
+                                            
+                                            
+                                            <!-- Completion -->
+
+                                            <button
+                                                type="button"
+                                                class="achievement-complete-button ${
+                                                    tier.completed ? "completed" : ""
+                                                }"
+                                                aria-label="${
+                                                    tier.completed
+                                                        ? "Mark Incomplete"
+                                                        : "Mark Completed"
+                                                }"
+                                                title="${
+                                                    tier.completed
+                                                        ? "Mark Incomplete"
+                                                        : "Mark Completed"
+                                                }"
+                                            ></button>
                                             
                                             
                                             <!-- Notes -->
@@ -2088,7 +2219,7 @@ window.initAchievements = function () {
                                                     focusable="false"
                                                 >
                                                     <path
-                                                        d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40974 4.7157 4.21799 4.7157 4.40974 4.7157 4.71569 4.7157 5.09202 5.09202C4.21799 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40974 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.5903 19.2843 19.5903 19.5903 18.908 20 18.4802 20 17.9201 20 16.8V12.5"
+                                                        d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40974 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40974 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.5903 19.2843 19.5903 19.5903 18.908 20 18.4802 20 17.9201 20 16.8V12.5"
                                                         stroke="currentColor"
                                                         stroke-width="2"
                                                         stroke-linecap="round"
@@ -2104,26 +2235,6 @@ window.initAchievements = function () {
                                                     />
                                                 </svg>
                                             </button>
-                                            
-                                            
-                                            <!-- Completion -->
-                                            
-                                            <button
-                                                type="button"
-                                                class="achievement-complete-button ${
-                                                    tier.completed ? "completed" : ""
-                                                }"
-                                                aria-label="${
-                                                    tier.completed
-                                                        ? "Mark Incomplete"
-                                                        : "Mark Completed"
-                                                }"
-                                                title="${
-                                                    tier.completed
-                                                        ? "Mark Incomplete"
-                                                        : "Mark Completed"
-                                                }"
-                                            ></button>
     
                                         </div>
     
@@ -2158,6 +2269,15 @@ window.initAchievements = function () {
                             event => {
 
                                 event.stopPropagation();
+
+                                achievementNoteTarget = {
+                                    achievement,
+                                    tier: achievement.tiers[
+                                        Array.from(
+                                            notesButtons
+                                        ).indexOf(button)
+                                    ]
+                                };
 
                                 const modal =
                                     document.getElementById(
