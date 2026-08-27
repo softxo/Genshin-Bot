@@ -2599,47 +2599,59 @@ body {
    ============================= */
 
 .achievement-notes-button {
-    height: 28px;
+    width: 34px;
+    height: 34px;
 
-    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     flex-shrink: 0;
 
-    border: 1px solid var(--border);
+    padding: 0;
 
-    border-radius: 7px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: none;
 
     background: transparent;
-
-    color: var(--text-muted);
-
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 600;
+    color: var(--text);
 
     cursor: pointer;
 
     transition:
         background 0.15s ease,
         border-color 0.15s ease,
-        color 0.15s ease,
-        transform 0.15s ease;
+        color 0.15s ease;
 }
 
+.achievement-notes-button svg {
+    width: 18px;
+    height: 18px;
+
+    display: block;
+}
 
 .achievement-notes-button:hover {
-    background: var(--accent-soft);
-
-    border-color: var(--accent-border);
-
+    background: var(--surface-hover);
+    border-color: var(--accent);
     color: var(--accent);
-
-    transform: translateY(-1px);
 }
 
+/* =============================
+   ACHIEVEMENT TIER ACTIONS
+   ============================= */
 
-.achievement-notes-button:active {
-    transform: translateY(0);
+.achievement-tier-reward {
+    margin-right: -6px;
+}
+
+.achievement-notes-button {
+    margin-right: -6px;
+}
+
+.achievement-complete-button {
+    margin-left: 0;
 }
 
 

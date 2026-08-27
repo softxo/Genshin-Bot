@@ -288,4 +288,77 @@
 
 </div>
 
+
+<!-- Notes Modal -->
+<div
+    class="achievement-notes-modal"
+    id="achievement-notes-modal"
+    hidden
+>
+    <div
+        class="achievement-notes-modal-backdrop"
+        id="achievement-notes-modal-backdrop"
+    ></div>
+
+    <div
+        class="achievement-notes-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="achievement-notes-modal-title"
+    >
+
+        <div class="achievement-notes-modal-header">
+
+            <h3 id="achievement-notes-modal-title">
+                Add Note
+            </h3>
+
+            <button
+                type="button"
+                class="achievement-notes-modal-close"
+                id="achievement-notes-modal-close"
+                aria-label="Close"
+                title="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="achievement-notes-modal-body">
+
+            <textarea
+                id="achievement-notes-input"
+                class="achievement-notes-input"
+                placeholder="Enter your note..."
+                rows="4"
+            ></textarea>
+
+        </div>
+
+
+        <div class="achievement-notes-modal-footer">
+
+            <button
+                type="button"
+                class="button"
+                id="achievement-notes-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="button achievement-notes-add"
+                id="achievement-notes-add"
+            >
+                Add Note
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}
