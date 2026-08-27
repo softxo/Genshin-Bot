@@ -760,7 +760,7 @@ window.initAchievements = function () {
                 "button";
 
             allOption.className =
-                "custom-select-option selected";
+                "custom-select-option";
 
             allOption.classList.add(
                 "version-all-option"
@@ -771,17 +771,27 @@ window.initAchievements = function () {
             allOption.dataset.value =
                 "all";
 
+            const allVersionsSelected =
+                achievementSelectedVersion === "all";
+
+            allOption.classList.toggle(
+                "selected",
+                allVersionsSelected
+            );
+
+            allOption.setAttribute(
+                "aria-selected",
+                allVersionsSelected
+                    ? "true"
+                    : "false"
+            );
+
             allOption.textContent =
                 "All Versions";
 
             allOption.setAttribute(
                 "role",
                 "option"
-            );
-
-            allOption.setAttribute(
-                "aria-selected",
-                "true"
             );
 
             allOption.addEventListener(
@@ -1152,6 +1162,67 @@ window.initAchievements = function () {
 
             }
 
+
+            /*
+             * ------------------------------------------
+             * RESTORE SELECTED VERSION
+             * ------------------------------------------
+             */
+
+            menu
+                .querySelectorAll(
+                    ".custom-select-option"
+                )
+                .forEach(option => {
+
+                    const selected =
+                        option.dataset.value ===
+                        achievementSelectedVersion;
+
+                    option.classList.toggle(
+                        "selected",
+                        selected
+                    );
+
+                    option.setAttribute(
+                        "aria-selected",
+                        selected
+                            ? "true"
+                            : "false"
+                    );
+
+                });
+
+
+            function focusSelectedVersionOption() {
+
+                const selectedOption =
+                    menu.querySelector(
+                        ".custom-select-option.selected"
+                    );
+
+                if (!selectedOption) {
+                    return;
+                }
+
+                /*
+                 * Make sure the selected option is
+                 * actually keyboard-focusable.
+                 */
+                selectedOption.setAttribute(
+                    "tabindex",
+                    "0"
+                );
+
+                /*
+                 * Move real browser focus to it.
+                 */
+                selectedOption.focus({
+                    preventScroll: true
+                });
+
+            }
+
             /*
              * ------------------------------------------
              * DROPDOWN BUTTON
@@ -1229,6 +1300,28 @@ window.initAchievements = function () {
                             ? "true"
                             : "false"
                     );
+
+
+                    /*
+                     * Focus the currently selected option.
+                     *
+                     * Do this after opening so the browser
+                     * has already applied the open state.
+                     */
+
+                    if (shouldOpen) {
+
+                        requestAnimationFrame(() => {
+
+                            requestAnimationFrame(() => {
+
+                                focusSelectedVersionOption();
+
+                            });
+
+                        });
+
+                    }
 
                 };
 
@@ -1639,7 +1732,7 @@ window.initAchievements = function () {
                         >
                 
                             <div
-                                class="achievement-category-progress-fill"
+                                class="achievement-sidebar-progress-fill"
                                 style="width: ${progress}%"
                             ></div>
                 
@@ -1711,8 +1804,14 @@ window.initAchievements = function () {
                 }
 
 
-                button.innerHTML = `
+                const progress =
+                    data.total > 0
+                        ? (data.completed / data.total) * 100
+                        : 0;
 
+
+                button.innerHTML = `
+                
                     <div class="achievement-sidebar-icon">
                 
                         <img
@@ -1725,14 +1824,33 @@ window.initAchievements = function () {
                 
                     </div>
                 
-                    <span>
-                        ${escapeHTML(category)}
-                    </span>
                 
-                    <small>
-                        ${data.completed} /
-                        ${data.total}
-                    </small>
+                    <div class="achievement-sidebar-content">
+                
+                        <span class="achievement-sidebar-name">
+                            ${escapeHTML(category)}
+                        </span>
+                
+                
+                        <div class="achievement-sidebar-progress-row">
+                
+                            <div class="achievement-sidebar-progress">
+                
+                                <div
+                                    class="achievement-sidebar-progress-fill"
+                                    style="width: 0%"
+                                ></div>
+                
+                            </div>
+                
+                
+                            <small>
+                                ${data.completed}/${data.total}
+                            </small>
+                
+                        </div>
+                
+                    </div>
                 
                 `;
 
@@ -1938,6 +2056,19 @@ window.initAchievements = function () {
                                                     )}
                                                 </p>
     
+                                            </div>
+                                            
+                                            <div class="achievement-tier-reward">
+
+                                                <span>
+                                                    ${tier.primogems ?? 0}
+                                                </span>
+                                            
+                                                <img
+                                                    src="/static/images/misc/Primogem.webp"
+                                                    alt="Primogems"
+                                                >
+                                            
                                             </div>
     
     
@@ -2438,20 +2569,119 @@ window.initAchievements = function () {
         buildCategories();
 
 
-        /*
-         * Rebuild the sidebar if we are currently
-         * inside a category.
-         */
-
         if (
             browser &&
             !browser.hidden &&
-            categoryTitle
+            categoryTitle &&
+            sidebarList
         ) {
 
-            buildSidebar(
-                categoryTitle.textContent
-            );
+            const currentCategory =
+                categoryTitle.textContent;
+
+
+            /*
+             * Update the existing sidebar progress
+             * bars instead of immediately destroying
+             * and recreating them.
+             */
+
+            sidebarList
+                .querySelectorAll(
+                    ".achievement-sidebar-item"
+                )
+                .forEach(item => {
+
+                    const categoryName =
+                        item
+                            .querySelector(
+                                ".achievement-sidebar-name"
+                            )
+                            ?.textContent
+                            .trim();
+
+
+                    if (!categoryName) {
+                        return;
+                    }
+
+
+                    const data =
+                        achievementData.categories[
+                            categoryName
+                        ];
+
+
+                    if (!data) {
+                        return;
+                    }
+
+
+                    const progress =
+                        data.total > 0
+                            ? (
+                                data.completed /
+                                data.total
+                            ) * 100
+                            : 0;
+
+
+                    const progressFill =
+                        item.querySelector(
+                            ".achievement-sidebar-progress-fill"
+                        );
+
+
+                    const count =
+                        item.querySelector(
+                            ".achievement-sidebar-progress-row small"
+                        );
+
+
+                    if (progressFill) {
+
+                        progressFill.style.width =
+                            `${progress}%`;
+
+                    }
+
+
+                    if (count) {
+
+                        count.textContent =
+                            `${data.completed}/${data.total}`;
+
+                    }
+
+                });
+
+
+            /*
+             * Keep the currently selected sidebar
+             * category state intact.
+             */
+
+            const activeItem =
+                sidebarList.querySelector(
+                    ".achievement-sidebar-item.active"
+                );
+
+
+            if (
+                !activeItem ||
+                activeItem
+                    .querySelector(
+                        ".achievement-sidebar-name"
+                    )
+                    ?.textContent
+                    .trim() !== currentCategory
+            ) {
+
+                buildSidebar(
+                    currentCategory
+                );
+
+            }
 
         }
 
