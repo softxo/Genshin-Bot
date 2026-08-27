@@ -2773,6 +2773,19 @@ window.initAchievements = function () {
                             "click",
                             () => {
 
+                                console.log(
+                                    "[Achievements] Completion button clicked",
+                                    {
+                                        achievement: achievement.name,
+                                        tier: tier.tier,
+                                        completed: tier.completed,
+                                        disabled: button.disabled,
+                                        locked: button.closest(
+                                            ".achievement-tier"
+                                        )?.classList.contains("locked")
+                                    }
+                                );
+
                                 toggleTierCompleted(
                                     achievement,
                                     tier,
@@ -2787,10 +2800,9 @@ window.initAchievements = function () {
                 );
 
 
-                updateTierAvailability(item);
-
-
                 achievementList.appendChild(item);
+
+                updateLockedTiers(item);
 
             }
         );
@@ -2882,6 +2894,14 @@ window.initAchievements = function () {
                 ".achievement-tier"
             );
 
+        if (
+            tierContainer.classList.contains(
+                "locked"
+            )
+        ) {
+            return;
+        }
+
 
         const tierImage =
             tierContainer.querySelector(
@@ -2890,10 +2910,7 @@ window.initAchievements = function () {
 
 
         const isCompleted =
-            tierContainer.classList.contains(
-                "completed"
-            );
-
+            tier.completed === true;
 
         /*
          * ------------------------------------------
@@ -3017,130 +3034,97 @@ window.initAchievements = function () {
 
         /*
          * ------------------------------------------
-         * UPDATE CURRENT TIER VISUALLY
+         * UPDATE ALL TIER UI
          * ------------------------------------------
          */
 
-        if (isCompleted) {
+        achievement.tiers.forEach(
+            achievementTier => {
 
-            tierContainer.classList.remove(
-                "completed"
-            );
+                /*
+                 * Only tiers affected by this action
+                 * need their visual state changed.
+                 */
 
-            button.classList.remove(
-                "completed"
-            );
-
-            tierImage.src =
-                getTierImage(
-                    tier.tier,
-                    totalTiers
-                );
-
-            tierImage.alt =
-                `${tier.tier}/${totalTiers}`;
-
-            button.title =
-                "Mark Completed";
-
-        } else {
-
-            tierContainer.classList.add(
-                "completed"
-            );
-
-            button.classList.add(
-                "completed"
-            );
-
-            tierImage.src =
-                getTierImage(
-                    tier.tier,
-                    totalTiers
-                );
-
-            tierImage.alt =
-                `${tier.tier}/${totalTiers}`;
-
-            button.title =
-                "Mark Incomplete";
-
-        }
+                if (
+                    isCompleted &&
+                    achievementTier.tier < tier.tier
+                ) {
+                    return;
+                }
 
 
-        /*
-         * ------------------------------------------
-         * UPDATE OTHER TIERS
-         * ------------------------------------------
-         */
-
-        if (isCompleted) {
-
-            achievement.tiers.forEach(
-                achievementTier => {
-
-                    if (
-                        achievementTier.tier <= tier.tier
-                    ) {
-                        return;
-                    }
-
-
-                    const otherTier =
-                        item.querySelector(
-                            `.achievement-tier[data-tier="${achievementTier.tier}"]`
-                        );
-
-
-                    if (!otherTier) {
-                        return;
-                    }
-
-
-                    const otherButton =
-                        otherTier.querySelector(
-                            ".achievement-complete-button"
-                        );
-
-
-                    const otherImage =
-                        otherTier.querySelector(
-                            ".achievement-tier-icon img"
-                        );
-
-
-                    otherTier.classList.remove(
-                        "completed"
+                const otherTier =
+                    item.querySelector(
+                        `.achievement-tier[data-tier="${achievementTier.tier}"]`
                     );
 
-                    if (otherButton) {
 
-                        otherButton.classList.remove(
-                            "completed"
-                        );
+                if (!otherTier) {
+                    return;
+                }
 
-                        otherButton.title =
-                            "Mark Completed";
 
-                    }
+                const otherButton =
+                    otherTier.querySelector(
+                        ".achievement-complete-button"
+                    );
 
-                    if (otherImage) {
 
-                        otherImage.src =
-                            getTierImage(
-                                achievementTier.tier,
-                                totalTiers
-                            );
+                const otherImage =
+                    otherTier.querySelector(
+                        ".achievement-tier-icon img"
+                    );
 
-                        otherImage.alt =
-                            `${achievementTier.tier}/${totalTiers}`;
 
-                    }
+                const completed =
+                    achievementTier.completed === true;
+
+
+                /*
+                 * Completed state
+                 */
+
+                otherTier.classList.toggle(
+                    "completed",
+                    completed
+                );
+
+
+                if (otherButton) {
+
+                    otherButton.classList.toggle(
+                        "completed",
+                        completed
+                    );
+
+                    otherButton.title =
+                        completed
+                            ? "Mark Incomplete"
+                            : "Mark Completed";
 
                 }
-            );
 
-        }
+
+                /*
+                 * Tier icon
+                 */
+
+                if (otherImage) {
+
+                    otherImage.src =
+                        getTierImage(
+                            achievementTier.tier,
+                            totalTiers
+                        );
+
+                    otherImage.alt =
+                        `${achievementTier.tier}/${totalTiers}`;
+
+                }
+
+            }
+        );
 
 
         /*
@@ -3451,6 +3435,7 @@ window.initAchievements = function () {
                 ".achievement-tier"
             );
 
+
         let previousCompleted = true;
 
 
@@ -3476,22 +3461,46 @@ window.initAchievements = function () {
 
                 /*
                  * ------------------------------------------
-                 * FIRST TIER / PREVIOUS TIER COMPLETED
+                 * DETERMINE WHETHER THIS TIER IS LOCKED
                  * ------------------------------------------
                  */
 
-                if (previousCompleted) {
+                const locked =
+                    !previousCompleted;
 
-                    tier.classList.remove(
-                        "locked"
+
+                tier.classList.toggle(
+                    "locked",
+                    locked
+                );
+
+
+                /*
+                 * ------------------------------------------
+                 * BUTTON STATE
+                 * ------------------------------------------
+                 *
+                 * Do NOT use button.disabled.
+                 *
+                 * The button must remain clickable so our
+                 * JavaScript can control the state.
+                 */
+
+                if (locked) {
+
+                    button.setAttribute(
+                        "aria-disabled",
+                        "true"
                     );
 
-                    button.disabled = false;
+                    button.title =
+                        "Complete the previous tier first";
 
+                } else {
 
-                    /*
-                     * Restore the correct title.
-                     */
+                    button.removeAttribute(
+                        "aria-disabled"
+                    );
 
                     button.title =
                         isCompleted
@@ -3503,39 +3512,8 @@ window.initAchievements = function () {
 
                 /*
                  * ------------------------------------------
-                 * PREVIOUS TIER NOT COMPLETED
+                 * NEXT TIER
                  * ------------------------------------------
-                 */
-
-                else {
-
-                    tier.classList.add(
-                        "locked"
-                    );
-
-                    /*
-                     * A locked tier cannot be completed.
-                     */
-
-                    if (!isCompleted) {
-
-                        button.classList.remove(
-                            "completed"
-                        );
-
-                        button.disabled = true;
-
-                        button.title =
-                            "Complete the previous tier first";
-
-                    }
-
-                }
-
-
-                /*
-                 * The current tier determines whether
-                 * the NEXT tier becomes unlocked.
                  */
 
                 previousCompleted =
@@ -3547,7 +3525,7 @@ window.initAchievements = function () {
 
         /*
          * ------------------------------------------
-         * UPDATE LARGE ACHIEVEMENT ICON
+         * LARGE ACHIEVEMENT ICON
          * ------------------------------------------
          */
 
@@ -3611,7 +3589,7 @@ window.initAchievements = function () {
 
         /*
          * ------------------------------------------
-         * UPDATE WHOLE ACHIEVEMENT
+         * WHOLE ACHIEVEMENT
          * ------------------------------------------
          */
 
@@ -3853,186 +3831,6 @@ window.initAchievements = function () {
 
         categoryProgressFill.style.width =
             `${percentage}%`;
-
-    }
-
-
-    function updateTierAvailability(item) {
-
-        const tiers =
-            item.querySelectorAll(
-                ".achievement-tier"
-            );
-
-        const mainIcon =
-            item.querySelector(
-                ".achievement-item-main-icon"
-            );
-
-
-        let previousCompleted = true;
-
-
-        tiers.forEach(
-            tier => {
-
-                const button =
-                    tier.querySelector(
-                        ".achievement-complete-button"
-                    );
-
-
-                /*
-                 * Lock tiers whose previous tier
-                 * has not been completed.
-                 */
-
-                if (previousCompleted) {
-
-                    tier.classList.remove(
-                        "locked"
-                    );
-
-                    if (button) {
-
-                        button.disabled = false;
-
-                    }
-
-                } else {
-
-                    tier.classList.remove(
-                        "completed"
-                    );
-
-                    if (button) {
-
-                        button.classList.remove(
-                            "completed"
-                        );
-
-                        button.title =
-                            "Mark Completed";
-
-                        button.disabled = true;
-
-                    }
-
-                    tier.classList.add(
-                        "locked"
-                    );
-
-                }
-
-
-                /*
-                 * The next tier is only available
-                 * when this tier is completed.
-                 */
-
-                previousCompleted =
-                    !tier.classList.contains(
-                        "locked"
-                    ) &&
-                    tier.classList.contains(
-                        "completed"
-                    );
-
-            }
-        );
-
-
-        /*
-         * Find the highest completed tier
-         * after locked tiers have been removed.
-         */
-
-        let highestCompletedTier = 0;
-
-
-        tiers.forEach(
-            tier => {
-
-                if (
-                    tier.classList.contains(
-                        "completed"
-                    )
-                ) {
-
-                    const tierNumber =
-                        Number(
-                            tier.dataset.tier
-                        );
-
-
-                    if (
-                        tierNumber >
-                        highestCompletedTier
-                    ) {
-
-                        highestCompletedTier =
-                            tierNumber;
-
-                    }
-
-                }
-
-            }
-        );
-
-
-        /*
-         * Update the large achievement icon.
-         */
-
-        if (mainIcon) {
-
-            const totalTiers =
-                tiers.length;
-
-
-            mainIcon.src =
-                getTierImage(
-                    highestCompletedTier,
-                    totalTiers
-                );
-
-
-            mainIcon.alt =
-                `${highestCompletedTier}/${totalTiers}`;
-
-        }
-
-        /*
-         * Update the entire achievement
-         * when every tier is completed.
-         */
-
-        const allTiersCompleted =
-            tiers.length > 0 &&
-            Array.from(tiers).every(
-                tier =>
-                    tier.classList.contains(
-                        "completed"
-                    )
-            );
-
-
-                if (allTiersCompleted) {
-
-                    item.classList.add(
-                        "completed"
-                    );
-
-                } else {
-
-                    item.classList.remove(
-                        "completed"
-                    );
-
-                }
-
-                updateAchievementProgress(item);
 
     }
 

@@ -1068,6 +1068,7 @@ async def update_achievement_tier(
     )
 
     if existing is None:
+
         if completed is None:
             completed = False
 
@@ -1075,13 +1076,18 @@ async def update_achievement_tier(
             current = 0
 
         if completed_at is _UNSET:
+
             completed_at = (
                 datetime.now(timezone.utc)
                 if completed
                 else None
             )
 
+        if note is _UNSET:
+            note = None
+
         async with get_pool().connection() as connection:
+
             await connection.execute(
                 """
                 INSERT INTO achievement_progress (
@@ -1114,25 +1120,59 @@ async def update_achievement_tier(
     values = []
 
     if completed is not None:
-        updates.append("completed = %s")
-        values.append(completed)
+
+        updates.append(
+            "completed = %s"
+        )
+
+        values.append(
+            completed
+        )
+
+        if completed_at is _UNSET:
+
+            completed_at = (
+                datetime.now(timezone.utc)
+                if completed
+                else None
+            )
 
     if current is not None:
-        updates.append("current = %s")
-        values.append(current)
+
+        updates.append(
+            "current = %s"
+        )
+
+        values.append(
+            current
+        )
 
     if completed_at is not _UNSET:
-        updates.append("completed_at = %s")
-        values.append(completed_at)
+
+        updates.append(
+            "completed_at = %s"
+        )
+
+        values.append(
+            completed_at
+        )
 
     if note is not _UNSET:
-        updates.append("note = %s")
-        values.append(note)
+
+        updates.append(
+            "note = %s"
+        )
+
+        values.append(
+            note
+        )
 
     if not updates:
         return False
 
-    updates.append("updated_at = NOW()")
+    updates.append(
+        "updated_at = NOW()"
+    )
 
     values.extend([
         discord_user_id,
@@ -1141,6 +1181,7 @@ async def update_achievement_tier(
     ])
 
     async with get_pool().connection() as connection:
+
         result = await connection.execute(
             f"""
             UPDATE achievement_progress

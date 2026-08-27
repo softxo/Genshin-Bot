@@ -3700,13 +3700,6 @@ body {
     color: var(--text-muted);
 }
 
-
-.achievement-tier.locked
-.achievement-complete-button {
-    cursor: pointer;
-}
-
-
 /* =============================
    TIER ICON
    ============================= */
@@ -3804,6 +3797,13 @@ body {
     color: var(--accent);
 
     transform: scale(1.06);
+}
+
+
+.achievement-tier.locked
+.achievement-complete-button {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 
