@@ -149,10 +149,10 @@
             setTimeout(() => {
 
                 const next =
-                    {{ next | tojson }};
+                    "{{ next or '/planner' }}";
 
                 window.location.href =
-                    next || "/planner";
+                    next;
 
             }, 800);
 
