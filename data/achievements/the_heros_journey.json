@@ -3,7 +3,9 @@
     {
       "id": "heros_journey_001",
       "genshin_ids": [
-
+        80014,
+        80015,
+        80016
       ],
       "name": "Onward and Upward",
       "category": "The Hero's Journey",
@@ -34,7 +36,9 @@
     {
       "id": "heros_journey_002",
       "genshin_ids": [
-
+        80017,
+        80018,
+        80019
       ],
       "name": "Re-Armed, Re-Forged",
       "category": "The Hero's Journey",
@@ -65,7 +69,9 @@
     {
       "id": "heros_journey_003",
       "genshin_ids": [
-
+        80020,
+        80021,
+        80022
       ],
       "name": "Hitherto Unknown",
       "category": "The Hero's Journey",
@@ -96,7 +102,9 @@
     {
       "id": "heros_journey_004",
       "genshin_ids": [
-
+        80023,
+        80024,
+        80025
       ],
       "name": "Bounty of the Earth",
       "category": "The Hero's Journey",
@@ -127,7 +135,7 @@
     {
       "id": "heros_journey_005",
       "genshin_ids": [
-
+        80026
       ],
       "name": "Hero's Gift",
       "category": "The Hero's Journey",
@@ -146,7 +154,7 @@
     {
       "id": "heros_journey_006",
       "genshin_ids": [
-
+        80027
       ],
       "name": "Echoing Song",
       "category": "The Hero's Journey",
@@ -165,7 +173,7 @@
     {
       "id": "heros_journey_007",
       "genshin_ids": [
-
+        80028
       ],
       "name": "Legendary Treasure",
       "category": "The Hero's Journey",
@@ -184,7 +192,7 @@
     {
       "id": "heros_journey_008",
       "genshin_ids": [
-
+        80029
       ],
       "name": "Sacred Canto",
       "category": "The Hero's Journey",
@@ -202,9 +210,7 @@
     },
     {
       "id": "heros_journey_001",
-      "genshin_ids": [
-
-      ],
+      "genshin_ids": [],
       "name": "",
       "category": "The Hero's Journey",
       "region": [],

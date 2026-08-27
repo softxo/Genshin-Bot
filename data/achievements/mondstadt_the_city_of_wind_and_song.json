@@ -3,6 +3,7 @@
     {
       "id": "mondstadt_001",
       "genshin_ids": [
+        80030
       ],
       "name": "Continental Explorer: Mondstadt",
       "category": "Mondstadt: The City of Wind and Song",
@@ -21,6 +22,7 @@
     {
       "id": "mondstadt_002",
       "genshin_ids": [
+        80031
       ],
       "name": "Brush of a Thousand Winds",
       "category": "Mondstadt: The City of Wind and Song",
@@ -39,6 +41,7 @@
     {
       "id": "mondstadt_003",
       "genshin_ids": [
+        80032
       ],
       "name": "Let the Wind Lead",
       "category": "Mondstadt: The City of Wind and Song",
@@ -57,6 +60,7 @@
     {
       "id": "mondstadt_004",
       "genshin_ids": [
+        80033
       ],
       "name": "Sanctuary Pilgrim: Mondstadt",
       "category": "Mondstadt: The City of Wind and Song",
@@ -75,6 +79,9 @@
     {
       "id": "mondstadt_005",
       "genshin_ids": [
+        80034,
+        80035,
+        80036
       ],
       "name": "Guiding Wind",
       "category": "Mondstadt: The City of Wind and Song",
@@ -105,6 +112,9 @@
     {
       "id": "mondstadt_006",
       "genshin_ids": [
+        80037,
+        80038,
+        80039
       ],
       "name": "Wind-Chasing Treasure Hunter",
       "category": "Mondstadt: The City of Wind and Song",
@@ -135,6 +145,9 @@
     {
       "id": "mondstadt_007",
       "genshin_ids": [
+        80040,
+        80041,
+        80042
       ],
       "name": "Wind-Chasing Adventurer",
       "category": "Mondstadt: The City of Wind and Song",
