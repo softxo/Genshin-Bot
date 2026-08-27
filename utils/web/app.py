@@ -244,7 +244,7 @@ async def planner(
     request: Request,
     cyrene_session: str | None = Cookie(default=None)
 ):
-    session = get_web_session(
+    session = await get_web_session(
         cyrene_session
     )
 
@@ -631,7 +631,7 @@ async def achievements(
     request: Request,
     cyrene_session: str | None = Cookie(default=None)
 ):
-    session = get_web_session(
+    session = await get_web_session(
         cyrene_session
     )
 
