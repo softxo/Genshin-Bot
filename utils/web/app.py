@@ -45,6 +45,7 @@ from utils.hoyolab.database import (
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.daily_note import get_resin
 from utils.achievements.achievements import load_achievements
+from utils.achievements.progress import load_progress
 
 
 
@@ -650,11 +651,12 @@ async def achievements(
 async def achievements_data(
     cyrene_session: str | None = Cookie(default=None)
 ):
-    await get_authenticated_user(
+    user_id = await get_authenticated_user(
         cyrene_session
     )
 
     achievements = load_achievements()
+    progress = load_progress(user_id)
 
     categories = {}
 
@@ -663,9 +665,10 @@ async def achievements_data(
 
     for achievement in achievements:
 
+        achievement_id = achievement.get("id")
         category = achievement.get("category")
 
-        if not category:
+        if not achievement_id or not category:
             continue
 
         tiers = achievement.get("tiers", [])
@@ -676,13 +679,50 @@ async def achievements_data(
                 "completed": 0,
             }
 
+        achievement_progress = progress.get(
+            achievement_id,
+            {}
+        )
+
+        tier_progress = achievement_progress.get(
+            "tiers",
+            {}
+        )
+
         for tier in tiers:
 
-            total_tiers += 1
+            tier_number = str(
+                tier.get("tier")
+            )
 
+            saved_tier = tier_progress.get(
+                tier_number,
+                {}
+            )
+
+            completed = saved_tier.get(
+                "completed",
+                False
+            )
+
+            current = saved_tier.get(
+                "current",
+                0
+            )
+
+            timestamp = saved_tier.get(
+                "timestamp"
+            )
+
+            # Add imported progress to the tier
+            tier["completed"] = completed
+            tier["current"] = current
+            tier["timestamp"] = timestamp
+
+            total_tiers += 1
             categories[category]["total"] += 1
 
-            if tier.get("completed", False):
+            if completed:
                 completed_tiers += 1
                 categories[category]["completed"] += 1
 
