@@ -2185,14 +2185,6 @@ window.initAchievements = function () {
                                         : ""
                                 }
                             
-                                <span class="achievement-tier-count">
-                                    ${
-                                        achievement.tiers.filter(
-                                            tier => tier.completed === true
-                                        ).length
-                                    }/${totalTiers}
-                                </span>
-                            
                             </div>
                         
                         </div>
@@ -2235,6 +2227,10 @@ window.initAchievements = function () {
                                                             tier.description
                                                         )}
                                                     </p>
+                                                </div>
+                                            
+                                                <div class="achievement-tier-progress">
+                                                    ${tier.current ?? 0}/${tier.progress ?? 0}
                                                 </div>
                                             
                                                 ${
