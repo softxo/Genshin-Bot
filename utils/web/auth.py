@@ -39,15 +39,6 @@ def _cleanup() -> None:
     for token in expired_verifications:
         _verifications.pop(token, None)
 
-    expired_sessions = [
-        token
-        for token, session in _sessions.items()
-        if now - session.created_at > WEB_SESSION_TIMEOUT
-    ]
-
-    for token in expired_sessions:
-        _sessions.pop(token, None)
-
 
 def create_verification() -> VerificationRequest:
     _cleanup()
