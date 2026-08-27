@@ -2170,6 +2170,37 @@ window.initAchievements = function () {
     }
 
 
+    function formatCompletedAt(timestamp) {
+
+        if (!timestamp) {
+            return "";
+        }
+
+        const date = new Date(timestamp);
+
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
+        const day =
+            String(date.getDate()).padStart(2, "0");
+
+        const month =
+            String(date.getMonth() + 1).padStart(2, "0");
+
+        const year =
+            date.getFullYear();
+
+        const hours =
+            String(date.getHours()).padStart(2, "0");
+
+        const minutes =
+            String(date.getMinutes()).padStart(2, "0");
+
+        return `${day}-${month}-${year} ${hours}:${minutes}`;
+    }
+
+
     /*
      * --------------------------------------------------
      * BUILD ACHIEVEMENTS
@@ -2316,6 +2347,18 @@ window.initAchievements = function () {
                                                         `
                                                         : ""
                                                 }
+                                                
+                                                ${
+                                                    tier.completed && tier.completed_at
+                                                        ? `
+                                                            <div class="achievement-tier-completed-at">
+                                                                Completed at ${formatCompletedAt(
+                                                                    tier.completed_at
+                                                                )}
+                                                            </div>
+                                                        `
+                                                        : ""
+                                                }
                                             
                                                 ${
                                                     tier.note
@@ -2421,6 +2464,47 @@ window.initAchievements = function () {
                     </div>
     
                 `;
+
+                item.querySelectorAll(
+                    ".achievement-tier"
+                ).forEach(tierElement => {
+
+                    const description =
+                        tierElement.querySelector(
+                            ".achievement-tier-description p"
+                        );
+
+                    const descriptionContainer =
+                        tierElement.querySelector(
+                            ".achievement-tier-description"
+                        );
+
+                    if (
+                        !description ||
+                        !descriptionContainer
+                    ) {
+                        return;
+                    }
+
+                    const lineHeight =
+                        parseFloat(
+                            window.getComputedStyle(
+                                description
+                            ).lineHeight
+                        );
+
+                    const height =
+                        description.getBoundingClientRect().height;
+
+                    const isMultiline =
+                        height > lineHeight * 1.5;
+
+                    descriptionContainer.classList.toggle(
+                        "multiline",
+                        isMultiline
+                    );
+
+                });
 
 
                 const tierButtons =

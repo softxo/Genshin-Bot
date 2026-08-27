@@ -1,0 +1,173 @@
+{
+  "achievements": [
+    {
+      "id": "liyue_001",
+      "genshin_ids": [
+
+      ],
+      "name": "Continental Explorer: Liyue",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Light up the map in the following zones: Bishui Plain, Qiongji Estuary, Minlin, Lisha, Sea of Clouds.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "liyue_002",
+      "genshin_ids": [
+
+      ],
+      "name": "Surveyor of Stone",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Unlock all Teleport Waypoints in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "liyue_003",
+      "genshin_ids": [
+
+      ],
+      "name": "Unmovable Mountain",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Upgrade the Statues of The Seven in Liyue to their maximum level.",
+          "progress": 1,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "liyue_004",
+      "genshin_ids": [
+
+      ],
+      "name": "Sanctuary Pilgrim: Liyue",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Unlock all the Shrines of Depths in Liyue.",
+          "progress": 10,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "liyue_005",
+      "genshin_ids": [
+
+      ],
+      "name": "Lithic Guide",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Follow 20 Seelie in Liyue to their Seelie Courts (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 20,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "\tFollow 40 Seelie in Liyue to their Seelie Courts (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 40,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Follow 60 Seelie in Liyue to their Seelie Courts (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 60,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "liyue_006",
+      "genshin_ids": [
+
+      ],
+      "name": "Rock-Steady Treasure Hunter",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Open 200 chests in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 200,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Open 400 chests in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 400,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Open 800 chests in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 800,
+          "primogems": 20
+        }
+      ]
+    },
+    {
+      "id": "liyue_007",
+      "genshin_ids": [
+
+      ],
+      "name": "Rock-Steady Adventurer",
+      "category": "Liyue: The Harbor of Stone and Contracts",
+      "region": [],
+      "hidden": false,
+      "version": "1.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Complete 10 Open World mechanism-activated Time Trial Challenges in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 10,
+          "primogems": 5
+        },
+        {
+          "tier": 2,
+          "description": "Complete 20 Open World mechanism-activated Time Trial Challenges in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 20,
+          "primogems": 10
+        },
+        {
+          "tier": 3,
+          "description": "Complete 40 Open World mechanism-activated Time Trial Challenges in Liyue (The Chasm and Chenyu Vale are counted separately).",
+          "progress": 40,
+          "primogems": 20
+        }
+      ]
+    }
+  ]
+}

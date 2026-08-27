@@ -2801,6 +2801,7 @@ body {
 .achievement-tier-content {
     display: flex;
     flex-direction: column;
+    gap: 6px;
 }
 
 .achievement-tier-description {
@@ -2808,8 +2809,17 @@ body {
 
     align-items: center;
 
-    min-height: 32px;
+    min-height: 0;
 }
+
+.achievement-tier-description:not(.multiline) {
+    min-height: 18px;
+}
+
+.achievement-tier-description.multiline {
+    min-height: 36px;
+}
+
 
 
 /* =============================
@@ -3621,8 +3631,6 @@ body {
 
     height: 23px;
 
-    margin-top: 6px;
-
     padding: 0 5px;
 
     border-radius: 6px;
@@ -3637,6 +3645,8 @@ body {
 
     box-sizing: border-box;
     flex: 0 0 auto;
+
+    margin-top: 0;
 }
 
 .achievement-tier-progress-current {
@@ -3650,6 +3660,26 @@ body {
 
 .achievement-tier-progress-total {
     color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* =============================
+   ACHIEVEMENT COMPLETED AT
+   ============================= */
+
+.achievement-tier-completed-at {
+    display: inline-block;
+
+    margin-top: 4px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    opacity: 0.7;
 }
 
 
