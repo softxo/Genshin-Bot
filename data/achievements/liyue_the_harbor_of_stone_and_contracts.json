@@ -3,7 +3,7 @@
     {
       "id": "liyue_001",
       "genshin_ids": [
-
+        80043
       ],
       "name": "Continental Explorer: Liyue",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -22,7 +22,7 @@
     {
       "id": "liyue_002",
       "genshin_ids": [
-
+        80044
       ],
       "name": "Surveyor of Stone",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -41,7 +41,7 @@
     {
       "id": "liyue_003",
       "genshin_ids": [
-
+        80045
       ],
       "name": "Unmovable Mountain",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -60,7 +60,7 @@
     {
       "id": "liyue_004",
       "genshin_ids": [
-
+        80046
       ],
       "name": "Sanctuary Pilgrim: Liyue",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -79,7 +79,9 @@
     {
       "id": "liyue_005",
       "genshin_ids": [
-
+        80047,
+        80048,
+        80049
       ],
       "name": "Lithic Guide",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -110,7 +112,9 @@
     {
       "id": "liyue_006",
       "genshin_ids": [
-
+        80050,
+        80051,
+        80052
       ],
       "name": "Rock-Steady Treasure Hunter",
       "category": "Liyue: The Harbor of Stone and Contracts",
@@ -141,7 +145,9 @@
     {
       "id": "liyue_007",
       "genshin_ids": [
-
+        80053,
+        80054,
+        80055
       ],
       "name": "Rock-Steady Adventurer",
       "category": "Liyue: The Harbor of Stone and Contracts",
