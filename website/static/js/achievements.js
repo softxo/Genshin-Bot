@@ -102,7 +102,7 @@ window.initAchievements = function () {
 
             const note =
                 achievementNotesInput.value.trim();
-    
+
             if (!note) {
                 achievementNotesInput.focus();
                 return;
@@ -2317,7 +2317,20 @@ window.initAchievements = function () {
                                                     tier.note
                                                         ? `
                                                             <div class="achievement-tier-note">
-                                                                ${escapeHTML(tier.note)}
+                                                                
+                                                                <span class="achievement-tier-note-text">
+                                                                    ${escapeHTML(tier.note)}
+                                                                </span>
+                                                
+                                                                <button
+                                                                    type="button"
+                                                                    class="achievement-tier-note-remove"
+                                                                    aria-label="Remove Note"
+                                                                    title="Remove Note"
+                                                                >
+                                                                    ×
+                                                                </button>
+                                                
                                                             </div>
                                                         `
                                                         : ""
@@ -2416,6 +2429,11 @@ window.initAchievements = function () {
                         ".achievement-notes-button"
                     );
 
+                const noteRemoveButtons =
+                    item.querySelectorAll(
+                        ".achievement-tier-note-remove"
+                    );
+
 
                 notesButtons.forEach(
                     button => {
@@ -2472,6 +2490,123 @@ window.initAchievements = function () {
                                     input.focus();
 
                                 });
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                noteRemoveButtons.forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            async event => {
+
+                                event.stopPropagation();
+
+                                const tierElement =
+                                    button.closest(
+                                        ".achievement-tier"
+                                    );
+
+                                if (!tierElement) {
+                                    return;
+                                }
+
+                                const tierNumber =
+                                    Number(
+                                        tierElement.dataset.tier
+                                    );
+
+                                const tier =
+                                    achievement.tiers.find(
+                                        achievementTier =>
+                                            achievementTier.tier === tierNumber
+                                    );
+
+                                if (!tier) {
+                                    return;
+                                }
+
+                                try {
+
+                                    const response =
+                                        await fetch(
+                                            `/api/achievements/${encodeURIComponent(
+                                                achievement.id
+                                            )}/tiers/${tier.tier}/note`,
+                                            {
+                                                method: "PATCH",
+
+                                                headers: {
+                                                    "Content-Type":
+                                                        "application/json"
+                                                },
+
+                                                body: JSON.stringify({
+                                                    note: null
+                                                })
+                                            }
+                                        );
+
+
+                                    if (!response.ok) {
+
+                                        const result =
+                                            await response.json();
+
+                                        throw new Error(
+                                            result.detail ||
+                                            "Failed to remove note."
+                                        );
+
+                                    }
+
+
+                                    /*
+                                     * Update local state.
+                                     */
+
+                                    tier.note = null;
+
+
+                                    /*
+                                     * Remove the note box immediately.
+                                     */
+
+                                    const noteElement =
+                                        button.closest(
+                                            ".achievement-tier-note"
+                                        );
+
+                                    if (noteElement) {
+
+                                        noteElement.remove();
+
+                                    }
+
+
+                                    console.log(
+                                        "Achievement note removed:",
+                                        achievement.name,
+                                        tier.tier
+                                    );
+
+                                } catch (error) {
+
+                                    console.error(
+                                        "[Achievements] Failed to remove note:",
+                                        error
+                                    );
+
+                                    alert(
+                                        error.message
+                                    );
+
+                                }
 
                             }
                         );

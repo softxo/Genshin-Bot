@@ -2697,7 +2697,7 @@ body {
 
 .achievement-tier.completed .achievement-tier-note {
     margin-top: 10px;
-    padding: 11px 13px;
+    padding: 11px 38px 11px 13px;
 
     border: 1px solid #e889b5;
     border-radius: 8px;
@@ -2722,6 +2722,55 @@ body {
     font-size: 13px;
     font-weight: 500;
     line-height: 1.5;
+}
+
+/* =============================
+   ACHIEVEMENT NOTE REMOVE BUTTON
+   ============================= */
+
+.achievement-tier-note {
+    position: relative;
+
+    padding-right: 38px;
+}
+
+.achievement-tier-note-remove {
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 5px;
+
+    background: transparent;
+    color: var(--text-muted);
+
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.achievement-tier-note-remove:hover {
+    background: var(--surface-hover);
+    color: var(--accent);
 }
 
 
