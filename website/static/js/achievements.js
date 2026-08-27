@@ -2107,10 +2107,15 @@ window.initAchievements = function () {
         sidebarList.innerHTML = "";
 
 
-        Object.entries(
-            achievementData.categories
-        ).forEach(
-            ([category, data]) => {
+        CATEGORY_ORDER.forEach(
+            category => {
+
+                const data =
+                    achievementData.categories[category];
+
+                if (!data) {
+                    return;
+                }
 
                 const button =
                     document.createElement("button");

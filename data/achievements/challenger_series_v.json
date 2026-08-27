@@ -1,0 +1,156 @@
+{
+  "achievements": [
+    {
+      "id": "challenger_v_001",
+      "genshin_ids": [
+        82115
+      ],
+      "name": "Salt for My Foes, and Water for Me",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Obtain at least three healing orbs fired from the \"water droplets\" during the Hydro Hypostasis fight.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_002",
+      "genshin_ids": [
+        82116
+      ],
+      "name": "The Fraught Return",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Stop the Hydro Hypostasis from reviving itself without destroying any of the \"water droplets\" by placing obstacles or repelling them.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_003",
+      "genshin_ids": [
+        82117
+      ],
+      "name": "Moment of Destruction",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat Signora without using any Crimson Lotus Moths.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_004",
+      "genshin_ids": [
+        82118
+      ],
+      "name": "Electric Escape",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat a Thunder Manifestation without being hit by its homing thunder cage attack.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_005",
+      "genshin_ids": [
+        82119
+      ],
+      "name": "Radio Silence",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Get locked on by the Thunder Manifestation before you can attack it.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_006",
+      "genshin_ids": [
+        82120
+      ],
+      "name": "Swimming Prohibited",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Bathysmal Vishap Herd without allowing them to dive into the water.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_007",
+      "genshin_ids": [
+        82126
+      ],
+      "name": "Death Proof",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Dodge one entire round of the Baleful Vajra's destructive waves during one battle with Magatsu Mitake Narukami no Mikoto.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_v_008",
+      "genshin_ids": [
+        82128
+      ],
+      "name": "Ouroboros",
+      "category": "Challenger: Series V",
+      "region": [],
+      "hidden": false,
+      "version": "2.6",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Destroy Oozing Concretions to paralyze the Ruin Serpent while it is gathering energy.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "achievements": [
+    {
+      "id": "challenger_iv_001",
+      "genshin_ids": [
+        82091
+      ],
+      "name": "..Geovishap, Solarvishap, Lunarvishap...",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Geovishap in all of its elemental forms.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_002",
+      "genshin_ids": [
+        82092
+      ],
+      "name": "Geo Elemental Reaction?",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Primo Geovishap in all of its elemental forms.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_003",
+      "genshin_ids": [
+        82093
+      ],
+      "name": "Puppet Show-Off",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Maguu Kenki while he is taunting you.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_004",
+      "genshin_ids": [
+        82094
+      ],
+      "name": "Totaled Totem",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat an Electro Samachurl with no lightning totem on the field.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_005",
+      "genshin_ids": [
+        82095
+      ],
+      "name": "Did My Hand Fall From My Wrist?",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat a Thunderhelm Lawachurl while in an enhanced state.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_006",
+      "genshin_ids": [
+        82096
+      ],
+      "name": "I'll Skip the Spa, Thanks",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat a Mirror Maiden without being trapped by its Water Prison.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_007",
+      "genshin_ids": [
+        82097
+      ],
+      "name": "It's Quiet... Too Quiet...",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Pyro Hypostasis after it enters its extinguished state only once",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_008",
+      "genshin_ids": [
+        82098
+      ],
+      "name": "The Battle of Narukami Island",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat the Perpetual Mechanical Array in its weakened state.",
+          "progress": 1,
+          "primogems": 5
+        }
+      ]
+    },
+    {
+      "id": "challenger_iv_009",
+      "genshin_ids": [
+        82109
+      ],
+      "name": "The Finishing Touch",
+      "category": "Challenger: Series IV",
+      "region": [],
+      "hidden": false,
+      "version": "2.0",
+      "tiers": [
+        {
+          "tier": 1,
+          "description": "Defeat Azhdaha without ever having gained a shield.",
+          "progress": 1,
+          "primogems": 10
+        }
+      ]
+    }
+  ]
+}
