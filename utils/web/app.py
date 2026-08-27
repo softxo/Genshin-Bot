@@ -42,13 +42,11 @@ from utils.hoyolab.database import (
     create_reminder,
     update_reminder,
     delete_reminder,
+    update_achievement_tier,
 )
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.daily_note import get_resin
-from utils.achievements.achievements import (
-    load_achievements,
-    update_achievement_tier,
-)
+from utils.achievements.achievements import load_achievements
 from utils.achievements.progress import load_progress
 from utils.achievements.importer import import_achievements
 
