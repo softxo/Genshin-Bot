@@ -12,7 +12,7 @@ class RawAchievement:
 
     This object intentionally makes very few assumptions about the
     underlying Genshin data. Any fields we discover should be preserved
-    here so they are not lost during normalization.
+    here so they are not lost during normalisation.
     """
 
     genshin_id: int
@@ -76,7 +76,7 @@ class RawAchievement:
 @dataclass(slots=True)
 class AchievementSnapshot:
     """
-    Normalized representation of one achievement at scan time.
+    Normalised representation of one achievement at scan time.
 
     This is the format Cyrene should consume rather than dealing
     directly with protobuf/native scanner data.
