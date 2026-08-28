@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CyreneScanner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c4fb0ff77095e02aa2c9fbb5795c5e2b9c95000")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe3b0ca4c529261811920b8c5b8ba8ab75169fcc")]
 [assembly: System.Reflection.AssemblyProductAttribute("CyreneScanner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CyreneScanner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
