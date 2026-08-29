@@ -716,6 +716,9 @@ async def events_page(
                             elements.add(element)
 
                         if avatar.get("avatar_type") == 1:
+                            print("===== TYPE 1 CHARACTER =====")
+                            print(avatar)
+                            print("============================")
                             trial_characters.append({
                                 "name": avatar.get("name"),
                                 "image": avatar.get("image"),
