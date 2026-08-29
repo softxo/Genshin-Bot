@@ -652,6 +652,7 @@ async def events_page(
         "best_round": 0,
         "arcanums": 0,
         "medals": 0,
+        "end_time": 0,
     }
     selected_account = None
 
@@ -708,6 +709,7 @@ async def events_page(
                         "best_round": stat["max_round_id"],
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],
+                        "end_time": int(current_cycle["schedule"]["end_time"]),
                     }
 
         except Exception as error:
