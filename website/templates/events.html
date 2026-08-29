@@ -433,66 +433,56 @@
 
                 <div class="event-featured-panel">
 
-                    <div class="stygian-best-record">
+                    {% if stygian.has_data %}
 
-                        <span class="event-stat-label">
-                            Best Record
-                        </span>
+                        <div class="stygian-best-record">
 
-                        <div class="event-stat-value">
+                            <span class="event-stat-label">
+                                Best Record
+                            </span>
 
-                            {% if stygian.has_data %}
+                            <div class="event-stat-value">
 
-                            <div class="stygian-record">
+                                <div class="stygian-record">
 
-                                {% if stygian.difficulty_icon %}
-                                    <img
-                                        src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
-                                        alt="Difficulty {{ stygian.difficulty }}"
-                                        class="stygian-difficulty-icon"
-                                    >
-                                {% endif %}
-
-                                <strong>
-                                    {% if stygian.difficulty == 1 %}
-                                        Easy
-                                    {% elif stygian.difficulty == 2 %}
-                                        Normal
-                                    {% elif stygian.difficulty == 3 %}
-                                        Hard
-                                    {% elif stygian.difficulty == 4 %}
-                                        Menacing
-                                    {% elif stygian.difficulty == 5 %}
-                                        Fearless
-                                    {% elif stygian.difficulty == 6 %}
-                                        Dire
-                                    {% else %}
-                                        Difficulty {{ stygian.difficulty }}
+                                    {% if stygian.difficulty_icon %}
+                                        <img
+                                            src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
+                                            alt="Difficulty {{ stygian.difficulty }}"
+                                            class="stygian-difficulty-icon"
+                                        >
                                     {% endif %}
-                                </strong>
 
-                                <span class="event-stat-separator">|</span>
+                                    <strong>
+                                        {% if stygian.difficulty == 1 %}
+                                            Easy
+                                        {% elif stygian.difficulty == 2 %}
+                                            Normal
+                                        {% elif stygian.difficulty == 3 %}
+                                            Hard
+                                        {% elif stygian.difficulty == 4 %}
+                                            Menacing
+                                        {% elif stygian.difficulty == 5 %}
+                                            Fearless
+                                        {% elif stygian.difficulty == 6 %}
+                                            Dire
+                                        {% else %}
+                                            Difficulty {{ stygian.difficulty }}
+                                        {% endif %}
+                                    </strong>
 
-                                <strong>
-                                    {{ stygian.best_time }}s
-                                </strong>
+                                    <span class="event-stat-separator">|</span>
+
+                                    <strong>
+                                        {{ stygian.best_time }}s
+                                    </strong>
+
+                                </div>
 
                             </div>
 
-                            {% else %}
-
-                                <div class="event-no-record">
-                                    No Record
-                                </div>
-
-                            {% endif %}
-
                         </div>
 
-                    </div>
-
-
-                    {% if stygian.has_data %}
 
                         <div class="stygian-bosses">
 
@@ -545,6 +535,12 @@
 
                             </div>
 
+                        </div>
+
+                    {% else %}
+
+                        <div class="event-no-record">
+                            No Record
                         </div>
 
                     {% endif %}
