@@ -747,6 +747,7 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
                     abyss = await client.get_genshin_spiral_abyss()
+                    stygian = await client.get_stygian_onslaught()
 
                 abyss_chambers = []
 
@@ -792,6 +793,50 @@ async def events_page(
                     "chambers": abyss_chambers,
                 }
 
+                stygian_data = {
+                    "has_data": False,
+                    "end_time": 0,
+                    "difficulty": 0,
+                    "difficulty_icon": "",
+                    "best_time": 0,
+                    "bosses": [],
+                }
+
+                if stygian:
+
+                    current_stygian = stygian[0]
+
+                    record = current_stygian["single"]["best"]
+
+                    bosses = []
+
+                    for challenge in current_stygian["single"]["challenge"]:
+
+                        characters = []
+
+                        for character in challenge.get("teams", []):
+
+                            characters.append({
+                                "name": character["name"],
+                                "icon": character["image"],
+                            })
+
+                        bosses.append({
+                            "name": challenge["monster"]["name"],
+                            "icon": challenge["monster"]["icon"],
+                            "time": challenge["second"],
+                            "characters": characters,
+                        })
+
+                    stygian_data = {
+                        "has_data": current_stygian["single"]["has_data"],
+                        "end_time": current_stygian["schedule"]["end_date_time"],
+                        "difficulty": record["difficulty"] if record else 0,
+                        "difficulty_icon": record["icon"] if record else "",
+                        "best_time": record["second"] if record else 0,
+                        "bosses": bosses,
+                    }
+
                 current_cycle = theater["data"][0]
 
                 stat = current_cycle["stat"]
@@ -829,6 +874,7 @@ async def events_page(
             "request": request,
             "theater": theater_data,
             "abyss": abyss_data,
+            "stygian": stygian_data,
             "accounts": accounts,
             "selected_account": selected_account,
         },

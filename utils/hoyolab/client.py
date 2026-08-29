@@ -85,6 +85,15 @@ class HoYoLABClient:
 
             return await response.json()
 
+    async def get_stygian_onslaught(self) -> list:
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies()
+        )
+
+        return await client.get_stygian_onslaught(
+            raw=True
+        )
+
     async def get_imaginarium_theater(self) -> dict:
         client = genshin.Client(
             cookies=self.credentials.as_cookies()
