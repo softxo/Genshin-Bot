@@ -682,10 +682,8 @@ async def events_page(
 
             if client is not None:
                 async with client:
-                    theater = await client.get_imaginarium_theater(
-                        raw=True
-                    )
-                    
+                    theater = await client.get_imaginarium_theater()
+                
                 print("===== RAW THEATER KEYS =====")
                 print(theater.keys())
 
