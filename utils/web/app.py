@@ -806,15 +806,7 @@ async def events_page(
 
                     current_stygian = stygian[0]
 
-                    print("===== STYGIAN SCHEDULE =====")
-                    print(current_stygian["schedule"])
-                    print("============================")
-
                     record = current_stygian["single"]["best"]
-
-                    print("===== STYGIAN RECORD =====")
-                    print(record)
-                    print("==========================")
 
                     bosses = []
 
