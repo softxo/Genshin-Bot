@@ -175,11 +175,53 @@
 
                                 <span>Team First Half</span>
 
+                                <div class="abyss-team-characters">
+
+                                    {% for battle in chamber.battles %}
+                                        {% if battle.half == 1 %}
+
+                                            {% for character in battle.characters %}
+
+                                            <img
+                                                src="{{ character.icon }}"
+                                                alt="{{ character.name }}"
+                                                title="{{ character.name }}"
+                                            >
+
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </div>
+
+
                                 <strong>
                                     Chamber {{ chamber.chamber }}
                                 </strong>
 
+
                                 <span>Team Second Half</span>
+
+                                <div class="abyss-team-characters">
+
+                                    {% for battle in chamber.battles %}
+                                        {% if battle.half == 2 %}
+
+                                            {% for character in battle.characters %}
+
+                                            <img
+                                                src="{{ character.icon }}"
+                                                alt="{{ character.name }}"
+                                                title="{{ character.name }}"
+                                            >
+
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </div>
 
                             </div>
 

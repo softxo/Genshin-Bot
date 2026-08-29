@@ -753,10 +753,28 @@ async def events_page(
 
                     for chamber in floor.chambers:
 
+                        battles = []
+
+                        for battle in chamber.battles:
+
+                            characters = []
+
+                            for character in battle.characters:
+
+                                characters.append({
+                                    "name": character.name,
+                                    "icon": character.icon,
+                                })
+
+                            battles.append({
+                                "half": battle.half,
+                                "characters": characters,
+                            })
+
                         abyss_chambers.append({
                             "floor": floor.floor,
                             "chamber": chamber.chamber,
-                            "battles": chamber.battles,
+                            "battles": battles,
                         })
 
 
