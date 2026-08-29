@@ -93,3 +93,10 @@ class HoYoLABClient:
         return await client.get_imaginarium_theater(
             raw=True
         )
+
+    async def get_genshin_spiral_abyss(self) -> genshin.models.SpiralAbyss:
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies()
+        )
+
+        return await client.get_genshin_spiral_abyss()
