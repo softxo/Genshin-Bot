@@ -711,6 +711,10 @@ async def events_page(
 
                 detail = current_cycle["detail"]
 
+                print("===== THEATER DETAIL STAT =====")
+                print(detail.get("detail_stat"))
+                print("===============================")
+
                 print("===== THEATER LINEUP =====")
                 print("Type:", type(detail.get("lineup_link")).__name__)
                 print("Value:", detail.get("lineup_link"))
