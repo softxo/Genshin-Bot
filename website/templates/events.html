@@ -4,20 +4,6 @@
 
 {% block content %}
 
-<div>
-    <p>Unlocked: {{ theater.is_unlock }}</p>
-    <p>Cycles: {{ theater.data | length }}</p>
-
-    {% for cycle in theater.data %}
-    <p>
-        Cycle {{ loop.index }} —
-        Difficulty: {{ cycle.stat.difficulty_id }},
-        Best Round: {{ cycle.stat.max_round_id }},
-        Medals: {{ cycle.stat.medal_num }}
-    </p>
-    {% endfor %}
-</div>
-
 <div class="page events-page">
 
     <section class="page-header">
@@ -171,18 +157,27 @@
                         <div class="event-stat-value">
                     
                             <div class="it-record">
-                    
-                                <img src="/static/images/events/imaginarium_theater/IT_Act_12.webp" alt="Act 12" class="it-act-icon">
-                    
-                                <strong>Act 12</strong>
-                    
+                            
+                                <img
+                                    src="/static/images/events/imaginarium_theater/IT_Act_{{ theater.best_round }}.webp"
+                                    alt="Act {{ theater.best_round }}"
+                                    class="it-act-icon"
+                                >
+                            
+                                <strong>Act {{ theater.best_round }}</strong>
+                            
+                                {% if theater.best_round >= 10 %}
                                 <span class="event-stat-separator">|</span>
-                    
-                                <strong>2</strong>
-                    
-                                <img src="/static/images/events/imaginarium_theater/IT_Arcanum_2.webp" alt="2 Arcanums"
-                                    class="it-arcanum-icon">
-                    
+                            
+                                <strong>{{ theater.arcanums }}</strong>
+                            
+                                <img
+                                    src="/static/images/events/imaginarium_theater/IT_Arcanum_{{ theater.arcanums }}.webp"
+                                    alt="{{ theater.arcanums }} Arcanums"
+                                    class="it-arcanum-icon"
+                                >
+                                {% endif %}
+                            
                             </div>
                     
                         </div>
@@ -199,68 +194,17 @@
                         <div class="it-stella-box">
                     
                             <div class="it-stella-row">
-                    
+                            
+                                {% for i in range(theater.best_act) %}
+                            
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Stella.webp"
                                     alt="Stella"
-                                    class="it-stella"
+                                    class="it-stella{% if i >= theater.medals %} it-stella-inactive{% endif %}"
                                 >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella"
-                                >
-                    
+                            
+                                {% endfor %}
+                            
                             </div>
                     
                         </div>

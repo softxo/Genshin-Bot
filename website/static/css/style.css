@@ -4880,8 +4880,9 @@ body {
     opacity: 1;
 }
 
-.it-stella.unearned {
-    opacity: 0.5;
+.it-stella-inactive {
+    opacity: 0.25;
+    filter: grayscale(1);
 }
 
 

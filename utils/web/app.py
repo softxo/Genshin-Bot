@@ -667,6 +667,7 @@ async def events_page(
 
                 theater_data = {
                     "best_round": stat["max_round_id"],
+                    "best_act": stat["max_round_id"],
                     "arcanums": stat["heraldry"],
                     "medals": stat["medal_num"],
                 }
