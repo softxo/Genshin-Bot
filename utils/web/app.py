@@ -692,6 +692,11 @@ async def events_page(
                 stat = current_cycle["stat"]
                 schedule = current_cycle["schedule"]
 
+                print("===== THEATER FLAGS =====")
+                print("has_data:", current_cycle.get("has_data"))
+                print("has_detail_data:", current_cycle.get("has_detail_data"))
+                print("=========================")
+
                 print("===== THEATER CURRENT CYCLE KEYS =====")
                 print(current_cycle.keys())
                 print("==============================")
