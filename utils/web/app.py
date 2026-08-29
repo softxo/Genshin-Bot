@@ -654,6 +654,7 @@ async def events_page(
         "medals": 0,
         "end_time": 0,
     }
+
     selected_account = None
 
     if accounts:
@@ -674,11 +675,6 @@ async def events_page(
             selected_account = accounts[0]
 
         try:
-            print("===== EVENTS ACCOUNT =====")
-            print("Selected:", selected_account["nickname"])
-            print("UID:", selected_account["genshin_uid"])
-            print("==========================")
-
             client = await get_account_client(
                 user_id,
                 selected_account["genshin_uid"]
@@ -686,53 +682,29 @@ async def events_page(
 
             if client is not None:
                 async with client:
-                    theater = await client.get_imaginarium_theater()
+                    theater = await client.get_imaginarium_theater(
+                        raw=True
+                    )
+                    
+                print("===== RAW THEATER KEYS =====")
+                print(theater.keys())
+
+                if "data" in theater and theater["data"]:
+                    print("===== RAW CYCLE KEYS =====")
+                    print(theater["data"][0].keys())
+
+                    if "detail" in theater["data"][0]:
+                        print("===== RAW DETAIL KEYS =====")
+                        print(theater["data"][0]["detail"].keys())
+
+                print("============================")
 
                 current_cycle = theater["data"][0]
                 stat = current_cycle["stat"]
                 schedule = current_cycle["schedule"]
 
-                print("===== THEATER FLAGS =====")
-                print("has_data:", current_cycle.get("has_data"))
-                print("has_detail_data:", current_cycle.get("has_detail_data"))
-                print("=========================")
-
-                print("===== THEATER CURRENT CYCLE KEYS =====")
-                print(current_cycle.keys())
-                print("==============================")
-
-                for key, value in current_cycle.items():
-                    if isinstance(value, dict):
-                        print(f"{key} keys:", value.keys())
-
-                print("===== THEATER SCHEDULE =====")
-                print(current_cycle["schedule"])
-                print("============================")
-
                 detail = current_cycle["detail"]
-
-                print("===== THEATER DETAIL STAT =====")
-                print(detail.get("detail_stat"))
-                print("===============================")
-
-                print("===== THEATER LINEUP =====")
-                print("Type:", type(detail.get("lineup_link")).__name__)
-                print("Value:", detail.get("lineup_link"))
-                print("==========================")
-
                 acts = detail["rounds_data"]
-
-                print("===== THEATER ROUNDS =====")
-                print("Rounds:", len(acts))
-                print("First round keys:", acts[0].keys() if acts else None)
-                print("==========================")
-
-                trial_characters = []
-
-                for act in acts:
-                    for avatar in act.get("avatars", []):
-                        if avatar["avatar_type"] == 2:
-                            trial_characters.append(avatar["name"])
 
                 arcanums = sum(
                     1
@@ -748,7 +720,6 @@ async def events_page(
                         "medals": stat["medal_num"],
                         "end_time": schedule["end_time"],
                         "elements": [],
-                        "trial_characters": trial_characters,
                     }
 
         except Exception as error:
