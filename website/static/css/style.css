@@ -4882,7 +4882,7 @@ body {
    BOSSES / TEAMS
    ============================= */
 
-.stygian-bosses {
+   .stygian-bosses {
     width: 100%;
 
     display: flex;
@@ -4891,6 +4891,9 @@ body {
     gap: 10px;
 
     margin-top: 12px;
+    padding-top: 10px;
+
+    box-sizing: border-box;
 }
 
 .stygian-teams-box {
