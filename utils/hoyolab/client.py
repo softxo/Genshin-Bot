@@ -83,3 +83,33 @@ class HoYoLABClient:
             response.raise_for_status()
 
             return await response.json()
+
+    async def get_imaginarium_theater(
+        self,
+        genshin_uid: str,
+        genshin_server: str
+    ) -> dict:
+        if self.session is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
+
+        url = (
+            "https://sg-public-api.hoyolab.com/"
+            "event/game_record/genshin/api/"
+            "imaginarium_theater"
+        )
+
+        params = {
+            "role_id": genshin_uid,
+            "server": genshin_server
+        }
+
+        async with self.session.get(
+                url,
+                params=params
+        ) as response:
+
+            response.raise_for_status()
+
+            return await response.json()
