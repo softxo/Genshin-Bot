@@ -710,19 +710,14 @@ async def events_page(
                 for act in acts:
                     for avatar in act.get("avatars", []):
 
+                        print("===== THEATER AVATAR =====")
+                        print(avatar)
+                        print("==========================")
+
                         element = avatar.get("element")
 
                         if element:
                             elements.add(element)
-
-                        if avatar.get("avatar_type") == 1:
-                            print("===== TYPE 1 CHARACTER =====")
-                            print(avatar)
-                            print("============================")
-                            trial_characters.append({
-                                "name": avatar.get("name"),
-                                "image": avatar.get("image"),
-                            })
 
                 if stat["max_round_id"] > 0:
                     theater_data = {
