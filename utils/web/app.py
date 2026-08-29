@@ -664,6 +664,15 @@ async def events_page(
         "end_time": 0,
     }
 
+    stygian_data = {
+        "has_data": False,
+        "end_time": 0,
+        "difficulty": 0,
+        "difficulty_icon": "",
+        "best_time": 0,
+        "bosses": [],
+    }
+
     selected_account = None
 
     if accounts:
@@ -796,15 +805,6 @@ async def events_page(
                 print("===== STYGIAN SCHEDULE =====")
                 print(current_stygian["schedule"])
                 print("============================")
-
-                stygian_data = {
-                    "has_data": False,
-                    "end_time": 0,
-                    "difficulty": 0,
-                    "difficulty_icon": "",
-                    "best_time": 0,
-                    "bosses": [],
-                }
 
                 if stygian:
 
