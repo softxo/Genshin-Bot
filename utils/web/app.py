@@ -662,9 +662,9 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
-                print("===== RAW IMAGINARIUM THEATER =====")
+                print("===== IMAGINARIUM THEATER =====")
                 print(theater)
-                print("====================================")
+                print("===============================")
 
         except Exception as error:
             print("===== IMAGINARIUM THEATER ERROR =====")

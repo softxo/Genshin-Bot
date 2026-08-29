@@ -85,17 +85,11 @@ class HoYoLABClient:
 
             return await response.json()
 
-    async def get_imaginarium_theater(self):
-        if self.session is None:
-            raise RuntimeError(
-                "HoYoLABClient must be used with 'async with'."
-            )
-
+    async def get_imaginarium_theater(self) -> dict:
         client = genshin.Client(
             cookies=self.credentials.as_cookies()
         )
 
         return await client.get_imaginarium_theater(
-            self.genshin_uid,
             raw=True
         )
