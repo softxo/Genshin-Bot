@@ -698,11 +698,12 @@ async def events_page(
                     if act.get("is_tarot") is True
                 )
 
-                theater_data = {
-                    "best_round": stat["max_round_id"],
-                    "arcanums": arcanums,
-                    "medals": stat["medal_num"],
-                }
+                if stat["max_round_id"] > 0:
+                    theater_data = {
+                        "best_round": stat["max_round_id"],
+                        "arcanums": arcanums,
+                        "medals": stat["medal_num"],
+                    }
 
         except Exception as error:
             print("===== IMAGINARIUM THEATER ERROR =====")
