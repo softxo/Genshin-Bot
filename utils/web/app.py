@@ -748,7 +748,7 @@ async def events_page(
                         "medals": stat["medal_num"],
                         "end_time": schedule["end_time"],
                         "elements": [],
-                        "trial_characters": [],
+                        "trial_characters": trial_characters,
                     }
 
         except Exception as error:
