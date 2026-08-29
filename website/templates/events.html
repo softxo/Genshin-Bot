@@ -112,8 +112,11 @@
                         Spiral Abyss
                     </div>
 
-                    <div class="event-time-left">
-                        2d 13h left
+                    <div
+                        class="event-time-left"
+                        data-end-time="{{ abyss.end_time }}"
+                    >
+                        Calculating...
                     </div>
 
                 </div>
@@ -129,7 +132,7 @@
                             </span>
                     
                             <div class="event-stat-value">
-                                <strong>12-3</strong>
+                                <strong>{{ abyss.max_floor }}</strong>
                             </div>
                     
                         </div>
@@ -147,7 +150,7 @@
                     
                                     <img src="/static/images/events/spiral_abyss/Abyssal_Star.webp" alt="Abyssal Stars">
                     
-                                    <strong>36</strong>
+                                    <strong>{{ abyss.total_stars }}</strong>
                     
                                 </div>
                     
@@ -165,37 +168,23 @@
                         </span>
                     
                         <div class="abyss-teams-box">
-                    
+
+                            {% for chamber in abyss.chambers %}
+
                             <div class="abyss-chamber">
 
                                 <span>Team First Half</span>
 
-                                <strong>Chamber 1</strong>
+                                <strong>
+                                    Chamber {{ chamber.chamber }}
+                                </strong>
 
                                 <span>Team Second Half</span>
 
                             </div>
-                    
-                            <div class="abyss-chamber">
 
-                                <span>Team First Half</span>
+                            {% endfor %}
 
-                                <strong>Chamber 2</strong>
-
-                                <span>Team Second Half</span>
-
-                            </div>
-                    
-                            <div class="abyss-chamber">
-
-                                <span>Team First Half</span>
-
-                                <strong>Chamber 3</strong>
-
-                                <span>Team Second Half</span>
-
-                            </div>
-                    
                         </div>
                     
                     </div>

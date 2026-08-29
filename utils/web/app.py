@@ -649,6 +649,13 @@ async def events_page(
         user_id
     )
 
+    abyss_data = {
+        "max_floor": "—",
+        "total_stars": 0,
+        "end_time": 0,
+        "chambers": [],
+    }
+
     theater_data = {
         "best_round": 0,
         "arcanums": 0,
@@ -738,6 +745,27 @@ async def events_page(
 
                 async with client:
                     theater = await client.get_imaginarium_theater()
+                    abyss = await client.get_genshin_spiral_abyss()
+
+                abyss_chambers = []
+
+                for floor in abyss.floors:
+
+                    for chamber in floor.chambers:
+
+                        abyss_chambers.append({
+                            "floor": floor.floor,
+                            "chamber": chamber.chamber,
+                            "battles": chamber.battles,
+                        })
+
+
+                abyss_data = {
+                    "max_floor": abyss.max_floor,
+                    "total_stars": abyss.total_stars,
+                    "end_time": abyss.end_time.timestamp(),
+                    "chambers": abyss_chambers,
+                }
 
                 current_cycle = theater["data"][0]
 
@@ -775,6 +803,7 @@ async def events_page(
         context={
             "request": request,
             "theater": theater_data,
+            "abyss": abyss_data,
             "accounts": accounts,
             "selected_account": selected_account,
         },
