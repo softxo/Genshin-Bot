@@ -301,6 +301,60 @@
                         </div>
                 
                     </div>
+
+                    <div class="it-extra-info">
+
+                        <div class="it-elements">
+
+                            <span class="event-stat-label">
+                                Elements
+                            </span>
+
+                            <div class="it-elements-box">
+
+                                {% for element in theater.elements %}
+
+                                <span class="it-element">
+                                    {{ element }}
+                                </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="it-trial-characters">
+
+                            <span class="event-stat-label">
+                                Trial Characters
+                            </span>
+
+                            <div class="it-trial-characters-box">
+
+                                {% for character in theater.trial_characters %}
+
+                                <div class="it-trial-character">
+
+                                    <img
+                                        src="{{ character.image }}"
+                                        alt="{{ character.name }}"
+                                    >
+
+                                    <span>
+                                        {{ character.name }}
+                                    </span>
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
                 
                     {% else %}
                 

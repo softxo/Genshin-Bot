@@ -690,6 +690,7 @@ async def events_page(
 
                 current_cycle = theater["data"][0]
                 stat = current_cycle["stat"]
+                schedule = current_cycle["schedule"]
 
                 print("===== THEATER SCHEDULE =====")
                 print(current_cycle["schedule"])
@@ -721,12 +722,12 @@ async def events_page(
                             })
 
                 if stat["max_round_id"] > 0:
-
                     theater_data = {
                         "has_data": stat["max_round_id"] > 0,
                         "best_round": stat["max_round_id"],
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],
+                        "end_time": schedule["end_time"],
                         "elements": sorted(elements),
                         "trial_characters": trial_characters,
                     }
