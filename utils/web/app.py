@@ -662,7 +662,14 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
-                theater_data = theater
+                current_cycle = theater["data"][0]
+                stat = current_cycle["stat"]
+
+                theater_data = {
+                    "best_round": stat["max_round_id"],
+                    "arcanums": stat["heraldry"],
+                    "medals": stat["medal_num"],
+                }
 
                 print("\n===== CURRENT THEATER DETAIL =====")
                 print(theater["data"][0]["detail"])
