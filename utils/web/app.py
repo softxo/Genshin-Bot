@@ -785,7 +785,7 @@ async def events_page(
 
 
                 abyss_data = {
-                    "has_data": abyss.unlocked,
+                    "has_data": abyss.total_battles > 0,
                     "max_floor": abyss.max_floor,
                     "total_stars": abyss.total_stars,
                     "end_time": abyss.end_time.timestamp(),
