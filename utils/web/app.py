@@ -727,10 +727,11 @@ async def events_page(
                 print("First round keys:", acts[0].keys() if acts else None)
                 print("==========================")
 
-                print("===== THEATER FIGHT STATISTIC =====")
-                print(type(detail.get("fight_statisic")).__name__)
-                print(detail.get("fight_statisic"))
-                print("===================================")
+                for act in acts:
+                    for avatar in act.get("avatars", []):
+                        print("===== AVATAR =====")
+                        print(avatar)
+                        print("==================")
 
                 arcanums = sum(
                     1
