@@ -898,9 +898,9 @@ body {
 
 
 .page {
-    width: min(1400px, 100%);
+    width: 100%;
 
-    margin: 0 auto;
+    margin: 0;
 
     padding: 70px 0;
 }
