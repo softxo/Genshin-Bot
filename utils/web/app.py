@@ -662,45 +662,25 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
-                print("===== PARSED IMAGINARIUM THEATER =====")
+                print("===== THEATER CYCLE DETAILS =====")
 
-                for index, cycle in enumerate(theater.datas, start=1):
+                for index, cycle in enumerate(theater["data"], start=1):
                     print(f"\n===== CYCLE {index} =====")
 
-                    print("Difficulty:", cycle.stats.difficulty)
-                    print("Best round:", cycle.stats.best_record)
-                    print("Heraldry:", cycle.stats.heraldry)
-                    print("Medals:", cycle.stats.medal_num)
-                    print("Fantasia Flowers:", cycle.stats.fantasia_flowers_used)
-                    print("Audience Support:", cycle.stats.audience_support_trigger_num)
-                    print("Player Assists:", cycle.stats.player_assists)
+                    print("STAT:")
+                    print(cycle["stat"])
 
-                    print("\nSchedule:")
-                    print(cycle.schedule)
+                    print("\nSCHEDULE:")
+                    print(cycle["schedule"])
 
-                    print("\nRounds:", len(cycle.detail.acts))
+                    print("\nFLAGS:")
+                    print("has_data:", cycle["has_data"])
+                    print("has_detail_data:", cycle["has_detail_data"])
 
-                    for round_data in cycle.detail.acts[:1]:
-                        print("\nFirst round:")
-                        print("Round ID:", round_data.round_id)
-                        print("Medal:", round_data.medal_obtained)
-                        print("Finish:", round_data.finish_datetime)
+                    print("\nDETAIL KEYS:")
+                    print(cycle["detail"].keys())
 
-                        print("\nCharacters:")
-                        for character in round_data.characters:
-                            print(
-                                character.name,
-                                character.element,
-                                character.level,
-                                character.rarity,
-                                character.avatar_id,
-                            )
-
-                        print("\nEnemies:")
-                        for enemy in getattr(round_data, "enemies", []):
-                            print(enemy)
-
-                print("\n======================================")
+                print("\n================================")
 
         except Exception as error:
             print("===== IMAGINARIUM THEATER ERROR =====")
