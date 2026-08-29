@@ -662,6 +662,8 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
+                theater_data = theater
+
                 print("===== THEATER CYCLE DETAILS =====")
 
                 for index, cycle in enumerate(theater["data"], start=1):
