@@ -629,7 +629,8 @@ async def delete_planner_reminder(
 )
 async def events_page(
     request: Request,
-    cyrene_session: str | None = Cookie(default=None)
+    cyrene_session: str | None = Cookie(default=None),
+    account_id: int | None = None,
 ):
     session = await get_web_session(
         cyrene_session
@@ -647,19 +648,30 @@ async def events_page(
         user_id
     )
 
-    print("===== EVENTS ACCOUNTS =====")
-    print(accounts)
-    print("===========================")
-
     theater_data = None
+    selected_account = None
 
     if accounts:
-        account = accounts[0]
+
+        # Use the requested account if it belongs to this user.
+        if account_id is not None:
+            selected_account = next(
+                (
+                    account
+                    for account in accounts
+                    if account["id"] == account_id
+                ),
+                None,
+            )
+
+        # Otherwise, use the first account.
+        if selected_account is None:
+            selected_account = accounts[0]
 
         try:
             client = await get_account_client(
                 user_id,
-                account["genshin_uid"]
+                selected_account["genshin_uid"]
             )
 
             if client is not None:
@@ -671,38 +683,9 @@ async def events_page(
 
                 theater_data = {
                     "best_round": stat["max_round_id"],
-                    "best_act": stat["max_round_id"],
                     "arcanums": stat["heraldry"],
                     "medals": stat["medal_num"],
                 }
-
-                print("\n===== CURRENT THEATER DETAIL =====")
-                print(theater["data"][0]["detail"])
-                print("==================================")
-
-                print("\n===== THEATER LINKS =====")
-                print(theater.get("links"))
-                print("=========================")
-
-                print("===== THEATER CYCLE DETAILS =====")
-
-                for index, cycle in enumerate(theater["data"], start=1):
-                    print(f"\n===== CYCLE {index} =====")
-
-                    print("STAT:")
-                    print(cycle["stat"])
-
-                    print("\nSCHEDULE:")
-                    print(cycle["schedule"])
-
-                    print("\nFLAGS:")
-                    print("has_data:", cycle["has_data"])
-                    print("has_detail_data:", cycle["has_detail_data"])
-
-                    print("\nDETAIL KEYS:")
-                    print(cycle["detail"].keys())
-
-                print("\n================================")
 
         except Exception as error:
             print("===== IMAGINARIUM THEATER ERROR =====")
@@ -716,6 +699,8 @@ async def events_page(
         context={
             "request": request,
             "theater": theater_data,
+            "accounts": accounts,
+            "selected_account": selected_account,
         },
     )
 
