@@ -701,7 +701,7 @@ async def events_page(
                 elements = [
                     element
                     for element, count in element_counts.items()
-                    if count >= 3
+                    if count >= 2
                 ]
 
                 arcanums = sum(

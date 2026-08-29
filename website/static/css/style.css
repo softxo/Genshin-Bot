@@ -5057,23 +5057,55 @@ body {
     filter: grayscale(1);
 }
 
-.it-element {
-    width: 42px;
-    height: 42px;
+.it-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    border-radius: 50%;
+    gap: 14px;
+
+    margin-top: 28px;
+    width: 100%;
+}
+
+.it-elements .event-stat-label {
+    display: block;
+    width: 100%;
+
+    text-align: center;
+}
+
+.it-elements-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    width: 100%;
+}
+
+.it-element {
+    width: 38px;
+    height: 38px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
 
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    box-sizing: border-box;
 }
 
-.it-element img {
+.it-element-icon {
+    display: block;
+
     width: 26px;
     height: 26px;
 
