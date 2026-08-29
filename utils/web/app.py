@@ -701,6 +701,10 @@ async def events_page(
                         for index, value in enumerate(obj):
                             find_relevant_keys(value, f"{path}[{index}]")
 
+                print("===== THEATER ELEMENT SEARCH =====")
+                find_relevant_keys(theater)
+                print("===================================")
+
                 current_cycle = theater["data"][0]
                 stat = current_cycle["stat"]
                 schedule = current_cycle["schedule"]
