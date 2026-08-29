@@ -708,6 +708,10 @@ async def events_page(
                 trial_characters = []
 
                 for act in acts:
+                    print("===== THEATER ACT =====")
+                    print(act)
+                    print("=======================")
+
                     for avatar in act.get("avatars", []):
 
                         print("===== THEATER AVATAR =====")
