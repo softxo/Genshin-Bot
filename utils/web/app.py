@@ -691,7 +691,7 @@ async def events_page(
                 stat = current_cycle["stat"]
 
                 print("===== THEATER CURRENT CYCLE =====")
-                print(current_cycle)
+                print(current_cycle.keys())
                 print("=================================")
 
                 acts = current_cycle["detail"]["rounds_data"]
