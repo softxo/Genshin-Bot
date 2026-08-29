@@ -236,132 +236,45 @@
         
         
                 <div class="event-featured-panel">
-                
+
                     {% if theater and theater.best_round > 0 %}
-                
+
                     <div class="it-best-record">
-                
-                        <span class="event-stat-label">
-                            Best Record
-                        </span>
-                
-                        <div class="event-stat-value">
-                
-                            <div class="it-record">
-                
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Act_{{ theater.best_round }}.webp"
-                                    alt="Act {{ theater.best_round }}"
-                                    class="it-act-icon"
-                                >
-                
-                                <strong>Act {{ theater.best_round }}</strong>
-                
-                                {% if theater.arcanums > 0 %}
-                                <span class="event-stat-separator">|</span>
-                
-                                <strong>{{ theater.arcanums }}</strong>
-                
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Arcanum_{{ theater.arcanums }}.webp"
-                                    alt="{{ theater.arcanums }} Arcanums"
-                                    class="it-arcanum-icon"
-                                >
-                                {% endif %}
-                
-                            </div>
-                
-                        </div>
-                
+                        ...
                     </div>
-                
-                
+
                     <div class="it-stellas">
-                
-                        <span class="event-stat-label">
-                            Stellas
-                        </span>
-                
-                        <div class="it-stella-box">
-                
-                            <div class="it-stella-row">
-                
-                                {% for i in range(theater.best_round) %}
-                
-                                <img
-                                    src="/static/images/events/imaginarium_theater/IT_Stella.webp"
-                                    alt="Stella"
-                                    class="it-stella{% if i >= theater.medals %} it-stella-inactive{% endif %}"
-                                >
-                
-                                {% endfor %}
-                
-                            </div>
-                
-                        </div>
-                
+                        ...
                     </div>
-                
+
                     {% else %}
-                
+
                     <div class="event-no-record">
                         No Record
                     </div>
-                
+
                     {% endif %}
 
-                </div>
 
-                <div class="it-extra-info">
+                    <div class="it-extra-info">
 
-                    <div class="it-elements">
+                        <div class="it-elements">
 
-                        <span class="event-stat-label">
-                            Elements
-                        </span>
+                            <span class="event-stat-label">
+                                Elements
+                            </span>
 
-                        <div class="it-elements-box">
+                            <div class="it-elements-box">
 
-                            {% for element in theater.elements %}
+                                {% for element in theater.elements %}
 
-                            <div class="it-element">
-                                <img
-                                    src="/static/images/events/imaginarium_theater/elements/{{ element }}.webp"
-                                    alt="{{ element }}"
-                                >
-                            </div>
-
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="it-trial-characters">
-
-                        <span class="event-stat-label">
-                            Trial Characters
-                        </span>
-
-                        <div class="it-trial-characters-box">
-
-                            {% for character in theater.trial_characters %}
-
-                            <div class="it-trial-character">
-
-                                <img
-                                    src="{{ character.image }}"
-                                    alt="{{ character.name }}"
-                                >
-
-                                <span>
-                                    {{ character.name }}
+                                <span class="it-element">
+                                    {{ element }}
                                 </span>
 
-                            </div>
+                                {% endfor %}
 
-                            {% endfor %}
+                            </div>
 
                         </div>
 
