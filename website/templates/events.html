@@ -401,8 +401,8 @@
 
 
         <!-- =============================
-             STYGIAN ONSLAUGHT
-             ============================= -->
+        STYGIAN ONSLAUGHT
+        ============================= -->
 
         <div class="event-featured-card">
 
@@ -423,7 +423,14 @@
                     </div>
 
                     <div class="event-time-left">
-                        2d 13h left
+                        {% if stygian.end_time %}
+                            <span
+                                class="event-countdown"
+                                data-end-time="{{ stygian.end_time }}"
+                            ></span>
+                        {% else %}
+                            —
+                        {% endif %}
                     </div>
 
                 </div>
@@ -431,111 +438,118 @@
                 <div class="event-featured-panel">
 
                     <div class="stygian-best-record">
-                    
+
                         <span class="event-stat-label">
                             Best Record
                         </span>
-                    
+
                         <div class="event-stat-value">
-                    
-                            <div class="stygian-record">
-                            
-                                <img
-                                    src="/static/images/events/stygian_onslaught/SO_Diff_VI_180.webp"
-                                    alt="Dire"
-                                    class="stygian-difficulty-icon"
-                                >
-                            
-                                <strong>Dire</strong>
-                            
-                                <span class="event-stat-separator">|</span>
-                            
-                                <strong>1:42</strong>
-                            
-                            </div>
-                    
+
+                            {% if stygian.has_data %}
+
+                                <div class="stygian-record">
+
+                                    <img
+                                        src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
+                                        alt="Difficulty"
+                                        class="stygian-difficulty-icon"
+                                    >
+
+                                    <strong>
+                                        {% if stygian.difficulty == 1 %}
+                                            Menacing
+                                        {% elif stygian.difficulty == 2 %}
+                                            Fearsome
+                                        {% elif stygian.difficulty == 3 %}
+                                            Dire
+                                        {% else %}
+                                            Difficulty {{ stygian.difficulty }}
+                                        {% endif %}
+                                    </strong>
+
+                                    <span class="event-stat-separator">|</span>
+
+                                    <strong>
+                                        {{ "%d:%02d" | format(
+                                            stygian.best_time // 60,
+                                            stygian.best_time % 60
+                                        ) }}
+                                    </strong>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="event-no-record">
+                                    No Record
+                                </div>
+
+                            {% endif %}
+
                         </div>
-                    
+
                     </div>
 
 
-                    <div class="stygian-bosses">
-                    
-                        <span class="event-stat-label">
-                            Teams
-                        </span>
-                    
-                        <div class="stygian-teams-box">
-                    
-                            <div class="stygian-bosses-row">
-                    
-                                <div class="stygian-boss">
-                    
-                                    <strong>Boss 1</strong>
-                    
-                                    <img
-                                        src="/static/images/events/stygian_onslaught/bosses/Boss_1.webp"
-                                        alt="Boss 1"
-                                        class="stygian-boss-icon"
-                                    >
-                    
-                                    <span class="stygian-boss-time">
-                                        1:42
-                                    </span>
-                    
-                                    <div class="stygian-team">
-                                        Team Boss 1
-                                    </div>
-                    
+                    {% if stygian.has_data %}
+
+                        <div class="stygian-bosses">
+
+                            <span class="event-stat-label">
+                                Teams
+                            </span>
+
+                            <div class="stygian-teams-box">
+
+                                <div class="stygian-bosses-row">
+
+                                    {% for boss in stygian.bosses %}
+
+                                        <div class="stygian-boss">
+
+                                            <strong>
+                                                {{ boss.name }}
+                                            </strong>
+
+                                            <img
+                                                src="{{ boss.icon }}"
+                                                alt="{{ boss.name }}"
+                                                class="stygian-boss-icon"
+                                            >
+
+                                            <span class="stygian-boss-time">
+                                                {{ "%d:%02d" | format(
+                                                    boss.time // 60,
+                                                    boss.time % 60
+                                                ) }}
+                                            </span>
+
+                                            <div class="stygian-team">
+
+                                                {% for character in boss.characters %}
+
+                                                    <img
+                                                        src="{{ character.icon }}"
+                                                        alt="{{ character.name }}"
+                                                        title="{{ character.name }}"
+                                                        class="stygian-character-icon"
+                                                    >
+
+                                                {% endfor %}
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endfor %}
+
                                 </div>
-                    
-                    
-                                <div class="stygian-boss">
-                    
-                                    <strong>Boss 2</strong>
-                    
-                                    <img
-                                        src="/static/images/events/stygian_onslaught/bosses/Boss_2.webp"
-                                        alt="Boss 2"
-                                        class="stygian-boss-icon"
-                                    >
-                    
-                                    <span class="stygian-boss-time">
-                                        2:15
-                                    </span>
-                    
-                                    <div class="stygian-team">
-                                        Team Boss 2
-                                    </div>
-                    
-                                </div>
-                    
-                    
-                                <div class="stygian-boss">
-                    
-                                    <strong>Boss 3</strong>
-                    
-                                    <img
-                                        src="/static/images/events/stygian_onslaught/bosses/Boss_3.webp"
-                                        alt="Boss 3"
-                                        class="stygian-boss-icon"
-                                    >
-                    
-                                    <span class="stygian-boss-time">
-                                        1:58
-                                    </span>
-                    
-                                    <div class="stygian-team">
-                                        Team Boss 3
-                                    </div>
-                    
-                                </div>
-                    
+
                             </div>
-                    
+
                         </div>
-                    
-                    </div>
+
+                    {% endif %}
 
                 </div>
 
