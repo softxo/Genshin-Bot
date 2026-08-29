@@ -669,6 +669,11 @@ async def events_page(
             selected_account = accounts[0]
 
         try:
+            print("===== EVENTS ACCOUNT =====")
+            print("Selected:", selected_account["nickname"])
+            print("UID:", selected_account["genshin_uid"])
+            print("==========================")
+
             client = await get_account_client(
                 user_id,
                 selected_account["genshin_uid"]
