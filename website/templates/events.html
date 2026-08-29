@@ -654,10 +654,15 @@
                 timer.textContent =
                     `${days}d ${hours}h left`;
 
-            } else {
+            } else if (hours > 0) {
 
                 timer.textContent =
                     `${hours}h ${minutes}m left`;
+
+            } else {
+
+                timer.textContent =
+                    `${minutes}m left`;
 
             }
 

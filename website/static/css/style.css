@@ -5019,6 +5019,19 @@ body {
     box-sizing: border-box;
 }
 
+/* =============================
+   STYGIAN — HIDE TEAMS ON
+   INTERMEDIATE SCREEN SIZES
+   ============================= */
+
+@media (min-width: 769px) and (max-width: 1150px) {
+
+    .stygian-bosses {
+        display: none;
+    }
+
+}
+
 
 /*=============================
    IMAGINARIUM THEATER
