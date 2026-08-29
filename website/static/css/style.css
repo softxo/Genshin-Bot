@@ -885,7 +885,7 @@ body {
    MAIN CONTENT
    ============================= */
 
-.main-content {
+   .main-content {
     min-height: 100vh;
 
     margin-left: var(--sidebar-width);
@@ -898,9 +898,9 @@ body {
 
 
 .page {
-    width: 100%;
+    width: min(1600px, 100%);
 
-    margin: 0;
+    margin: 0 auto;
 
     padding: 70px 0;
 }
