@@ -703,13 +703,32 @@ async def events_page(
                     if act.get("is_tarot") is True
                 )
 
+                elements = set()
+                trial_characters = []
+
+                for act in acts:
+                    for avatar in act.get("avatars", []):
+
+                        element = avatar.get("element")
+
+                        if element:
+                            elements.add(element)
+
+                        if avatar.get("avatar_type") == 1:
+                            trial_characters.append({
+                                "name": avatar.get("name"),
+                                "image": avatar.get("image"),
+                            })
+
                 if stat["max_round_id"] > 0:
+
                     theater_data = {
                         "has_data": stat["max_round_id"] > 0,
                         "best_round": stat["max_round_id"],
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],
-                        "end_time": int(current_cycle["schedule"]["end_time"]),
+                        "elements": sorted(elements),
+                        "trial_characters": trial_characters,
                     }
 
         except Exception as error:

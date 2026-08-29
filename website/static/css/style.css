@@ -4593,17 +4593,31 @@ body {
     flex-direction: column;
 }
 
+.event-featured-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    width: 100%;
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
 .event-featured-name {
-    text-align: center;
+    flex: 1;
+    min-width: 0;
 
     color: #ffffff;
 
     font-size: 25px;
     font-weight: 700;
 
+    line-height: 32px;
+
     letter-spacing: 0.5px;
 
-    margin-bottom: 18px;
+    text-align: left;
 }
 
 .event-featured-panel {
@@ -4672,16 +4686,16 @@ body {
    ============================= */
 
 .event-time-left {
-    position: absolute;
+    flex-shrink: 0;
 
-    top: 14px;
-    right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    z-index: 2;
+    min-width: 90px;
+    height: 32px;
 
-    padding: 7px 11px;
-
-    min-width: 72px;
+    padding: 0 11px;
 
     box-sizing: border-box;
 
@@ -4698,8 +4712,9 @@ body {
     line-height: 1;
 
     text-align: center;
-
     white-space: nowrap;
+
+    transform: translateY(-2px);
 
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -5174,7 +5189,7 @@ body {
      }
 
      .event-featured-card {
-         height: 410px;
+         height: 470px;
      }
 
      .event-featured-content {
