@@ -836,11 +836,28 @@ async def events_page(
                             "characters": characters,
                         })
 
+                    difficulty_icons = {
+                        1: "SO_Diff_I.webp",
+                        2: "SO_Diff_II.webp",
+                        3: "SO_Diff_III.webp",
+                        4: "SO_Diff_IV.webp",
+                        5: "SO_Diff_V.webp",
+                        6: "SO_Diff_VI.webp",
+                    }
+
                     stygian_data = {
                         "has_data": current_stygian["single"]["has_data"],
-                        "end_time": current_stygian["schedule"]["end_date_time"],
+                        "end_time": int(current_stygian["schedule"]["end_time"]),
                         "difficulty": record["difficulty"] if record else 0,
-                        "difficulty_icon": record["icon"] if record else "",
+                        "difficulty_icon": (
+                            "SO_Diff_VI_180.webp"
+                            if record
+                            and record["difficulty"] == 6
+                            and record["second"] < 180
+                            else difficulty_icons.get(record["difficulty"], "")
+                            if record
+                            else ""
+                        ),
                         "best_time": record["second"] if record else 0,
                         "bosses": bosses,
                     }
