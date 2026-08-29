@@ -49,6 +49,7 @@ from utils.hoyolab.daily_note import get_resin
 from utils.achievements.achievements import load_achievements
 from utils.achievements.progress import load_progress
 from utils.achievements.importer import import_achievements
+from collections import Counter
 
 
 
@@ -691,23 +692,24 @@ async def events_page(
                 detail = current_cycle["detail"]
                 acts = detail["rounds_data"]
 
-                print("===== THEATER BACKUP ELEMENTS =====")
+                element_counts = Counter(
+                    avatar["element"]
+                    for avatar in detail.get("backup_avatars", [])
+                    if avatar.get("element")
+                )
 
-                for avatar in detail.get("backup_avatars", []):
-                    print(
-                        avatar.get("name"),
-                        "→",
-                        avatar.get("element")
-                    )
-
-                print("===================================")
+                elements = [
+                    element
+                    for element, count in element_counts.items()
+                    if count >= 3
+                ]
 
                 arcanums = sum(
                     1
                     for act in acts
                     if act.get("is_tarot") is True
                 )
-
+                
                 if stat["max_round_id"] > 0:
                     theater_data = {
                         "has_data": stat["max_round_id"] > 0,
@@ -715,7 +717,7 @@ async def events_page(
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],
                         "end_time": schedule["end_time"],
-                        "elements": [],
+                        "elements": elements,
                     }
 
         except Exception as error:
