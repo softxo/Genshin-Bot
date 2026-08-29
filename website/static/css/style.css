@@ -4841,6 +4841,14 @@ body {
     text-align: center;
 }
 
+@media (max-width: 768px) {
+
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+}
+
 
 /* =============================
    STYGIAN ONSLAUGHT
@@ -5024,7 +5032,7 @@ body {
    INTERMEDIATE SCREEN SIZES
    ============================= */
 
-@media (min-width: 1150px) and (max-width: 1450px) {
+@media (min-width: 0px) and (max-width: 1500px) {
 
     .stygian-bosses {
         display: none;
