@@ -802,13 +802,13 @@ async def events_page(
                     "chambers": abyss_chambers,
                 }
 
-                print("===== STYGIAN SCHEDULE =====")
-                print(current_stygian["schedule"])
-                print("============================")
-
                 if stygian:
 
                     current_stygian = stygian[0]
+
+                    print("===== STYGIAN SCHEDULE =====")
+                    print(current_stygian["schedule"])
+                    print("============================")
 
                     record = current_stygian["single"]["best"]
 
