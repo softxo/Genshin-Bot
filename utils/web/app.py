@@ -701,8 +701,15 @@ async def events_page(
                         for index, value in enumerate(obj):
                             find_relevant_keys(value, f"{path}[{index}]")
 
-                print("===== THEATER ELEMENT SEARCH =====")
-                find_relevant_keys(theater)
+                print("===== THEATER BACKUP ELEMENTS =====")
+
+                for avatar in detail.get("backup_avatars", []):
+                    print(
+                        avatar.get("name"),
+                        "→",
+                        avatar.get("element")
+                    )
+
                 print("===================================")
 
                 current_cycle = theater["data"][0]
