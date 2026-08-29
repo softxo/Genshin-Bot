@@ -727,11 +727,12 @@ async def events_page(
                 print("First round keys:", acts[0].keys() if acts else None)
                 print("==========================")
 
+                trial_characters = []
+
                 for act in acts:
                     for avatar in act.get("avatars", []):
-                        print("===== AVATAR =====")
-                        print(avatar)
-                        print("==================")
+                        if avatar["avatar_type"] == 2:
+                            trial_characters.append(avatar["name"])
 
                 arcanums = sum(
                     1
