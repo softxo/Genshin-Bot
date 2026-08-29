@@ -704,6 +704,7 @@ async def events_page(
 
                 if stat["max_round_id"] > 0:
                     theater_data = {
+                        "has_data": stat["max_round_id"] > 0,
                         "best_round": stat["max_round_id"],
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],

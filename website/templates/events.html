@@ -177,29 +177,39 @@
                     
                         <div class="event-stat-value">
                     
+                            {% if theater and theater.has_data %}
+                    
                             <div class="it-record">
-                            
+                    
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Act_{{ theater.best_round }}.webp"
                                     alt="Act {{ theater.best_round }}"
                                     class="it-act-icon"
                                 >
-                            
+                    
                                 <strong>Act {{ theater.best_round }}</strong>
-                            
-                                {% if theater and theater.arcanums > 0 %}
+                    
+                                {% if theater.best_round >= 10 and theater.arcanums > 0 %}
+                    
                                 <span class="event-stat-separator">|</span>
-                            
+                    
                                 <strong>{{ theater.arcanums }}</strong>
-                            
+                    
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Arcanum_{{ theater.arcanums }}.webp"
                                     alt="{{ theater.arcanums }} Arcanums"
                                     class="it-arcanum-icon"
                                 >
+                    
                                 {% endif %}
-                            
+                    
                             </div>
+                    
+                            {% else %}
+                    
+                            <strong>No Record</strong>
+                    
+                            {% endif %}
                     
                         </div>
                     
@@ -215,17 +225,27 @@
                         <div class="it-stella-box">
                     
                             <div class="it-stella-row">
-                            
+                    
+                                {% if theater and theater.has_data %}
+                    
                                 {% for i in range(theater.best_round) %}
-                            
+                    
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Stella.webp"
                                     alt="Stella"
                                     class="it-stella{% if i >= theater.medals %} it-stella-inactive{% endif %}"
                                 >
-                            
+                    
                                 {% endfor %}
-                            
+                    
+                                {% else %}
+                    
+                                <span class="event-stat-empty">
+                                    No Record
+                                </span>
+                    
+                                {% endif %}
+                    
                             </div>
                     
                         </div>
