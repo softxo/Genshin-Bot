@@ -4475,7 +4475,7 @@ body {
 .event-featured-card {
     position: relative;
 
-    height: 240px;
+    height: 400px;
 
     overflow: hidden;
 
@@ -4506,14 +4506,20 @@ body {
 .event-featured-image {
     position: absolute;
 
-    inset: 0;
+    inset: -8px;
 
-    width: 100%;
-    height: 100%;
+    width: calc(100% + 16px);
+    height: calc(100% + 16px);
 
     object-fit: cover;
 
     display: block;
+
+    opacity: 0.65;
+
+    filter: blur(3px);
+
+    transform: scale(1.03);
 }
 
 .event-featured-overlay {
@@ -4523,24 +4529,286 @@ body {
 
     background:
         linear-gradient(to top,
-            rgba(0, 0, 0, 0.85) 0%,
-            rgba(0, 0, 0, 0.35) 45%,
-            rgba(0, 0, 0, 0.05) 75%,
-            rgba(0, 0, 0, 0) 100%);
+            rgba(0, 0, 0, 0.88) 0%,
+            rgba(0, 0, 0, 0.48) 45%,
+            rgba(0, 0, 0, 0.18) 75%,
+            rgba(0, 0, 0, 0.05) 100%);
+}
+
+.event-featured-content {
+    position: absolute;
+
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 1;
 }
 
 .event-featured-name {
-    position: absolute;
-
-    left: 22px;
-    bottom: 20px;
-
     color: #ffffff;
 
-    font-size: 23px;
+    font-size: 25px;
     font-weight: 700;
 
     letter-spacing: 0.2px;
 
+    margin-bottom: 14px;
+}
+
+
+.event-featured-info {
+    display: flex;
+    gap: 28px;
+}
+
+.event-featured-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.event-featured-stat span {
+    font-size: 12px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+
+    opacity: 0.65;
+}
+
+.event-featured-stat strong {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.event-featured-content {
+    position: absolute;
+
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+
     z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.event-featured-name {
+    text-align: center;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 18px;
+}
+
+.event-featured-panel {
+    flex: 1;
+
+    padding: 20px;
+
+    border-radius: 14px;
+
+    background: rgba(20, 20, 30, 0.38);
+    
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =============================
+   STYGIAN ONSLAUGHT
+   ============================= */
+
+.stygian-best-record {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stygian-label {
+    font-size: 13px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+
+    opacity: 0.7;
+}
+
+.stygian-record {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.stygian-difficulty-icon {
+    width: 24px;
+    height: 24px;
+
+    object-fit: contain;
+}
+
+.stygian-record strong {
+    font-size: 20px;
+}
+
+.stygian-bosses {
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.stygian-boss {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.stygian-boss strong {
+    font-size: 18px;
+}
+
+.stygian-boss span {
+    font-size: 11px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+
+    opacity: 0.6;
+}
+
+.stygian-team {
+    margin-top: 10px;
+
+    padding: 8px 4px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    font-size: 11px;
+
+    opacity: 0.8;
+}
+
+
+/* =============================
+   SPIRAL ABYSS
+   ============================= */
+
+.abyss-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.abyss-stat {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.abyss-stat {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+    text-align: center;
+}
+
+.abyss-stat strong {
+    font-size: 20px;
+}
+
+.abyss-stars-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+.abyss-stars-value img {
+    width: 22px;
+    height: 22px;
+
+    object-fit: contain;
+}
+
+.abyss-teams {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+.abyss-chamber {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-align: center;
+}
+
+.abyss-chamber span {
+    padding: 8px 6px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    font-size: 11px;
+
+    opacity: 0.8;
+}
+
+.abyss-chamber strong {
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    opacity: 0.7;
 }
