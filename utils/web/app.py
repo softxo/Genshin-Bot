@@ -793,6 +793,10 @@ async def events_page(
                     "chambers": abyss_chambers,
                 }
 
+                print("===== STYGIAN SCHEDULE =====")
+                print(current_stygian["schedule"])
+                print("============================")
+
                 stygian_data = {
                     "has_data": False,
                     "end_time": 0,
@@ -807,6 +811,10 @@ async def events_page(
                     current_stygian = stygian[0]
 
                     record = current_stygian["single"]["best"]
+
+                    print("===== STYGIAN RECORD =====")
+                    print(record)
+                    print("==========================")
 
                     bosses = []
 
