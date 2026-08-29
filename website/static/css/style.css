@@ -172,12 +172,9 @@ body {
     border-radius: 10px;
 
     box-shadow:
-        0 10px 30px
-        color-mix(
-            in srgb,
-            var(--text) 15%,
-            transparent
-        );
+        0 6px 18px color-mix(in srgb,
+            var(--text) 12%,
+            transparent);
 
     overflow: hidden;
 
@@ -4667,6 +4664,105 @@ body {
 .event-stat-separator {
     opacity: 0.5;
     margin: 0 2px;
+}
+
+/* ================================
+   Events Header
+   ================================ */
+
+.events-hero {
+    padding: 28px 32px;
+    margin-bottom: 28px;
+}
+
+.events-hero .hero-content {
+    max-width: 760px;
+}
+
+.events-hero h1 {
+    margin: 6px 0 8px;
+}
+
+.events-hero p {
+    margin: 0;
+}
+
+/* ================================
+   Events Account Selector
+   ================================ */
+
+.events-account-selector {
+    display: flex;
+    align-items: flex-end;
+}
+
+.events-account-selector .custom-select {
+    min-width: 260px;
+}
+
+/* ================================
+   Events Account Dropdown
+   ================================ */
+
+.events-account-selector .custom-select-button:focus,
+.events-account-selector .custom-select.open .custom-select-button {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 1px color-mix(in srgb,
+            var(--accent) 15%,
+            transparent);
+}
+
+/* ================================
+   Events Sections
+   ================================ */
+
+.events-section {
+    margin-bottom: 40px;
+}
+
+.events-section .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+.events-section .section-header h2 {
+    margin: 5px 0 0;
+}
+
+
+/* =============================
+   EVENT NO RECORD
+   ============================= */
+
+.event-no-record {
+    width: 100%;
+    min-height: 70px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: auto;
+
+    padding: 16px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    font-size: 22px;
+    font-weight: 600;
+
+    text-align: center;
 }
 
 

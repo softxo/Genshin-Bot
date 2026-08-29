@@ -6,38 +6,86 @@
 
 <div class="page events-page">
 
-    <section class="page-header">
-    
-        <div>
+    <section class="hero events-hero">
+
+        <div class="hero-content">
+
             <span class="eyebrow">
                 ACTIVITIES
             </span>
-    
-            <h1>Events</h1>
+
+            <h1>
+                Your <span>Events</span>
+            </h1>
+
+            <p>
+                View your progress and records across Genshin Impact's major activities.
+            </p>
+
         </div>
+
+    </section>
+
+
+    {% if accounts %}
     
-        {% if accounts %}
-        <div class="events-account-selector">
-        
-            <label for="events-account">
-                Account
-            </label>
-        
-            <select
-                id="events-account"
-                onchange="window.location.href='/events?account_id=' + this.value"
-            >
-                {% for account in accounts %}
-                <option value="{{ account.id }}">
-                    {{ account.nickname }} — {{ account.genshin_uid }}
-                </option>
-                {% endfor %}
-            </select>
-        
+    <section class="events-section">
+    
+        <div class="section-header">
+    
+            <div>
+                <h2>
+                    Account
+                </h2>
+            </div>
+    
+            <div class="events-account-selector">
+    
+                <div
+                    class="custom-select"
+                    id="events-account"
+                >
+    
+                    <button
+                        type="button"
+                        class="custom-select-button"
+                    >
+    
+                        <span class="custom-select-value">
+                            {{ selected_account.nickname }} — {{ selected_account.genshin_uid }}
+                        </span>
+    
+                        <span class="custom-select-arrow">
+                            ⌄
+                        </span>
+    
+                    </button>
+    
+                    <div class="custom-select-menu">
+    
+                        {% for account in accounts %}
+    
+                        <button
+                            type="button"
+                            class="custom-select-option{% if selected_account and account.id == selected_account.id %} selected{% endif %}"
+                            onclick="window.location.href='/events?account_id={{ account.id }}'"
+                        >
+                            {{ account.nickname }} — {{ account.genshin_uid }}
+                        </button>
+    
+                        {% endfor %}
+    
+                    </div>
+    
+                </div>
+    
+            </div>
+    
         </div>
-        {% endif %}
     
     </section>
+    
+    {% endif %}
 
 
     <section class="events-featured">
@@ -168,90 +216,80 @@
         
         
                 <div class="event-featured-panel">
-        
+                
+                    {% if theater and theater.best_round > 0 %}
+                
                     <div class="it-best-record">
-                    
+                
                         <span class="event-stat-label">
                             Best Record
                         </span>
-                    
+                
                         <div class="event-stat-value">
-                    
-                            {% if theater and theater.has_data %}
-                    
+                
                             <div class="it-record">
-                    
+                
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Act_{{ theater.best_round }}.webp"
                                     alt="Act {{ theater.best_round }}"
                                     class="it-act-icon"
                                 >
-                    
+                
                                 <strong>Act {{ theater.best_round }}</strong>
-                    
-                                {% if theater.best_round >= 10 and theater.arcanums > 0 %}
-                    
+                
+                                {% if theater.arcanums > 0 %}
                                 <span class="event-stat-separator">|</span>
-                    
+                
                                 <strong>{{ theater.arcanums }}</strong>
-                    
+                
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Arcanum_{{ theater.arcanums }}.webp"
                                     alt="{{ theater.arcanums }} Arcanums"
                                     class="it-arcanum-icon"
                                 >
-                    
                                 {% endif %}
-                    
+                
                             </div>
-                    
-                            {% else %}
-                    
-                            <strong>No Record</strong>
-                    
-                            {% endif %}
-                    
+                
                         </div>
-                    
+                
                     </div>
-        
-        
+                
+                
                     <div class="it-stellas">
-                    
+                
                         <span class="event-stat-label">
                             Stellas
                         </span>
-                    
+                
                         <div class="it-stella-box">
-                    
+                
                             <div class="it-stella-row">
-                    
-                                {% if theater and theater.has_data %}
-                    
+                
                                 {% for i in range(theater.best_round) %}
-                    
+                
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Stella.webp"
                                     alt="Stella"
                                     class="it-stella{% if i >= theater.medals %} it-stella-inactive{% endif %}"
                                 >
-                    
+                
                                 {% endfor %}
-                    
-                                {% else %}
-                    
-                                <span class="event-stat-empty">
-                                    No Record
-                                </span>
-                    
-                                {% endif %}
-                    
+                
                             </div>
-                    
+                
                         </div>
-                    
+                
                     </div>
-        
+                
+                    {% else %}
+                
+                    <div class="event-no-record">
+                        No Record
+                    </div>
+                
+                    {% endif %}
+                
                 </div>
         
             </div>
@@ -397,5 +435,58 @@
     </section>
 
 </div>
+
+
+<script>
+
+    function initialiseEventsDropdown() {
+
+        const select =
+            document.getElementById("events-account");
+
+        if (!select) {
+            return;
+        }
+
+        const button =
+            select.querySelector(
+                ".custom-select-button"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                select.classList.toggle("open");
+
+            }
+        );
+
+
+        /*
+         * Close the dropdown when clicking elsewhere.
+         */
+
+        document.addEventListener(
+            "click",
+            () => {
+
+                select.classList.remove("open");
+
+            }
+        );
+
+    }
+
+
+    initialiseEventsDropdown();
+
+</script>
 
 {% endblock %}
