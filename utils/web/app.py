@@ -694,11 +694,11 @@ async def events_page(
 
                 print("===== THEATER CURRENT CYCLE KEYS =====")
                 print(current_cycle.keys())
-                print("======================================")
+                print("==============================")
 
-                print("===== THEATER CURRENT CYCLE =====")
-                print(current_cycle)
-                print("=================================")
+                for key, value in current_cycle.items():
+                    if isinstance(value, dict):
+                        print(f"{key} keys:", value.keys())
 
                 print("===== THEATER SCHEDULE =====")
                 print(current_cycle["schedule"])
