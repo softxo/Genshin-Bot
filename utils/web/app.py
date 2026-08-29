@@ -702,6 +702,14 @@ async def events_page(
                 print(detail.keys())
                 print("===============================")
 
+                print("===== THEATER BACKUP AVATARS =====")
+                print(detail.get("backup_avatars"))
+                print("===============================")
+
+                print("===== THEATER LINEUP LINK =====")
+                print(detail.get("lineup_link"))
+                print("===============================")
+
                 acts = detail["rounds_data"]
 
                 arcanums = sum(
@@ -710,25 +718,6 @@ async def events_page(
                     if act.get("is_tarot") is True
                 )
 
-                elements = set()
-                trial_characters = []
-
-                for act in acts:
-                    print("===== THEATER ACT KEYS =====")
-                    print(act.keys())
-                    print("============================")
-
-                    for avatar in act.get("avatars", []):
-
-                        print("===== THEATER AVATAR =====")
-                        print(avatar)
-                        print("==========================")
-
-                        element = avatar.get("element")
-
-                        if element:
-                            elements.add(element)
-
                 if stat["max_round_id"] > 0:
                     theater_data = {
                         "has_data": stat["max_round_id"] > 0,
@@ -736,8 +725,8 @@ async def events_page(
                         "arcanums": arcanums,
                         "medals": stat["medal_num"],
                         "end_time": schedule["end_time"],
-                        "elements": sorted(elements),
-                        "trial_characters": trial_characters,
+                        "elements": [],
+                        "trial_characters": [],
                     }
 
         except Exception as error:
