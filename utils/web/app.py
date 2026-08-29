@@ -627,12 +627,59 @@ async def delete_planner_reminder(
     "/events",
     response_class=HTMLResponse
 )
-async def events_page(request: Request):
+async def events_page(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None)
+):
+    session = await get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+        return RedirectResponse(
+            url="/verify?next=/events",
+            status_code=303,
+        )
+
+    user_id = session.user_id
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    theater_data = None
+
+    if accounts:
+        account = accounts[0]
+
+        try:
+            client = await get_account_client(
+                user_id,
+                account["genshin_uid"]
+            )
+
+            if client is not None:
+                async with client:
+                    theater = await client.get_imaginarium_theater()
+
+                print("===== IMAGINARIUM THEATER =====")
+                print(theater)
+                print("================================")
+
+                theater_data = theater
+
+        except Exception as error:
+            print("===== IMAGINARIUM THEATER ERROR =====")
+            print(f"Type: {type(error).__name__}")
+            print(f"Error: {error}")
+            print("======================================")
+
     return templates.TemplateResponse(
         request=request,
         name="events.html",
         context={
             "request": request,
+            "theater": theater_data,
         },
     )
 

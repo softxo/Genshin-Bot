@@ -34,7 +34,6 @@ class GenshinAccountSelect(discord.ui.Select):
             self,
             accounts,
             credentials,
-            client,
             discord_user_id
     ):
         options = []
@@ -71,7 +70,6 @@ class GenshinAccountSelect(discord.ui.Select):
 
         self.accounts = accounts
         self.credentials = credentials
-        self.client = client
         self.discord_user_id = discord_user_id
 
     async def callback(
@@ -79,24 +77,6 @@ class GenshinAccountSelect(discord.ui.Select):
             interaction: discord.Interaction
     ):
         selected_uid = self.values[0]
-
-        print("===== IMAGINARIUM THEATER TEST =====")
-
-        try:
-            theater = await self.client.get_imaginarium_theater(
-                uid=selected_uid
-            )
-
-            print("TYPE:", type(theater))
-            print("THEATER:")
-            print(theater)
-
-        except Exception as error:
-            print("THEATER ERROR:")
-            print(f"Type: {type(error).__name__}")
-            print(f"Error: {error}")
-
-        print("====================================")
 
         account = next(
             (
@@ -222,7 +202,6 @@ class GenshinAccountView(discord.ui.View):
         self,
         accounts,
         credentials,
-        client,
         discord_user_id
     ):
         super().__init__(timeout=300)
@@ -231,7 +210,6 @@ class GenshinAccountView(discord.ui.View):
             GenshinAccountSelect(
                 accounts,
                 credentials,
-                client,
                 discord_user_id
             )
         )
@@ -393,7 +371,6 @@ class HoYoLABLoginModal(discord.ui.Modal, title="HoYoLAB Login"):
                 view=GenshinAccountView(
                     accounts,
                     credentials,
-                    client,
                     interaction.user.id
                  ),
                 ephemeral=True
@@ -631,7 +608,6 @@ class HoYoLABCookieModalStep2(
             view=GenshinAccountView(
                 genshin_accounts,
                 credentials,
-                client,
                 interaction.user.id
             ),
             ephemeral=True
