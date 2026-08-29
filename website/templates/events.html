@@ -422,15 +422,11 @@
                         Stygian Onslaught
                     </div>
 
-                    <div class="event-time-left">
-                        {% if stygian.end_time %}
-                            <span
-                                class="event-countdown"
-                                data-end-time="{{ stygian.end_time }}"
-                            ></span>
-                        {% else %}
-                            —
-                        {% endif %}
+                    <div
+                        class="event-time-left"
+                        data-end-time="{{ stygian.end_time }}"
+                    >
+                        Calculating...
                     </div>
 
                 </div>
