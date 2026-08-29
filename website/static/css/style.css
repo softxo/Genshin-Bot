@@ -5024,7 +5024,7 @@ body {
    INTERMEDIATE SCREEN SIZES
    ============================= */
 
-@media (min-width: 1150px) and (max-width: 1350px) {
+@media (min-width: 1150px) and (max-width: 1450px) {
 
     .stygian-bosses {
         display: none;
