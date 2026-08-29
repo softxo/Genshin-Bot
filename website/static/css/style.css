@@ -4645,6 +4645,30 @@ body {
     box-sizing: border-box;
 }
 
+.event-stat-label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+
+    text-align: center;
+
+    opacity: 0.65;
+}
+
+.event-stat-value strong {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.event-stat-separator {
+    opacity: 0.5;
+    margin: 0 2px;
+}
+
 
 /* =============================
    STYGIAN ONSLAUGHT
@@ -4652,28 +4676,21 @@ body {
 
 .stygian-best-record {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+
+    gap: 10px;
 
     padding-bottom: 18px;
 
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.stygian-label {
-    font-size: 13px;
-
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-
-    opacity: 0.7;
-}
-
 .stygian-record {
     display: flex;
     align-items: center;
+    justify-content: center;
 
-    gap: 8px;
+    gap: 7px;
 }
 
 .stygian-difficulty-icon {
@@ -4684,13 +4701,32 @@ body {
 }
 
 .stygian-record strong {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .stygian-bosses {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
 
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.stygian-teams-box {
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stygian-bosses-row {
     display: grid;
+
     grid-template-columns: repeat(3, 1fr);
 
     gap: 12px;
@@ -4735,6 +4771,97 @@ body {
 }
 
 
+/*=============================
+   IMAGINARIUM THEATER
+   ============================= */
+
+.it-best-record {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.it-record {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+.it-act-icon,
+.it-arcanum-icon {
+    width: 32px;
+    height: 32px;
+
+    object-fit: contain;
+}
+
+.it-arcanum-icon {
+    margin-left: -5px;
+}
+
+.it-record strong {
+    font-size: 18px;
+}
+
+.it-stellas {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.it-stella-box {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 7px 4px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.it-stella-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 0;
+
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+.it-stella {
+    width: 27px;
+    height: 27px;
+
+    object-fit: contain;
+
+    opacity: 1;
+}
+
+.it-stella.unearned {
+    opacity: 0.5;
+}
+
+
 /* =============================
    SPIRAL ABYSS
    ============================= */
@@ -4754,16 +4881,9 @@ body {
     display: flex;
     flex-direction: column;
 
-    gap: 4px;
-}
-
-.abyss-stat {
-    display: flex;
-    flex-direction: column;
-
     align-items: center;
 
-    gap: 4px;
+    gap: 8px;
 
     text-align: center;
 }
@@ -4788,16 +4908,27 @@ body {
 }
 
 .abyss-teams {
-    flex: 1;
-
     display: flex;
     flex-direction: column;
 
-    justify-content: center;
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.abyss-teams-box {
+    display: flex;
+    flex-direction: column;
 
     gap: 10px;
 
-    margin-top: 12px;
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .abyss-chamber {
