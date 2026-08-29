@@ -18,6 +18,22 @@
 
     </section>
 
+    <div class="events-account-selector">
+    
+        <span class="event-stat-label">
+            Account
+        </span>
+    
+        <select id="events-account-select">
+            {% for account in accounts %}
+            <option value="{{ account.genshin_uid }}">
+                {{ account.name }}
+            </option>
+            {% endfor %}
+        </select>
+    
+    </div>
+
 
     <section class="events-featured">
 

@@ -647,6 +647,10 @@ async def events_page(
         user_id
     )
 
+    print("===== EVENTS ACCOUNTS =====")
+    print(accounts)
+    print("===========================")
+
     theater_data = None
 
     if accounts:
