@@ -4627,6 +4627,24 @@ body {
     flex-direction: column;
 }
 
+.event-stat-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 5px 12px;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    box-sizing: border-box;
+}
+
 
 /* =============================
    STYGIAN ONSLAUGHT
@@ -4659,8 +4677,8 @@ body {
 }
 
 .stygian-difficulty-icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
 
     object-fit: contain;
 }
@@ -4763,8 +4781,8 @@ body {
 }
 
 .abyss-stars-value img {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
 
     object-fit: contain;
 }
