@@ -5275,7 +5275,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    gap: 5px;
+    gap: 7px;
 
     min-height: 42px;
     width: 100%;
@@ -5313,19 +5313,19 @@ body {
 }
 
 .abyss-character-icon {
-    width: 29px !important;
-    height: 29px !important;
+    width: 30px !important;
+    height: 30px !important;
 
-    min-width: 29px !important;
-    min-height: 29px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
 
-    max-width: 29px !important;
-    max-height: 29px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
 
     display: block;
     object-fit: cover;
 
-    flex: 0 0 29px;
+    flex: 0 0 30px;
 
     border-radius: 50%;
 
