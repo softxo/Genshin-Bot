@@ -708,9 +708,9 @@ async def events_page(
                 trial_characters = []
 
                 for act in acts:
-                    print("===== THEATER ACT =====")
-                    print(act)
-                    print("=======================")
+                    print("===== THEATER ACT KEYS =====")
+                    print(act.keys())
+                    print("============================")
 
                     for avatar in act.get("avatars", []):
 
