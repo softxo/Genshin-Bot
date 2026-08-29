@@ -624,6 +624,20 @@ async def delete_planner_reminder(
 
 
 @app.get(
+    "/events",
+    response_class=HTMLResponse
+)
+async def events_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="events.html",
+        context={
+            "request": request,
+        },
+    )
+
+
+@app.get(
     "/achievements",
     response_class=HTMLResponse,
 )

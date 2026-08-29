@@ -23,7 +23,7 @@
 
     <link
         rel="stylesheet"
-        href="/static/css/style.css?v=5"
+        href="/static/css/style.css?v=6"
     >
 </head>
 
@@ -103,6 +103,15 @@
                         alt="Planner">
                 </span>
                 <span>Planner</span>
+            </a>
+
+            <a href="/events" class="nav-item {% if request.path == '/events' %}active{% endif %}">
+                <span class="nav-icon">
+                    <img 
+                        src="/static/images/ui/ui_icons/Events.webp"
+                        alt="Events">
+                </span>
+                <span>Events</span>
             </a>
 
             <a href="/achievements" class="nav-item {% if request.path == '/achievements' %}active{% endif %}">
