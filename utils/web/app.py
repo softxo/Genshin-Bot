@@ -684,22 +684,12 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
-                def find_relevant_keys(obj, path=""):
-                    if isinstance(obj, dict):
-                        for key, value in obj.items():
-                            key_lower = str(key).lower()
+                current_cycle = theater["data"][0]
+                stat = current_cycle["stat"]
+                schedule = current_cycle["schedule"]
 
-                            if any(
-                                term in key_lower
-                                for term in ("element", "limit", "condition", "require")
-                            ):
-                                print(f"{path}/{key}: {type(value).__name__}")
-
-                            find_relevant_keys(value, f"{path}/{key}")
-
-                    elif isinstance(obj, list):
-                        for index, value in enumerate(obj):
-                            find_relevant_keys(value, f"{path}[{index}]")
+                detail = current_cycle["detail"]
+                acts = detail["rounds_data"]
 
                 print("===== THEATER BACKUP ELEMENTS =====")
 
@@ -711,13 +701,6 @@ async def events_page(
                     )
 
                 print("===================================")
-
-                current_cycle = theater["data"][0]
-                stat = current_cycle["stat"]
-                schedule = current_cycle["schedule"]
-
-                detail = current_cycle["detail"]
-                acts = detail["rounds_data"]
 
                 arcanums = sum(
                     1
