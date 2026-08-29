@@ -683,19 +683,23 @@ async def events_page(
             if client is not None:
                 async with client:
                     theater = await client.get_imaginarium_theater()
-                
-                print("===== RAW THEATER KEYS =====")
-                print(theater.keys())
 
-                if "data" in theater and theater["data"]:
-                    print("===== RAW CYCLE KEYS =====")
-                    print(theater["data"][0].keys())
+                def find_relevant_keys(obj, path=""):
+                    if isinstance(obj, dict):
+                        for key, value in obj.items():
+                            key_lower = str(key).lower()
 
-                    if "detail" in theater["data"][0]:
-                        print("===== RAW DETAIL KEYS =====")
-                        print(theater["data"][0]["detail"].keys())
+                            if any(
+                                term in key_lower
+                                for term in ("element", "limit", "condition", "require")
+                            ):
+                                print(f"{path}/{key}: {type(value).__name__}")
 
-                print("============================")
+                            find_relevant_keys(value, f"{path}/{key}")
+
+                    elif isinstance(obj, list):
+                        for index, value in enumerate(obj):
+                            find_relevant_keys(value, f"{path}[{index}]")
 
                 current_cycle = theater["data"][0]
                 stat = current_cycle["stat"]
