@@ -648,7 +648,11 @@ async def events_page(
         user_id
     )
 
-    theater_data = None
+    theater_data = {
+        "best_round": 0,
+        "arcanums": 0,
+        "medals": 0,
+    }
     selected_account = None
 
     if accounts:
