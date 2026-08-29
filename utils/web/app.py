@@ -676,40 +676,83 @@ async def events_page(
             selected_account = accounts[0]
 
         try:
+
+            # =============================
+            # EVERNIGHT — ELEMENT SOURCE
+            # =============================
+
+            evernight_account = next(
+                (
+                    account
+                    for account in accounts
+                    if account["nickname"].lower() == "evernight"
+                ),
+                None,
+            )
+
+            elements = []
+
+            if evernight_account is not None:
+
+                evernight_client = await get_account_client(
+                    user_id,
+                    evernight_account["genshin_uid"]
+                )
+
+                if evernight_client is not None:
+
+                    async with evernight_client:
+                        evernight_theater = (
+                            await evernight_client.get_imaginarium_theater()
+                        )
+
+                    evernight_cycle = evernight_theater["data"][0]
+                    evernight_detail = evernight_cycle["detail"]
+
+                    element_counts = Counter(
+                        avatar["element"]
+                        for avatar in evernight_detail.get(
+                            "backup_avatars",
+                            []
+                        )
+                        if avatar.get("element")
+                    )
+
+                    elements = [
+                        element
+                        for element, count in element_counts.items()
+                        if count >= 3
+                    ]
+
+
+            # =============================
+            # SELECTED ACCOUNT — IT DATA
+            # =============================
+
             client = await get_account_client(
                 user_id,
                 selected_account["genshin_uid"]
             )
 
             if client is not None:
+
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
                 current_cycle = theater["data"][0]
+
                 stat = current_cycle["stat"]
                 schedule = current_cycle["schedule"]
 
                 detail = current_cycle["detail"]
                 acts = detail["rounds_data"]
 
-                element_counts = Counter(
-                    avatar["element"]
-                    for avatar in detail.get("backup_avatars", [])
-                    if avatar.get("element")
-                )
-
-                elements = [
-                    element
-                    for element, count in element_counts.items()
-                    if count >= 2
-                ]
-
                 arcanums = sum(
                     1
                     for act in acts
                     if act.get("is_tarot") is True
                 )
-                
+
                 theater_data = {
                     "has_data": stat["max_round_id"] > 0,
                     "best_round": stat["max_round_id"],
@@ -720,6 +763,7 @@ async def events_page(
                 }
 
         except Exception as error:
+
             print("===== IMAGINARIUM THEATER ERROR =====")
             print(f"Type: {type(error).__name__}")
             print(f"Error: {error}")
