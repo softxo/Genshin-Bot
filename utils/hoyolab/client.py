@@ -96,5 +96,6 @@ class HoYoLABClient:
         )
 
         return await client.get_imaginarium_theater(
-            self.genshin_uid
+            self.genshin_uid,
+            raw=True
         )
