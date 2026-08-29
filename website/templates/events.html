@@ -4,6 +4,20 @@
 
 {% block content %}
 
+<div>
+    <p>Unlocked: {{ theater.is_unlock }}</p>
+    <p>Cycles: {{ theater.data | length }}</p>
+
+    {% for cycle in theater.data %}
+    <p>
+        Cycle {{ loop.index }} —
+        Difficulty: {{ cycle.stat.difficulty_id }},
+        Best Round: {{ cycle.stat.max_round_id }},
+        Medals: {{ cycle.stat.medal_num }}
+    </p>
+    {% endfor %}
+</div>
+
 <div class="page events-page">
 
     <section class="page-header">

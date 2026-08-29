@@ -664,6 +664,14 @@ async def events_page(
 
                 theater_data = theater
 
+                print("\n===== CURRENT THEATER DETAIL =====")
+                print(theater["data"][0]["detail"])
+                print("==================================")
+
+                print("\n===== THEATER LINKS =====")
+                print(theater.get("links"))
+                print("=========================")
+
                 print("===== THEATER CYCLE DETAILS =====")
 
                 for index, cycle in enumerate(theater["data"], start=1):
