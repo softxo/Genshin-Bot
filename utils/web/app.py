@@ -696,7 +696,13 @@ async def events_page(
                 print(current_cycle["schedule"])
                 print("============================")
 
-                acts = current_cycle["detail"]["rounds_data"]
+                detail = current_cycle["detail"]
+
+                print("===== THEATER DETAIL KEYS =====")
+                print(detail.keys())
+                print("===============================")
+
+                acts = detail["rounds_data"]
 
                 arcanums = sum(
                     1
