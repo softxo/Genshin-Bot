@@ -4965,7 +4965,7 @@ body {
    STYGIAN TEAM
    ============================= */
 
-.stygian-team {
+   .stygian-team {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4977,7 +4977,7 @@ body {
 
     width: auto;
 
-    margin-top: 4px;
+    margin-top: 10px;
 
     padding: 5px 6px;
 
