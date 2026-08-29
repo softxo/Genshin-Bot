@@ -4877,37 +4877,13 @@ body {
     font-weight: 600;
 }
 
+
+/* =============================
+   BOSSES / TEAMS
+   ============================= */
+
 .stygian-bosses {
-    display: flex;
-    flex-direction: column;
-
-    gap: 12px;
-
-    margin-top: 18px;
-}
-
-.stygian-team {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: row;
-    flex-wrap: nowrap;
-
-    gap: 4px;
-
     width: 100%;
-    box-sizing: border-box;
-
-    margin-top: 5px;
-    padding: 8px 4px;
-
-    border-radius: 8px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    font-size: 11px;
-    opacity: 0.8;
 }
 
 .stygian-teams-box {
@@ -4934,7 +4910,7 @@ body {
 
     grid-template-columns: repeat(3, 1fr);
 
-    gap: 14px;
+    gap: 8px;
 
     align-items: center;
 
@@ -4948,6 +4924,8 @@ body {
     align-items: center;
 
     gap: 2px;
+
+    min-width: 0;
 }
 
 .stygian-boss strong {
@@ -4961,8 +4939,8 @@ body {
 }
 
 .stygian-boss-icon {
-    width: 90px;
-    height: 90px;
+    width: 55px;
+    height: 55px;
 
     object-fit: contain;
 }
@@ -4972,6 +4950,11 @@ body {
     font-weight: 600;
 }
 
+
+/* =============================
+   STYGIAN TEAM
+   ============================= */
+
 .stygian-team {
     display: flex;
     align-items: center;
@@ -4980,24 +4963,32 @@ body {
     flex-direction: row;
     flex-wrap: nowrap;
 
-    gap: 4px;
+    gap: 3px;
 
-    margin-top: 5px;
+    width: auto;
+
+    margin-top: 4px;
+
+    padding: 5px 6px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.06);
 
     box-sizing: border-box;
 }
 
 .stygian-character-icon {
-    width: 30px !important;
-    height: 30px !important;
+    width: 24px !important;
+    height: 24px !important;
 
-    min-width: 30px !important;
-    min-height: 30px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
 
-    max-width: 30px !important;
-    max-height: 30px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
 
-    flex: 0 0 30px;
+    flex: 0 0 24px;
 
     display: block;
 
