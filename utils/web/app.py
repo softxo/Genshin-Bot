@@ -706,17 +706,9 @@ async def events_page(
 
                 detail = current_cycle["detail"]
 
-                print("===== THEATER DETAIL KEYS =====")
-                print(detail.keys())
-                print("===============================")
-
-                print("===== THEATER BACKUP AVATARS =====")
-                print(detail.get("backup_avatars"))
-                print("===============================")
-
-                print("===== THEATER LINEUP LINK =====")
-                print(detail.get("lineup_link"))
-                print("===============================")
+                print("===== THEATER DETAIL STAT KEYS =====")
+                print(detail["detail_stat"].keys())
+                print("====================================")
 
                 acts = detail["rounds_data"]
 
