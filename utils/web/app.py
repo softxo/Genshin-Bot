@@ -749,9 +749,14 @@ async def events_page(
 
                 abyss_chambers = []
 
-                for floor in abyss.floors:
+                if abyss.floors:
 
-                    for chamber in floor.chambers:
+                    deepest_floor = max(
+                        abyss.floors,
+                        key=lambda floor: floor.floor
+                    )
+
+                    for chamber in deepest_floor.chambers:
 
                         battles = []
 
@@ -772,7 +777,7 @@ async def events_page(
                             })
 
                         abyss_chambers.append({
-                            "floor": floor.floor,
+                            "floor": deepest_floor.floor,
                             "chamber": chamber.chamber,
                             "battles": battles,
                         })

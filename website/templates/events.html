@@ -170,63 +170,68 @@
                         <div class="abyss-teams-box">
 
                             {% for chamber in abyss.chambers %}
-
+    
                             <div class="abyss-chamber">
-
-                                <span>Team First Half</span>
-
-                                <div class="abyss-team-characters">
-
+    
+                                <!-- First Half -->
+                                <div class="abyss-team">
+    
                                     {% for battle in chamber.battles %}
+    
                                         {% if battle.half == 1 %}
-
+    
                                             {% for character in battle.characters %}
-
+    
                                             <img
                                                 src="{{ character.icon }}"
                                                 alt="{{ character.name }}"
                                                 title="{{ character.name }}"
+                                                class="abyss-character-icon"
                                             >
-
+    
                                             {% endfor %}
-
+    
                                         {% endif %}
+    
                                     {% endfor %}
-
+    
                                 </div>
-
-
+    
+    
+                                <!-- Chamber -->
                                 <strong>
                                     Chamber {{ chamber.chamber }}
                                 </strong>
-
-
-                                <span>Team Second Half</span>
-
-                                <div class="abyss-team-characters">
-
+    
+    
+                                <!-- Second Half -->
+                                <div class="abyss-team">
+    
                                     {% for battle in chamber.battles %}
+    
                                         {% if battle.half == 2 %}
-
+    
                                             {% for character in battle.characters %}
-
+    
                                             <img
                                                 src="{{ character.icon }}"
                                                 alt="{{ character.name }}"
                                                 title="{{ character.name }}"
+                                                class="abyss-character-icon"
                                             >
-
+    
                                             {% endfor %}
-
+    
                                         {% endif %}
+    
                                     {% endfor %}
-
+    
                                 </div>
-
+    
                             </div>
-
+    
                             {% endfor %}
-
+    
                         </div>
                     
                     </div>
