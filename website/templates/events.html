@@ -447,32 +447,41 @@
 
                             {% if stygian.has_data %}
 
-                                <div class="stygian-record">
+                            <div class="stygian-record">
 
+                                {% if stygian.difficulty_icon %}
                                     <img
                                         src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
-                                        alt="Difficulty"
+                                        alt="Difficulty {{ stygian.difficulty }}"
                                         class="stygian-difficulty-icon"
                                     >
+                                {% endif %}
 
-                                    <strong>
-                                        {% if stygian.difficulty == 4 %}
-                                            Dire
-                                        {% else %}
-                                            Difficulty {{ stygian.difficulty }}
-                                        {% endif %}
-                                    </strong>
+                                <strong>
+                                    {% if stygian.difficulty == 1 %}
+                                        Easy
+                                    {% elif stygian.difficulty == 2 %}
+                                        Normal
+                                    {% elif stygian.difficulty == 3 %}
+                                        Hard
+                                    {% elif stygian.difficulty == 4 %}
+                                        Menacing
+                                    {% elif stygian.difficulty == 5 %}
+                                        Fearless
+                                    {% elif stygian.difficulty == 6 %}
+                                        Dire
+                                    {% else %}
+                                        Difficulty {{ stygian.difficulty }}
+                                    {% endif %}
+                                </strong>
 
-                                    <span class="event-stat-separator">|</span>
+                                <span class="event-stat-separator">|</span>
 
-                                    <strong>
-                                        {{ "%d:%02d" | format(
-                                            stygian.best_time // 60,
-                                            stygian.best_time % 60
-                                        ) }}
-                                    </strong>
+                                <strong>
+                                    {{ "%d:%02d"|format(stygian.best_time // 60, stygian.best_time % 60) }}
+                                </strong>
 
-                                </div>
+                            </div>
 
                             {% else %}
 
