@@ -681,9 +681,21 @@ async def events_page(
                 current_cycle = theater["data"][0]
                 stat = current_cycle["stat"]
 
+                print("===== THEATER STAT =====")
+                print(stat)
+                print("========================")
+
+                acts = current_cycle["detail"]["rounds_data"]
+
+                arcanums = sum(
+                    1
+                    for act in acts
+                    if act.get("is_tarot") is True
+                )
+
                 theater_data = {
                     "best_round": stat["max_round_id"],
-                    "arcanums": stat["heraldry"],
+                    "arcanums": arcanums,
                     "medals": stat["medal_num"],
                 }
 

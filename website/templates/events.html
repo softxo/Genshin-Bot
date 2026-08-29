@@ -7,32 +7,37 @@
 <div class="page events-page">
 
     <section class="page-header">
-
+    
         <div>
             <span class="eyebrow">
                 ACTIVITIES
             </span>
-
+    
             <h1>Events</h1>
         </div>
-
+    
+        {% if accounts %}
+        <div class="events-account-selector">
+        
+            <label for="events-account">
+                Account
+            </label>
+        
+            <select
+                id="events-account"
+                onchange="window.location.href='/events?account_id=' + this.value"
+            >
+                {% for account in accounts %}
+                <option value="{{ account.id }}">
+                    {{ account.nickname }} — {{ account.genshin_uid }}
+                </option>
+                {% endfor %}
+            </select>
+        
+        </div>
+        {% endif %}
+    
     </section>
-
-    <div class="events-account-selector">
-    
-        <span class="event-stat-label">
-            Account
-        </span>
-    
-        <select id="events-account-select">
-            {% for account in accounts %}
-            <option value="{{ account.genshin_uid }}">
-                {{ account.name }}
-            </option>
-            {% endfor %}
-        </select>
-    
-    </div>
 
 
     <section class="events-featured">
@@ -182,7 +187,7 @@
                             
                                 <strong>Act {{ theater.best_round }}</strong>
                             
-                                {% if theater.best_round >= 10 %}
+                                {% if theater.arcanums > 0 %}
                                 <span class="event-stat-separator">|</span>
                             
                                 <strong>{{ theater.arcanums }}</strong>
@@ -211,7 +216,7 @@
                     
                             <div class="it-stella-row">
                             
-                                {% for i in range(theater.best_act) %}
+                                {% for i in range(theater.best_round) %}
                             
                                 <img
                                     src="/static/images/events/imaginarium_theater/IT_Stella.webp"
