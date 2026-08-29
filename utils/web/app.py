@@ -662,24 +662,19 @@ async def events_page(
                 async with client:
                     theater = await client.get_imaginarium_theater()
 
-                print("===== IMAGINARIUM THEATER =====")
+                print("===== FIRST THEATER ROUND =====")
 
-                for index, cycle in enumerate(theater.get("data", []), start=1):
-                    print(f"\n===== CYCLE {index} =====")
+                cycle = theater["data"][0]
+                rounds = cycle["detail"]["rounds_data"]
 
-                    print("Cycle keys:")
-                    print(cycle.keys())
+                print("Round count:", len(rounds))
+                print("\nRound keys:")
+                print(rounds[0].keys())
 
-                    print("\nSTAT:")
-                    print(cycle.get("stat"))
+                print("\nRound:")
+                print(rounds[0])
 
-                    print("\nSCHEDULE:")
-                    print(cycle.get("schedule"))
-
-                    print("\nDETAIL STAT:")
-                    print(cycle.get("detail", {}).get("detail_stat"))
-
-                print("\n================================")
+                print("================================")
 
         except Exception as error:
             print("===== IMAGINARIUM THEATER ERROR =====")
