@@ -650,6 +650,7 @@ async def events_page(
     )
 
     abyss_data = {
+        "has_data": False,
         "max_floor": "—",
         "total_stars": 0,
         "end_time": 0,
@@ -784,6 +785,7 @@ async def events_page(
 
 
                 abyss_data = {
+                    "has_data": abyss.unlocked,
                     "max_floor": abyss.max_floor,
                     "total_stars": abyss.total_stars,
                     "end_time": abyss.end_time.timestamp(),

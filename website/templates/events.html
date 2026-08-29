@@ -123,6 +123,8 @@
 
                 <div class="event-featured-panel">
 
+                    {% if abyss and abyss.has_data %}
+
                     <div class="abyss-summary">
                     
                         <div class="abyss-stat">
@@ -235,6 +237,14 @@
                         </div>
                     
                     </div>
+
+                    {% else %}
+
+                        <div class="event-no-record">
+                            No Record
+                        </div>
+
+                    {% endif %}
 
                 </div>
 
