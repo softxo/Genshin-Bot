@@ -660,10 +660,7 @@ async def events_page(
 
             if client is not None:
                 async with client:
-                    theater = await client.get_imaginarium_theater(
-                        account["genshin_uid"],
-                        account["genshin_server"]
-                    )
+                    theater = await client.get_imaginarium_theater()
 
                 print("===== IMAGINARIUM THEATER =====")
                 print(theater)
