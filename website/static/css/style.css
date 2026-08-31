@@ -124,7 +124,14 @@ body {
         );
 }
 
+
+/* ================================
+   Custom Select Arrow
+   ================================ */
+
 .custom-select-arrow {
+    display: block;
+
     flex-shrink: 0;
 
     width: 7px;
@@ -139,11 +146,14 @@ body {
 
     color: var(--text-muted);
 
-    transform: rotate(45deg);
+    --arrow-rotation: 45deg;
+
+    transform: rotate(var(--arrow-rotation));
+    transform-origin: center;
 
     transition:
         color 0.15s ease,
-        transform 0.15s ease;
+        transform 0.25s ease;
 }
 
 .custom-select-button:hover .custom-select-arrow,
@@ -152,7 +162,7 @@ body {
 }
 
 .custom-select.open .custom-select-arrow {
-    transform: rotate(225deg);
+    --arrow-rotation: 225deg;
 }
 
 
@@ -4749,6 +4759,7 @@ body {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
+
 /* =============================
    FEATURED EVENT ARROW
    ============================= */
@@ -4756,10 +4767,10 @@ body {
 .event-toggle-icon {
     display: block;
 
-    flex-shrink: 0;
-
     width: 7px;
     height: 7px;
+
+    flex-shrink: 0;
 
     box-sizing: border-box;
 
@@ -4768,7 +4779,7 @@ body {
 
     color: var(--text-muted);
 
-    transform: rotate(45deg);
+    transform: translateY(-2px) rotate(45deg);
 
     transition:
         color 0.15s ease,
@@ -4780,8 +4791,9 @@ body {
 }
 
 .event-featured-card:not(.collapsed) .event-toggle-icon {
-    transform: rotate(225deg);
+    transform: translateY(2px) rotate(225deg);
 }
+
 
 /* =============================
    COLLAPSED CARD
