@@ -91,8 +91,8 @@
     <section class="events-featured">
 
         <!-- =============================
-             SPIRAL ABYSS
-             ============================= -->
+            SPIRAL ABYSS
+            ============================= -->
 
         <div class="event-featured-card">
 
@@ -112,130 +112,191 @@
                         Spiral Abyss
                     </div>
 
-                    <div
-                        class="event-time-left"
-                        data-end-time="{{ abyss.end_time }}"
-                    >
-                        Calculating...
+                    <div class="event-featured-header-right">
+
+                        <div
+                            class="event-time-left"
+                            data-end-time="{{ abyss.end_time }}"
+                        >
+                            Calculating...
+                        </div>
+
+                        <button
+                            type="button"
+                            class="event-featured-toggle"
+                            aria-label="Collapse Spiral Abyss"
+                            aria-expanded="true"
+                        >
+                            <span class="event-toggle-icon">⌃</span>
+                        </button>
+
                     </div>
 
                 </div>
+
+
+                <!-- =============================
+                    COLLAPSED SUMMARY
+                    ============================= -->
+
+                <div class="event-featured-collapsed">
+
+                    <div class="event-collapsed-stat">
+
+                        <span class="event-stat-label">
+                            Deepest Descent
+                        </span>
+
+                        <strong>
+                            {{ abyss.max_floor if abyss and abyss.has_data else "—" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="event-collapsed-stat">
+
+                        <span class="event-stat-label">
+                            Abyssal Stars
+                        </span>
+
+                        <div class="event-collapsed-value">
+
+                            <img
+                                src="/static/images/events/spiral_abyss/Abyssal_Star.webp"
+                                alt="Abyssal Stars"
+                            >
+
+                            <strong>
+                                {{ abyss.total_stars if abyss and abyss.has_data else "—" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================
+                    EXPANDED CONTENT
+                    ============================= -->
 
                 <div class="event-featured-panel">
 
                     {% if abyss and abyss.has_data %}
 
                     <div class="abyss-summary">
-                    
+            
                         <div class="abyss-stat">
-                    
+            
                             <span class="event-stat-label">
                                 Deepest Descent
                             </span>
-                    
+            
                             <div class="event-stat-value">
                                 <strong>{{ abyss.max_floor }}</strong>
                             </div>
-                    
+            
                         </div>
-                    
-                    
+            
+            
                         <div class="abyss-stat">
-                    
+            
                             <span class="event-stat-label">
                                 Abyssal Stars
                             </span>
-                    
+            
                             <div class="event-stat-value">
-                    
+            
                                 <div class="abyss-stars-value">
-                    
-                                    <img src="/static/images/events/spiral_abyss/Abyssal_Star.webp" alt="Abyssal Stars">
-                    
+            
+                                    <img
+                                        src="/static/images/events/spiral_abyss/Abyssal_Star.webp"
+                                        alt="Abyssal Stars"
+                                    >
+            
                                     <strong>{{ abyss.total_stars }}</strong>
-                    
+            
                                 </div>
-                    
+            
                             </div>
-                    
+            
                         </div>
-                    
+            
                     </div>
 
 
                     <div class="abyss-teams">
-                    
+            
                         <span class="event-stat-label">
                             Teams
                         </span>
-                    
+            
                         <div class="abyss-teams-box">
 
                             {% for chamber in abyss.chambers %}
-    
+
                             <div class="abyss-chamber">
-    
-                                <!-- First Half -->
+
                                 <div class="abyss-team">
-    
+
                                     {% for battle in chamber.battles %}
-    
+
                                         {% if battle.half == 1 %}
-    
+
                                             {% for character in battle.characters %}
-    
+
                                             <img
                                                 src="{{ character.icon }}"
                                                 alt="{{ character.name }}"
                                                 title="{{ character.name }}"
                                                 class="abyss-character-icon"
                                             >
-    
+
                                             {% endfor %}
-    
+
                                         {% endif %}
-    
+
                                     {% endfor %}
-    
+
                                 </div>
-    
-    
-                                <!-- Chamber -->
+
+
                                 <strong>
                                     Chamber {{ chamber.chamber }}
                                 </strong>
-    
-    
-                                <!-- Second Half -->
+
+
                                 <div class="abyss-team">
-    
+
                                     {% for battle in chamber.battles %}
-    
+
                                         {% if battle.half == 2 %}
-    
+
                                             {% for character in battle.characters %}
-    
+
                                             <img
                                                 src="{{ character.icon }}"
                                                 alt="{{ character.name }}"
                                                 title="{{ character.name }}"
                                                 class="abyss-character-icon"
                                             >
-    
+
                                             {% endfor %}
-    
+
                                         {% endif %}
-    
+
                                     {% endfor %}
-    
+
                                 </div>
-    
+
                             </div>
-    
+
                             {% endfor %}
-    
+
                         </div>
-                    
+            
                     </div>
 
                     {% else %}
@@ -251,6 +312,7 @@
             </div>
 
         </div>
+
 
         <!-- =============================
             IMAGINARIUM THEATER
@@ -274,16 +336,58 @@
                         Imaginarium Theater
                     </div>
 
-                    <div
-                        class="event-time-left"
-                        id="theater-time-left"
-                        data-end-time="{{ theater.end_time }}"
-                    >
-                        Calculating...
+                    <div class="event-featured-header-right">
+
+                        <div
+                            class="event-time-left"
+                            id="theater-time-left"
+                            data-end-time="{{ theater.end_time }}"
+                        >
+                            Calculating...
+                        </div>
+
+                        <button
+                            type="button"
+                            class="event-featured-toggle"
+                            aria-label="Collapse Imaginarium Theater"
+                            aria-expanded="true"
+                        >
+                            <span class="event-toggle-icon">⌃</span>
+                        </button>
+
                     </div>
 
                 </div>
 
+
+                <!-- =============================
+                    COLLAPSED SUMMARY
+                    ============================= -->
+
+                <div class="event-featured-collapsed">
+
+                    <div class="event-collapsed-stat">
+
+                        <span class="event-stat-label">
+                            Best Record
+                        </span>
+
+                        <strong>
+                            {% if theater and theater.best_round > 0 %}
+                                Act {{ theater.best_round }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================
+                    EXPANDED CONTENT
+                    ============================= -->
 
                 <div class="event-featured-panel">
 
@@ -333,6 +437,7 @@
 
                     </div>
 
+
                     <div class="it-stellas">
 
                         <span class="event-stat-label">
@@ -358,6 +463,7 @@
                         </div>
 
                     </div>
+
 
                     <div class="it-elements">
 
@@ -401,8 +507,8 @@
 
 
         <!-- =============================
-        STYGIAN ONSLAUGHT
-        ============================= -->
+            STYGIAN ONSLAUGHT
+            ============================= -->
 
         <div class="event-featured-card">
 
@@ -422,14 +528,87 @@
                         Stygian Onslaught
                     </div>
 
-                    <div
-                        class="event-time-left"
-                        data-end-time="{{ stygian.end_time }}"
-                    >
-                        Calculating...
+                    <div class="event-featured-header-right">
+
+                        <div
+                            class="event-time-left"
+                            data-end-time="{{ stygian.end_time }}"
+                        >
+                            Calculating...
+                        </div>
+
+                        <button
+                            type="button"
+                            class="event-featured-toggle"
+                            aria-label="Collapse Stygian Onslaught"
+                            aria-expanded="true"
+                        >
+                            <span class="event-toggle-icon">⌃</span>
+                        </button>
+
                     </div>
 
                 </div>
+
+
+                <!-- =============================
+                    COLLAPSED SUMMARY
+                    ============================= -->
+
+                <div class="event-featured-collapsed">
+
+                    <div class="event-collapsed-stat">
+
+                        <span class="event-stat-label">
+                            Best Record
+                        </span>
+
+                        <div class="event-collapsed-value">
+
+                            {% if stygian.has_data %}
+
+                                <strong>
+                                    {% if stygian.difficulty == 1 %}
+                                        Easy
+                                    {% elif stygian.difficulty == 2 %}
+                                        Normal
+                                    {% elif stygian.difficulty == 3 %}
+                                        Hard
+                                    {% elif stygian.difficulty == 4 %}
+                                        Menacing
+                                    {% elif stygian.difficulty == 5 %}
+                                        Fearless
+                                    {% elif stygian.difficulty == 6 %}
+                                        Dire
+                                    {% else %}
+                                        Difficulty {{ stygian.difficulty }}
+                                    {% endif %}
+                                </strong>
+
+                                <span class="event-stat-separator">
+                                    |
+                                </span>
+
+                                <strong>
+                                    {{ stygian.best_time }}s
+                                </strong>
+
+                            {% else %}
+
+                                <strong>—</strong>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================
+                    EXPANDED CONTENT
+                    ============================= -->
 
                 <div class="event-featured-panel">
 
@@ -471,7 +650,9 @@
                                         {% endif %}
                                     </strong>
 
-                                    <span class="event-stat-separator">|</span>
+                                    <span class="event-stat-separator">
+                                        |
+                                    </span>
 
                                     <strong>
                                         {{ stygian.best_time }}s

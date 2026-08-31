@@ -4682,6 +4682,136 @@ body {
 
 
 /* =============================
+   FEATURED EVENT TOGGLE
+   ============================= */
+
+.event-featured-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-featured-toggle {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.event-featured-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.event-toggle-icon {
+    display: block;
+
+    font-size: 16px;
+    line-height: 1;
+
+    transition: transform 0.25s ease;
+}
+
+
+/* =============================
+   COLLAPSED SUMMARY
+   ============================= */
+
+.event-featured-collapsed {
+    display: none;
+}
+
+
+/* =============================
+   COLLAPSED CARD
+   ============================= */
+
+.event-featured-card.collapsed {
+    height: 150px;
+}
+
+.event-featured-card.collapsed .event-featured-panel {
+    display: none;
+}
+
+.event-featured-card.collapsed .event-featured-collapsed {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-top: 18px;
+}
+
+
+/* =============================
+   COLLAPSED STAT
+   ============================= */
+
+.event-collapsed-stat {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.event-collapsed-stat .event-stat-label {
+    margin: 0;
+}
+
+.event-collapsed-stat > strong {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.event-collapsed-value {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 18px;
+}
+
+.event-collapsed-value img {
+    width: 22px;
+    height: 22px;
+
+    object-fit: contain;
+}
+
+
+/* =============================
+   COLLAPSED HEADER
+   ============================= */
+
+.event-featured-card.collapsed .event-toggle-icon {
+    transform: rotate(180deg);
+}
+
+
+/* =============================
    EVENT — TIME LEFT
    ============================= */
 
