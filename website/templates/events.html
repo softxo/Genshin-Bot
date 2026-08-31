@@ -55,9 +55,7 @@
                             {{ selected_account.nickname }} — {{ selected_account.genshin_uid }}
                         </span>
     
-                        <span class="custom-select-arrow">
-                            ⌄
-                        </span>
+                        <span class="event-toggle-icon"></span>
     
                     </button>
     
@@ -94,7 +92,7 @@
             SPIRAL ABYSS
             ============================= -->
 
-        <div class="event-featured-card">
+        <div class="event-featured-card collapsed">
 
             <img
                 src="/static/images/events/Abyss.png"
@@ -124,10 +122,10 @@
                         <button
                             type="button"
                             class="event-featured-toggle"
-                            aria-label="Collapse Spiral Abyss"
-                            aria-expanded="true"
+                            aria-label="Expand Spiral Abyss"
+                            aria-expanded="false"
                         >
-                            <span class="event-toggle-icon">⌃</span>
+                            <span class="event-toggle-icon"></span>
                         </button>
 
                     </div>
@@ -318,7 +316,7 @@
             IMAGINARIUM THEATER
             ============================= -->
 
-        <div class="event-featured-card">
+        <div class="event-featured-card collapsed">
 
             <img
                 src="/static/images/events/IT.png"
@@ -349,10 +347,10 @@
                         <button
                             type="button"
                             class="event-featured-toggle"
-                            aria-label="Collapse Imaginarium Theater"
-                            aria-expanded="true"
+                            aria-label="Expand Imaginarium Theater"
+                            aria-expanded="false"
                         >
-                            <span class="event-toggle-icon">⌃</span>
+                            <span class="event-toggle-icon"></span>
                         </button>
 
                     </div>
@@ -372,13 +370,29 @@
                             Best Record
                         </span>
 
-                        <strong>
+                        <div class="event-collapsed-value">
+
                             {% if theater and theater.best_round > 0 %}
-                                Act {{ theater.best_round }}
+
+                                <img
+                                    src="/static/images/events/imaginarium_theater/IT_Act_{{ theater.best_round }}.webp"
+                                    alt="Act {{ theater.best_round }}"
+                                    class="it-act-icon"
+                                >
+
+                                <strong>
+                                    Act {{ theater.best_round }}
+                                </strong>
+
                             {% else %}
-                                —
+
+                                <strong>
+                                    —
+                                </strong>
+
                             {% endif %}
-                        </strong>
+
+                        </div>
 
                     </div>
 
@@ -510,7 +524,7 @@
             STYGIAN ONSLAUGHT
             ============================= -->
 
-        <div class="event-featured-card">
+        <div class="event-featured-card collapsed">
 
             <img
                 src="/static/images/events/Stygian.png"
@@ -540,10 +554,10 @@
                         <button
                             type="button"
                             class="event-featured-toggle"
-                            aria-label="Collapse Stygian Onslaught"
-                            aria-expanded="true"
+                            aria-label="Expand Stygian Onslaught"
+                            aria-expanded="false"
                         >
-                            <span class="event-toggle-icon">⌃</span>
+                            <span class="event-toggle-icon"></span>
                         </button>
 
                     </div>
@@ -566,6 +580,16 @@
                         <div class="event-collapsed-value">
 
                             {% if stygian.has_data %}
+
+                                {% if stygian.difficulty_icon %}
+
+                                    <img
+                                        src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
+                                        alt="Difficulty {{ stygian.difficulty }}"
+                                        class="stygian-difficulty-icon"
+                                    >
+
+                                {% endif %}
 
                                 <strong>
                                     {% if stygian.difficulty == 1 %}
@@ -595,7 +619,9 @@
 
                             {% else %}
 
-                                <strong>—</strong>
+                                <strong>
+                                    —
+                                </strong>
 
                             {% endif %}
 
@@ -786,6 +812,54 @@
 
 
     initialiseEventsDropdown();
+
+
+    function initialiseEventFeatureToggles() {
+
+        const cards = document.querySelectorAll(
+            ".event-featured-card"
+        );
+
+        cards.forEach(card => {
+
+            const button = card.querySelector(
+                ".event-featured-toggle"
+            );
+
+            if (!button) {
+                return;
+            }
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    const collapsed =
+                        card.classList.toggle("collapsed");
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        String(!collapsed)
+                    );
+
+                    button.setAttribute(
+                        "aria-label",
+                        collapsed
+                            ? "Expand event"
+                            : "Collapse event"
+                    );
+
+                }
+            );
+
+        });
+
+    }
+
+
+    initialiseEventFeatureToggles();
 
 
     function updateEventTimeLeft() {
