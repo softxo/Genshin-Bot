@@ -1,9 +1,87 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     const mainContent = document.querySelector(".main-content");
 
     if (!mainContent) {
         return;
+    }
+
+    const pageScripts = {
+        "/planner": "/static/js/planner.js",
+    };
+
+    const pageStyles = {
+        "/planner": "/static/css/planner.css",
+    };
+
+    async function loadPageScript(path) {
+
+        const scriptSrc = pageScripts[path];
+
+        if (!scriptSrc) {
+            return;
+        }
+
+        const existingScript =
+            document.querySelector(
+                `script[data-page-script="${path}"]`
+            );
+
+        if (existingScript) {
+            return;
+        }
+
+        const script =
+            document.createElement("script");
+
+        script.src = scriptSrc;
+        script.dataset.pageScript = path;
+
+        document.body.appendChild(script);
+
+        await new Promise((resolve, reject) => {
+
+            script.addEventListener(
+                "load",
+                resolve,
+                { once: true }
+            );
+
+            script.addEventListener(
+                "error",
+                reject,
+                { once: true }
+            );
+
+        });
+    }
+
+    function loadPageStyle(path) {
+
+        const styleHref =
+            pageStyles[path];
+
+        if (!styleHref) {
+            return;
+        }
+
+        const existingStyle =
+            document.querySelector(
+                `link[data-page-style="${path}"]`
+            );
+
+        if (existingStyle) {
+            return;
+        }
+
+        const link =
+            document.createElement("link");
+
+        link.rel = "stylesheet";
+        link.href = styleHref;
+        link.dataset.pageStyle = path;
+
+        document.head.appendChild(link);
     }
 
     async function navigate(url, addToHistory = true) {
@@ -156,6 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.origin
                 ).pathname;
 
+            loadPageStyle(finalPath);
+            await loadPageScript(finalPath);
+
 
             if (
                 finalPath === "/planner" &&
@@ -266,6 +347,21 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("popstate", () => {
         navigate(window.location.href, false);
     });
+
+    const initialPath =
+        window.location.pathname;
+
+    loadPageStyle(initialPath);
+    await loadPageScript(initialPath);
+
+    if (
+        initialPath === "/planner" &&
+        typeof window.initPlanner === "function"
+    ) {
+
+        window.initPlanner();
+
+    }
 
 });
 
