@@ -50,6 +50,7 @@ from utils.achievements.achievements import load_achievements
 from utils.achievements.progress import load_progress
 from utils.achievements.importer import import_achievements
 from collections import Counter
+from utils.changing_variables.config import IT_ELEMENTS
 
 
 
@@ -658,10 +659,12 @@ async def events_page(
     }
 
     theater_data = {
+        "has_data": False,
         "best_round": 0,
         "arcanums": 0,
         "medals": 0,
         "end_time": 0,
+        "elements": IT_ELEMENTS,
     }
 
     stygian_data = {
@@ -693,55 +696,6 @@ async def events_page(
             selected_account = accounts[0]
 
         try:
-
-            # =============================
-            # EVERNIGHT — ELEMENT SOURCE
-            # =============================
-
-            evernight_account = next(
-                (
-                    account
-                    for account in accounts
-                    if account["nickname"].lower() == "evernight"
-                ),
-                None,
-            )
-
-            elements = []
-
-            if evernight_account is not None:
-
-                evernight_client = await get_account_client(
-                    user_id,
-                    evernight_account["genshin_uid"]
-                )
-
-                if evernight_client is not None:
-
-                    async with evernight_client:
-                        evernight_theater = (
-                            await evernight_client.get_imaginarium_theater()
-                        )
-
-                    evernight_cycle = evernight_theater["data"][0]
-                    evernight_detail = evernight_cycle["detail"]
-
-                    element_counts = Counter(
-                        avatar["element"]
-                        for avatar in evernight_detail.get(
-                            "backup_avatars",
-                            []
-                        )
-                        if avatar.get("element")
-                    )
-
-                    elements = [
-                        element
-                        for element, count in element_counts.items()
-                        if count >= 2
-                    ]
-
-
             client = await get_account_client(
                 user_id,
                 selected_account["genshin_uid"]
@@ -870,7 +824,7 @@ async def events_page(
                     "arcanums": arcanums,
                     "medals": stat["medal_num"],
                     "end_time": schedule["end_time"],
-                    "elements": elements,
+                    "elements": IT_ELEMENTS,
                 }
 
         except Exception as error:
