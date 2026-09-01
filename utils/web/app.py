@@ -738,13 +738,9 @@ async def events_page(
                     elements = [
                         element
                         for element, count in element_counts.items()
-                        if count >= 3
+                        if count >= 2
                     ]
 
-
-            # =============================
-            # SELECTED ACCOUNT — IT DATA
-            # =============================
 
             client = await get_account_client(
                 user_id,
