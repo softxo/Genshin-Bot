@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pageScripts = {
         "/planner": "/static/js/planner.js",
         "/verify": "/static/js/verify.js",
+        "/settings": "/static/js/settings.js",
     };
 
     const pageStyles = {
@@ -266,6 +267,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             ) {
 
                 window.initAchievements();
+
+            }
+
+
+            if (
+                finalPath === "/settings" &&
+                typeof window.initSettings === "function"
+            ) {
+
+                window.initSettings();
 
             }
 
