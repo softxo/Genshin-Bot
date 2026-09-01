@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pageScripts = {
         "/planner": "/static/js/planner.js",
         "/verify": "/static/js/verify.js",
+        "/events": "/static/js/events.js",
         "/settings": "/static/js/settings.js",
     };
 
@@ -281,6 +282,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
+            if (
+                finalPath === "/events" &&
+                typeof window.initEvents === "function"
+            ) {
+
+                window.initEvents();
+
+            }
+
+
             /*
              * Update active sidebar item.
              */
@@ -377,6 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadPageStyle(initialPath);
     await loadPageScript(initialPath);
 
+
     if (
         initialPath === "/planner" &&
         typeof window.initPlanner === "function"
@@ -385,7 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.initPlanner();
 
     }
-    
+
 
     if (
         initialPath === "/verify" &&
@@ -393,6 +405,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     ) {
 
         window.initVerify();
+
+    }
+
+
+    if (
+        initialPath === "/events" &&
+        typeof window.initEvents === "function"
+    ) {
+
+        window.initEvents();
 
     }
 
