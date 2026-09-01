@@ -8,10 +8,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const pageScripts = {
         "/planner": "/static/js/planner.js",
+        "/verify": "/static/js/verify.js",
     };
 
     const pageStyles = {
         "/planner": "/static/css/planner.css",
+        "/verify": "/static/css/verify.css",
     };
 
     async function loadPageScript(path) {
@@ -249,6 +251,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
             if (
+                finalPath === "/verify" &&
+                typeof window.initVerify === "function"
+            ) {
+
+                window.initVerify();
+
+            }
+
+
+            if (
                 finalPath === "/achievements" &&
                 typeof window.initAchievements === "function"
             ) {
@@ -360,6 +372,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     ) {
 
         window.initPlanner();
+
+    }
+    
+
+    if (
+        initialPath === "/verify" &&
+        typeof window.initVerify === "function"
+    ) {
+
+        window.initVerify();
 
     }
 
