@@ -718,9 +718,9 @@ async def events_page(
 
                 daily_data = {
                     "has_data": True,
-                    "completed": notes.completed_commissions,
-                    "total": notes.max_commissions,
-                    "claimed_reward": notes.claimed_commission_reward,
+                    "completed": notes["data"]["finished_task_num"],
+                    "total": notes["data"]["total_task_num"],
+                    "claimed_reward": notes["data"]["is_extra_task_reward_received"],
                 }
 
                 abyss_chambers = []

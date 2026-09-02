@@ -85,6 +85,17 @@ class HoYoLABClient:
 
             return await response.json()
 
+    async def get_genshin_notes(self) -> dict:
+        if self.session is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
+
+        return await self.get_genshin_daily_note(
+            self.genshin_uid,
+            self.genshin_server
+        )
+
     async def get_stygian_onslaught(self) -> list:
         client = genshin.Client(
             cookies=self.credentials.as_cookies()
