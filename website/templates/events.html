@@ -786,15 +786,12 @@
                 <div class="event-list-check">
 
                     {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
-
-                        <span class="event-checkmark">
-                            ✓
-                        </span>
-
+                        <span class="event-checkmark"></span>
+                    {% else %}
+                        <span class="event-checkmark event-checkmark-empty"></span>
                     {% endif %}
 
                 </div>
-
 
                 <div class="event-list-icon">
 
@@ -819,29 +816,25 @@
 
                 {% if daily and daily.has_data %}
 
-                    {% if daily.completed >= daily.total %}
+                {% if daily.completed >= daily.total %}
 
-                        {% if daily.claimed_reward %}
-
-                            <span class="event-list-status">
-                                Completed
-                            </span>
-
-                        {% else %}
-
-                            <span class="event-list-status">
-                                Reward Available
-                            </span>
-
-                        {% endif %}
-
-                    {% else %}
-
+                    {% if daily.claimed_reward %}
                         <span class="event-list-status">
-                            {{ daily.completed }} / {{ daily.total }}
+                            4 / 4 · Claimed
                         </span>
-
+                    {% else %}
+                        <span class="event-list-status">
+                            4 / 4 · Not Claimed
+                        </span>
                     {% endif %}
+
+                {% else %}
+
+                    <span class="event-list-status">
+                        {{ daily.completed }} / {{ daily.total }}
+                    </span>
+
+                {% endif %}
 
                 {% else %}
 

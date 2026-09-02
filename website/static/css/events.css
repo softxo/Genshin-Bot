@@ -1581,8 +1581,8 @@
    ============================= */
 
 .event-list-check {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
 
     margin-right: 14px;
 
@@ -1590,26 +1590,45 @@
     align-items: center;
     justify-content: center;
 
-    flex-shrink: 0;
+    flex: 0 0 22px;
 }
 
+
 .event-checkmark {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 1px solid var(--border);
+
     border-radius: 50%;
 
-    background: var(--accent);
-    color: var(--background);
+    background: var(--background);
 
-    font-size: 13px;
-    font-weight: 800;
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
+
+.event-checkmark:not(.event-checkmark-empty) {
+    border-color: var(--accent);
+
+    background-color: var(--accent);
+
+    box-shadow:
+        0 0 0 2px var(--accent-soft);
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%230d0f14' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='M4 10.5L8 14L16 5.5'/%3E%3C/svg%3E");
+
+    background-position: center;
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+}
 
 /* =============================
    ACTIVITY ICON
