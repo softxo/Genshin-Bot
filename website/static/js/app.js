@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pageStyles = {
         "/planner": "/static/css/planner.css",
         "/verify": "/static/css/verify.css",
+        "/events": "/static/css/events.css",
+        "/settings": "/static/css/settings.css",
     };
 
     async function loadPageScript(path) {
