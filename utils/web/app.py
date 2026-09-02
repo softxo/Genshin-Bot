@@ -676,6 +676,13 @@ async def events_page(
         "bosses": [],
     }
 
+    daily_data = {
+        "has_data": False,
+        "completed": 0,
+        "total": 4,
+        "claimed_reward": False,
+    }
+
     selected_account = None
 
     if accounts:
@@ -707,6 +714,14 @@ async def events_page(
                     theater = await client.get_imaginarium_theater()
                     abyss = await client.get_genshin_spiral_abyss()
                     stygian = await client.get_stygian_onslaught()
+                    notes = await client.get_genshin_notes()
+
+                daily_data = {
+                    "has_data": True,
+                    "completed": notes.completed_commissions,
+                    "total": notes.max_commissions,
+                    "claimed_reward": notes.claimed_commission_reward,
+                }
 
                 abyss_chambers = []
 
@@ -842,6 +857,7 @@ async def events_page(
             "theater": theater_data,
             "abyss": abyss_data,
             "stygian": stygian_data,
+            "daily": daily_data,
             "accounts": accounts,
             "selected_account": selected_account,
         },

@@ -760,6 +760,103 @@
 
     </section>
 
+    <!-- =============================
+        DAILY ACTIVITIES
+        ============================= -->
+
+    <section class="events-list">
+
+        <div class="events-list-header">
+
+            <h2>
+                Daily Activities
+            </h2>
+
+        </div>
+
+
+        <!-- =============================
+            DAILY COMMISSIONS
+            ============================= -->
+
+        <div class="event-list-item">
+
+            <div class="event-list-left">
+
+                <div class="event-list-check">
+
+                    {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
+
+                        <span class="event-checkmark">
+                            ✓
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="event-list-icon">
+
+                    <img
+                        src="/static/images/events/daily_commissions.webp"
+                        alt="Daily Commissions"
+                    >
+
+                </div>
+
+
+                <div class="event-list-name">
+
+                    Daily Commissions
+
+                </div>
+
+            </div>
+
+
+            <div class="event-list-right">
+
+                {% if daily and daily.has_data %}
+
+                    {% if daily.completed >= daily.total %}
+
+                        {% if daily.claimed_reward %}
+
+                            <span class="event-list-status">
+                                Completed
+                            </span>
+
+                        {% else %}
+
+                            <span class="event-list-status">
+                                Reward Available
+                            </span>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <span class="event-list-status">
+                            {{ daily.completed }} / {{ daily.total }}
+                        </span>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <span class="event-list-status">
+                        —
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
 
 {% endblock %}
