@@ -223,14 +223,14 @@
     display: flex;
     align-items: center;
 
-    gap: 9px;
+    gap: 10px;
 
     min-width: 0;
 }
 
 .event-featured-icon {
-    width: 27px;
-    height: 27px;
+    width: 37px;
+    height: 37px;
 
     object-fit: contain;
 
