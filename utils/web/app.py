@@ -668,12 +668,12 @@ async def get_events_data(
         "reset_time": 0,
     }
 
-    trounce_data = {
-        "has_data": False,
-        "completed": 0,
-        "total": 3,
-        "reset_time": 0,
-    }
+    #trounce_data = {
+    #    "has_data": False,
+    #    "completed": 0,
+    #    "total": 3,
+    #    "reset_time": 0,
+    #}
 
     selected_account = None
 
@@ -720,9 +720,18 @@ async def get_events_data(
                         await client.get_genshin_notes()
                     )
 
-                    print("===== GENSHIN NOTES =====")
+                    print("===== NOTES TYPE =====")
+                    print(type(notes))
+                    print("===== NOTES =====")
+                    print(notes)
+                    print("==== NOTES DATA TYPE =====")
+                    print(type(notes["data"]))
+                    print("===== NOTES DATA =====")
                     print(notes["data"])
-                    print("=========================")
+                    print("===== NOTES DATA KEYS =====")
+                    print(notes["data"].keys())
+                    print("=======================")
+
 
 
                 # =========================================
@@ -744,15 +753,7 @@ async def get_events_data(
                 # TROUNCE DOMAINS
                 #========================================
 
-                trounce_data = {
-                    "has_data": True,
-                    "remaining": notes["data"]["remaining_resin_discount_num"],
-                    "total": notes["data"]["total_resin_discount_num"],
-                    "reset_time": get_weekly_reset_timestamp(
-                        selected_account["genshin_server"]
-                    ),
-                }
-
+                
 
                 # =========================================
                 # SPIRAL ABYSS
