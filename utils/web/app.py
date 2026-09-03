@@ -3,6 +3,7 @@ import time
 import tempfile
 from datetime import (
     datetime,
+    timedelta,
     timezone
 )
 from pathlib import Path
@@ -630,36 +631,33 @@ def get_daily_reset_timestamp(
 ) -> int:
 
     server_offsets = {
-        "os_usa": datetime.timezone(
-            datetime.timedelta(hours=-5)
+        "os_usa": timezone(
+            timedelta(hours=-5)
         ),
-        "os_euro": datetime.timezone(
-            datetime.timedelta(hours=1)
+        "os_euro": timezone(
+            timedelta(hours=1)
         ),
-        "os_asia": datetime.timezone(
-            datetime.timedelta(hours=8)
+        "os_asia": timezone(
+            timedelta(hours=8)
         ),
     }
 
-    timezone = server_offsets.get(
+    timezone_value = server_offsets.get(
         genshin_server,
-        datetime.timezone.utc
+        timezone.utc
     )
 
-    now = datetime.datetime.now(timezone)
+    now = datetime.now(timezone_value)
 
-    reset = (
-        now
-        .replace(
-            hour=4,
-            minute=0,
-            second=0,
-            microsecond=0
-        )
+    reset = now.replace(
+        hour=4,
+        minute=0,
+        second=0,
+        microsecond=0
     )
 
     if now >= reset:
-        reset += datetime.timedelta(days=1)
+        reset += timedelta(days=1)
 
     return int(reset.timestamp())
 
@@ -887,7 +885,7 @@ async def events_page(
 
         except Exception as error:
 
-            print("===== IMAGINARIUM THEATER ERROR =====")
+            print("===== EVENTS ERROR =====")
             print(f"Type: {type(error).__name__}")
             print(f"Error: {error}")
             print("======================================")
