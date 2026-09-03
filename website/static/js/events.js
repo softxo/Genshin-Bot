@@ -1,5 +1,7 @@
 function initEvents() {
 
+    let expirationRefreshTime = null;
+
     function initialiseEventsDropdown() {
 
         const select =
@@ -89,159 +91,6 @@ function initEvents() {
     }
 
 
-    async function refreshDailyCommissions(timer) {
-
-        const container =
-            document.getElementById(
-                "daily-commissions"
-            );
-
-        if (!container) {
-            return;
-        }
-
-        const accountId =
-            container.dataset.accountId;
-
-        if (!accountId) {
-            return;
-        }
-
-        try {
-
-            const response =
-                await fetch(
-                    `/api/events/daily?account_id=${accountId}`,
-                    {
-                        credentials: "same-origin"
-                    }
-                );
-
-            if (!response.ok) {
-                return;
-            }
-
-            const data =
-                await response.json();
-
-            if (!data.success) {
-                return;
-            }
-
-
-            /*
-             * Update the timer with the
-             * new server-generated reset time.
-             */
-
-            timer.dataset.endTime =
-                String(data.reset_time);
-
-
-            /*
-             * Update completion status.
-             */
-
-            const status =
-                document.getElementById(
-                    "daily-commissions-status"
-                );
-
-            const check =
-                document.getElementById(
-                    "daily-commissions-check"
-                );
-
-
-            const completed =
-                Number(data.completed);
-
-            const total =
-                Number(data.total);
-
-            const claimed =
-                Boolean(data.claimed_reward);
-
-            const fullyCompleted =
-                completed >= total &&
-                claimed;
-
-
-            if (status) {
-
-                status.classList.remove(
-                    "claimed",
-                    "not-claimed"
-                );
-
-
-                if (completed >= total) {
-
-                    if (claimed) {
-
-                        status.textContent =
-                            "Claimed";
-
-                        status.classList.add(
-                            "claimed"
-                        );
-
-                    } else {
-
-                        status.textContent =
-                            "Not Claimed";
-
-                        status.classList.add(
-                            "not-claimed"
-                        );
-
-                    }
-
-                } else {
-
-                    status.textContent =
-                        `${completed} / ${total}`;
-
-                }
-
-            }
-
-
-            /*
-             * Update the checkmark.
-             */
-
-            if (check) {
-
-                check.classList.toggle(
-                    "event-checkmark-empty",
-                    !fullyCompleted
-                );
-
-            }
-
-
-            /*
-             * Update the completed card state.
-             */
-
-            container.classList.toggle(
-                "completed",
-                fullyCompleted
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Failed to refresh Daily Commissions:",
-                error
-            );
-
-        }
-
-    }
-
-
     function updateEventTimeLeft() {
 
         const timers =
@@ -250,63 +99,26 @@ function initEvents() {
             );
 
         const now =
-            Math.floor(Date.now() / 1000);
+            Math.floor(
+                Date.now() / 1000
+            );
+
 
         timers.forEach(timer => {
 
             const endTime =
-                Number(timer.dataset.endTime);
+                Number(
+                    timer.dataset.endTime
+                );
 
             const remaining =
                 endTime - now;
 
 
-            /*
-             * Recurring Daily Commissions.
-             *
-             * Do not display "Ended".
-             * Fetch the new state from the server.
-             */
-
-            if (
-                remaining <= 0 &&
-                timer.classList.contains(
-                    "event-daily-reset"
-                )
-            ) {
-
-                if (
-                    !timer.dataset.refreshing
-                ) {
-
-                    timer.dataset.refreshing =
-                        "true";
-
-                    timer.textContent =
-                        "Updating...";
-
-                    refreshDailyCommissions(
-                        timer
-                    ).finally(() => {
-
-                        delete timer.dataset.refreshing;
-
-                    });
-
-                }
-
-                return;
-            }
-
-
-            /*
-             * Non-recurring events genuinely end.
-             */
-
             if (remaining <= 0) {
 
                 timer.textContent =
-                    "Ended";
+                    "Updating...";
 
                 timer.classList.remove(
                     "warning"
@@ -316,8 +128,21 @@ function initEvents() {
                     "danger"
                 );
 
-                return;
 
+                if (
+                    expirationRefreshTime !== endTime &&
+                    typeof window.refreshEvents ===
+                        "function"
+                ) {
+
+                    expirationRefreshTime =
+                        endTime;
+
+                    window.refreshEvents();
+
+                }
+
+                return;
             }
 
 
@@ -404,12 +229,248 @@ function initEvents() {
     }
 
 
+    async function refreshEvents() {
+
+        if (window.eventsRefreshing) {
+            return;
+        }
+
+        window.eventsRefreshing = true;
+
+
+        try {
+
+            const container =
+                document.querySelector(
+                    ".events-page"
+                );
+
+            if (!container) {
+                return;
+            }
+
+
+            /*
+             * Remember which featured cards are currently expanded.
+             */
+
+            const expandedCards = [];
+
+            document
+                .querySelectorAll(
+                    ".event-featured-card"
+                )
+                .forEach((card, index) => {
+
+                    expandedCards[index] =
+                        !card.classList.contains(
+                            "collapsed"
+                        );
+
+                });
+
+
+            /*
+             * Remember the current scroll position.
+             */
+
+            const scrollPosition =
+                window.scrollY;
+
+
+            /*
+             * Request fresh Events HTML.
+             */
+
+            const response =
+                await fetch(
+                    `/events/refresh?account_id=${
+                        document
+                            .getElementById(
+                                "daily-commissions"
+                            )
+                            ?.dataset.accountId || ""
+                    }`,
+                    {
+                        credentials: "same-origin",
+                        cache: "no-store",
+                    }
+                );
+
+
+            if (!response.ok) {
+                return;
+            }
+
+
+            const html =
+                await response.text();
+
+
+            /*
+             * Parse the returned page without replacing the actual document.
+             */
+
+            const parser =
+                new DOMParser();
+
+            const documentFromServer =
+                parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+
+            const newFeatured =
+                documentFromServer.querySelector(
+                    ".events-featured"
+                );
+
+            const newEventsList =
+                documentFromServer.querySelector(
+                    ".events-list"
+                );
+
+
+            const currentFeatured =
+                container.querySelector(
+                    ".events-featured"
+                );
+
+            const currentEventsList =
+                container.querySelector(
+                    ".events-list"
+                );
+
+
+            if (
+                !newFeatured ||
+                !newEventsList ||
+                !currentFeatured ||
+                !currentEventsList
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Replace only the dynamic Events content.
+             */
+
+            currentFeatured.replaceWith(
+                newFeatured
+            );
+
+            currentEventsList.replaceWith(
+                newEventsList
+            );
+
+
+            /*
+             * Restore expanded/collapsed state.
+             */
+
+            document
+                .querySelectorAll(
+                    ".event-featured-card"
+                )
+                .forEach((card, index) => {
+
+                    if (
+                        expandedCards[index]
+                    ) {
+
+                        card.classList.remove(
+                            "collapsed"
+                        );
+
+                        const button =
+                            card.querySelector(
+                                ".event-featured-toggle"
+                            );
+
+                        if (button) {
+
+                            button.setAttribute(
+                                "aria-expanded",
+                                "true"
+                            );
+
+                            button.setAttribute(
+                                "aria-label",
+                                "Collapse event"
+                            );
+
+                        }
+
+                    }
+
+                });
+
+
+            /*
+             * Re-bind the feature toggles after replacing the cards.
+             */
+
+            initialiseEventFeatureToggles();
+
+
+            /*
+             * Recalculate timers immediately.
+             */
+
+            updateEventTimeLeft();
+
+
+            /*
+             * Restore scroll position.
+             */
+
+            window.scrollTo(
+                0,
+                scrollPosition
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to refresh Events:",
+                error
+            );
+
+        } finally {
+
+            window.eventsRefreshing =
+                false;
+
+            scheduleEventsRefresh();
+
+        }
+
+    }
+
+
+    /*
+     * Expose the refresh function before
+     * any timers can call it.
+     */
+
+    window.refreshEvents =
+        refreshEvents;
+
+
     initialiseEventsDropdown();
 
     initialiseEventFeatureToggles();
 
     updateEventTimeLeft();
 
+
+    /*
+     * Countdown updates every second.
+     */
 
     if (window.eventsTimer) {
 
@@ -419,14 +480,121 @@ function initEvents() {
 
     }
 
-
     window.eventsTimer =
         setInterval(
             updateEventTimeLeft,
             1000
         );
 
+
+        /*
+        * Adaptive event-data refreshing.
+        */
+
+    function scheduleEventsRefresh() {
+
+        if (window.eventsRefreshTimer) {
+
+            clearTimeout(
+                window.eventsRefreshTimer
+            );
+
+        }
+
+
+        const timers =
+            document.querySelectorAll(
+                ".event-time-left[data-end-time]"
+            );
+
+
+        const now =
+            Math.floor(
+                Date.now() / 1000
+            );
+
+
+        let nearExpiry = false;
+
+
+        timers.forEach(timer => {
+
+            const endTime =
+                Number(
+                    timer.dataset.endTime
+                );
+
+            const remaining =
+                endTime - now;
+
+
+            if (
+                remaining > 0 &&
+                remaining <= 300
+            ) {
+
+                nearExpiry = true;
+
+            }
+
+        });
+
+
+        /*
+        * Normal:
+        *     refresh every 60 seconds
+        *
+        * Near an event/reset:
+        *     refresh every 10 seconds
+        */
+
+        const delay =
+            nearExpiry
+                ? 10000
+                : 60000;
+
+
+        window.eventsRefreshTimer =
+            setTimeout(
+                refreshEvents,
+                delay
+            );
+
+    }
+
+
+    /*
+    * Start adaptive refreshing.
+    */
+
+    scheduleEventsRefresh();
+
+
+        document.addEventListener(
+            "visibilitychange",
+            () => {
+    
+                if (
+                    document.visibilityState ===
+                    "visible"
+                ) {
+    
+                    if (
+                        typeof window.refreshEvents ===
+                        "function"
+                    ) {
+    
+                        window.refreshEvents();
+    
+                    }
+    
+                }
+    
+            }
+        );
+
 }
 
 
-window.initEvents = initEvents;
+window.initEvents =
+    initEvents;

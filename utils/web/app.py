@@ -626,6 +626,291 @@ async def delete_planner_reminder(
     }
 
 
+async def get_events_data(
+    user_id: int,
+    account_id: int | None = None,
+):
+    accounts = await get_accounts(
+        user_id
+    )
+
+    abyss_data = {
+        "has_data": False,
+        "max_floor": "—",
+        "total_stars": 0,
+        "end_time": 0,
+        "chambers": [],
+    }
+
+    theater_data = {
+        "has_data": False,
+        "best_round": 0,
+        "arcanums": 0,
+        "medals": 0,
+        "end_time": 0,
+        "elements": IT_ELEMENTS,
+    }
+
+    stygian_data = {
+        "has_data": False,
+        "end_time": 0,
+        "difficulty": 0,
+        "difficulty_icon": "",
+        "best_time": 0,
+        "bosses": [],
+    }
+
+    daily_data = {
+        "has_data": False,
+        "completed": 0,
+        "total": 4,
+        "claimed_reward": False,
+        "reset_time": 0,
+    }
+
+    selected_account = None
+
+    if accounts:
+
+        if account_id is not None:
+
+            selected_account = next(
+                (
+                    account
+                    for account in accounts
+                    if account["id"] == account_id
+                ),
+                None,
+            )
+
+        if selected_account is None:
+            selected_account = accounts[0]
+
+        try:
+
+            client = await get_account_client(
+                user_id,
+                selected_account["genshin_uid"]
+            )
+
+            if client is not None:
+
+                async with client:
+
+                    theater = (
+                        await client.get_imaginarium_theater()
+                    )
+
+                    abyss = (
+                        await client.get_genshin_spiral_abyss()
+                    )
+
+                    stygian = (
+                        await client.get_stygian_onslaught()
+                    )
+
+                    notes = (
+                        await client.get_genshin_notes()
+                    )
+
+
+                # =========================================
+                # DAILY COMMISSIONS
+                # =========================================
+
+                daily_data = {
+                    "has_data": True,
+                    "completed": notes["data"]["finished_task_num"],
+                    "total": notes["data"]["total_task_num"],
+                    "claimed_reward": notes["data"]["is_extra_task_reward_received"],
+                    "reset_time": get_daily_reset_timestamp(
+                        selected_account["genshin_server"]
+                    ),
+                }
+
+
+                # =========================================
+                # SPIRAL ABYSS
+                # =========================================
+
+                abyss_chambers = []
+
+                if abyss.floors:
+
+                    deepest_floor = max(
+                        abyss.floors,
+                        key=lambda floor: floor.floor
+                    )
+
+                    for chamber in deepest_floor.chambers:
+
+                        battles = []
+
+                        for battle in chamber.battles:
+
+                            characters = []
+
+                            for character in battle.characters:
+
+                                characters.append({
+                                    "name": character.name,
+                                    "icon": character.icon,
+                                })
+
+                            battles.append({
+                                "half": battle.half,
+                                "characters": characters,
+                            })
+
+                        abyss_chambers.append({
+                            "floor": deepest_floor.floor,
+                            "chamber": chamber.chamber,
+                            "battles": battles,
+                        })
+
+
+                abyss_data = {
+                    "has_data": abyss.total_battles > 0,
+                    "max_floor": abyss.max_floor,
+                    "total_stars": abyss.total_stars,
+                    "end_time": abyss.end_time.timestamp(),
+                    "chambers": abyss_chambers,
+                }
+
+
+                # =========================================
+                # STYGIAN ONSLAUGHT
+                # =========================================
+
+                if stygian:
+
+                    current_stygian = stygian[0]
+
+                    record = (
+                        current_stygian["single"]["best"]
+                    )
+
+                    bosses = []
+
+                    for challenge in (
+                        current_stygian["single"]["challenge"]
+                    ):
+
+                        characters = []
+
+                        for character in challenge.get(
+                            "teams",
+                            []
+                        ):
+
+                            characters.append({
+                                "name": character["name"],
+                                "icon": character["image"],
+                            })
+
+                        bosses.append({
+                            "name": challenge["monster"]["name"],
+                            "icon": challenge["monster"]["icon"],
+                            "time": challenge["second"],
+                            "characters": characters,
+                        })
+
+
+                    difficulty_icons = {
+                        1: "SO_Diff_I.webp",
+                        2: "SO_Diff_II.webp",
+                        3: "SO_Diff_III.webp",
+                        4: "SO_Diff_IV.webp",
+                        5: "SO_Diff_V.webp",
+                        6: "SO_Diff_VI.webp",
+                    }
+
+
+                    stygian_data = {
+                        "has_data": current_stygian["single"]["has_data"],
+                        "end_time": int(
+                            current_stygian["schedule"]["end_time"]
+                        ),
+                        "difficulty": (
+                            record["difficulty"]
+                            if record
+                            else 0
+                        ),
+                        "difficulty_icon": (
+                            "SO_Diff_VI_180.webp"
+                            if (
+                                record
+                                and record["difficulty"] == 6
+                                and record["second"] < 180
+                            )
+                            else (
+                                difficulty_icons.get(
+                                    record["difficulty"],
+                                    ""
+                                )
+                                if record
+                                else ""
+                            )
+                        ),
+                        "best_time": (
+                            record["second"]
+                            if record
+                            else 0
+                        ),
+                        "bosses": bosses,
+                    }
+
+
+                # =========================================
+                # IMAGINARIUM THEATER
+                # =========================================
+
+                current_cycle = theater["data"][0]
+
+                stat = current_cycle["stat"]
+
+                schedule = current_cycle["schedule"]
+
+                detail = current_cycle["detail"]
+
+                acts = detail["rounds_data"]
+
+
+                arcanums = sum(
+                    1
+                    for act in acts
+                    if act.get("is_tarot") is True
+                )
+
+
+                theater_data = {
+                    "has_data": stat["max_round_id"] > 0,
+                    "best_round": stat["max_round_id"],
+                    "arcanums": arcanums,
+                    "medals": stat["medal_num"],
+                    "end_time": schedule["end_time"],
+                    "elements": IT_ELEMENTS,
+                }
+
+
+        except Exception as error:
+
+            print("===== EVENTS ERROR =====")
+            print(f"Type: {type(error).__name__}")
+            print(f"Error: {error}")
+            print("================================")
+
+
+    return {
+        "accounts": accounts,
+        "selected_account": selected_account,
+        "abyss": abyss_data,
+        "theater": theater_data,
+        "stygian": stygian_data,
+        "daily": daily_data,
+    }
+
+
 def get_daily_reset_timestamp(
     genshin_server: str
 ) -> int:
@@ -676,231 +961,66 @@ async def events_page(
     )
 
     if session is None:
+
         return RedirectResponse(
             url="/verify?next=/events",
             status_code=303,
         )
 
+
     user_id = session.user_id
 
-    accounts = await get_accounts(
-        user_id
+    events_data = await get_events_data(
+        user_id,
+        account_id,
     )
 
-    abyss_data = {
-        "has_data": False,
-        "max_floor": "—",
-        "total_stars": 0,
-        "end_time": 0,
-        "chambers": [],
-    }
-
-    theater_data = {
-        "has_data": False,
-        "best_round": 0,
-        "arcanums": 0,
-        "medals": 0,
-        "end_time": 0,
-        "elements": IT_ELEMENTS,
-    }
-
-    stygian_data = {
-        "has_data": False,
-        "end_time": 0,
-        "difficulty": 0,
-        "difficulty_icon": "",
-        "best_time": 0,
-        "bosses": [],
-    }
-
-    daily_data = {
-        "has_data": False,
-        "completed": 0,
-        "total": 4,
-        "claimed_reward": False,
-        "reset_time": 0,
-    }
-
-    selected_account = None
-
-    if accounts:
-
-        # Use the requested account if it belongs to this user.
-        if account_id is not None:
-            selected_account = next(
-                (
-                    account
-                    for account in accounts
-                    if account["id"] == account_id
-                ),
-                None,
-            )
-
-        # Otherwise, use the first account.
-        if selected_account is None:
-            selected_account = accounts[0]
-
-        try:
-            client = await get_account_client(
-                user_id,
-                selected_account["genshin_uid"]
-            )
-
-            if client is not None:
-
-                async with client:
-                    theater = await client.get_imaginarium_theater()
-                    abyss = await client.get_genshin_spiral_abyss()
-                    stygian = await client.get_stygian_onslaught()
-                    notes = await client.get_genshin_notes()
-
-                daily_data = {
-                    "has_data": True,
-                    "completed": notes["data"]["finished_task_num"],
-                    "total": notes["data"]["total_task_num"],
-                    "claimed_reward": notes["data"]["is_extra_task_reward_received"],
-                    "reset_time": get_daily_reset_timestamp(
-                        selected_account["genshin_server"]
-                    ),
-                }
-
-                abyss_chambers = []
-
-                if abyss.floors:
-
-                    deepest_floor = max(
-                        abyss.floors,
-                        key=lambda floor: floor.floor
-                    )
-
-                    for chamber in deepest_floor.chambers:
-
-                        battles = []
-
-                        for battle in chamber.battles:
-
-                            characters = []
-
-                            for character in battle.characters:
-
-                                characters.append({
-                                    "name": character.name,
-                                    "icon": character.icon,
-                                })
-
-                            battles.append({
-                                "half": battle.half,
-                                "characters": characters,
-                            })
-
-                        abyss_chambers.append({
-                            "floor": deepest_floor.floor,
-                            "chamber": chamber.chamber,
-                            "battles": battles,
-                        })
-
-
-                abyss_data = {
-                    "has_data": abyss.total_battles > 0,
-                    "max_floor": abyss.max_floor,
-                    "total_stars": abyss.total_stars,
-                    "end_time": abyss.end_time.timestamp(),
-                    "chambers": abyss_chambers,
-                }
-
-                if stygian:
-
-                    current_stygian = stygian[0]
-
-                    record = current_stygian["single"]["best"]
-
-                    bosses = []
-
-                    for challenge in current_stygian["single"]["challenge"]:
-
-                        characters = []
-
-                        for character in challenge.get("teams", []):
-
-                            characters.append({
-                                "name": character["name"],
-                                "icon": character["image"],
-                            })
-
-                        bosses.append({
-                            "name": challenge["monster"]["name"],
-                            "icon": challenge["monster"]["icon"],
-                            "time": challenge["second"],
-                            "characters": characters,
-                        })
-
-                    difficulty_icons = {
-                        1: "SO_Diff_I.webp",
-                        2: "SO_Diff_II.webp",
-                        3: "SO_Diff_III.webp",
-                        4: "SO_Diff_IV.webp",
-                        5: "SO_Diff_V.webp",
-                        6: "SO_Diff_VI.webp",
-                    }
-
-                    stygian_data = {
-                        "has_data": current_stygian["single"]["has_data"],
-                        "end_time": int(current_stygian["schedule"]["end_time"]),
-                        "difficulty": record["difficulty"] if record else 0,
-                        "difficulty_icon": (
-                            "SO_Diff_VI_180.webp"
-                            if record
-                            and record["difficulty"] == 6
-                            and record["second"] < 180
-                            else difficulty_icons.get(record["difficulty"], "")
-                            if record
-                            else ""
-                        ),
-                        "best_time": record["second"] if record else 0,
-                        "bosses": bosses,
-                    }
-
-                current_cycle = theater["data"][0]
-
-                stat = current_cycle["stat"]
-                schedule = current_cycle["schedule"]
-
-                detail = current_cycle["detail"]
-                acts = detail["rounds_data"]
-
-                arcanums = sum(
-                    1
-                    for act in acts
-                    if act.get("is_tarot") is True
-                )
-
-                theater_data = {
-                    "has_data": stat["max_round_id"] > 0,
-                    "best_round": stat["max_round_id"],
-                    "arcanums": arcanums,
-                    "medals": stat["medal_num"],
-                    "end_time": schedule["end_time"],
-                    "elements": IT_ELEMENTS,
-                }
-
-        except Exception as error:
-
-            print("===== EVENTS ERROR =====")
-            print(f"Type: {type(error).__name__}")
-            print(f"Error: {error}")
-            print("======================================")
 
     return templates.TemplateResponse(
         request=request,
         name="events.html",
         context={
             "request": request,
-            "theater": theater_data,
-            "abyss": abyss_data,
-            "stygian": stygian_data,
-            "daily": daily_data,
-            "accounts": accounts,
-            "selected_account": selected_account,
+            **events_data,
+        },
+    )
+
+
+@app.get(
+    "/events/refresh",
+    response_class=HTMLResponse
+)
+async def refresh_events(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None),
+    account_id: int | None = None,
+):
+    session = await get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+
+        return HTMLResponse(
+            content="",
+            status_code=401,
+        )
+
+
+    user_id = session.user_id
+
+    events_data = await get_events_data(
+        user_id,
+        account_id,
+    )
+
+
+    return templates.TemplateResponse(
+        request=request,
+        name="events.html",
+        context={
+            "request": request,
+            **events_data,
         },
     )
 
