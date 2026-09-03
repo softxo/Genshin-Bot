@@ -89,6 +89,159 @@ function initEvents() {
     }
 
 
+    async function refreshDailyCommissions(timer) {
+
+        const container =
+            document.getElementById(
+                "daily-commissions"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        const accountId =
+            container.dataset.accountId;
+
+        if (!accountId) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/events/daily?account_id=${accountId}`,
+                    {
+                        credentials: "same-origin"
+                    }
+                );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data =
+                await response.json();
+
+            if (!data.success) {
+                return;
+            }
+
+
+            /*
+             * Update the timer with the
+             * new server-generated reset time.
+             */
+
+            timer.dataset.endTime =
+                String(data.reset_time);
+
+
+            /*
+             * Update completion status.
+             */
+
+            const status =
+                document.getElementById(
+                    "daily-commissions-status"
+                );
+
+            const check =
+                document.getElementById(
+                    "daily-commissions-check"
+                );
+
+
+            const completed =
+                Number(data.completed);
+
+            const total =
+                Number(data.total);
+
+            const claimed =
+                Boolean(data.claimed_reward);
+
+            const fullyCompleted =
+                completed >= total &&
+                claimed;
+
+
+            if (status) {
+
+                status.classList.remove(
+                    "claimed",
+                    "not-claimed"
+                );
+
+
+                if (completed >= total) {
+
+                    if (claimed) {
+
+                        status.textContent =
+                            "Claimed";
+
+                        status.classList.add(
+                            "claimed"
+                        );
+
+                    } else {
+
+                        status.textContent =
+                            "Not Claimed";
+
+                        status.classList.add(
+                            "not-claimed"
+                        );
+
+                    }
+
+                } else {
+
+                    status.textContent =
+                        `${completed} / ${total}`;
+
+                }
+
+            }
+
+
+            /*
+             * Update the checkmark.
+             */
+
+            if (check) {
+
+                check.classList.toggle(
+                    "event-checkmark-empty",
+                    !fullyCompleted
+                );
+
+            }
+
+
+            /*
+             * Update the completed card state.
+             */
+
+            container.classList.toggle(
+                "completed",
+                fullyCompleted
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to refresh Daily Commissions:",
+                error
+            );
+
+        }
+
+    }
+
+
     function updateEventTimeLeft() {
 
         const timers =
@@ -107,9 +260,53 @@ function initEvents() {
             const remaining =
                 endTime - now;
 
+
+            /*
+             * Recurring Daily Commissions.
+             *
+             * Do not display "Ended".
+             * Fetch the new state from the server.
+             */
+
+            if (
+                remaining <= 0 &&
+                timer.classList.contains(
+                    "event-daily-reset"
+                )
+            ) {
+
+                if (
+                    !timer.dataset.refreshing
+                ) {
+
+                    timer.dataset.refreshing =
+                        "true";
+
+                    timer.textContent =
+                        "Updating...";
+
+                    refreshDailyCommissions(
+                        timer
+                    ).finally(() => {
+
+                        delete timer.dataset.refreshing;
+
+                    });
+
+                }
+
+                return;
+            }
+
+
+            /*
+             * Non-recurring events genuinely end.
+             */
+
             if (remaining <= 0) {
 
-                timer.textContent = "Ended";
+                timer.textContent =
+                    "Ended";
 
                 timer.classList.remove(
                     "warning"
@@ -120,7 +317,9 @@ function initEvents() {
                 );
 
                 return;
+
             }
+
 
             const days =
                 Math.floor(
@@ -162,20 +361,40 @@ function initEvents() {
             );
 
 
-            if (timer.classList.contains("event-daily-reset")) {
+            if (
+                timer.classList.contains(
+                    "event-daily-reset"
+                )
+            ) {
 
                 if (remaining < 14400) {
-                    timer.classList.add("danger");
+
+                    timer.classList.add(
+                        "danger"
+                    );
+
                 } else if (remaining < 54000) {
-                    timer.classList.add("warning");
+
+                    timer.classList.add(
+                        "warning"
+                    );
+
                 }
 
             } else {
 
                 if (remaining < 86400) {
-                    timer.classList.add("danger");
+
+                    timer.classList.add(
+                        "danger"
+                    );
+
                 } else if (remaining < 259200) {
-                    timer.classList.add("warning");
+
+                    timer.classList.add(
+                        "warning"
+                    );
+
                 }
 
             }
@@ -204,7 +423,7 @@ function initEvents() {
     window.eventsTimer =
         setInterval(
             updateEventTimeLeft,
-            60000
+            1000
         );
 
 }

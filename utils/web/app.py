@@ -905,6 +905,87 @@ async def events_page(
     )
 
 
+@app.get("/api/events/daily")
+async def daily_events_data(
+    request: Request,
+    cyrene_session: str | None = Cookie(default=None),
+    account_id: int | None = None,
+):
+    session = await get_web_session(
+        cyrene_session
+    )
+
+    if session is None:
+        return {
+            "success": False
+        }
+
+    user_id = session.user_id
+
+    accounts = await get_accounts(
+        user_id
+    )
+
+    if not accounts:
+        return {
+            "success": False
+        }
+
+    selected_account = None
+
+    if account_id is not None:
+        selected_account = next(
+            (
+                account
+                for account in accounts
+                if account["id"] == account_id
+            ),
+            None,
+        )
+
+    if selected_account is None:
+        selected_account = accounts[0]
+
+    try:
+
+        client = await get_account_client(
+            user_id,
+            selected_account["genshin_uid"]
+        )
+
+        if client is None:
+            return {
+                "success": False
+            }
+
+        async with client:
+
+            notes = await client.get_genshin_notes()
+
+        data = notes["data"]
+
+        return {
+            "success": True,
+            "completed": data["finished_task_num"],
+            "total": data["total_task_num"],
+            "claimed_reward": data["is_extra_task_reward_received"],
+            "reset_time": get_daily_reset_timestamp(
+                selected_account["genshin_server"]
+            ),
+        }
+
+    except Exception as error:
+
+        print("===== DAILY EVENTS ERROR =====")
+        print(f"Type: {type(error).__name__}")
+        print(f"Error: {error}")
+        print("================================")
+
+        return {
+            "success": False
+        }
+
+
 @app.get(
     "/achievements",
     response_class=HTMLResponse,

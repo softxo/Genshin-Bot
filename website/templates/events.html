@@ -784,17 +784,18 @@
                 {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
                     completed
                 {% endif %}"
+                id="daily-commissions"
+                data-account-id="{{ selected_account.id if selected_account else '' }}"
             >
 
             <div class="event-list-left">
 
                 <div class="event-list-check">
 
-                    {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
-                        <span class="event-checkmark"></span>
-                    {% else %}
-                        <span class="event-checkmark event-checkmark-empty"></span>
-                    {% endif %}
+                    <span
+                        id="daily-commissions-check"
+                        class="event-checkmark{% if not (daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward) %} event-checkmark-empty{% endif %}"
+                    ></span>
 
                 </div>
 
@@ -819,35 +820,32 @@
 
             <div class="event-list-right">
 
-                {% if daily and daily.has_data %}
+                <span
+                    class="event-list-status"
+                    id="daily-commissions-status"
+                >
+                    {% if daily and daily.has_data %}
 
-                    {% if daily.completed >= daily.total %}
+                        {% if daily.completed >= daily.total %}
 
-                        {% if daily.claimed_reward %}
-                            <span class="event-list-status claimed">
+                            {% if daily.claimed_reward %}
                                 Claimed
-                            </span>
-                        {% else %}
-                            <span class="event-list-status not-claimed">
+                            {% else %}
                                 Not Claimed
-                            </span>
+                            {% endif %}
+
+                        {% else %}
+
+                            {{ daily.completed }} / {{ daily.total }}
+
                         {% endif %}
 
                     {% else %}
 
-                        <span class="event-list-status">
-                            {{ daily.completed }} / {{ daily.total }}
-                        </span>
+                        —
 
                     {% endif %}
-
-                {% else %}
-
-                    <span class="event-list-status">
-                        —
-                    </span>
-
-                {% endif %}
+                </span>
 
                 <div
                     class="event-time-left event-daily-reset"
