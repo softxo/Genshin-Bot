@@ -930,7 +930,7 @@
                 >
                     {% if trounce and trounce.has_data %}
 
-                        {{ trounce.completed }} / {{ trounce.total }}
+                        {{ trounce.total - trounce.remaining }} / {{ trounce.total }}
 
                     {% else %}
 
