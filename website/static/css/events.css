@@ -196,7 +196,7 @@
 
     color: #ffffff;
 
-    font-size: 25px;
+    font-size: 21px;
     font-weight: 700;
 
     line-height: 32px;
@@ -215,6 +215,24 @@
     height: 32px;
 
     gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.event-featured-title {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 0;
+}
+
+.event-featured-icon {
+    width: 27px;
+    height: 27px;
+
+    object-fit: contain;
 
     flex-shrink: 0;
 }
