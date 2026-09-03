@@ -1543,9 +1543,9 @@
     align-items: center;
     justify-content: space-between;
 
-    min-height: 76px;
+    min-height: 60px;
 
-    padding: 14px 20px;
+    padding: 10px 20px;
 
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -1746,4 +1746,13 @@
 
 .event-list-status.not-claimed {
     color: #e87979;
+}
+
+
+.event-daily-item.completed {
+    background: rgba(232, 137, 181, 0.18);
+    border-color: rgba(232, 137, 181, 0.65);
+
+    box-shadow:
+        0 0 16px rgba(232, 137, 181, 0.08);
 }

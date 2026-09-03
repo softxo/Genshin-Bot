@@ -779,7 +779,12 @@
             DAILY COMMISSIONS
             ============================= -->
 
-        <div class="event-list-item">
+            <div
+                class="event-list-item event-daily-item
+                {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
+                    completed
+                {% endif %}"
+            >
 
             <div class="event-list-left">
 
