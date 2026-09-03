@@ -889,7 +889,10 @@
         ============================= -->
 
         <div
-            class="event-list-item event-trounce-item"
+            class="event-list-item event-trounce-item
+            {% if trounce and trounce.has_data and trounce.remaining == 0 %}
+                completed
+            {% endif %}"
             id="trounce-domains"
         >
             
@@ -898,7 +901,7 @@
                 <div class="event-list-check">
 
                     <span
-                        class="event-checkmark event-checkmark-empty"
+                        class="event-checkmark{% if not (trounce and trounce.has_data and trounce.remaining == 0) %} event-checkmark-empty{% endif %}"
                     ></span>
 
                 </div>
@@ -939,7 +942,7 @@
 
                 <div
                     class="event-time-left event-trounce-reset"
-                    data-end-time="{{ trounce.reset_time }}"
+                    data-end-time="{{ trounce.reset_time if trounce else 0 }}"
                 >
 
                     Calculating...

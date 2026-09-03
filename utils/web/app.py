@@ -740,6 +740,20 @@ async def get_events_data(
                 }
 
 
+                # ========================================
+                # TROUNCE DOMAINS
+                #========================================
+
+                trounce_data = {
+                    "has_data": True,
+                    "remaining": notes["data"]["remaining_resin_discount_num"],
+                    "total": notes["data"]["total_resin_discount_num"],
+                    "reset_time": get_weekly_reset_timestamp(
+                        selected_account["genshin_server"]
+                    ),
+                }
+
+
                 # =========================================
                 # SPIRAL ABYSS
                 # =========================================
@@ -955,6 +969,49 @@ def get_daily_reset_timestamp(
 
     if now >= reset:
         reset += timedelta(days=1)
+
+    return int(reset.timestamp())
+
+
+def get_weekly_reset_timestamp(
+    genshin_server: str
+) -> int:
+
+    server_offsets = {
+        "os_usa": timezone(
+            timedelta(hours=-5)
+        ),
+        "os_euro": timezone(
+            timedelta(hours=1)
+        ),
+        "os_asia": timezone(
+            timedelta(hours=8)
+        ),
+    }
+
+    timezone_value = server_offsets.get(
+        genshin_server,
+        timezone.utc
+    )
+
+    now = datetime.now(timezone_value)
+
+    days_until_monday = (
+        7 - now.weekday()
+    ) % 7
+
+    reset = (
+        now
+        + timedelta(days=days_until_monday)
+    ).replace(
+        hour=4,
+        minute=0,
+        second=0,
+        microsecond=0
+    )
+
+    if reset <= now:
+        reset += timedelta(days=7)
 
     return int(reset.timestamp())
 
