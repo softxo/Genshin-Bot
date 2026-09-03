@@ -884,6 +884,72 @@
 
     </section>
 
+    <!-- =============================
+        TROUNCE DOMAINS
+        ============================= -->
+
+        <div
+            class="event-list-item event-trounce-item"
+            id="trounce-domains"
+        >
+            
+            <div class="event-list-left">
+
+                <div class="event-list-check">
+
+                    <span
+                        class="event-checkmark event-checkmark-empty"
+                    ></span>
+
+                </div>
+
+                <div class="event-list-icon">
+
+                    <img 
+                        src="/static/images/events/trounce_domains/trounce_domains.webp"
+                        alt="Trounce Domains"
+                    >
+
+                </div>
+
+                <div class="event-list-name">
+
+                    Trounce Domains
+
+                </div>
+
+            </div>
+
+            <div class="event-list-right">
+
+                <span
+                    class="event-list-status"
+                >
+                    {% if trounce and trounce.has_data %}
+
+                        {{ trounce.completed }} / {{ trounce.total }}
+
+                    {% else %}
+
+                        —
+
+                    {% endif %}
+
+                </span>
+
+                <div
+                    class="event-time-left event-trounce-reset"
+                    data-end-time="{{ trounce.reset_time }}"
+                >
+
+                    Calculating...
+
+                </div>
+
+            </div>
+                
+        </div>
+
 </div>
 
 {% endblock %}

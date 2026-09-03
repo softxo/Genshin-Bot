@@ -713,6 +713,10 @@ async def get_events_data(
                         await client.get_genshin_notes()
                     )
 
+                    print("===== GENSHIN NOTES =====")
+                    print(notes["data"])
+                    print("=========================")
+
 
                 # =========================================
                 # DAILY COMMISSIONS
