@@ -180,24 +180,6 @@ function initEvents() {
 
             }
 
-            const dailyItem =
-                timer.closest(".event-daily-item");
-
-            if (dailyItem) {
-
-                dailyItem.classList.remove(
-                    "warning",
-                    "danger"
-                );
-
-                if (remaining < 14400) {
-                    dailyItem.classList.add("danger");
-                } else if (remaining < 54000) {
-                    dailyItem.classList.add("warning");
-                }
-                
-            }
-
         });
 
     }
