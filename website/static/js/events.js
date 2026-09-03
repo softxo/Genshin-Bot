@@ -162,17 +162,21 @@ function initEvents() {
             );
 
 
-            if (remaining < 86400) {
+            if (timer.classList.contains("event-daily-reset")) {
 
-                timer.classList.add(
-                    "danger"
-                );
+                if (remaining < 14400) {
+                    timer.classList.add("danger");
+                } else if (remaining < 54000) {
+                    timer.classList.add("warning");
+                }
 
-            } else if (remaining < 259200) {
+            } else {
 
-                timer.classList.add(
-                    "warning"
-                );
+                if (remaining < 86400) {
+                    timer.classList.add("danger");
+                } else if (remaining < 259200) {
+                    timer.classList.add("warning");
+                }
 
             }
 

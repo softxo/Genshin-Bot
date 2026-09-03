@@ -816,25 +816,25 @@
 
                 {% if daily and daily.has_data %}
 
-                {% if daily.completed >= daily.total %}
+                    {% if daily.completed >= daily.total %}
 
-                    {% if daily.claimed_reward %}
-                        <span class="event-list-status">
-                            4 / 4 · Claimed
-                        </span>
+                        {% if daily.claimed_reward %}
+                            <span class="event-list-status claimed">
+                                Claimed
+                            </span>
+                        {% else %}
+                            <span class="event-list-status not-claimed">
+                                Not Claimed
+                            </span>
+                        {% endif %}
+
                     {% else %}
+
                         <span class="event-list-status">
-                            4 / 4 · Not Claimed
+                            {{ daily.completed }} / {{ daily.total }}
                         </span>
+
                     {% endif %}
-
-                {% else %}
-
-                    <span class="event-list-status">
-                        {{ daily.completed }} / {{ daily.total }}
-                    </span>
-
-                {% endif %}
 
                 {% else %}
 
@@ -843,6 +843,13 @@
                     </span>
 
                 {% endif %}
+
+                <div
+                    class="event-time-left event-daily-reset"
+                    data-end-time="{{ daily.reset_time }}"
+                >
+                    Calculating...
+                </div>
 
             </div>
 

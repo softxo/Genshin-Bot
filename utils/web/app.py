@@ -625,6 +625,45 @@ async def delete_planner_reminder(
     }
 
 
+def get_daily_reset_timestamp(
+    genshin_server: str
+) -> int:
+
+    server_offsets = {
+        "os_usa": datetime.timezone(
+            datetime.timedelta(hours=-5)
+        ),
+        "os_euro": datetime.timezone(
+            datetime.timedelta(hours=1)
+        ),
+        "os_asia": datetime.timezone(
+            datetime.timedelta(hours=8)
+        ),
+    }
+
+    timezone = server_offsets.get(
+        genshin_server,
+        datetime.timezone.utc
+    )
+
+    now = datetime.datetime.now(timezone)
+
+    reset = (
+        now
+        .replace(
+            hour=4,
+            minute=0,
+            second=0,
+            microsecond=0
+        )
+    )
+
+    if now >= reset:
+        reset += datetime.timedelta(days=1)
+
+    return int(reset.timestamp())
+
+
 @app.get(
     "/events",
     response_class=HTMLResponse
@@ -681,6 +720,7 @@ async def events_page(
         "completed": 0,
         "total": 4,
         "claimed_reward": False,
+        "reset_time": 0,
     }
 
     selected_account = None
@@ -721,6 +761,9 @@ async def events_page(
                     "completed": notes["data"]["finished_task_num"],
                     "total": notes["data"]["total_task_num"],
                     "claimed_reward": notes["data"]["is_extra_task_reward_received"],
+                    "reset_time": get_daily_reset_timestamp(
+                        selected_account["genshin_server"]
+                    ),
                 }
 
                 abyss_chambers = []
