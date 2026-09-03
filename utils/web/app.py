@@ -668,6 +668,13 @@ async def get_events_data(
         "reset_time": 0,
     }
 
+    trounce_data = {
+        "has_data": False,
+        "completed": 0,
+        "total": 3,
+        "reset_time": 0,
+    }
+
     selected_account = None
 
     if accounts:
@@ -912,6 +919,7 @@ async def get_events_data(
         "theater": theater_data,
         "stygian": stygian_data,
         "daily": daily_data,
+        "trounce": trounce_data,
     }
 
 
