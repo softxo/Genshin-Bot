@@ -668,12 +668,12 @@ async def get_events_data(
         "reset_time": 0,
     }
 
-    #trounce_data = {
-    #    "has_data": False,
-    #    "completed": 0,
-    #    "total": 3,
-    #    "reset_time": 0,
-    #}
+    trounce_data = {
+        "has_data": False,
+        "completed": 0,
+        "total": 3,
+        "reset_time": 0,
+    }
 
     selected_account = None
 
