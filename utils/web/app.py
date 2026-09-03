@@ -720,19 +720,6 @@ async def get_events_data(
                         await client.get_genshin_notes()
                     )
 
-                    print("===== NOTES TYPE =====")
-                    print(type(notes))
-                    print("===== NOTES =====")
-                    print(notes)
-                    print("==== NOTES DATA TYPE =====")
-                    print(type(notes["data"]))
-                    print("===== NOTES DATA =====")
-                    print(notes["data"])
-                    print("===== NOTES DATA KEYS =====")
-                    print(notes["data"].keys())
-                    print("=======================")
-
-
 
                 # =========================================
                 # DAILY COMMISSIONS
@@ -753,7 +740,15 @@ async def get_events_data(
                 # TROUNCE DOMAINS
                 #========================================
 
-                
+                trounce_data = {
+                    "has_data": True,
+                    "remaining": notes["data"]["remain_resin_discount_num"],
+                    "total": notes["data"]["resin_discount_num_limit"],
+                    "reset_time": get_weekly_reset_timestamp(
+                        selected_account["genshin_server"]
+                    ),
+                }
+
 
                 # =========================================
                 # SPIRAL ABYSS
