@@ -1,10 +1,109 @@
-/* =============================
-   EVENTS — FEATURED
-   ============================= */
+/* =========================================================
+   EVENTS
+   =========================================================
+   Styles specific to the /events page.
+
+   Sections:
+   1. Events Header
+   2. Account Selector
+   3. Featured Event Cards
+   4. Featured Card Header
+   5. Featured Card Toggle
+   6. Featured Card Content / Panels
+   7. Collapsed Card State
+   8. Event Time Status
+   9. Stygian Onslaught
+   10. Imaginarium Theater
+   11. Spiral Abyss
+   12. Activity List
+   13. Responsive Layout
+   ========================================================= */
+
+
+/* =========================================================
+   1. EVENTS HEADER
+   ========================================================= */
+
+.events-hero {
+    padding: 28px 32px;
+    margin-bottom: 28px;
+}
+
+.events-hero .hero-content {
+    max-width: 760px;
+}
+
+.events-hero h1 {
+    margin: 6px 0 8px;
+}
+
+.events-hero p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   2. ACCOUNT SELECTOR
+   ========================================================= */
+
+.events-account-selector {
+    display: flex;
+    align-items: flex-end;
+}
+
+.events-account-selector .custom-select {
+    min-width: 260px;
+}
+
+.events-account-selector .custom-select-button:focus,
+.events-account-selector .custom-select.open .custom-select-button {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 1px color-mix(
+            in srgb,
+            var(--accent) 15%,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   3. EVENTS SECTIONS
+   ========================================================= */
+
+.events-section {
+    margin-bottom: 40px;
+}
+
+.events-section .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+.events-section .section-header h2 {
+    margin: 5px 0 0;
+}
+
+
+/* =========================================================
+   4. FEATURED EVENT CARDS
+   =========================================================
+   The three large cards at the top of the Events page:
+   - Stygian Onslaught
+   - Spiral Abyss
+   - Imaginarium Theater
+
+   The cards can be expanded/collapsed independently.
+   ========================================================= */
 
 .events-featured {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+
     gap: 20px;
     margin-top: 28px;
 }
@@ -16,12 +115,12 @@
 
     overflow: hidden;
 
+    box-sizing: border-box;
+
     border-radius: 16px;
     border: 1px solid var(--glass-border);
 
     background: var(--card-bg);
-
-    box-sizing: border-box;
 
     cursor: pointer;
 
@@ -41,17 +140,45 @@
         0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
+.event-no-record {
+    width: 100%;
+    min-height: 70px;
+
+    margin: auto;
+    padding: 16px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    font-size: 22px;
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* ---------------------------------------------------------
+   Featured Card Background
+   --------------------------------------------------------- */
+
 .event-featured-image {
     position: absolute;
-
     inset: -8px;
 
     width: calc(100% + 16px);
     height: calc(100% + 16px);
 
-    object-fit: cover;
-
     display: block;
+
+    object-fit: cover;
 
     opacity: 0.65;
 
@@ -62,24 +189,30 @@
 
 .event-featured-overlay {
     position: absolute;
-
     inset: 0;
 
     background:
-        linear-gradient(to top,
+        linear-gradient(
+            to top,
             rgba(0, 0, 0, 0.88) 0%,
             rgba(0, 0, 0, 0.48) 45%,
             rgba(0, 0, 0, 0.18) 75%,
-            rgba(0, 0, 0, 0.05) 100%);
+            rgba(0, 0, 0, 0.05) 100%
+        );
 }
+
+
+/* =========================================================
+   5. FEATURED CARD HEADER
+   ========================================================= */
 
 .event-featured-content {
     position: absolute;
 
     top: 24px;
-    left: 24px;
     right: 24px;
     bottom: 24px;
+    left: 24px;
 
     z-index: 1;
 
@@ -96,103 +229,24 @@
 
     width: 100%;
     min-height: 32px;
+
+    gap: 12px;
 }
 
-.event-featured-header-right {
+.event-featured-title {
     display: flex;
     align-items: center;
 
     gap: 10px;
 
-    flex-shrink: 0;
-}
-
-.event-featured-info {
-    display: flex;
-    gap: 28px;
-}
-
-.event-featured-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.event-featured-stat span {
-    font-size: 12px;
-
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-
-    opacity: 0.65;
-}
-
-.event-featured-stat strong {
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.event-stat-value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 42px;
-
-    padding: 5px 12px;
-
-    border-radius: 9px;
-
-    background: rgba(255, 255, 255, 0.07);
-
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
-    box-sizing: border-box;
-}
-
-.event-stat-label {
-    display: block;
-
-    font-size: 12px;
-    font-weight: 500;
-
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-
-    text-align: center;
-
-    opacity: 0.65;
-}
-
-.event-stat-value strong {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.event-stat-separator {
-    opacity: 0.5;
-    margin: 0 2px;
-}
-
-
-/* =============================
-   FEATURED EVENT HEADER
-   ============================= */
-
-.event-featured-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-    min-height: 32px;
-
-    gap: 12px;
+    min-width: 0;
 }
 
 .event-featured-name {
     flex: 1;
     min-width: 0;
+
+    margin: 0;
 
     color: #ffffff;
 
@@ -204,8 +258,15 @@
     letter-spacing: 0.5px;
 
     text-align: left;
+}
 
-    margin: 0;
+.event-featured-icon {
+    width: 37px;
+    height: 37px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
 }
 
 .event-featured-header-right {
@@ -219,28 +280,10 @@
     flex-shrink: 0;
 }
 
-.event-featured-title {
-    display: flex;
-    align-items: center;
 
-    gap: 10px;
-
-    min-width: 0;
-}
-
-.event-featured-icon {
-    width: 37px;
-    height: 37px;
-
-    object-fit: contain;
-
-    flex-shrink: 0;
-}
-
-
-/* =============================
-   FEATURED EVENT TOGGLE
-   ============================= */
+/* =========================================================
+   6. FEATURED EVENT TOGGLE
+   ========================================================= */
 
 .event-featured-toggle {
     width: 30px;
@@ -276,9 +319,9 @@
 }
 
 
-/* =============================
-   FEATURED EVENT ARROW
-   ============================= */
+/* ---------------------------------------------------------
+   Toggle Arrow
+   --------------------------------------------------------- */
 
 .event-toggle-icon {
     display: block;
@@ -302,64 +345,45 @@
         transform 0.15s ease;
 }
 
-.event-featured-toggle:hover .event-toggle-icon {
+
+/* Hover */
+
+.event-featured-toggle:hover .event-toggle-icon,
+.custom-select-button:hover .event-toggle-icon {
     color: var(--accent);
 }
 
-.event-featured-card:not(.collapsed) .event-toggle-icon {
-    transform: translateY(2px) rotate(225deg);
-}
 
+/* =========================================================
+   7. FEATURED EVENT CONTENT
+   ========================================================= */
 
-/* =============================
-   COLLAPSED CARD
-   ============================= */
-
-.event-featured-card.collapsed {
-    height: 115px;
-}
-
-
-/* Compact content area */
-
-.event-featured-card.collapsed .event-featured-content {
-    top: 16px;
-    left: 24px;
-    right: 24px;
-    bottom: 16px;
-}
-
-/* =============================
-   FEATURED EVENT PANEL
-   ============================= */
-
+/* Main information panel inside each featured card. */
 .event-featured-panel {
     flex: 0 0 auto;
 
     height: 340px;
 
+    margin-top: 0;
     padding: 4px 20px 20px;
 
-    margin-top: 0;
+    box-sizing: border-box;
 
-    border-radius: 14px;
-
-    background: rgba(20, 20, 30, 0.38);
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
 
-    box-sizing: border-box;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    background: rgba(20, 20, 30, 0.38);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 
     opacity: 1;
     transform: translateY(0);
-
-    overflow: hidden;
 
     transition:
         opacity 0.2s ease,
@@ -367,29 +391,129 @@
         margin-top 0.25s ease;
 }
 
-/* Collapsing */
+
+/* ---------------------------------------------------------
+   Featured Statistics
+   --------------------------------------------------------- */
+
+.event-featured-info {
+    display: flex;
+
+    gap: 28px;
+}
+
+.event-featured-stat {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.event-featured-stat span {
+    font-size: 12px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+
+    opacity: 0.65;
+}
+
+.event-featured-stat strong {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.event-stat-label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+
+    text-align: center;
+
+    opacity: 0.65;
+}
+
+.event-stat-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 5px 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.event-stat-value strong {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.event-stat-separator {
+    margin: 0 2px;
+
+    opacity: 0.5;
+}
+
+
+/* =========================================================
+   8. COLLAPSED FEATURED CARD
+   ========================================================= */
+
+/*
+   When a card is collapsed:
+   - The large panel disappears.
+   - The card becomes a compact summary.
+   - The summary becomes visible.
+*/
+
+.event-featured-card.collapsed {
+    height: 115px;
+}
+
+.event-featured-card.collapsed .event-featured-content {
+    top: 16px;
+    right: 24px;
+    bottom: 16px;
+    left: 24px;
+}
+
+.event-featured-card.collapsed .event-featured-name {
+    line-height: 30px;
+}
+
+.event-featured-card.collapsed .event-featured-header-right {
+    height: 30px;
+}
+
+
+/* ---------------------------------------------------------
+   Collapsed Main Panel
+   --------------------------------------------------------- */
 
 .event-featured-card.collapsed .event-featured-panel {
-    opacity: 0;
-
-    transform: translateY(-10px);
-
     margin-top: 0;
+
+    opacity: 0;
+    transform: translateY(-10px);
 
     pointer-events: none;
 }
 
-.event-featured-card.collapsed .event-featured-panel {
-    opacity: 0;
-    transform: translateY(-10px);
-    margin-top: 0;
-    pointer-events: none;
-}
 
-
-/* =============================
-   COLLAPSED SUMMARY
-   ============================= */
+/* ---------------------------------------------------------
+   Collapsed Summary
+   --------------------------------------------------------- */
 
 .event-featured-collapsed {
     display: flex;
@@ -419,9 +543,9 @@
 }
 
 
-/* =============================
-   COLLAPSED BOX
-   ============================= */
+/* ---------------------------------------------------------
+   Collapsed Summary Stat
+   --------------------------------------------------------- */
 
 .event-collapsed-stat {
     flex: 1;
@@ -446,11 +570,6 @@
     background: rgba(255, 255, 255, 0.035);
 }
 
-
-/* =============================
-   COLLAPSED LABEL
-   ============================= */
-
 .event-collapsed-stat .event-stat-label {
     margin: 0;
 
@@ -458,11 +577,6 @@
 
     text-align: center;
 }
-
-
-/* =============================
-   COLLAPSED VALUE
-   ============================= */
 
 .event-collapsed-stat > strong {
     font-size: 16px;
@@ -475,7 +589,6 @@
 
 .event-collapsed-value {
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -495,22 +608,11 @@
 }
 
 
-/* =============================
-   COLLAPSED HEADER
-   ============================= */
-
-.event-featured-card.collapsed .event-featured-name {
-    line-height: 30px;
-}
-
-.event-featured-card.collapsed .event-featured-header-right {
-    height: 30px;
-}
-
-
-/* =============================
-   EVENT — TIME LEFT
-   ============================= */
+/* =========================================================
+   9. EVENT TIME LEFT
+   =========================================================
+   The status badge shown in the top-right of featured cards.
+   ========================================================= */
 
 .event-time-left {
     flex-shrink: 0;
@@ -527,11 +629,9 @@
     box-sizing: border-box;
 
     border-radius: 8px;
-
-    transform: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
     background: rgba(20, 20, 30, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.12);
 
     color: #ffffff;
 
@@ -553,133 +653,23 @@
 }
 
 
-/* Less than 3 days */
-
+/* Less than 3 days remaining. */
 .event-time-left.warning {
     background: rgba(180, 120, 40, 0.65);
     border-color: rgba(230, 170, 70, 0.45);
 }
 
 
-/* Less than 1 day */
-
+/* Less than 1 day remaining. */
 .event-time-left.danger {
     background: rgba(180, 55, 65, 0.7);
     border-color: rgba(235, 90, 100, 0.5);
 }
 
 
-/* ================================
-   Events Header
-   ================================ */
-
-.events-hero {
-    padding: 28px 32px;
-    margin-bottom: 28px;
-}
-
-.events-hero .hero-content {
-    max-width: 760px;
-}
-
-.events-hero h1 {
-    margin: 6px 0 8px;
-}
-
-.events-hero p {
-    margin: 0;
-}
-
-/* ================================
-   Events Account Selector
-   ================================ */
-
-.events-account-selector {
-    display: flex;
-    align-items: flex-end;
-}
-
-.events-account-selector .custom-select {
-    min-width: 260px;
-}
-
-/* ================================
-   Events Account Dropdown
-   ================================ */
-
-.events-account-selector .custom-select-button:focus,
-.events-account-selector .custom-select.open .custom-select-button {
-    border-color: var(--accent);
-
-    box-shadow:
-        0 0 0 1px color-mix(in srgb,
-            var(--accent) 15%,
-            transparent);
-}
-
-/* ================================
-   Events Sections
-   ================================ */
-
-.events-section {
-    margin-bottom: 40px;
-}
-
-.events-section .section-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-
-    margin-bottom: 16px;
-}
-
-.events-section .section-header h2 {
-    margin: 5px 0 0;
-}
-
-
-/* =============================
-   EVENT NO RECORD
-   ============================= */
-
-.event-no-record {
-    width: 100%;
-    min-height: 70px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: auto;
-
-    padding: 16px;
-
-    border-radius: 8px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
-
-    font-size: 22px;
-    font-weight: 600;
-
-    text-align: center;
-}
-
-@media (max-width: 768px) {
-
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-}
-
-
-/* =============================
-   STYGIAN ONSLAUGHT
-   ============================= */
+/* =========================================================
+   10. STYGIAN ONSLAUGHT
+   ========================================================= */
 
 .stygian-best-record {
     display: flex;
@@ -713,9 +703,9 @@
 }
 
 
-/* =============================
-   BOSSES / TEAMS
-   ============================= */
+/* ---------------------------------------------------------
+   Stygian Bosses / Teams
+   --------------------------------------------------------- */
 
 .stygian-bosses {
     width: 100%;
@@ -736,16 +726,15 @@
 
     padding: 10px 14px;
 
-    border-radius: 10px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
-
     box-sizing: border-box;
 
     display: flex;
     align-items: center;
+
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .stygian-bosses-row {
@@ -774,27 +763,25 @@
 }
 
 .stygian-boss strong {
-    font-size: 9px;
-    font-weight: 600;
-
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-
-    opacity: 0.7;
-
     height: 32px;
+    max-width: 100%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    overflow: hidden;
+
+    font-size: 9px;
+    font-weight: 600;
+
     line-height: 11px;
 
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 
-    max-width: 100%;
-
-    overflow: hidden;
+    opacity: 0.7;
 }
 
 .stygian-boss-icon {
@@ -809,11 +796,6 @@
     font-weight: 600;
 }
 
-
-/* =============================
-   STYGIAN TEAM
-   ============================= */
-
 .stygian-team {
     display: flex;
     align-items: center;
@@ -827,14 +809,13 @@
     width: auto;
 
     margin-top: 10px;
-
     padding: 5px 6px;
+
+    box-sizing: border-box;
 
     border-radius: 8px;
 
     background: rgba(255, 255, 255, 0.06);
-
-    box-sizing: border-box;
 }
 
 .stygian-character-icon {
@@ -858,23 +839,10 @@
     box-sizing: border-box;
 }
 
-/* =============================
-   STYGIAN — HIDE TEAMS ON
-   INTERMEDIATE SCREEN SIZES
-   ============================= */
 
-@media (min-width: 0px) and (max-width: 1500px) {
-
-    .stygian-bosses {
-        display: none;
-    }
-
-}
-
-
-/*=============================
-   IMAGINARIUM THEATER
-   ============================= */
+/* =========================================================
+   11. IMAGINARIUM THEATER
+   ========================================================= */
 
 .it-best-record {
     display: flex;
@@ -922,31 +890,31 @@
 
 .it-stella-box {
     width: 100%;
-    box-sizing: border-box;
 
     padding: 7px 4px;
 
-    border-radius: 8px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-sizing: border-box;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .it-stella-row {
+    width: 100%;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     gap: 0;
 
     flex-wrap: wrap;
-
-    width: 100%;
 }
 
 .it-stella {
@@ -964,6 +932,8 @@
 }
 
 .it-elements {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -971,25 +941,25 @@
     gap: 14px;
 
     margin-top: 28px;
-    width: 100%;
 }
 
 .it-elements .event-stat-label {
     display: block;
+
     width: 100%;
 
     text-align: center;
 }
 
 .it-elements-box {
+    width: 100%;
+
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
     gap: 10px;
-
-    width: 100%;
 }
 
 .it-element {
@@ -1000,13 +970,12 @@
     align-items: center;
     justify-content: center;
 
+    box-sizing: border-box;
+
     border-radius: 50%;
-
-    background: rgba(255, 255, 255, 0.08);
-
     border: 1px solid rgba(255, 255, 255, 0.05);
 
-    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .it-element-icon {
@@ -1019,12 +988,13 @@
 }
 
 
-/* =============================
-   SPIRAL ABYSS
-   ============================= */
+/* =========================================================
+   12. SPIRAL ABYSS
+   ========================================================= */
 
 .abyss-summary {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
 
     gap: 20px;
@@ -1064,6 +1034,11 @@
     object-fit: contain;
 }
 
+
+/* ---------------------------------------------------------
+   Abyss Teams
+   --------------------------------------------------------- */
+
 .abyss-teams {
     flex: 1;
 
@@ -1083,29 +1058,34 @@
     display: flex;
     flex-direction: column;
 
-    gap: 10px;
+    gap: 8px;
 
     padding: 8px 10px;
 
     border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 
     background: rgba(255, 255, 255, 0.06);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .abyss-chamber {
-    display: grid;
-
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-
-    align-items: center;
-
-    gap: 8px;
-
-    text-align: center;
-
+    width: 100%;
     min-width: 0;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.abyss-chamber > strong {
+    flex: 0 0 auto;
+
+    font-size: 14px;
+
+    white-space: nowrap;
 }
 
 .abyss-chamber span {
@@ -1120,76 +1100,19 @@
     opacity: 0.8;
 }
 
-.abyss-chamber strong {
-    font-size: 12px;
-
-    white-space: nowrap;
-
-    opacity: 0.7;
-}
-
-/* Helper for the layout */
-
-
-@media (max-width: 1150px) {
-
-    .events-featured {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-
-/* =============================
-   SPIRAL ABYSS — TEAMS
-   ============================= */
-
-.abyss-teams-box {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.abyss-chamber {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-
-    min-height: 42px;
-    width: 100%;
-    min-width: 0;
-}
-
 .abyss-team {
+    width: max-content;
+    max-width: calc(50% - 35px);
+
+    min-width: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     gap: 4px;
 
-    /*
-     * Four icons at their natural size on desktop.
-     */
-    width: max-content;
-
-    /*
-     * Allow the team to shrink when the chamber
-     * becomes too narrow.
-     */
-    max-width: calc(50% - 35px);
-
-    min-width: 0;
-
     flex-wrap: wrap;
-}
-
-.abyss-chamber > strong {
-    flex: 0 0 auto;
-
-    white-space: nowrap;
-    font-size: 14px;
 }
 
 .abyss-character-icon {
@@ -1202,342 +1125,30 @@
     max-width: 30px !important;
     max-height: 30px !important;
 
-    display: block;
-    object-fit: cover;
-
     flex: 0 0 30px;
 
-    border-radius: 50%;
+    display: block;
 
     padding: 2px;
 
+    box-sizing: border-box;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.08);
-
-    box-sizing: border-box;
 }
 
 
-/* =============================
-   EVENTS — RESPONSIVE
-   ============================= */
-
-@media (max-width: 1350px) {
-
-    .events-featured {
-        gap: 14px;
-    }
-
-    .event-featured-card {
-        height: 540px;
-    }
-
-    .event-featured-content {
-        left: 18px;
-        right: 18px;
-        top: 20px;
-        bottom: 20px;
-    }
-
-    .event-featured-panel {
-        height: 370px;
-
-        padding: 4px 16px 16px;
-
-        margin-top: 0;
-    }
-
-    .event-featured-name {
-        font-size: 23px;
-        margin-bottom: 0;
-    }
-
-     /* ABYSS */
-
-    .abyss-summary {
-        gap: 12px;
-    }
-
-    .abyss-stat .event-stat-label {
-        max-width: 100px;
-        text-align: center;
-        line-height: 1.3;
-    }
-
-    .abyss-chamber {
-        gap: 6px;
-    }
-
-    .abyss-chamber span {
-        padding: 7px 4px;
-        font-size: 10px;
-    }
-
-     /* IT */
-
-    .it-stella {
-        width: 27px;
-        height: 27px;
-    }
-
-     /* STYGIAN */
-
-    .stygian-boss-icon {
-        width: 50px;
-        height: 50px;
-    }
-
-    .stygian-bosses-row {
-        gap: 8px;
-    }
-
-     /* COLLAPSED FEATURED CARDS */
-
-    .event-featured-card.collapsed {
-        height: 140px;
-    }
-
-    .event-featured-card.collapsed .event-featured-content {
-        top: 16px;
-        right: 20px;
-        bottom: 16px;
-        left: 20px;
-    }
-
-    .event-featured-card.collapsed .event-featured-header {
-        min-height: 30px;
-    }
-
-    .event-featured-card.collapsed .event-featured-name {
-        font-size: 23px;
-        line-height: 30px;
-    }
-
-    .event-featured-card.collapsed .event-featured-header-right {
-        height: 30px;
-        gap: 10px;
-    }
-
-    .event-featured-card.collapsed .event-time-left {
-        height: 30px;
-        transform: none;
-    }
-
-    .event-featured-card.collapsed .event-featured-toggle {
-        width: 30px;
-        height: 30px;
-    }
-
-    .event-featured-card.collapsed .event-featured-collapsed {
-        margin-top: 23px;
-        gap: 10px;
-    }
-}
-
-
-/* =============================
-   EVENTS — MOBILE
-   ============================= */
-
-@media (max-width: 650px) {
-
-    .events-featured {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    /* Expanded card */
-
-    .event-featured-card:not(.collapsed) {
-        height: 520px;
-    }
-
-    .event-featured-content {
-        top: 18px;
-        left: 16px;
-        right: 16px;
-        bottom: 18px;
-    }
-
-    .event-featured-panel {
-        height: 350px;
-        padding: 4px 14px 14px;
-    }
-
-
-    /* =============================
-       MOBILE COLLAPSED CARD
-       ============================= */
-
-    .event-featured-card.collapsed {
-        height: 140px;
-        min-height: 0;
-    }
-
-    .event-featured-card.collapsed .event-featured-content {
-        top: 16px;
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-    }
-
-    .event-featured-card.collapsed .event-featured-header {
-        min-height: 30px;
-        gap: 8px;
-    }
-
-    .event-featured-card.collapsed .event-featured-name {
-        font-size: 21px;
-        line-height: 28px;
-    }
-
-    .event-featured-card.collapsed .event-featured-header-right {
-        height: 30px;
-        gap: 7px;
-    }
-
-    .event-featured-card.collapsed .event-featured-collapsed {
-        margin-top: 10px;
-        gap: 8px;
-    }
-
-
-    /* =============================
-       MOBILE HEADER
-       ============================= */
-
-    .event-featured-header {
-        gap: 8px;
-    }
-
-    .event-featured-name {
-        font-size: 21px;
-        line-height: 28px;
-    }
-
-    .event-featured-header-right {
-        height: 30px;
-        gap: 7px;
-    }
-
-    .event-time-left {
-        min-width: 82px;
-        height: 30px;
-
-        padding: 0 8px;
-
-        font-size: 11px;
-    }
-
-    .event-featured-toggle {
-        width: 30px;
-        height: 30px;
-    }
-
-}
-
-
-/* =============================
-   EVENTS — SMALL MOBILE
-   ============================= */
-
-@media (max-width: 480px) {
-
-    .event-featured-card:not(.collapsed) {
-        height: auto;
-        min-height: 470px;
-    }
-
-    .event-featured-content {
-        top: 16px;
-        left: 14px;
-        right: 14px;
-        bottom: 16px;
-    }
-
-    .event-featured-panel {
-        height: 350px;
-        padding: 4px 14px 14px;
-    }
-
-    .event-featured-name {
-        font-size: 22px;
-        margin-bottom: 0;
-    }
-
-    .event-stat-label {
-        font-size: 10px;
-    }
-
-     /* ABYSS */
-
-    .abyss-summary {
-        gap: 10px;
-    }
-
-    .abyss-chamber {
-        gap: 6px;
-    }
-
-    .abyss-chamber span {
-        padding: 7px 4px;
-        font-size: 10px;
-    }
-
-     /* IT */
-
-    .it-stella {
-        width: 25px;
-        height: 25px;
-    }
-
-    .it-stella-box {
-        padding: 7px 2px;
-    }
-
-     /* STYGIAN */
-
-    .stygian-teams-box {
-        padding: 8px 6px;
-        min-height: 135px;
-    }
-
-    .stygian-bosses-row {
-        gap: 6px;
-    }
-
-    .stygian-boss-icon {
-        width: 46px;
-        height: 46px;
-    }
-
-    .stygian-boss strong {
-        font-size: 10px;
-    }
-
-    .stygian-boss-time {
-        font-size: 12px;
-    }
-
-    .stygian-team {
-        padding: 7px 2px;
-        font-size: 10px;
-    }
-}
-
-
-/* =============================
-   EVENTS — ACTIVITY LIST
-   ============================= */
+/* =========================================================
+   13. ACTIVITY LIST
+   ========================================================= */
 
 .events-list {
     margin-top: 32px;
 }
-
-
-/* =============================
-   LIST HEADER
-   ============================= */
 
 .events-list-header {
     margin-bottom: 16px;
@@ -1546,24 +1157,25 @@
 .events-list-header h2 {
     margin: 0;
 
+    color: var(--text-primary);
+
     font-size: 22px;
     font-weight: 700;
-    color: var(--text-primary);
 }
 
 
-/* =============================
-   LIST ITEM
-   ============================= */
+/* ---------------------------------------------------------
+   Activity List Item
+   --------------------------------------------------------- */
 
 .event-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     min-height: 60px;
 
     padding: 10px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -1592,9 +1204,9 @@
 }
 
 
-/* =============================
-   LEFT SIDE
-   ============================= */
+/* ---------------------------------------------------------
+   Activity List — Left Side
+   --------------------------------------------------------- */
 
 .event-list-left {
     display: flex;
@@ -1602,11 +1214,6 @@
 
     min-width: 0;
 }
-
-
-/* =============================
-   EVENTS — CHECKMARK
-   ============================= */
 
 .event-list-check {
     margin-right: 14px;
@@ -1618,26 +1225,22 @@
     flex: 0 0 auto;
 }
 
-
 .event-checkmark {
+    position: relative;
+
     width: 24px;
     height: 24px;
 
     flex: 0 0 24px;
 
     margin-left: 4px;
-
     padding: 0;
 
     border: 1px solid var(--border);
-
     border-radius: 50%;
 
     background: transparent;
-
     color: var(--text-muted);
-
-    position: relative;
 
     transition:
         background 0.15s ease,
@@ -1645,7 +1248,6 @@
         color 0.15s ease,
         transform 0.15s ease;
 }
-
 
 .event-checkmark:not(.event-checkmark-empty) {
     border-color: var(--accent);
@@ -1655,12 +1257,10 @@
     color: var(--background);
 }
 
-
 .event-checkmark:not(.event-checkmark-empty)::after {
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     width: 100%;
@@ -1668,17 +1268,21 @@
 
     background-color: currentColor;
 
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+    -webkit-mask:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E")
+        center / 18px 18px no-repeat;
 
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+    mask:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='M6.5 14.2L11.8 19.2L21.5 8.8'/%3E%3C/svg%3E")
+        center / 18px 18px no-repeat;
 }
 
 
-/* =============================
-   ACTIVITY ICON
-   ============================= */
+/* ---------------------------------------------------------
+   Activity Icon
+   --------------------------------------------------------- */
 
-   .event-list-icon {
+.event-list-icon {
     width: 40px;
     height: 40px;
 
@@ -1698,17 +1302,18 @@
     object-fit: contain;
 }
 
-/* =============================
-   ACTIVITY NAME
-   ============================= */
+
+/* ---------------------------------------------------------
+   Activity Name
+   --------------------------------------------------------- */
 
 .event-list-name {
     min-width: 0;
 
+    color: var(--text-primary);
+
     font-size: 18px;
     font-weight: 600;
-
-    color: var(--text-primary);
 
     white-space: nowrap;
     overflow: hidden;
@@ -1716,9 +1321,9 @@
 }
 
 
-/* =============================
-   RIGHT SIDE
-   ============================= */
+/* ---------------------------------------------------------
+   Activity List — Right Side
+   --------------------------------------------------------- */
 
 .event-list-right {
     margin-left: 20px;
@@ -1731,16 +1336,10 @@
     flex-shrink: 0;
 }
 
-
-/* =============================
-   STATUS
-   ============================= */
-
 .event-list-status {
     padding: 6px 11px;
 
     border: 1px solid var(--border);
-
     border-radius: 8px;
 
     background: var(--background);
@@ -1754,9 +1353,9 @@
 }
 
 
-/* =============================
-   COMMISSION STATUS
-   ============================= */
+/* ---------------------------------------------------------
+   Daily Commission Status
+   --------------------------------------------------------- */
 
 .event-list-status.claimed {
     color: #6fd38a;
@@ -1766,11 +1365,371 @@
     color: #e87979;
 }
 
-
+/*
+   Completed dailies use the pink completion state.
+   This intentionally stays subtle rather than turning
+   the entire card bright pink.
+*/
 .event-daily-item.completed {
     background: rgba(232, 137, 181, 0.18);
+
     border-color: rgba(232, 137, 181, 0.65);
 
     box-shadow:
         0 0 16px rgba(232, 137, 181, 0.08);
+}
+
+
+/* =========================================================
+   14. RESPONSIVE — FEATURED CARDS
+   =========================================================
+   Desktop:
+       3 cards in a row.
+
+   <= 1350px:
+       Cards become taller because their contents have less
+       horizontal space.
+
+   <= 1150px:
+       Cards stack into a single column.
+
+   <= 650px:
+       Mobile-specific spacing and typography.
+
+   <= 480px:
+       Small-phone adjustments.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Medium Desktop
+   --------------------------------------------------------- */
+
+@media (max-width: 1350px) {
+
+    .events-featured {
+        gap: 14px;
+    }
+
+    .event-featured-card {
+        height: 540px;
+    }
+
+    .event-featured-content {
+        top: 20px;
+        right: 18px;
+        bottom: 20px;
+        left: 18px;
+    }
+
+    .event-featured-panel {
+        height: 370px;
+
+        padding: 4px 16px 16px;
+    }
+
+    .event-featured-name {
+        font-size: 23px;
+    }
+
+
+    /* Abyss */
+
+    .abyss-summary {
+        gap: 12px;
+    }
+
+    .abyss-stat .event-stat-label {
+        max-width: 100px;
+
+        text-align: center;
+
+        line-height: 1.3;
+    }
+
+    .abyss-chamber {
+        gap: 6px;
+    }
+
+    .abyss-chamber span {
+        padding: 7px 4px;
+
+        font-size: 10px;
+    }
+
+
+    /* Imaginarium Theater */
+
+    .it-stella {
+        width: 27px;
+        height: 27px;
+    }
+
+
+    /* Stygian Onslaught */
+
+    .stygian-boss-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .stygian-bosses-row {
+        gap: 8px;
+    }
+
+
+    /* Collapsed Cards */
+
+    .event-featured-card.collapsed {
+        height: 140px;
+    }
+
+    .event-featured-card.collapsed .event-featured-content {
+        top: 16px;
+        right: 20px;
+        bottom: 16px;
+        left: 20px;
+    }
+
+    .event-featured-card.collapsed .event-featured-header {
+        min-height: 30px;
+    }
+
+    .event-featured-card.collapsed .event-featured-name {
+        font-size: 23px;
+        line-height: 30px;
+    }
+
+    .event-featured-card.collapsed .event-featured-header-right {
+        height: 30px;
+        gap: 10px;
+    }
+
+    .event-featured-card.collapsed .event-time-left {
+        height: 30px;
+    }
+
+    .event-featured-card.collapsed .event-featured-toggle {
+        width: 30px;
+        height: 30px;
+    }
+
+    .event-featured-card.collapsed .event-featured-collapsed {
+        margin-top: 23px;
+        gap: 10px;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Narrow Desktop / Tablet
+   --------------------------------------------------------- */
+
+@media (max-width: 1150px) {
+
+    .events-featured {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 650px) {
+
+    .events-featured {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    /* Expanded Card */
+
+    .event-featured-card:not(.collapsed) {
+        height: 520px;
+    }
+
+    .event-featured-content {
+        top: 18px;
+        right: 16px;
+        bottom: 18px;
+        left: 16px;
+    }
+
+    .event-featured-panel {
+        height: 350px;
+
+        padding: 4px 14px 14px;
+    }
+
+
+    /* Collapsed Card */
+
+    .event-featured-card.collapsed {
+        height: 140px;
+        min-height: 0;
+    }
+
+    .event-featured-card.collapsed .event-featured-content {
+        top: 16px;
+        right: 16px;
+        bottom: 16px;
+        left: 16px;
+    }
+
+    .event-featured-card.collapsed .event-featured-header {
+        min-height: 30px;
+
+        gap: 8px;
+    }
+
+    .event-featured-card.collapsed .event-featured-name {
+        font-size: 21px;
+        line-height: 28px;
+    }
+
+    .event-featured-card.collapsed .event-featured-header-right {
+        height: 30px;
+
+        gap: 7px;
+    }
+
+    .event-featured-card.collapsed .event-featured-collapsed {
+        margin-top: 10px;
+
+        gap: 8px;
+    }
+
+
+    /* Header */
+
+    .event-featured-header {
+        gap: 8px;
+    }
+
+    .event-featured-name {
+        font-size: 21px;
+        line-height: 28px;
+    }
+
+    .event-featured-header-right {
+        height: 30px;
+
+        gap: 7px;
+    }
+
+
+    /* Time Badge */
+
+    .event-time-left {
+        min-width: 82px;
+        height: 30px;
+
+        padding: 0 8px;
+
+        font-size: 11px;
+    }
+
+    .event-featured-toggle {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Small Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    .event-featured-card:not(.collapsed) {
+        height: auto;
+        min-height: 470px;
+    }
+
+    .event-featured-content {
+        top: 16px;
+        right: 14px;
+        bottom: 16px;
+        left: 14px;
+    }
+
+    .event-featured-panel {
+        height: 350px;
+
+        padding: 4px 14px 14px;
+    }
+
+    .event-featured-name {
+        font-size: 22px;
+    }
+
+    .event-stat-label {
+        font-size: 10px;
+    }
+
+
+    /* Abyss */
+
+    .abyss-summary {
+        gap: 10px;
+    }
+
+    .abyss-chamber {
+        gap: 6px;
+    }
+
+    .abyss-chamber span {
+        padding: 7px 4px;
+
+        font-size: 10px;
+    }
+
+
+    /* Imaginarium Theater */
+
+    .it-stella {
+        width: 25px;
+        height: 25px;
+    }
+
+    .it-stella-box {
+        padding: 7px 2px;
+    }
+
+
+    /* Stygian Onslaught */
+
+    .stygian-teams-box {
+        min-height: 135px;
+
+        padding: 8px 6px;
+    }
+
+    .stygian-bosses-row {
+        gap: 6px;
+    }
+
+    .stygian-boss-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    .stygian-boss strong {
+        font-size: 10px;
+    }
+
+    .stygian-boss-time {
+        font-size: 12px;
+    }
+
+    .stygian-team {
+        padding: 7px 2px;
+
+        font-size: 10px;
+    }
 }

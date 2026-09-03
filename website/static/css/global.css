@@ -1,7 +1,15 @@
+/* ============================================================
+   GLOBAL RESET
+   ============================================================ */
+
 * {
     box-sizing: border-box;
 }
 
+
+/* ============================================================
+   ROOT VARIABLES
+   ============================================================ */
 
 :root {
     --background: #0d0f14;
@@ -37,16 +45,16 @@
 }
 
 
-/* =============================
+/* ============================================================
    GLOBAL
-   ============================= */
+   ============================================================ */
 
 html,
 body {
+    min-height: 100%;
+
     margin: 0;
     padding: 0;
-
-    min-height: 100%;
 
     background: var(--background);
     color: var(--text);
@@ -59,21 +67,23 @@ body {
         sans-serif;
 }
 
-
 body {
     min-height: 100vh;
 }
 
-/* =============================
-   GLOBAL FORM CONTROLS
-   ============================= */
 
-/* ================================
+/* ============================================================
+   GLOBAL FORM CONTROLS
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
    Custom Select
-   ================================ */
+   ------------------------------------------------------------ */
 
 .custom-select {
     position: relative;
+
     width: 100%;
 }
 
@@ -83,8 +93,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    box-sizing: border-box;
 
     padding: 10px 12px;
 
@@ -125,9 +133,9 @@ body {
 }
 
 
-/* ================================
+/* ------------------------------------------------------------
    Custom Select Arrow
-   ================================ */
+   ------------------------------------------------------------ */
 
 .custom-select-arrow {
     display: block;
@@ -138,8 +146,6 @@ body {
     height: 7px;
 
     margin-left: 8px;
-
-    box-sizing: border-box;
 
     border-right: 2px solid currentColor;
     border-bottom: 2px solid currentColor;
@@ -163,9 +169,9 @@ body {
 }
 
 
-/* ================================
+/* ------------------------------------------------------------
    Custom Select Dropdown
-   ================================ */
+   ------------------------------------------------------------ */
 
 .custom-select-menu {
     position: absolute;
@@ -180,20 +186,24 @@ body {
 
     padding: 5px;
 
-    background: var(--surface);
+    overflow: hidden;
 
     border: 1px solid var(--border);
     border-radius: 10px;
 
-    box-shadow:
-        0 6px 18px color-mix(in srgb,
-            var(--text) 12%,
-            transparent);
+    background: var(--surface);
 
-    overflow: hidden;
+    box-shadow:
+        0 6px 18px
+        color-mix(
+            in srgb,
+            var(--text) 12%,
+            transparent
+        );
 
     opacity: 0;
     visibility: hidden;
+
     transform: translateY(-6px) scale(0.98);
     transform-origin: top center;
 
@@ -206,6 +216,7 @@ body {
 .custom-select.open .custom-select-menu {
     opacity: 1;
     visibility: visible;
+
     transform: translateY(0) scale(1);
 }
 
@@ -276,9 +287,9 @@ body {
 }
 
 
-/* ================================
+/* ------------------------------------------------------------
    Custom Input
-   ================================ */
+   ------------------------------------------------------------ */
 
 .custom-input-wrapper {
     width: 100%;
@@ -286,9 +297,8 @@ body {
     display: flex;
     align-items: center;
 
-    box-sizing: border-box;
-
     min-height: 39px;
+
     padding: 0 12px;
 
     border: 1px solid var(--border);
@@ -297,12 +307,12 @@ body {
     background: var(--background);
     color: var(--text);
 
+    cursor: text;
+
     transition:
         background 0.15s ease,
         border-color 0.15s ease,
         box-shadow 0.15s ease;
-
-    cursor: text;
 }
 
 .custom-input-wrapper:hover {
@@ -325,10 +335,11 @@ body {
     width: 20px;
     height: 20px;
 
-    object-fit: contain;
-
     flex-shrink: 0;
+
     margin-right: 8px;
+
+    object-fit: contain;
 }
 
 .custom-input-wrapper input {
@@ -365,9 +376,9 @@ body {
 }
 
 
-/* ================================
+/* ------------------------------------------------------------
    Number Input
-   ================================ */
+   ------------------------------------------------------------ */
 
 .custom-input-wrapper input[type="number"] {
     appearance: textfield;
@@ -377,25 +388,26 @@ body {
 .custom-input-wrapper input[type="number"]::-webkit-inner-spin-button,
 .custom-input-wrapper input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
+
     margin: 0;
 }
 
 
-/* ================================
+/* ------------------------------------------------------------
    Custom Number Spinner
-   ================================ */
+   ------------------------------------------------------------ */
 
 .number-spinner {
+    width: 20px;
+    height: 30px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    width: 20px;
-    height: 30px;
+    flex-shrink: 0;
 
     margin-left: 6px;
-
-    flex-shrink: 0;
 }
 
 .number-spinner-button {
@@ -462,21 +474,51 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    CUSTOM CHECKBOX
-   ============================= */
+   ============================================================ */
+
+.checkbox-control {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    height: 42px;
+
+    flex: 0 0 auto;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--surface);
+    color: var(--text-muted);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
 
 .checkbox-control input {
     position: absolute;
 
-    opacity: 0;
-
     width: 0;
     height: 0;
 
+    opacity: 0;
+
     pointer-events: none;
 }
-
 
 .checkbox-control::before {
     content: "";
@@ -491,7 +533,6 @@ body {
     justify-content: center;
 
     border: 1px solid var(--border);
-
     border-radius: 5px;
 
     background: var(--background);
@@ -502,16 +543,22 @@ body {
         box-shadow 0.15s ease;
 }
 
+.checkbox-control:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent-border);
+
+    color: var(--text);
+}
 
 .checkbox-control:has(input:checked) {
     color: var(--text);
 }
 
-
 .checkbox-control:has(input:checked)::before {
     border-color: var(--accent);
 
-    background: var(--accent);
+    background-color: var(--accent);
 
     box-shadow:
         0 0 0 2px var(--accent-soft);
@@ -523,85 +570,31 @@ body {
     background-repeat: no-repeat;
 }
 
-
 .checkbox-control:has(input:focus-visible) {
     box-shadow:
         0 0 0 3px var(--accent-soft);
 }
 
 
-/* =============================
-   CUSTOM CHECKBOX CONTROL
-   ============================= */
-
-.checkbox-control {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    height: 42px;
-
-    flex: 0 0 auto;
-
-    padding: 0 13px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 10px;
-
-    background: var(--surface);
-
-    color: var(--text-muted);
-
-    font-size: 13px;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    user-select: none;
-
-    white-space: nowrap;
-
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        color 0.15s ease;
-}
-
-
-.checkbox-control:hover {
-    background: var(--surface-hover);
-
-    border-color: var(--accent-border);
-
-    color: var(--text);
-}
-
-
-/* =============================
+/* ============================================================
    GLOBAL BUTTON
-   ============================= */
+   ============================================================ */
 
 .button {
-    display: inline-flex;
+    height: 42px;
 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    height: 42px;
+    flex-shrink: 0;
 
     padding: 0 16px;
 
-    flex-shrink: 0;
-
     border: 1px solid var(--border);
-
     border-radius: 10px;
 
     background: var(--surface);
-
     color: var(--text);
 
     font-family: inherit;
@@ -609,7 +602,6 @@ body {
     font-weight: 600;
 
     cursor: pointer;
-
     white-space: nowrap;
 
     transition:
@@ -618,7 +610,6 @@ body {
         color 0.15s ease,
         transform 0.15s ease;
 }
-
 
 .button:hover {
     background: var(--surface-hover);
@@ -630,7 +621,6 @@ body {
     transform: translateY(-1px);
 }
 
-
 .button:focus,
 .button:focus-visible {
     outline: none;
@@ -639,17 +629,20 @@ body {
         0 0 0 3px var(--accent-soft);
 }
 
-
 .button:active {
     transform: translateY(0);
 }
 
 
-/* =============================
+/* ============================================================
    THEMES
-   ============================= */
+   ============================================================ */
 
-/* Dark Blue */
+
+/* ------------------------------------------------------------
+   Dark Blue
+   ------------------------------------------------------------ */
+
 [data-theme="blue"] {
     --background: #0d0f14;
     --sidebar: #11141b;
@@ -668,7 +661,10 @@ body {
 }
 
 
-/* Dark Pink */
+/* ------------------------------------------------------------
+   Dark Pink
+   ------------------------------------------------------------ */
+
 [data-theme="pink"] {
     --background: #0f0d12;
     --sidebar: #151117;
@@ -687,7 +683,10 @@ body {
 }
 
 
-/* Light Blue */
+/* ------------------------------------------------------------
+   Light Blue
+   ------------------------------------------------------------ */
+
 [data-theme="light-blue"] {
     --background: #cfd2d8;
     --sidebar: #c3c6cd;
@@ -706,7 +705,10 @@ body {
 }
 
 
-/* Light Pink */
+/* ------------------------------------------------------------
+   Light Pink
+   ------------------------------------------------------------ */
+
 [data-theme="light-pink"] {
     --background: #d5cdd2;
     --sidebar: #c8bec5;
@@ -725,9 +727,9 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    SIDEBAR
-   ============================= */
+   ============================================================ */
 
 .sidebar {
     position: fixed;
@@ -749,9 +751,9 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    BRAND
-   ============================= */
+   ============================================================ */
 
 .brand {
     display: flex;
@@ -763,7 +765,6 @@ body {
 
     margin-bottom: 40px;
 }
-
 
 .brand-icon {
     width: 36px;
@@ -791,7 +792,6 @@ body {
     object-fit: contain;
 }
 
-
 .brand-name {
     font-size: 20px;
     font-weight: 700;
@@ -800,9 +800,9 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    NAVIGATION
-   ============================= */
+   ============================================================ */
 
 .navigation {
     display: flex;
@@ -811,12 +811,11 @@ body {
     gap: 5px;
 }
 
-
 .nav-item {
+    min-height: 43px;
+
     display: flex;
     align-items: center;
-
-    min-height: 43px;
 
     gap: 12px;
 
@@ -837,7 +836,6 @@ body {
         transform 0.15s ease;
 }
 
-
 .nav-item:hover {
     background: var(--surface);
 
@@ -846,13 +844,11 @@ body {
     transform: translateX(2px);
 }
 
-
 .nav-item.active {
     background: var(--accent-soft);
 
     color: var(--accent);
 }
-
 
 .nav-icon {
     width: 33px;
@@ -867,7 +863,6 @@ body {
     overflow: hidden;
 }
 
-
 .nav-icon img {
     width: 33px;
     height: 33px;
@@ -877,9 +872,10 @@ body {
     object-fit: contain;
 }
 
-/* =============================
+
+/* ------------------------------------------------------------
    Light Theme Sidebar Icons
-   ============================= */
+   ------------------------------------------------------------ */
 
 [data-theme="light-blue"] .nav-icon img,
 [data-theme="light-pink"] .nav-icon img {
@@ -895,21 +891,19 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    MAIN CONTENT
-   ============================= */
+   ============================================================ */
 
-   .main-content {
+.main-content {
+    min-width: 0;
     min-height: 100vh;
 
     margin-left: var(--sidebar-width);
 
     padding-left: 40px;
     padding-right: 40px;
-
-    min-width: 0;
 }
-
 
 .page {
     width: min(1600px, 100%);
@@ -920,21 +914,19 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    HERO
-   ============================= */
+   ============================================================ */
 
 .hero {
     position: relative;
 
     overflow: hidden;
 
+    margin-bottom: 55px;
     padding: 70px 60px;
 
-    margin-bottom: 55px;
-
     border: 1px solid var(--border);
-
     border-radius: 20px;
 
     background:
@@ -946,13 +938,11 @@ body {
         var(--surface);
 }
 
-
 .hero-content {
     position: relative;
 
     max-width: 650px;
 }
-
 
 .eyebrow {
     display: inline-block;
@@ -967,22 +957,18 @@ body {
     letter-spacing: 1.5px;
 }
 
-
 .hero h1 {
     margin: 0;
 
     font-size: clamp(38px, 5vw, 62px);
-
     line-height: 1.05;
 
     letter-spacing: -2px;
 }
 
-
 .hero h1 span {
     color: var(--accent);
 }
-
 
 .hero p {
     max-width: 560px;
@@ -992,26 +978,23 @@ body {
     color: var(--text-muted);
 
     font-size: 16px;
-
     line-height: 1.7;
 }
 
 
-/* =============================
+/* ============================================================
    SECTIONS
-   ============================= */
+   ============================================================ */
 
 .section-header {
     margin-bottom: 22px;
 }
-
 
 .section-header h2 {
     margin: 0;
 
     font-size: 24px;
 }
-
 
 .section-header p {
     margin: 7px 0 0;
@@ -1022,9 +1005,9 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    CARDS
-   ============================= */
+   ============================================================ */
 
 .cards {
     display: grid;
@@ -1035,25 +1018,22 @@ body {
     gap: 14px;
 }
 
-
 .feature-card {
     position: relative;
+
+    min-height: 125px;
 
     display: flex;
     align-items: center;
 
     gap: 18px;
 
-    min-height: 125px;
-
     padding: 24px;
 
     border: 1px solid var(--border);
-
     border-radius: 14px;
 
     background: var(--surface);
-
     color: var(--text);
 
     text-decoration: none;
@@ -1064,7 +1044,6 @@ body {
         transform 0.2s ease;
 }
 
-
 .feature-card:hover {
     background: var(--surface-hover);
 
@@ -1073,10 +1052,7 @@ body {
     transform: translateY(-2px);
 }
 
-
 .card-icon {
-    flex-shrink: 0;
-
     width: 48px;
     height: 48px;
 
@@ -1084,10 +1060,11 @@ body {
     align-items: center;
     justify-content: center;
 
+    flex-shrink: 0;
+
     border-radius: 12px;
 
     background: var(--accent-soft);
-
     color: var(--accent);
 
     font-size: 21px;
@@ -1102,13 +1079,11 @@ body {
     object-fit: contain;
 }
 
-
 .feature-card h3 {
     margin: 0 0 6px;
 
     font-size: 16px;
 }
-
 
 .feature-card p {
     margin: 0;
@@ -1116,10 +1091,8 @@ body {
     color: var(--text-muted);
 
     font-size: 13px;
-
     line-height: 1.5;
 }
-
 
 .card-arrow {
     margin-left: auto;
@@ -1131,27 +1104,29 @@ body {
     transition: transform 0.2s ease;
 }
 
-
 .feature-card:hover .card-arrow {
-    transform: translateX(4px);
-
     color: var(--accent);
+
+    transform: translateX(4px);
 }
 
 
-/* =============================
+/* ============================================================
    RESPONSIVE NAVIGATION
-   ============================= */
+   ============================================================ */
 
 .mobile-header {
     display: none;
 }
 
-
 .sidebar-overlay {
     display: none;
 }
 
+
+/* ------------------------------------------------------------
+   Tablet / Mobile Navigation
+   ------------------------------------------------------------ */
 
 @media (max-width: 1000px) {
 
@@ -1161,6 +1136,8 @@ body {
         top: 0;
         left: 0;
         right: 0;
+
+        z-index: 1001;
 
         height: 64px;
 
@@ -1172,10 +1149,7 @@ body {
         background: var(--sidebar);
 
         border-bottom: 1px solid var(--border);
-
-        z-index: 1001;
     }
-
 
     .mobile-menu-button {
         width: 40px;
@@ -1194,34 +1168,32 @@ body {
         border-radius: 9px;
 
         background: transparent;
-
         color: inherit;
-
-        -webkit-tap-highlight-color: transparent;
 
         outline: none;
 
         cursor: pointer;
+
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-menu-button:hover {
+        background: var(--surface);
     }
 
     .mobile-menu-button:focus,
     .mobile-menu-button:focus-visible,
     .mobile-menu-button:active {
         background: transparent;
+
         outline: none;
     }
 
-
-    .mobile-menu-button:hover {
-        background: var(--surface);
-    }
-
-
     .mobile-menu-button span {
-        display: block;
-
         width: 20px;
         height: 2px;
+
+        display: block;
 
         border-radius: 2px;
 
@@ -1232,21 +1204,17 @@ body {
             opacity 0.2s ease;
     }
 
-
     .mobile-menu-button.open span:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
     }
-
 
     .mobile-menu-button.open span:nth-child(2) {
         opacity: 0;
     }
 
-
     .mobile-menu-button.open span:nth-child(3) {
         transform: translateY(-7px) rotate(-45deg);
     }
-
 
     .mobile-brand {
         display: flex;
@@ -1260,14 +1228,12 @@ body {
         font-weight: 700;
     }
 
-
     .mobile-brand .brand-icon {
         width: 32px;
         height: 32px;
 
         border-radius: 9px;
     }
-
 
     .sidebar {
         position: fixed;
@@ -1276,63 +1242,56 @@ body {
         left: 0;
         bottom: 0;
 
+        z-index: 1002;
+
         width: 250px;
 
         padding: 28px 18px;
-
-        z-index: 1002;
 
         transform: translateX(-100%);
 
         transition:
             transform 0.25s ease;
 
-        box-shadow: 12px 0 35px rgba(0, 0, 0, 0.18);
+        box-shadow:
+            12px 0 35px rgba(0, 0, 0, 0.18);
     }
-
 
     .sidebar.open {
         transform: translateX(0);
     }
-
 
     .sidebar-overlay {
         position: fixed;
 
         inset: 0;
 
+        z-index: 1000;
+
         display: block;
 
         background: rgba(0, 0, 0, 0.45);
 
         opacity: 0;
-
         visibility: hidden;
-
-        z-index: 1000;
 
         transition:
             opacity 0.25s ease,
             visibility 0.25s ease;
     }
 
-
     .sidebar-overlay.visible {
         opacity: 1;
-
         visibility: visible;
     }
-
 
     .main-content {
         margin-left: 0;
 
+        padding-top: 64px;
         padding-left: 24px;
         padding-right: 24px;
-
-        padding-top: 64px;
     }
-
 
     .page {
         width: 100%;
@@ -1340,16 +1299,13 @@ body {
         padding: 50px 0;
     }
 
-
     .hero {
         padding: 55px 45px;
     }
 
-
     .cards {
         gap: 12px;
     }
-
 
     .theme-options {
         grid-template-columns:
@@ -1358,9 +1314,9 @@ body {
 }
 
 
-/* =============================
+/* ============================================================
    SMALL SCREENS
-   ============================= */
+   ============================================================ */
 
 @media (max-width: 700px) {
 
@@ -1369,20 +1325,17 @@ body {
         padding-right: 14px;
     }
 
-
     .page {
         padding: 24px 0 40px;
     }
 
-
     .hero {
-        padding: 36px 24px;
-
         margin-bottom: 35px;
+
+        padding: 36px 24px;
 
         border-radius: 16px;
     }
-
 
     .hero h1 {
         font-size: clamp(32px, 9vw, 48px);
@@ -1390,23 +1343,19 @@ body {
         letter-spacing: -1.5px;
     }
 
-
     .hero p {
         font-size: 14px;
 
         line-height: 1.6;
     }
 
-
     .section-header {
         margin-bottom: 18px;
     }
 
-
     .section-header h2 {
         font-size: 21px;
     }
-
 
     .cards {
         grid-template-columns: 1fr;
@@ -1414,42 +1363,35 @@ body {
         gap: 10px;
     }
 
-
     .feature-card {
         min-height: 105px;
 
-        padding: 18px;
-
         gap: 14px;
-    }
 
+        padding: 18px;
+    }
 
     .feature-card h3 {
         font-size: 15px;
     }
 
-
     .feature-card p {
         font-size: 12px;
     }
-
 
     .card-icon {
         width: 42px;
         height: 42px;
     }
 
-
     .card-icon img {
         width: 32px;
         height: 32px;
     }
 
-
     .settings-section {
         padding: 18px;
     }
-
 
     .theme-options {
         grid-template-columns: 1fr;
