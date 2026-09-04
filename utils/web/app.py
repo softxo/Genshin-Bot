@@ -733,22 +733,20 @@ async def get_events_data(
                             print(f"DATE: {banner.date_range}")
 
                             print("\n5★ UP:")
+
                             for item in banner.r5_up_items:
-                                print(
-                                    f"  {item.name} | "
-                                    f"{item.type} | "
-                                    f"{item.rarity}★ | "
-                                    f"up={item.up}"
-                                )
+                                print(f"  {item}")
+
+                                if hasattr(item, "__dict__"):
+                                    print(f"  FIELDS: {vars(item)}")
 
                             print("\n4★ UP:")
+
                             for item in banner.r4_up_items:
-                                print(
-                                    f"  {item.name} | "
-                                    f"{item.type} | "
-                                    f"{item.rarity}★ | "
-                                    f"up={item.up}"
-                                )
+                                print(f"  {item}")
+
+                                if hasattr(item, "__dict__"):
+                                    print(f"  FIELDS: {vars(item)}")
 
                     print("===================================\n")
 
