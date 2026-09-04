@@ -551,7 +551,7 @@ function initEvents() {
         const delay =
             nearExpiry
                 ? 10000
-                : 60000;
+                : 10000;
 
 
         window.eventsRefreshTimer =
