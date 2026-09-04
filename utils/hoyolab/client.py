@@ -121,14 +121,6 @@ class HoYoLABClient:
 
         return await client.get_genshin_spiral_abyss()
 
-    async def get_genshin_banners(self):
-        client = genshin.Client(
-            cookies=self.credentials.as_cookies(),
-            game=genshin.types.Game.GENSHIN
-        )
-
-        return await client.get_banner_details()
-
     async def get_genshin_banner_ids(self):
         client = genshin.Client(
             cookies=self.credentials.as_cookies(),
@@ -136,3 +128,42 @@ class HoYoLABClient:
         )
 
         return await client.get_genshin_banner_ids()
+
+    async def get_genshin_banner_announcements(self) -> list[dict]:
+        if self.session is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
+
+        url = (
+            "https://sg-hk4e-api-static.hoyoverse.com/"
+            "common/hk4e_global/announcement/api/getAnnContent"
+        )
+
+        params = {
+            "game": "hk4e",
+            "game_biz": "hk4e_global",
+            "region": "os_asia",
+            "bundle_id": "hk4e_global",
+            "channel_id": "1",
+            "level": "55",
+            "platform": "pc",
+            "lang": "en-us",
+            "uid": "100000000",
+        }
+
+        async with self.session.get(
+            url,
+            params=params
+        ) as response:
+            response.raise_for_status()
+
+            data = await response.json()
+
+        if data.get("retcode") not in (None, 0):
+            raise RuntimeError(
+                f"HoYoLAB announcement API failed: "
+                f"{data.get('message')}"
+            )
+
+        return data.get("data", {}).get("list", [])

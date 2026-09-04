@@ -704,15 +704,9 @@ async def get_events_data(
 
                 async with client:
 
-                    import inspect
-                    import genshin
+                    ids = await client.get_genshin_banner_ids()
 
-                    print("\n========== GENSHIN METHODS ==========")
-
-                    print(inspect.getsource(genshin.Client.get_genshin_banner_ids))
-                    print(inspect.getsource(genshin.Client.get_banner_details))
-
-                    print("=====================================\n")
+                    print(ids)
 
                     theater = (
                         await client.get_imaginarium_theater()
