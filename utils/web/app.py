@@ -700,56 +700,17 @@ async def get_events_data(
                 selected_account["genshin_uid"]
             )
 
-            print("\n========== CLIENT METHODS ==========")
-
-            print(type(client))
-
-            print(
-                [
-                    name
-                    for name in dir(client)
-                    if "wish" in name.lower()
-                    or "gacha" in name.lower()
-                    or "banner" in name.lower()
-                ]
-            )
-
-            print("====================================\n")
-
             if client is not None:
 
                 async with client:
 
-                    banners = await client.get_genshin_banners()
+                    data = await client.get_genshin_banner_raw(
+                        "fdf07a3247173a53c091079cb032c320f043154f"
+                    )
 
-                    print("\n========== EVENT BANNERS ==========")
-
-                    for banner in banners:
-                        if banner.r5_up_items or banner.r4_up_items:
-                            print("\n===================================")
-                            print(f"ID: {banner.banner_id}")
-                            print(f"TYPE: {banner.banner_type}")
-                            print(f"TITLE: {banner.title}")
-                            print(f"DATE: {banner.date_range}")
-
-                            print("\n5★ UP:")
-
-                            for item in banner.r5_up_items:
-                                print(f"  {item}")
-
-                                if hasattr(item, "__dict__"):
-                                    print(f"  FIELDS: {vars(item)}")
-
-                            print("\n4★ UP:")
-
-                            for item in banner.r4_up_items:
-                                print(f"  {item}")
-
-                                if hasattr(item, "__dict__"):
-                                    print(f"  FIELDS: {vars(item)}")
-
-                    print("===================================\n")
-
+                    print("\n========== RAW BANNER ==========")
+                    print(data)
+                    print("================================\n")
                     theater = (
                         await client.get_imaginarium_theater()
                     )
