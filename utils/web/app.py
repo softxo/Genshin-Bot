@@ -704,17 +704,15 @@ async def get_events_data(
 
                 async with client:
 
-                    announcements = await client.get_genshin_announcements()
+                    banners = await client.get_genshin_banners()
 
-                    for announcement in announcements:
-                        if announcement.banner:
-                            print(
-                                announcement.id,
-                                "|",
-                                announcement.subtitle,
-                                "|",
-                                announcement.banner
-                            )
+                    for banner in banners:
+                        print("TITLE:", banner.title)
+                        print("DATE RANGE:", repr(banner.date_range))
+                        print("TYPE:", type(banner.date_range))
+                        print()
+                        
+                    announcements = await client.get_genshin_announcements()
 
                     theater = (
                         await client.get_imaginarium_theater()
@@ -731,6 +729,58 @@ async def get_events_data(
                     notes = (
                         await client.get_genshin_notes()
                     )
+
+
+                # =========================================
+                # EVENT WISH BANNERS
+                # =========================================
+
+                wish_banners = []
+
+                announcement_images = {}
+
+                for announcement in announcements:
+
+                    if not announcement.banner:
+                        continue
+
+                    subtitle = (
+                        announcement.subtitle
+                        or ""
+                    ).strip()
+
+                    announcement_images[subtitle] = (
+                        announcement.banner
+                    )
+
+
+                for banner in banners:
+
+                    title = (
+                        banner.title
+                        or ""
+                    ).strip()
+
+                    normalized_title = title.replace(
+                        "Event Event Wish ",
+                        "Event Wish ",
+                        1
+                    )
+
+                    image = announcement_images.get(
+                        normalized_title
+                    )
+
+                    if not image:
+                        continue
+
+                    wish_banners.append({
+                        "banner_id": banner.banner_id,
+                        "banner_type": banner.banner_type,
+                        "title": banner.title,
+                        "banner_type_name": banner.banner_type_name,
+                        "image": image,
+                    })
 
 
                 # =========================================
@@ -942,6 +992,7 @@ async def get_events_data(
         "stygian": stygian_data,
         "daily": daily_data,
         "trounce": trounce_data,
+        "wish_banners": wish_banners,
     }
 
 
