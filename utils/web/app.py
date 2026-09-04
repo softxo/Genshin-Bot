@@ -704,6 +704,19 @@ async def get_events_data(
 
                 async with client:
 
+                    banners = await client.get_banner_details()
+
+                    print("\n========== GENSHIN BANNERS ==========")
+
+                    for banner in banners:
+                        print("\n--------------------------------------")
+                        print(banner)
+
+                        if hasattr(banner, "__dict__"):
+                            print(vars(banner))
+
+                    print("======================================\n")
+
                     theater = (
                         await client.get_imaginarium_theater()
                     )

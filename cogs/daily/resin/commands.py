@@ -30,6 +30,7 @@ async def _get_resin_message(
             user_id,
             account["genshin_uid"]
         )
+        
 
         if client is None:
             embed = create_error_embed(

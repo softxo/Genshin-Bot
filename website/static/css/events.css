@@ -1203,6 +1203,10 @@
         0 7px 22px rgba(0, 0, 0, 0.10);
 }
 
+.event-list-item.completed .event-list-status {
+    color: #5de797
+}
+
 
 /* ---------------------------------------------------------
    Activity List — Left Side
@@ -1370,7 +1374,8 @@
    This intentionally stays subtle rather than turning
    the entire card bright pink.
 */
-.event-daily-item.completed {
+.event-daily-item.completed,
+.event-trounce-item.completed {
     background: rgba(232, 137, 181, 0.18);
 
     border-color: rgba(232, 137, 181, 0.65);
