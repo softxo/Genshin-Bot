@@ -123,7 +123,8 @@ class HoYoLABClient:
 
     async def get_genshin_banners(self):
         client = genshin.Client(
-            cookies=self.credentials.as_cookies()
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN
         )
 
         return await client.get_banner_details()
