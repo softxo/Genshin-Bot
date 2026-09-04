@@ -771,8 +771,16 @@ async def get_events_data(
                         "title": normalized_title,
                         "banner_type_name": banner.banner_type_name,
                         "image": announcement["image"],
-                        "start_time": announcement["start_time"],
-                        "end_time": announcement["end_time"],
+                        "start_time": int(
+                            datetime.fromisoformat(
+                                announcement["start_time"]
+                            ).timestamp()
+                        ),
+                        "end_time": int(
+                            datetime.fromisoformat(
+                                announcement["end_time"]
+                            ).timestamp()
+                        ),
                         "r5_up_items": [
                             {
                                 "name": item.name,
