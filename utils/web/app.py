@@ -708,10 +708,10 @@ async def get_events_data(
 
                     for banner in banners:
                         print("ID:", banner.banner_id)
-                        print("TYPE:", banner.gacha_type)
-                        print("TITLE:", banner.title)
+                        print("OBJECT:", banner)
+                        print("ATTRIBUTES:", dir(banner))
                         print()
-
+                        
                     theater = (
                         await client.get_imaginarium_theater()
                     )
