@@ -953,6 +953,141 @@
 
     </section>
 
+    {% if wish_banners %}
+
+    <section class="events-wishes">
+
+        <div class="events-list-header">
+            <h2>
+                Current Wishes
+            </h2>
+        </div>
+
+        <div class="wish-banners">
+
+            {% for banner in wish_banners %}
+
+                {% if banner.banner_type in [301, 400, 302] %}
+
+                <div class="wish-banner-card">
+
+                    <img
+                        src="{{ banner.image }}"
+                        alt="{{ banner.title }}"
+                        class="wish-banner-image"
+                    >
+
+                    <div class="wish-banner-overlay"></div>
+
+                    <div class="wish-banner-content">
+
+                        <div class="wish-banner-type">
+                            {% if banner.banner_type == 302 %}
+                                Weapon Event Wish
+                            {% else %}
+                                Character Event Wish
+                            {% endif %}
+                        </div>
+
+                        <h3 class="wish-banner-title">
+                            {{ banner.title
+                                | replace("Event Event Wish ", "")
+                                | replace("Event Wish ", "")
+                            }}
+                        </h3>
+
+
+                        {% if banner.r5_up_items %}
+
+                        <div class="wish-banner-featured">
+
+                            <span class="wish-banner-label">
+                                5★
+                            </span>
+
+                            <div class="wish-banner-items">
+
+                                {% for item in banner.r5_up_items %}
+
+                                <div class="wish-banner-item">
+
+                                    <img
+                                        src="{{ item.icon }}"
+                                        alt="{{ item.name }}"
+                                        title="{{ item.name }}"
+                                    >
+
+                                    <span>
+                                        {{ item.name }}
+                                    </span>
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        {% if banner.r4_up_items %}
+
+                        <div class="wish-banner-featured wish-banner-four-star">
+
+                            <span class="wish-banner-label">
+                                4★
+                            </span>
+
+                            <div class="wish-banner-items">
+
+                                {% for item in banner.r4_up_items %}
+
+                                <div class="wish-banner-item">
+
+                                    <img
+                                        src="{{ item.icon }}"
+                                        alt="{{ item.name }}"
+                                        title="{{ item.name }}"
+                                    >
+
+                                    <span>
+                                        {{ item.name }}
+                                    </span>
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <div
+                            class="wish-banner-time event-time-left"
+                            data-end-time="{{ banner.end_time }}"
+                        >
+                            Calculating...
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
 </div>
 
 {% endblock %}

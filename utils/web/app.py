@@ -1,6 +1,7 @@
 import typing
 import time
 import tempfile
+import re
 from datetime import (
     datetime,
     timedelta,
@@ -736,7 +737,7 @@ async def get_events_data(
                 # =========================================
 
                 announcement_data = {
-                    announcement.subtitle: {
+                    clean_banner_title(announcement.subtitle): {
                         "image": announcement.banner,
                         "start_time": announcement.start_time,
                         "end_time": announcement.end_time,
@@ -749,12 +750,12 @@ async def get_events_data(
 
                 for banner in banners:
 
-                    title = banner.title
+                    title = clean_banner_title(banner.title)
 
                     normalized_title = title.replace(
                         "Event Event Wish ",
                         "Event Wish ",
-                        1
+                        1,
                     )
 
                     announcement = announcement_data.get(
@@ -772,8 +773,24 @@ async def get_events_data(
                         "image": announcement["image"],
                         "start_time": announcement["start_time"],
                         "end_time": announcement["end_time"],
-                        "r5_up_items": banner.r5_up_items,
-                        "r4_up_items": banner.r4_up_items,
+                        "r5_up_items": [
+                            {
+                                "name": item.name,
+                                "type": item.type,
+                                "element": item.element,
+                                "icon": item.icon,
+                            }
+                            for item in banner.r5_up_items
+                        ],
+                        "r4_up_items": [
+                            {
+                                "name": item.name,
+                                "type": item.type,
+                                "element": item.element,
+                                "icon": item.icon,
+                            }
+                            for item in banner.r4_up_items
+                        ],
                     })
 
 
@@ -989,6 +1006,13 @@ async def get_events_data(
         "wish_banners": wish_banners,
     }
 
+
+def clean_banner_title(title: str) -> str:
+    return re.sub(
+        r"<color=.*?>(.*?)</color>",
+        r"\1",
+        title
+    )
 
 def get_daily_reset_timestamp(
     genshin_server: str

@@ -1384,12 +1384,168 @@
         0 0 16px rgba(232, 137, 181, 0.08);
 }
 
+
 /* ====================================
    Trounce Domains
    ====================================*/
 
 .event-trounce-item {
     margin-top: 10px;
+}
+
+
+/* ================================
+   Current Wishes
+   ================================ */
+
+.events-wishes {
+    margin-bottom: 32px;
+}
+
+.wish-banners {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.wish-banner-card {
+    position: relative;
+    min-height: 360px;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: var(--card-background);
+
+    isolation: isolate;
+}
+
+.wish-banner-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: -2;
+}
+
+.wish-banner-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.88) 0%,
+            rgba(0, 0, 0, 0.65) 42%,
+            rgba(0, 0, 0, 0.18) 100%
+        );
+
+    z-index: -1;
+}
+
+.wish-banner-content {
+    position: relative;
+
+    height: 100%;
+    min-height: 360px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 28px;
+}
+
+.wish-banner-type {
+    margin-bottom: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: var(--accent);
+}
+
+.wish-banner-title {
+    margin: 0 0 20px;
+
+    font-size: 25px;
+    line-height: 1.15;
+
+    color: #fff;
+}
+
+.wish-banner-featured {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-top: 10px;
+}
+
+.wish-banner-label {
+    min-width: 28px;
+
+    padding-top: 6px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    color: #fff;
+}
+
+.wish-banner-items {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+.wish-banner-item {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.wish-banner-item img {
+    width: 36px;
+    height: 36px;
+
+    object-fit: contain;
+
+    border-radius: 50%;
+}
+
+.wish-banner-four-star {
+    opacity: 0.9;
+}
+
+.wish-banner-four-star .wish-banner-item img {
+    width: 30px;
+    height: 30px;
+}
+
+.wish-banner-time {
+    margin-top: 18px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: rgba(255, 255, 255, 0.75);
 }
 
 
