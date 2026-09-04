@@ -720,16 +720,19 @@ async def get_events_data(
 
                 async with client:
 
-                    banners = await client.get_banner_details()
+                    banners = await client.get_genshin_banners()
 
                     print("\n========== GENSHIN BANNERS ==========")
 
                     for banner in banners:
                         print("\n--------------------------------------")
+                        print(type(banner))
                         print(banner)
 
                         if hasattr(banner, "__dict__"):
-                            print(vars(banner))
+                            print("\nFIELDS:")
+                            for key, value in vars(banner).items():
+                                print(f"{key}: {value}")
 
                     print("======================================\n")
 
