@@ -121,6 +121,14 @@ class HoYoLABClient:
 
         return await client.get_genshin_spiral_abyss()
 
+    async def get_genshin_banners(self):
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN
+        )
+
+        return await client.get_banner_details()
+
     async def get_genshin_banner_ids(self):
         client = genshin.Client(
             cookies=self.credentials.as_cookies(),
