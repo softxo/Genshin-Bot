@@ -765,14 +765,10 @@ async def get_events_data(
                         "banner_type_name": banner.banner_type_name,
                         "image": announcement["image"],
                         "start_time": int(
-                            datetime.fromisoformat(
-                                announcement["start_time"]
-                            ).timestamp()
+                                announcement["start_time"].timestamp()
                         ),
                         "end_time": int(
-                            datetime.fromisoformat(
-                                announcement["end_time"]
-                            ).timestamp()
+                                announcement["end_time"].timestamp()
                         ),
                         "r5_up_items": [
                             {
