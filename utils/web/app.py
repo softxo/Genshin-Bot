@@ -704,14 +704,14 @@ async def get_events_data(
 
                 async with client:
 
-                    banners = await client.get_genshin_banners()
+                    import genshin
 
-                    for banner in banners:
-                        print("ID:", banner.banner_id)
-                        print("OBJECT:", banner)
-                        print("ATTRIBUTES:", dir(banner))
-                        print()
-                        
+                    print([
+                        name
+                        for name in dir(genshin.Client)
+                        if "announcement" in name.lower()
+                    ])
+
                     theater = (
                         await client.get_imaginarium_theater()
                     )
