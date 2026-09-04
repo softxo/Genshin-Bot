@@ -722,19 +722,35 @@ async def get_events_data(
 
                     banners = await client.get_genshin_banners()
 
-                    print("\n========== GENSHIN BANNERS ==========")
+                    print("\n========== EVENT BANNERS ==========")
 
                     for banner in banners:
-                        print("\n--------------------------------------")
-                        print(type(banner))
-                        print(banner)
+                        if banner.r5_up_items or banner.r4_up_items:
+                            print("\n===================================")
+                            print(f"ID: {banner.banner_id}")
+                            print(f"TYPE: {banner.banner_type}")
+                            print(f"TITLE: {banner.title}")
+                            print(f"DATE: {banner.date_range}")
 
-                        if hasattr(banner, "__dict__"):
-                            print("\nFIELDS:")
-                            for key, value in vars(banner).items():
-                                print(f"{key}: {value}")
+                            print("\n5★ UP:")
+                            for item in banner.r5_up_items:
+                                print(
+                                    f"  {item.name} | "
+                                    f"{item.type} | "
+                                    f"{item.rarity}★ | "
+                                    f"up={item.up}"
+                                )
 
-                    print("======================================\n")
+                            print("\n4★ UP:")
+                            for item in banner.r4_up_items:
+                                print(
+                                    f"  {item.name} | "
+                                    f"{item.type} | "
+                                    f"{item.rarity}★ | "
+                                    f"up={item.up}"
+                                )
+
+                    print("===================================\n")
 
                     theater = (
                         await client.get_imaginarium_theater()
