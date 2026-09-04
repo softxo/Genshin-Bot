@@ -706,12 +706,15 @@ async def get_events_data(
 
                     announcements = await client.get_genshin_announcements()
 
-                    print("===== ANNOUNCEMENTS =====")
-
                     for announcement in announcements:
-                        print(announcement)
-
-                    print("=========================")
+                        if announcement.banner:
+                            print(
+                                announcement.id,
+                                "|",
+                                announcement.subtitle,
+                                "|",
+                                announcement.banner
+                            )
 
                     theater = (
                         await client.get_imaginarium_theater()
