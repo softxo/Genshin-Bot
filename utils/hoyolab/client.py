@@ -137,6 +137,14 @@ class HoYoLABClient:
 
         return await client.get_genshin_banner_ids()
 
+    async def get_genshin_announcements(self):
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN
+        )
+
+        return await client.get_genshin_announcements()
+
     async def get_genshin_banner_announcements(self) -> list[dict]:
         if self.session is None:
             raise RuntimeError(
