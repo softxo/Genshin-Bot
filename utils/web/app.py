@@ -700,6 +700,22 @@ async def get_events_data(
                 selected_account["genshin_uid"]
             )
 
+            print("\n========== CLIENT METHODS ==========")
+
+            print(type(client))
+
+            print(
+                [
+                    name
+                    for name in dir(client)
+                    if "wish" in name.lower()
+                    or "gacha" in name.lower()
+                    or "banner" in name.lower()
+                ]
+            )
+
+            print("====================================\n")
+
             if client is not None:
 
                 async with client:
