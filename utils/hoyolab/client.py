@@ -129,17 +129,10 @@ class HoYoLABClient:
 
         return await client.get_banner_details()
 
-    async def get_genshin_banner_raw(
-        self,
-        banner_id: str
-    ):
+    async def get_genshin_banner_ids(self):
         client = genshin.Client(
             cookies=self.credentials.as_cookies(),
             game=genshin.types.Game.GENSHIN
         )
 
-        data = await client.request_webstatic(
-            f"gacha_info/hk4e/os_asia/{banner_id}/en-us.json"
-        )
-
-        return data
+        return await client.get_genshin_banner_ids()

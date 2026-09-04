@@ -704,13 +704,15 @@ async def get_events_data(
 
                 async with client:
 
-                    data = await client.get_genshin_banner_raw(
-                        "fdf07a3247173a53c091079cb032c320f043154f"
-                    )
+                    banners = await client.get_genshin_banner_ids()
 
-                    print("\n========== RAW BANNER ==========")
-                    print(data)
+                    print("\n========== BANNER IDS ==========")
+
+                    for banner in banners:
+                        print(banner)
+
                     print("================================\n")
+
                     theater = (
                         await client.get_imaginarium_theater()
                     )
