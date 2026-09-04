@@ -704,13 +704,21 @@ async def get_events_data(
 
                 async with client:
 
+                    import asyncio
                     import genshin
 
-                    print([
-                        name
-                        for name in dir(genshin.Client)
-                        if "announcement" in name.lower()
-                    ])
+                    async def test():
+                        client = genshin.Client(
+                            cookies=None,
+                            game=genshin.types.Game.GENSHIN
+                        )
+
+                        announcements = await client.get_genshin_announcements()
+
+                        print(type(announcements))
+                        print(announcements)
+
+                    asyncio.run(test())
 
                     theater = (
                         await client.get_imaginarium_theater()
