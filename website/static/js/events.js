@@ -117,8 +117,17 @@ function initEvents() {
 
             if (remaining <= 0) {
 
+                const isStygianReset =
+                    timer.classList.contains(
+                        "stygian-reset-timer"
+                    );
+
+
                 timer.textContent =
-                    "Updating...";
+                    isStygianReset
+                        ? "Resetting..."
+                        : "Updating...";
+
 
                 timer.classList.remove(
                     "warning"

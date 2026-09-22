@@ -1549,6 +1549,30 @@
 }
 
 
+/* ================================
+   WISH BANNERS — EMPTY STATE
+   ================================ */
+
+.wish-banners-empty {
+    min-height: 140px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 28px;
+
+    border-radius: 16px;
+
+    background: var(--card-background);
+    border: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
 /* =========================================================
    14. RESPONSIVE — FEATURED CARDS
    =========================================================

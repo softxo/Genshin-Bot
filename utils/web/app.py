@@ -677,6 +677,7 @@ async def get_events_data(
     }
 
     selected_account = None
+    wish_banners = []
 
     if accounts:
 
@@ -729,6 +730,9 @@ async def get_events_data(
                 # EVENT WISH BANNERS
                 # =========================================
 
+                now = datetime.now(timezone.utc)
+
+
                 announcement_data = {
                     clean_banner_title(announcement.subtitle): {
                         "image": announcement.banner,
@@ -736,14 +740,18 @@ async def get_events_data(
                         "end_time": announcement.end_time,
                     }
                     for announcement in announcements
-                    if announcement.banner
+                    if (
+                        announcement.banner
+                        and announcement.end_time
+                    )
                 }
 
-                wish_banners = []
 
                 for banner in banners:
 
-                    title = clean_banner_title(banner.title)
+                    title = clean_banner_title(
+                        banner.title
+                    )
 
                     normalized_title = title.replace(
                         "Event Event Wish ",
@@ -751,12 +759,28 @@ async def get_events_data(
                         1,
                     )
 
+
                     announcement = announcement_data.get(
                         normalized_title
                     )
 
+
                     if announcement is None:
                         continue
+
+
+                    start_time = announcement["start_time"]
+                    end_time = announcement["end_time"]
+
+
+                    # Only show banners during their actual
+                    # announcement duration.
+                    if start_time > now:
+                        continue
+
+                    if end_time <= now:
+                        continue
+
 
                     wish_banners.append({
                         "banner_id": banner.banner_id,
@@ -765,10 +789,10 @@ async def get_events_data(
                         "banner_type_name": banner.banner_type_name,
                         "image": announcement["image"],
                         "start_time": int(
-                                announcement["start_time"].timestamp()
+                            start_time.timestamp()
                         ),
                         "end_time": int(
-                                announcement["end_time"].timestamp()
+                            end_time.timestamp()
                         ),
                         "r5_up_items": [
                             {
