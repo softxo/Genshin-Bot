@@ -340,6 +340,11 @@ function initEvents() {
                     ".events-list"
                 );
 
+            const newWishes =
+                documentFromServer.querySelector(
+                    ".events-wishes"
+                );
+
 
             const currentFeatured =
                 container.querySelector(
@@ -351,12 +356,19 @@ function initEvents() {
                     ".events-list"
                 );
 
+            const currentWishes =
+                container.querySelector(
+                    ".events-wishes"
+                );
+
 
             if (
                 !newFeatured ||
                 !newEventsList ||
+                !newWishes ||
                 !currentFeatured ||
-                !currentEventsList
+                !currentEventsList ||
+                !currentWishes
             ) {
 
                 return;
@@ -374,6 +386,10 @@ function initEvents() {
 
             currentEventsList.replaceWith(
                 newEventsList
+            );
+
+            currentWishes.replaceWith(
+                newWishes
             );
 
 
@@ -558,9 +574,9 @@ function initEvents() {
         */
 
         const delay =
-            nearExpiry
-                ? 10000
-                : 10000;
+        nearExpiry
+            ? 10000
+            : 60000;
 
 
         window.eventsRefreshTimer =
