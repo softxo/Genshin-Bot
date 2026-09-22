@@ -707,6 +707,24 @@ async def get_events_data(
                 async with client:
 
                     banners = await client.get_genshin_banners()
+                    
+                    banner_ids = await client.get_genshin_banner_ids()
+
+                    print("===== BANNER DEBUG =====")
+                    print("BANNERS:")
+
+                    for banner in banners:
+                        print(
+                            banner.banner_id,
+                            "|",
+                            banner.title
+                        )
+
+                    print("BANNER IDS:")
+                    print(banner_ids)
+
+                    print("========================")
+
                     announcements = await client.get_genshin_announcements()
 
                     theater = (
