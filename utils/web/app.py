@@ -747,6 +747,32 @@ async def get_events_data(
                 }
 
 
+                # =========================================
+                # DEBUG
+                # =========================================
+
+                print("===== WISH DEBUG =====")
+                print("NOW:", now)
+
+                for announcement in announcements:
+                    print(
+                        "ANNOUNCEMENT:",
+                        clean_banner_title(announcement.subtitle),
+                        "| START:",
+                        announcement.start_time,
+                        "| END:",
+                        announcement.end_time,
+                    )
+
+                for banner in banners:
+                    print(
+                        "BANNER:",
+                        clean_banner_title(banner.title)
+                    )
+
+                print("======================")
+
+
                 for banner in banners:
 
                     title = clean_banner_title(
