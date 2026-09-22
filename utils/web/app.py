@@ -793,12 +793,28 @@ async def get_events_data(
                     if not featured_5stars:
                         continue
 
+                    print("===== WISH DEBUG =====")
+                    print("Banner ID:", banner.id)
+                    print("Pool Status:", banner.pool_status)
+                    print("End Timestamp:", banner.end_timestamp)
+                    print("Now Timestamp:", now_timestamp)
+                    print("5★:", featured_5stars)
+                    print("4★:", featured_4stars)
+
                     announcement = find_wish_announcement(
                         featured_5stars
                     )
 
                     if announcement is None:
+
+                        print("NO ANNOUNCEMENT MATCH")
+
                         continue
+
+                    print(
+                        "MATCHED ANNOUNCEMENT:",
+                        announcement.subtitle
+                    )
 
                     wish_banners.append({
                         "banner_id": banner.id,
