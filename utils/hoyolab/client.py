@@ -191,3 +191,18 @@ class HoYoLABClient:
         )
 
         return await client.get_genshin_banner_names()
+
+    async def get_genshin_event_calendar(self):
+        if self.session is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
+
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN,
+        )
+
+        return await client.get_genshin_event_calendar(
+            uid=self.genshin_uid,
+        )

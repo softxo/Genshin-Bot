@@ -710,14 +710,27 @@ async def get_events_data(
 
                     announcements = await client.get_genshin_announcements()
 
-                    banner_announcements = await client.get_genshin_banner_announcements()
+                    calendar = await client.get_genshin_event_calendar()
 
-                    print("===== BANNER ANNOUNCEMENTS DEBUG =====")
+                    print("\n===== EVENT CALENDAR =====")
 
-                    for announcement in banner_announcements:
-                        print(announcement)
+                    print("TYPE:", type(calendar))
 
-                    print("======================================")
+                    for name in dir(calendar):
+                        if name.startswith("_"):
+                            continue
+
+                        try:
+                            value = getattr(calendar, name)
+                        except Exception:
+                            continue
+
+                        if callable(value):
+                            continue
+
+                        print(f"{name}: {value!r}")
+
+                    print("==========================\n")
 
                     theater = (
                         await client.get_imaginarium_theater()
