@@ -708,6 +708,19 @@ async def get_events_data(
 
                     banners = await client.get_genshin_banners()
 
+                    print("===== ACTIVE BANNER DEBUG =====")
+
+                    for banner in banners:
+                        print("ID:", banner.banner_id)
+                        print("TITLE:", banner.title)
+                        print("TYPE:", banner.banner_type)
+                        print("TYPE NAME:", banner.banner_type_name)
+                        print("START:", getattr(banner, "start_time", None))
+                        print("END:", getattr(banner, "end_time", None))
+                        print()
+
+                    print("===============================")
+
                     announcements = await client.get_genshin_announcements()
 
                     theater = (
@@ -746,6 +759,7 @@ async def get_events_data(
 
 
                 for announcement in announcements:
+                    
 
                     # We only want actual Event/Weapon Wish announcements.
                     if not announcement.subtitle:
