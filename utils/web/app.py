@@ -767,37 +767,42 @@ async def get_events_data(
 
                 for banner in event_calendar.character_banners:
 
-                    print("===== CHARACTER BANNER =====")
-                    print(vars(banner))
-
-                    for character in banner.characters:
-                        print("CHARACTER:")
-                        print(vars(character))
-
                     if banner.pool_status != 2:
                         continue
 
                     if banner.end_timestamp <= now_timestamp:
                         continue
 
-                    featured_5stars = [
+                    featured_5star_names = [
                         character.name
                         for character in banner.characters
                         if character.rarity == 5
                     ]
 
-                    featured_4stars = [
-                        character.name
-                        for character in banner.characters
-                        if character.rarity == 4
-                    ]
-
-                    if not featured_5stars:
+                    if not featured_5star_names:
                         continue
 
                     announcement = find_wish_announcement(
-                        featured_5stars
+                        featured_5star_names
                     )
+
+                    featured_5stars = [
+                        {
+                            "name": character.name,
+                            "icon": character.icon,
+                        }
+                        for character in banner.characters
+                        if character.rarity == 5
+                    ]
+
+                    featured_4stars = [
+                        {
+                            "name": character.name,
+                            "icon": character.icon,
+                        }
+                        for character in banner.characters
+                        if character.rarity == 4
+                    ]
 
                     wish_banners.append({
                         "banner_id": banner.id,
@@ -821,7 +826,6 @@ async def get_events_data(
                         "r4_up_items": featured_4stars,
                     })
 
-
                 # -----------------------------------------
                 # Weapon Event Wishes
                 # -----------------------------------------
@@ -834,14 +838,28 @@ async def get_events_data(
                     if banner.end_timestamp <= now_timestamp:
                         continue
 
-                    featured_5stars = [
+                    # Names only — used for announcement matching.
+                    featured_5star_names = [
                         weapon.name
                         for weapon in banner.weapons
                         if weapon.rarity == 5
                     ]
 
+                    # Full item data — used by the website.
+                    featured_5stars = [
+                        {
+                            "name": weapon.name,
+                            "icon": weapon.icon,
+                        }
+                        for weapon in banner.weapons
+                        if weapon.rarity == 5
+                    ]
+
                     featured_4stars = [
-                        weapon.name
+                        {
+                            "name": weapon.name,
+                            "icon": weapon.icon,
+                        }
                         for weapon in banner.weapons
                         if weapon.rarity == 4
                     ]
@@ -850,7 +868,7 @@ async def get_events_data(
                         continue
 
                     announcement = find_wish_announcement(
-                        featured_5stars
+                        featured_5star_names
                     )
 
                     wish_banners.append({
