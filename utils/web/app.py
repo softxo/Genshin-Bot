@@ -748,7 +748,10 @@ async def get_events_data(
                 for announcement in announcements:
 
                     # We only want actual Event/Weapon Wish announcements.
-                    if announcement.type_label != "Event":
+                    if not announcement.subtitle:
+                        continue
+
+                    if not announcement.subtitle.startswith("Event Wish"):
                         continue
 
                     if not announcement.banner:
@@ -779,7 +782,11 @@ async def get_events_data(
 
                     wish_banners.append({
                         "banner_id": announcement.id,
-                        "banner_type": 301 if "Event Wish" in announcement.subtitle else 302,
+                        "banner_type": (
+                            302
+                            if "Epitome Invocation" in announcement.subtitle
+                            else 301
+                        ),
                         "title": clean_banner_title(announcement.subtitle),
                         "banner_type_name": "Event Wish",
 
