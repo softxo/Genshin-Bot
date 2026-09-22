@@ -183,3 +183,11 @@ class HoYoLABClient:
             )
 
         return data.get("data", {}).get("list", [])
+
+    async def get_genshin_banner_names(self):
+        client = genshin.Client(
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN
+        )
+
+        return await client.get_genshin_banner_names()
