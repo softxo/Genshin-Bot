@@ -708,34 +708,7 @@ async def get_events_data(
 
                     banners = await client.get_genshin_banners()
 
-                    banner_ids = await client.get_genshin_banner_ids()
-
-                    print("===== BANNER DEBUG =====")
-                    print("BANNERS:")
-
-                    for banner in banners:
-                        print(
-                            banner.banner_id,
-                            "|",
-                            banner.title
-                        )
-
-                    print("BANNER IDS:")
-                    print(banner_ids)
-
-                    print("========================")
-
                     announcements = await client.get_genshin_announcements()
-
-                    for announcement in announcements:
-
-                        if "When Warm Winds Cavort" in announcement.subtitle:
-
-                            print("===== BANNER ANNOUNCEMENT DEBUG =====")
-                            print(announcement)
-                            print("====================================")
-
-                            break
 
                     theater = (
                         await client.get_imaginarium_theater()
@@ -761,111 +734,63 @@ async def get_events_data(
                 now = datetime.now(timezone.utc)
 
 
-                announcement_data = {
-                    clean_banner_title(announcement.subtitle): {
-                        "image": announcement.banner,
-                        "start_time": announcement.start_time,
-                        "end_time": announcement.end_time,
-                    }
-                    for announcement in announcements
-                    if (
-                        announcement.banner
-                        and announcement.end_time
-                    )
-                }
+                def make_aware(dt: datetime) -> datetime:
+                    """
+                    HoYoLAB announcements currently return naive datetimes.
+                    Treat them as UTC.
+                    """
+                    if dt.tzinfo is None:
+                        return dt.replace(tzinfo=timezone.utc)
 
+                    return dt.astimezone(timezone.utc)
 
-                # =========================================
-                # DEBUG
-                # =========================================
-
-                print("===== WISH DEBUG =====")
-                print("NOW:", now)
 
                 for announcement in announcements:
-                    print(
-                        "ANNOUNCEMENT:",
-                        clean_banner_title(announcement.subtitle),
-                        "| START:",
-                        announcement.start_time,
-                        "| END:",
-                        announcement.end_time,
-                    )
 
-                for banner in banners:
-                    print(
-                        "BANNER:",
-                        clean_banner_title(banner.title)
-                    )
-
-                print("======================")
-
-
-                for banner in banners:
-
-                    title = clean_banner_title(
-                        banner.title
-                    )
-
-                    normalized_title = title.replace(
-                        "Event Event Wish ",
-                        "Event Wish ",
-                        1,
-                    )
-
-
-                    announcement = announcement_data.get(
-                        normalized_title
-                    )
-
-
-                    if announcement is None:
+                    # We only want actual Event/Weapon Wish announcements.
+                    if announcement.type_label != "Event":
                         continue
 
+                    if not announcement.banner:
+                        continue
 
-                    start_time = announcement["start_time"]
-                    end_time = announcement["end_time"]
+                    if not announcement.start_time or not announcement.end_time:
+                        continue
 
+                    start_time = make_aware(announcement.start_time)
+                    end_time = make_aware(announcement.end_time)
 
-                    # Only show banners during their actual
-                    # announcement duration.
+                    # Ignore banners that haven't started yet.
                     if start_time > now:
                         continue
 
+                    # Ignore banners that have already ended.
                     if end_time <= now:
                         continue
 
+                    print(
+                        "ACTIVE WISH:",
+                        announcement.subtitle,
+                        "| START:",
+                        start_time,
+                        "| END:",
+                        end_time,
+                    )
 
                     wish_banners.append({
-                        "banner_id": banner.banner_id,
-                        "banner_type": banner.banner_type,
-                        "title": normalized_title,
-                        "banner_type_name": banner.banner_type_name,
-                        "image": announcement["image"],
-                        "start_time": int(
-                            start_time.timestamp()
-                        ),
-                        "end_time": int(
-                            end_time.timestamp()
-                        ),
-                        "r5_up_items": [
-                            {
-                                "name": item.name,
-                                "type": item.type,
-                                "element": item.element,
-                                "icon": item.icon,
-                            }
-                            for item in banner.r5_up_items
-                        ],
-                        "r4_up_items": [
-                            {
-                                "name": item.name,
-                                "type": item.type,
-                                "element": item.element,
-                                "icon": item.icon,
-                            }
-                            for item in banner.r4_up_items
-                        ],
+                        "banner_id": announcement.id,
+                        "banner_type": 301 if "Event Wish" in announcement.subtitle else 302,
+                        "title": clean_banner_title(announcement.subtitle),
+                        "banner_type_name": "Event Wish",
+
+                        # HoYoLAB's announcement banner is the splash artwork.
+                        "image": announcement.banner,
+
+                        "start_time": int(start_time.timestamp()),
+                        "end_time": int(end_time.timestamp()),
+
+                        "r5_up_items": [],
+                        "r4_up_items": [],
                     })
 
 
