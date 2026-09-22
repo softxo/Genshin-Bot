@@ -740,8 +740,6 @@ async def get_events_data(
                     Find the announcement matching the active banner.
                     """
 
-                    print("Looking for:", names)
-
                     for announcement in announcements:
 
                         if not announcement.subtitle:
@@ -750,24 +748,14 @@ async def get_events_data(
                         if not announcement.subtitle.startswith("Event Wish"):
                             continue
 
-                        print(
-                            "Checking announcement:",
-                            announcement.subtitle
-                        )
+                        if not announcement.banner:
+                            continue
 
                         content = announcement.content or ""
 
                         for name in names:
 
                             if name.lower() in content.lower():
-
-                                print(
-                                    "MATCH FOUND:",
-                                    name,
-                                    "->",
-                                    announcement.subtitle
-                                )
-
                                 return announcement
 
                     return None
@@ -800,37 +788,26 @@ async def get_events_data(
                     if not featured_5stars:
                         continue
 
-                    print("===== WISH DEBUG =====")
-                    print("Banner ID:", banner.id)
-                    print("Pool Status:", banner.pool_status)
-                    print("End Timestamp:", banner.end_timestamp)
-                    print("Now Timestamp:", now_timestamp)
-                    print("5★:", featured_5stars)
-                    print("4★:", featured_4stars)
-
                     announcement = find_wish_announcement(
                         featured_5stars
-                    )
-
-                    if announcement is None:
-
-                        print("NO ANNOUNCEMENT MATCH")
-
-                        continue
-
-                    print(
-                        "MATCHED ANNOUNCEMENT:",
-                        announcement.subtitle
                     )
 
                     wish_banners.append({
                         "banner_id": banner.id,
                         "banner_type": 301,
-                        "title": clean_banner_title(
-                            announcement.subtitle
+                        "title": (
+                            clean_banner_title(
+                                announcement.subtitle
+                            )
+                            if announcement
+                            else "Character Event Wish"
                         ),
                         "banner_type_name": "Character Event Wish",
-                        "image": announcement.banner,
+                        "image": (
+                            announcement.banner
+                            if announcement
+                            else None
+                        ),
                         "start_time": banner.start_timestamp,
                         "end_time": banner.end_timestamp,
                         "r5_up_items": featured_5stars,
@@ -869,17 +846,22 @@ async def get_events_data(
                         featured_5stars
                     )
 
-                    if announcement is None:
-                        continue
-
                     wish_banners.append({
                         "banner_id": banner.id,
                         "banner_type": 302,
-                        "title": clean_banner_title(
-                            announcement.subtitle
+                        "title": (
+                            clean_banner_title(
+                                announcement.subtitle
+                            )
+                            if announcement
+                            else "Weapon Event Wish"
                         ),
                         "banner_type_name": "Weapon Event Wish",
-                        "image": announcement.banner,
+                        "image": (
+                            announcement.banner
+                            if announcement
+                            else None
+                        ),
                         "start_time": banner.start_timestamp,
                         "end_time": banner.end_timestamp,
                         "r5_up_items": featured_5stars,
