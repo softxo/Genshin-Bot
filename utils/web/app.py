@@ -707,7 +707,7 @@ async def get_events_data(
                 async with client:
 
                     banners = await client.get_genshin_banners()
-                    
+
                     banner_ids = await client.get_genshin_banner_ids()
 
                     print("===== BANNER DEBUG =====")
@@ -726,6 +726,16 @@ async def get_events_data(
                     print("========================")
 
                     announcements = await client.get_genshin_announcements()
+
+                    for announcement in announcements:
+
+                        if "When Warm Winds Cavort" in announcement.subtitle:
+
+                            print("===== BANNER ANNOUNCEMENT DEBUG =====")
+                            print(announcement)
+                            print("====================================")
+
+                            break
 
                     theater = (
                         await client.get_imaginarium_theater()
