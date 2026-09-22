@@ -718,6 +718,20 @@ async def get_events_data(
 
                     notes = await client.get_genshin_notes()
 
+                    print("===== DAILY NOTE =====")
+                    print(
+                        {
+                            key: value
+                            for key, value in notes["data"].items()
+                            if (
+                                "task" in key.lower()
+                                or "point" in key.lower()
+                                or "encounter" in key.lower()
+                            )
+                        }
+                    )
+                    print("======================")
+
 
                 # =========================================
                 # EVENT WISH BANNERS
