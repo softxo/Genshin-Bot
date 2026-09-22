@@ -738,11 +738,9 @@ async def get_events_data(
                 def find_wish_announcement(names):
                     """
                     Find the announcement matching the active banner.
-
-                    Chronicle provides the actual active banner and
-                    featured characters/weapons. The announcement
-                    provides the splash artwork and title.
                     """
+
+                    print("Looking for:", names)
 
                     for announcement in announcements:
 
@@ -752,16 +750,25 @@ async def get_events_data(
                         if not announcement.subtitle.startswith("Event Wish"):
                             continue
 
-                        if not announcement.banner:
-                            continue
+                        print(
+                            "Checking announcement:",
+                            announcement.subtitle
+                        )
 
                         content = announcement.content or ""
 
-                        if all(
-                            name in content
-                            for name in names
-                        ):
-                            return announcement
+                        for name in names:
+
+                            if name.lower() in content.lower():
+
+                                print(
+                                    "MATCH FOUND:",
+                                    name,
+                                    "->",
+                                    announcement.subtitle
+                                )
+
+                                return announcement
 
                     return None
 
