@@ -745,6 +745,12 @@ async def get_events_data(
 
                 for announcement in announcements:
 
+                    if not announcement.subtitle:
+                        continue
+
+                    if "Event Wish" not in announcement.subtitle:
+                        continue
+
                     print("===== WISH ANNOUNCEMENT =====")
                     print("SUBTITLE:", announcement.subtitle)
                     print("START:", announcement.start_time)
@@ -752,9 +758,6 @@ async def get_events_data(
                     print("CONTENT:")
                     print(announcement.content)
                     print("=============================")
-                    
-                    if not announcement.subtitle:
-                        continue
 
                     if not announcement.subtitle.startswith("Event Wish"):
                         continue
