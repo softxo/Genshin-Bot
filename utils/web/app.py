@@ -767,6 +767,9 @@ async def get_events_data(
 
                 for banner in event_calendar.character_banners:
 
+                    print("CHARACTER MODEL:")
+                    print(vars(banner.characters[0]))
+
                     if banner.pool_status != 2:
                         continue
 
@@ -774,13 +777,19 @@ async def get_events_data(
                         continue
 
                     featured_5stars = [
-                        character.name
+                        {
+                            "name": character.name,
+                            "icon": character.icon,
+                        }
                         for character in banner.characters
                         if character.rarity == 5
                     ]
 
                     featured_4stars = [
-                        character.name
+                        {
+                            "name": character.name,
+                            "icon": character.icon,
+                        }
                         for character in banner.characters
                         if character.rarity == 4
                     ]
