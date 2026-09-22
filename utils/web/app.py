@@ -706,130 +706,161 @@ async def get_events_data(
 
                 async with client:
 
-                    banners = await client.get_genshin_banners()
-
                     announcements = await client.get_genshin_announcements()
 
-                    calendar = await client.get_genshin_event_calendar()
+                    event_calendar = await client.get_genshin_event_calendar()
 
-                    print("\n===== EVENT CALENDAR =====")
+                    theater = await client.get_imaginarium_theater()
 
-                    print("TYPE:", type(calendar))
+                    abyss = await client.get_genshin_spiral_abyss()
 
-                    for name in dir(calendar):
-                        if name.startswith("_"):
-                            continue
+                    stygian = await client.get_stygian_onslaught()
 
-                        try:
-                            value = getattr(calendar, name)
-                        except Exception:
-                            continue
-
-                        if callable(value):
-                            continue
-
-                        print(f"{name}: {value!r}")
-
-                    print("==========================\n")
-
-                    theater = (
-                        await client.get_imaginarium_theater()
-                    )
-
-                    abyss = (
-                        await client.get_genshin_spiral_abyss()
-                    )
-
-                    stygian = (
-                        await client.get_stygian_onslaught()
-                    )
-
-                    notes = (
-                        await client.get_genshin_notes()
-                    )
+                    notes = await client.get_genshin_notes()
 
 
                 # =========================================
                 # EVENT WISH BANNERS
+                #
+                # The Battle Chronicle event calendar is the
+                # source of truth for currently active Wishes.
+                #
+                # Announcements are only used for:
+                # - splash artwork
+                # - announcement title
                 # =========================================
 
-                now = datetime.now(timezone.utc)
+                now_timestamp = int(
+                    datetime.now(timezone.utc).timestamp()
+                )
 
 
-                def make_aware(dt: datetime) -> datetime:
+                def find_wish_announcement(names):
                     """
-                    HoYoLAB announcements currently return naive datetimes.
-                    Treat them as UTC.
+                    Find the announcement matching the active banner.
+
+                    Chronicle provides the actual active banner and
+                    featured characters/weapons. The announcement
+                    provides the splash artwork and title.
                     """
-                    if dt.tzinfo is None:
-                        return dt.replace(tzinfo=timezone.utc)
 
-                    return dt.astimezone(timezone.utc)
+                    for announcement in announcements:
+
+                        if not announcement.subtitle:
+                            continue
+
+                        if not announcement.subtitle.startswith("Event Wish"):
+                            continue
+
+                        if not announcement.banner:
+                            continue
+
+                        content = announcement.content or ""
+
+                        if all(
+                            name in content
+                            for name in names
+                        ):
+                            return announcement
+
+                    return None
 
 
-                for announcement in announcements:
+                # -----------------------------------------
+                # Character Event Wishes
+                # -----------------------------------------
 
-                    if not announcement.subtitle:
+                for banner in event_calendar.character_banners:
+
+                    if banner.pool_status != 2:
                         continue
 
-                    if "Event Wish" not in announcement.subtitle:
+                    if banner.end_timestamp <= now_timestamp:
                         continue
 
-                    print("===== WISH ANNOUNCEMENT =====")
-                    print("SUBTITLE:", announcement.subtitle)
-                    print("START:", announcement.start_time)
-                    print("END:", announcement.end_time)
-                    print("CONTENT:")
-                    print(announcement.content)
-                    print("=============================")
+                    featured_5stars = [
+                        character.name
+                        for character in banner.characters
+                        if character.rarity == 5
+                    ]
 
-                    if not announcement.subtitle.startswith("Event Wish"):
+                    featured_4stars = [
+                        character.name
+                        for character in banner.characters
+                        if character.rarity == 4
+                    ]
+
+                    if not featured_5stars:
                         continue
 
-                    if not announcement.banner:
-                        continue
-
-                    if not announcement.start_time or not announcement.end_time:
-                        continue
-
-                    start_time = make_aware(announcement.start_time)
-                    end_time = make_aware(announcement.end_time)
-
-                    # Ignore banners that haven't started yet.
-                    if start_time > now:
-                        continue
-
-                    # Ignore banners that have already ended.
-                    if end_time <= now:
-                        continue
-
-                    print(
-                        "ACTIVE WISH:",
-                        announcement.subtitle,
-                        "| START:",
-                        start_time,
-                        "| END:",
-                        end_time,
+                    announcement = find_wish_announcement(
+                        featured_5stars
                     )
 
+                    if announcement is None:
+                        continue
+
                     wish_banners.append({
-                        "banner_id": announcement.id,
-                        "banner_type": (
-                            302
-                            if "Epitome Invocation" in announcement.subtitle
-                            else 301
+                        "banner_id": banner.id,
+                        "banner_type": 301,
+                        "title": clean_banner_title(
+                            announcement.subtitle
                         ),
-                        "title": clean_banner_title(announcement.subtitle),
-                        "banner_type_name": "Event Wish",
-
-                        # HoYoLAB's announcement banner is the splash artwork.
+                        "banner_type_name": "Character Event Wish",
                         "image": announcement.banner,
+                        "start_time": banner.start_timestamp,
+                        "end_time": banner.end_timestamp,
+                        "r5_up_items": featured_5stars,
+                        "r4_up_items": featured_4stars,
+                    })
 
-                        "start_time": int(start_time.timestamp()),
-                        "end_time": int(end_time.timestamp()),
 
-                        "r5_up_items": [],
-                        "r4_up_items": [],
+                # -----------------------------------------
+                # Weapon Event Wishes
+                # -----------------------------------------
+
+                for banner in event_calendar.weapon_banners:
+
+                    if banner.pool_status != 2:
+                        continue
+
+                    if banner.end_timestamp <= now_timestamp:
+                        continue
+
+                    featured_5stars = [
+                        weapon.name
+                        for weapon in banner.weapons
+                        if weapon.rarity == 5
+                    ]
+
+                    featured_4stars = [
+                        weapon.name
+                        for weapon in banner.weapons
+                        if weapon.rarity == 4
+                    ]
+
+                    if not featured_5stars:
+                        continue
+
+                    announcement = find_wish_announcement(
+                        featured_5stars
+                    )
+
+                    if announcement is None:
+                        continue
+
+                    wish_banners.append({
+                        "banner_id": banner.id,
+                        "banner_type": 302,
+                        "title": clean_banner_title(
+                            announcement.subtitle
+                        ),
+                        "banner_type_name": "Weapon Event Wish",
+                        "image": announcement.banner,
+                        "start_time": banner.start_timestamp,
+                        "end_time": banner.end_timestamp,
+                        "r5_up_items": featured_5stars,
+                        "r4_up_items": featured_4stars,
                     })
 
 
