@@ -332,14 +332,17 @@ window.initAchievements = function () {
         "A Realm Beyond: Series II":
             "/static/images/achievements/categories/A_Realm_Beyond_Series_II.png",
 
+        "A Realm Beyond: Series III":
+            "/static/images/achievements/categories/A_Realm_Beyond_Series_III.png",
+
         "Inazuma: The Islands of Thunder and Eternity - Series I":
             "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_I.png",
 
         "Inazuma: The Islands of Thunder and Eternity - Series II":
             "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_II.png",
 
-        "Inazuma: The Islands of Thunder and Eternity - Series III":
-            "/static/images/achievements/categories/Inazuma_The_Islands_of_Thunder_and_Eternity_Series_III.png",
+        "The Chronicles of the Sea of Fog":
+            "/static/images/achievements/categories/The_Chronicles_of_the_Sea_of_Fog.png",
 
         "Teyvat Fishing Guide: Series I":
             "/static/images/achievements/categories/Teyvat_Fishing_Guide_Series_I.png",
@@ -552,13 +555,16 @@ window.initAchievements = function () {
         "A Realm Beyond: Series II":
             "/static/images/achievements/categories/sidebar/A_Realm_Beyond.png",
 
+        "A Realm Beyond: Series III":
+            "/static/images/achievements/categories/sidebar/A_Realm_Beyond.png",
+
         "Inazuma: The Islands of Thunder and Eternity - Series I":
             "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
         "Inazuma: The Islands of Thunder and Eternity - Series II":
             "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
-        "Inazuma: The Islands of Thunder and Eternity - Series III":
+        "The Chronicles of the Sea of Fog":
             "/static/images/achievements/categories/sidebar/Inazuma_The_Islands_of_Thunder_and_Eternity.png",
 
         "Teyvat Fishing Guide: Series I":
@@ -622,7 +628,7 @@ window.initAchievements = function () {
             "/static/images/achievements/categories/sidebar/Duelist.png",
 
         "Repertoire of Myriad Melodies":
-            "/static/images/achievements/categories/sidebar/Reperoire_of_Myriad_Melodies.png",
+            "/static/images/achievements/categories/sidebar/Repertoire_of_Myriad_Melodies.png",
 
         "Sacred Mountain's Fading Glow":
             "/static/images/achievements/categories/sidebar/Sacred_Mountains_Fading_Glow.png",
