@@ -76,7 +76,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Dune Guide",
-                "description": "Follow {param0} Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
+                "description": "Follow 4 Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
                 "progress": 4,
                 "reward": {
                     "id": 201,
@@ -86,7 +86,7 @@
             },
             "stage2": {
                 "title": "Dune Guide",
-                "description": "Follow {param0} Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
+                "description": "Follow 8 Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
                 "progress": 8,
                 "reward": {
                     "id": 201,
@@ -96,7 +96,7 @@
             },
             "stage3": {
                 "title": "Dune Guide",
-                "description": "Follow {param0} Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
+                "description": "Follow 16 Seelie in Gavireh Lajavard and Realm of Farakhkert to their Seelie Courts.",
                 "progress": 16,
                 "reward": {
                     "id": 201,
@@ -119,7 +119,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Badlands Treasure Hunter",
-                "description": "Open a total of {param0} treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Open a total of 40 treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 40,
                 "reward": {
                     "id": 201,
@@ -129,7 +129,7 @@
             },
             "stage2": {
                 "title": "Badlands Treasure Hunter",
-                "description": "Open a total of {param0} treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Open a total of 80 treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 80,
                 "reward": {
                     "id": 201,
@@ -139,7 +139,7 @@
             },
             "stage3": {
                 "title": "Badlands Treasure Hunter",
-                "description": "Open a total of {param0} treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Open a total of 160 treasure chests in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 160,
                 "reward": {
                     "id": 201,
@@ -162,7 +162,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Badlands Adventurer",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Complete a total of 4 Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 4,
                 "reward": {
                     "id": 201,
@@ -172,7 +172,7 @@
             },
             "stage2": {
                 "title": "Badlands Adventurer",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Complete a total of 8 Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 8,
                 "reward": {
                     "id": 201,
@@ -182,7 +182,7 @@
             },
             "stage3": {
                 "title": "Badlands Adventurer",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
+                "description": "Complete a total of 16 Open World Time Trial Challenges in Gavireh Lajavard and Realm of Farakhkert.",
                 "progress": 16,
                 "reward": {
                     "id": 201,

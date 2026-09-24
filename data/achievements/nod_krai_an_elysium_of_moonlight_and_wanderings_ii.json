@@ -13,7 +13,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Moondust Treasure Hunter (II)",
-                "description": "Open {param0} chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
+                "description": "Open 45 chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
                 "progress": 45,
                 "reward": {
                     "id": 201,
@@ -23,7 +23,7 @@
             },
             "stage2": {
                 "title": "Moondust Treasure Hunter (II)",
-                "description": "Open {param0} chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
+                "description": "Open 90 chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
                 "progress": 90,
                 "reward": {
                     "id": 201,
@@ -33,7 +33,7 @@
             },
             "stage3": {
                 "title": "Moondust Treasure Hunter (II)",
-                "description": "Open {param0} chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
+                "description": "Open 180 chests in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
                 "progress": 180,
                 "reward": {
                     "id": 201,
@@ -54,7 +54,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Moondust Adventurer (II)",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
+                "description": "Complete 5 Open World mechanism-activated Time Trial Challenges in Voidsea Outlook, Wavechaser Plain, and Ashveil Peak.",
                 "progress": 5,
                 "reward": {
                     "id": 201,

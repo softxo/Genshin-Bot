@@ -14,7 +14,7 @@
             "stage1": {
                 "title": "Moondust Treasure Hunter (I)",
                 "ps5title": "Moondust Treasure Hunter (I)",
-                "description": "Open {param0} chests on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Open 60 chests on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 60,
                 "reward": {
                     "id": 201,
@@ -25,7 +25,7 @@
             "stage2": {
                 "title": "Moondust Treasure Hunter (I)",
                 "ps5title": "Moondust Treasure Hunter (II)",
-                "description": "Open {param0} chests on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Open 120 chests on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 120,
                 "reward": {
                     "id": 201,
@@ -36,7 +36,7 @@
             "stage3": {
                 "title": "Moondust Treasure Hunter (I)",
                 "ps5title": "Moondust Treasure Hunter (III)",
-                "description": "Open {param0} chests on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Open 240 chests on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 240,
                 "reward": {
                     "id": 201,
@@ -59,7 +59,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Moondust Adventurer (I)",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Complete 3 Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -69,7 +69,7 @@
             },
             "stage2": {
                 "title": "Moondust Adventurer (I)",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Complete 6 Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -79,7 +79,7 @@
             },
             "stage3": {
                 "title": "Moondust Adventurer (I)",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
+                "description": "Complete 10 Open World mechanism-activated Time Trial Challenges on Lempo Isle, Hiisi Island, and Paha Isle.",
                 "progress": 10,
                 "reward": {
                     "id": 201,

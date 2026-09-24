@@ -95,7 +95,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Domus Aurea Guide",
-                "description": "Follow {param0} Seelie in the Nostoi Region and Sea of Bygone Eras to their Seelie Courts.",
+                "description": "Follow 6 Seelie in the Nostoi Region and Sea of Bygone Eras to their Seelie Courts.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -118,7 +118,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Ancient Sea Treasure Hunter",
-                "description": "Open {param0} chests in the Nostoi Region and the Sea of Bygone Eras.",
+                "description": "Open 30 chests in the Nostoi Region and the Sea of Bygone Eras.",
                 "progress": 30,
                 "reward": {
                     "id": 201,
@@ -128,7 +128,7 @@
             },
             "stage2": {
                 "title": "Ancient Sea Treasure Hunter",
-                "description": "Open {param0} chests in the Nostoi Region and the Sea of Bygone Eras.",
+                "description": "Open 60 chests in the Nostoi Region and the Sea of Bygone Eras.",
                 "progress": 60,
                 "reward": {
                     "id": 201,
@@ -138,7 +138,7 @@
             },
             "stage3": {
                 "title": "Ancient Sea Treasure Hunter",
-                "description": "Open {param0} chests in the Nostoi Region and the Sea of Bygone Eras.",
+                "description": "Open 120 chests in the Nostoi Region and the Sea of Bygone Eras.",
                 "progress": 120,
                 "reward": {
                     "id": 201,
@@ -161,7 +161,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Ancient Sea Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
+                "description": "Complete 6 Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -171,7 +171,7 @@
             },
             "stage2": {
                 "title": "Ancient Sea Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
+                "description": "Complete 12 Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
                 "progress": 12,
                 "reward": {
                     "id": 201,
@@ -181,7 +181,7 @@
             },
             "stage3": {
                 "title": "Ancient Sea Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
+                "description": "Complete 24 Open World mechanism-activated Time Trial Challenges in the Nostoi Region and Sea of Bygone Eras.",
                 "progress": 24,
                 "reward": {
                     "id": 201,

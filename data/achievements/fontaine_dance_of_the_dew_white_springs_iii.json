@@ -78,7 +78,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Tidal Guide (III)",
-                "description": "Follow {param0} Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
+                "description": "Follow 3 Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -88,7 +88,7 @@
             },
             "stage2": {
                 "title": "Tidal Guide (III)",
-                "description": "Follow {param0} Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
+                "description": "Follow 6 Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -98,7 +98,7 @@
             },
             "stage3": {
                 "title": "Tidal Guide (III)",
-                "description": "Follow {param0} Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
+                "description": "Follow 9 Seelie to their Seelie Courts in the Morte Region and Erinnyes Forest.",
                 "progress": 9,
                 "reward": {
                     "id": 201,
@@ -122,7 +122,7 @@
             "stage1": {
                 "title": "Waveriding Treasure Hunter (III)",
                 "ps5title": "Waveriding Treasure Hunter (IV)",
-                "description": "Open {param0} treasure chests in the Morte Region and Erinnyes Forest.",
+                "description": "Open 40 treasure chests in the Morte Region and Erinnyes Forest.",
                 "progress": 40,
                 "reward": {
                     "id": 201,
@@ -133,7 +133,7 @@
             "stage2": {
                 "title": "Waveriding Treasure Hunter (III)",
                 "ps5title": "Waveriding Treasure Hunter (V)",
-                "description": "Open {param0} treasure chests in the Morte Region and Erinnyes Forest.",
+                "description": "Open 80 treasure chests in the Morte Region and Erinnyes Forest.",
                 "progress": 80,
                 "reward": {
                     "id": 201,
@@ -144,7 +144,7 @@
             "stage3": {
                 "title": "Waveriding Treasure Hunter (III)",
                 "ps5title": "Waveriding Treasure Hunter (VI)",
-                "description": "Open {param0} treasure chests in the Morte Region and Erinnyes Forest.",
+                "description": "Open 160 treasure chests in the Morte Region and Erinnyes Forest.",
                 "progress": 160,
                 "reward": {
                     "id": 201,
@@ -167,7 +167,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Waveriding Adventurer (III)",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
+                "description": "Complete a total of 3 Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -177,7 +177,7 @@
             },
             "stage2": {
                 "title": "Waveriding Adventurer (III)",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
+                "description": "Complete a total of 6 Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -187,7 +187,7 @@
             },
             "stage3": {
                 "title": "Waveriding Adventurer (III)",
-                "description": "Complete a total of {param0} Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
+                "description": "Complete a total of 9 Open World Time Trial Challenges in the Morte Region and Erinnyes Forest.",
                 "progress": 9,
                 "reward": {
                     "id": 201,

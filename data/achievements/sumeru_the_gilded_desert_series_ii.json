@@ -76,7 +76,7 @@
             "stages": 3,
             "stage1": {
                 "title": "The Desert Will Guide You Home (II)",
-                "description": "Follow {param0} Seelie in the Desert of Hadramaveth to their Seelie Courts.",
+                "description": "Follow 4 Seelie in the Desert of Hadramaveth to their Seelie Courts.",
                 "progress": 4,
                 "reward": {
                     "id": 201,
@@ -86,7 +86,7 @@
             },
             "stage2": {
                 "title": "The Desert Will Guide You Home (II)",
-                "description": "Follow {param0} Seelie in the Desert of Hadramaveth to their Seelie Courts.",
+                "description": "Follow 8 Seelie in the Desert of Hadramaveth to their Seelie Courts.",
                 "progress": 8,
                 "reward": {
                     "id": 201,
@@ -96,7 +96,7 @@
             },
             "stage3": {
                 "title": "The Desert Will Guide You Home (II)",
-                "description": "Follow {param0} Seelie in the Desert of Hadramaveth to their Seelie Courts.",
+                "description": "Follow 16 Seelie in the Desert of Hadramaveth to their Seelie Courts.",
                 "progress": 16,
                 "reward": {
                     "id": 201,
@@ -119,7 +119,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Quicksand Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Desert of Hadramaveth.",
+                "description": "Open 50 treasure chests in the Desert of Hadramaveth.",
                 "progress": 50,
                 "reward": {
                     "id": 201,
@@ -129,7 +129,7 @@
             },
             "stage2": {
                 "title": "Quicksand Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Desert of Hadramaveth.",
+                "description": "Open 100 treasure chests in the Desert of Hadramaveth.",
                 "progress": 100,
                 "reward": {
                     "id": 201,
@@ -139,7 +139,7 @@
             },
             "stage3": {
                 "title": "Quicksand Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Desert of Hadramaveth.",
+                "description": "Open 200 treasure chests in the Desert of Hadramaveth.",
                 "progress": 200,
                 "reward": {
                     "id": 201,
@@ -162,7 +162,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Quicksand Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Desert of Hadramaveth.",
+                "description": "Complete 7 Open World Time Trial Challenges in the Desert of Hadramaveth.",
                 "progress": 7,
                 "reward": {
                     "id": 201,
@@ -172,7 +172,7 @@
             },
             "stage2": {
                 "title": "Quicksand Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Desert of Hadramaveth.",
+                "description": "Complete 14 Open World Time Trial Challenges in the Desert of Hadramaveth.",
                 "progress": 14,
                 "reward": {
                     "id": 201,
@@ -182,7 +182,7 @@
             },
             "stage3": {
                 "title": "Quicksand Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Desert of Hadramaveth.",
+                "description": "Complete 28 Open World Time Trial Challenges in the Desert of Hadramaveth.",
                 "progress": 28,
                 "reward": {
                     "id": 201,

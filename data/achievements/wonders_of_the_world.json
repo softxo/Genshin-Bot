@@ -5695,7 +5695,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Use the Force, Sorush",
-                "description": "Launch Nirodha Fruits with Sorush's help to melt {param0} crystals condensed from Amrita.",
+                "description": "Launch Nirodha Fruits with Sorush's help to melt 15 crystals condensed from Amrita.",
                 "progress": 15,
                 "reward": {
                     "id": 201,

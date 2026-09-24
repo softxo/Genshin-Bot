@@ -118,7 +118,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Votre Toast, Je Peux Vous Le Rendre",
-                "description": "Follow {param0} Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
+                "description": "Follow 3 Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -128,7 +128,7 @@
             },
             "stage2": {
                 "title": "Votre Toast, Je Peux Vous Le Rendre",
-                "description": "Follow {param0} Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
+                "description": "Follow 6 Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -138,7 +138,7 @@
             },
             "stage3": {
                 "title": "Votre Toast, Je Peux Vous Le Rendre",
-                "description": "Follow {param0} Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
+                "description": "Follow 9 Matador Monetoo and complete the graffiti in Ancient Sacred Mountain and Atocpan.",
                 "progress": 9,
                 "reward": {
                     "id": 201,
@@ -161,7 +161,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Fertile Ash Treasure Hunter",
-                "description": "Open {param0} chests in Ancient Sacred Mountain and Atocpan.",
+                "description": "Open 40 chests in Ancient Sacred Mountain and Atocpan.",
                 "progress": 40,
                 "reward": {
                     "id": 201,
@@ -171,7 +171,7 @@
             },
             "stage2": {
                 "title": "Fertile Ash Treasure Hunter",
-                "description": "Open {param0} chests in Ancient Sacred Mountain and Atocpan.",
+                "description": "Open 80 chests in Ancient Sacred Mountain and Atocpan.",
                 "progress": 80,
                 "reward": {
                     "id": 201,
@@ -181,7 +181,7 @@
             },
             "stage3": {
                 "title": "Fertile Ash Treasure Hunter",
-                "description": "Open {param0} chests in Ancient Sacred Mountain and Atocpan.",
+                "description": "Open 160 chests in Ancient Sacred Mountain and Atocpan.",
                 "progress": 160,
                 "reward": {
                     "id": 201,
@@ -204,7 +204,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Fertile Ash Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
+                "description": "Complete 3 Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -214,7 +214,7 @@
             },
             "stage2": {
                 "title": "Fertile Ash Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
+                "description": "Complete 6 Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -224,7 +224,7 @@
             },
             "stage3": {
                 "title": "Fertile Ash Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
+                "description": "Complete 9 Open World mechanism-activated Time Trial Challenges in Ancient Sacred Mountain and Atocpan.",
                 "progress": 9,
                 "reward": {
                     "id": 201,

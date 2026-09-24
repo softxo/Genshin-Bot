@@ -143,7 +143,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Monetoo Will Guide You Home (I)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Follow 8 Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 8,
                 "reward": {
                     "id": 201,
@@ -153,7 +153,7 @@
             },
             "stage2": {
                 "title": "Monetoo Will Guide You Home (I)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Follow 16 Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 16,
                 "reward": {
                     "id": 201,
@@ -163,7 +163,7 @@
             },
             "stage3": {
                 "title": "Monetoo Will Guide You Home (I)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Follow 32 Monetoo and complete the graffiti in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 32,
                 "reward": {
                     "id": 201,
@@ -187,7 +187,7 @@
             "stage1": {
                 "title": "Ignited Treasure Hunter (I)",
                 "ps5title": "Ignited Treasure Hunter (I)",
-                "description": "Open {param0} chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Open 80 chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 80,
                 "reward": {
                     "id": 201,
@@ -198,7 +198,7 @@
             "stage2": {
                 "title": "Ignited Treasure Hunter (I)",
                 "ps5title": "Ignited Treasure Hunter (II)",
-                "description": "Open {param0} chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Open 160 chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 160,
                 "reward": {
                     "id": 201,
@@ -209,7 +209,7 @@
             "stage3": {
                 "title": "Ignited Treasure Hunter (I)",
                 "ps5title": "Ignited Treasure Hunter (III)",
-                "description": "Open {param0} chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Open 320 chests in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 320,
                 "reward": {
                     "id": 201,
@@ -232,7 +232,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Ignited Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Complete 3 Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -242,7 +242,7 @@
             },
             "stage2": {
                 "title": "Ignited Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Complete 6 Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -252,7 +252,7 @@
             },
             "stage3": {
                 "title": "Ignited Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
+                "description": "Complete 12 Open World Time Trial Challenges in the Basin of Unnumbered Flames, Tequemecan Valley, Coatepec Mountain, and Toyac Springs.",
                 "progress": 12,
                 "reward": {
                     "id": 201,

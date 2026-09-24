@@ -76,7 +76,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Treasure Hunter of the Interstice",
-                "description": "Open {param0} chests at Windrest Peak and the Temple of Space.",
+                "description": "Open 45 chests at Windrest Peak and the Temple of Space.",
                 "progress": 45,
                 "reward": {
                     "id": 201,
@@ -86,7 +86,7 @@
             },
             "stage2": {
                 "title": "Treasure Hunter of the Interstice",
-                "description": "Open {param0} chests at Windrest Peak and the Temple of Space.",
+                "description": "Open 90 chests at Windrest Peak and the Temple of Space.",
                 "progress": 90,
                 "reward": {
                     "id": 201,
@@ -96,7 +96,7 @@
             },
             "stage3": {
                 "title": "Treasure Hunter of the Interstice",
-                "description": "Open {param0} chests at Windrest Peak and the Temple of Space.",
+                "description": "Open 180 chests at Windrest Peak and the Temple of Space.",
                 "progress": 180,
                 "reward": {
                     "id": 201,
@@ -119,7 +119,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Adventurer of the Interstice",
-                "description": "Complete {param0} Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
+                "description": "Complete 7 Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
                 "progress": 7,
                 "reward": {
                     "id": 201,
@@ -129,7 +129,7 @@
             },
             "stage2": {
                 "title": "Adventurer of the Interstice",
-                "description": "Complete {param0} Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
+                "description": "Complete 14 Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
                 "progress": 14,
                 "reward": {
                     "id": 201,
@@ -139,7 +139,7 @@
             },
             "stage3": {
                 "title": "Adventurer of the Interstice",
-                "description": "Complete {param0} Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
+                "description": "Complete 28 Open World Time Trial Challenges at Windrest Peak and the Temple of Space.",
                 "progress": 28,
                 "reward": {
                     "id": 201,

@@ -97,7 +97,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Monetoo Will Guide You Home (II)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Follow 3 Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -107,7 +107,7 @@
             },
             "stage2": {
                 "title": "Monetoo Will Guide You Home (II)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Follow 6 Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -117,7 +117,7 @@
             },
             "stage3": {
                 "title": "Monetoo Will Guide You Home (II)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Follow 10 Monetoo and complete the graffiti in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 10,
                 "reward": {
                     "id": 201,
@@ -140,7 +140,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Ignited Treasure Hunter (II)",
-                "description": "Open {param0} chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Open 40 chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 40,
                 "reward": {
                     "id": 201,
@@ -150,7 +150,7 @@
             },
             "stage2": {
                 "title": "Ignited Treasure Hunter (II)",
-                "description": "Open {param0} chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Open 80 chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 80,
                 "reward": {
                     "id": 201,
@@ -160,7 +160,7 @@
             },
             "stage3": {
                 "title": "Ignited Treasure Hunter (II)",
-                "description": "Open {param0} chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Open 160 chests in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 160,
                 "reward": {
                     "id": 201,
@@ -183,7 +183,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Ignited Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Complete 3 Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -193,7 +193,7 @@
             },
             "stage2": {
                 "title": "Ignited Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Complete 6 Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -203,7 +203,7 @@
             },
             "stage3": {
                 "title": "Ignited Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
+                "description": "Complete 10 Open World Time Trial Challenges in Tezcatepetonco Range, Quahuacan Cliff, and Ochkanatlan.",
                 "progress": 10,
                 "reward": {
                     "id": 201,

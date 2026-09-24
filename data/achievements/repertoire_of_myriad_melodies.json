@@ -55,7 +55,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Twenty-Five Groschen...",
-                "description": "Redeem {param0} score themes in the \"Treasure of Myriad Melodies.\"",
+                "description": "Redeem 1 score themes in the \"Treasure of Myriad Melodies.\"",
                 "progress": 1,
                 "reward": {
                     "id": 201,
@@ -65,7 +65,7 @@
             },
             "stage2": {
                 "title": "Twenty-Five Groschen...",
-                "description": "Redeem {param0} score themes in the \"Treasure of Myriad Melodies.\"",
+                "description": "Redeem 3 score themes in the \"Treasure of Myriad Melodies.\"",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -75,7 +75,7 @@
             },
             "stage3": {
                 "title": "Twenty-Five Groschen...",
-                "description": "Redeem {param0} score themes in the \"Treasure of Myriad Melodies.\"",
+                "description": "Redeem 5 score themes in the \"Treasure of Myriad Melodies.\"",
                 "progress": 5,
                 "reward": {
                     "id": 201,
@@ -98,7 +98,7 @@
             "stages": 3,
             "stage1": {
                 "title": "The Melody's Trajectory",
-                "description": "Reach a performance rating of Discantus for {param0} different official music scores.",
+                "description": "Reach a performance rating of Discantus for 5 different official music scores.",
                 "progress": 5,
                 "reward": {
                     "id": 201,
@@ -108,7 +108,7 @@
             },
             "stage2": {
                 "title": "The Melody's Trajectory",
-                "description": "Reach a performance rating of Discantus for {param0} different official music scores.",
+                "description": "Reach a performance rating of Discantus for 15 different official music scores.",
                 "progress": 15,
                 "reward": {
                     "id": 201,
@@ -118,7 +118,7 @@
             },
             "stage3": {
                 "title": "The Melody's Trajectory",
-                "description": "Reach a performance rating of Discantus for {param0} different official music scores.",
+                "description": "Reach a performance rating of Discantus for 30 different official music scores.",
                 "progress": 30,
                 "reward": {
                     "id": 201,
@@ -141,7 +141,7 @@
             "stages": 3,
             "stage1": {
                 "title": "The Art of the Canon",
-                "description": "Reach a performance rating of Discantus for {param0} different music scores by other players.",
+                "description": "Reach a performance rating of Discantus for 5 different music scores by other players.",
                 "progress": 5,
                 "reward": {
                     "id": 201,
@@ -151,7 +151,7 @@
             },
             "stage2": {
                 "title": "The Art of the Canon",
-                "description": "Reach a performance rating of Discantus for {param0} different music scores by other players.",
+                "description": "Reach a performance rating of Discantus for 10 different music scores by other players.",
                 "progress": 10,
                 "reward": {
                     "id": 201,
@@ -161,7 +161,7 @@
             },
             "stage3": {
                 "title": "The Art of the Canon",
-                "description": "Reach a performance rating of Discantus for {param0} different music scores by other players.",
+                "description": "Reach a performance rating of Discantus for 20 different music scores by other players.",
                 "progress": 20,
                 "reward": {
                     "id": 201,

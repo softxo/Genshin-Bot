@@ -76,7 +76,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Tidal Guide (II)",
-                "description": "Follow {param0} Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
+                "description": "Follow 3 Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -86,7 +86,7 @@
             },
             "stage2": {
                 "title": "Tidal Guide (II)",
-                "description": "Follow {param0} Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
+                "description": "Follow 6 Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -96,7 +96,7 @@
             },
             "stage3": {
                 "title": "Tidal Guide (II)",
-                "description": "Follow {param0} Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
+                "description": "Follow 9 Seelie in Liffey Region and Fontaine Research Institute of Kinetic Energy Engineering Region to their Seelie Courts.",
                 "progress": 9,
                 "reward": {
                     "id": 201,
@@ -119,7 +119,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Waveriding Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Open 60 treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 60,
                 "reward": {
                     "id": 201,
@@ -129,7 +129,7 @@
             },
             "stage2": {
                 "title": "Waveriding Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Open 120 treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 120,
                 "reward": {
                     "id": 201,
@@ -139,7 +139,7 @@
             },
             "stage3": {
                 "title": "Waveriding Treasure Hunter (II)",
-                "description": "Open {param0} treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Open 200 treasure chests in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 200,
                 "reward": {
                     "id": 201,
@@ -162,7 +162,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Waveriding Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Complete 3 Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -172,7 +172,7 @@
             },
             "stage2": {
                 "title": "Waveriding Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Complete 6 Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -182,7 +182,7 @@
             },
             "stage3": {
                 "title": "Waveriding Adventurer (II)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
+                "description": "Complete 12 Open World Time Trial Challenges in the Liffey Region and the Fontaine Research Institute of Kinetic Energy Engineering Region.",
                 "progress": 12,
                 "reward": {
                     "id": 201,

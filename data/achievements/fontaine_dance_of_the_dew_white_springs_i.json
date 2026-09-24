@@ -122,7 +122,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Tides Will Guide You Home (I)",
-                "description": "Follow {param0} Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
+                "description": "Follow 6 Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -132,7 +132,7 @@
             },
             "stage2": {
                 "title": "Tides Will Guide You Home (I)",
-                "description": "Follow {param0} Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
+                "description": "Follow 12 Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
                 "progress": 12,
                 "reward": {
                     "id": 201,
@@ -142,7 +142,7 @@
             },
             "stage3": {
                 "title": "Tides Will Guide You Home (I)",
-                "description": "Follow {param0} Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
+                "description": "Follow 24 Seelie in the Court of Fontaine Region, Belleau Region, and Beryl Region to their Seelie Courts.",
                 "progress": 24,
                 "reward": {
                     "id": 201,
@@ -166,7 +166,7 @@
             "stage1": {
                 "title": "Waveriding Treasure Hunter (I)",
                 "ps5title": "Waveriding Treasure Hunter (I)",
-                "description": "Open {param0} chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Open 60 chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 60,
                 "reward": {
                     "id": 201,
@@ -177,7 +177,7 @@
             "stage2": {
                 "title": "Waveriding Treasure Hunter (I)",
                 "ps5title": "Waveriding Treasure Hunter (II)",
-                "description": "Open {param0} chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Open 120 chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 120,
                 "reward": {
                     "id": 201,
@@ -188,7 +188,7 @@
             "stage3": {
                 "title": "Waveriding Treasure Hunter (I)",
                 "ps5title": "Waveriding Treasure Hunter (III)",
-                "description": "Open {param0} chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Open 240 chests in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 240,
                 "reward": {
                     "id": 201,
@@ -211,7 +211,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Waveriding Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Complete 3 Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 3,
                 "reward": {
                     "id": 201,
@@ -221,7 +221,7 @@
             },
             "stage2": {
                 "title": "Waveriding Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Complete 6 Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -231,7 +231,7 @@
             },
             "stage3": {
                 "title": "Waveriding Adventurer (I)",
-                "description": "Complete {param0} Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
+                "description": "Complete 12 Open World Time Trial Challenges in the Court of Fontaine Region, Belleau Region, and Beryl Region.",
                 "progress": 12,
                 "reward": {
                     "id": 201,

@@ -74,7 +74,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Monetoo Will Guide You Home (III)",
-                "description": "Follow {param0} Monetoo and complete the graffiti in the Easybreeze Holiday Resort.",
+                "description": "Follow 6 Monetoo and complete the graffiti in the Easybreeze Holiday Resort.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -97,7 +97,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Azure Isle Treasure Hunter",
-                "description": "Open {param0} chests in Easybreeze Holiday Resort.",
+                "description": "Open 30 chests in Easybreeze Holiday Resort.",
                 "progress": 30,
                 "reward": {
                     "id": 201,
@@ -107,7 +107,7 @@
             },
             "stage2": {
                 "title": "Azure Isle Treasure Hunter",
-                "description": "Open {param0} chests in Easybreeze Holiday Resort.",
+                "description": "Open 60 chests in Easybreeze Holiday Resort.",
                 "progress": 60,
                 "reward": {
                     "id": 201,
@@ -117,7 +117,7 @@
             },
             "stage3": {
                 "title": "Azure Isle Treasure Hunter",
-                "description": "Open {param0} chests in Easybreeze Holiday Resort.",
+                "description": "Open 120 chests in Easybreeze Holiday Resort.",
                 "progress": 120,
                 "reward": {
                     "id": 201,
@@ -140,7 +140,7 @@
             "stages": 3,
             "stage1": {
                 "title": "Azure Isle Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
+                "description": "Complete 6 Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
                 "progress": 6,
                 "reward": {
                     "id": 201,
@@ -150,7 +150,7 @@
             },
             "stage2": {
                 "title": "Azure Isle Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
+                "description": "Complete 12 Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
                 "progress": 12,
                 "reward": {
                     "id": 201,
@@ -160,7 +160,7 @@
             },
             "stage3": {
                 "title": "Azure Isle Adventurer",
-                "description": "Complete {param0} Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
+                "description": "Complete 24 Open World mechanism-activated Time Trial Challenges in Easybreeze Holiday Resort.",
                 "progress": 24,
                 "reward": {
                     "id": 201,

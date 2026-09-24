@@ -74,7 +74,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Ace of Survival",
-                "description": "Obtain {param0} Edge of Survival Medal(s).",
+                "description": "Obtain 9 Edge of Survival Medal(s).",
                 "progress": 9,
                 "reward": {
                     "id": 201,
@@ -201,7 +201,7 @@
             "stages": 1,
             "stage1": {
                 "title": "Aiming While Sliding is Pure Fantasy",
-                "description": "Defeat a total of {param0} enemies while sliding.",
+                "description": "Defeat a total of 20 enemies while sliding.",
                 "progress": 20,
                 "reward": {
                     "id": 201,
