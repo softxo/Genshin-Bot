@@ -803,14 +803,14 @@
             DAILY COMMISSIONS
             ============================= -->
 
-            <div
-                class="event-list-item event-daily-item
-                {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
-                    completed
-                {% endif %}"
-                id="daily-commissions"
-                data-account-id="{{ selected_account.id if selected_account else '' }}"
-            >
+        <div
+            class="event-list-item event-daily-item
+            {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
+                completed
+            {% endif %}"
+            id="daily-commissions"
+            data-account-id="{{ selected_account.id if selected_account else '' }}"
+        >
 
             <div class="event-list-left">
 
@@ -832,7 +832,6 @@
 
                 </div>
 
-
                 <div class="event-list-name">
 
                     Daily Commissions
@@ -843,6 +842,25 @@
 
 
             <div class="event-list-right">
+
+                <!-- Encounter Points -->
+
+                <div class="event-encounter-points">
+
+                    <span class="event-encounter-points-value">
+
+                        {% if daily and daily.has_data %}
+                            {{ daily.encounter_points }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- Daily Commission Status -->
 
                 <span
                     class="event-list-status"
@@ -870,6 +888,9 @@
 
                     {% endif %}
                 </span>
+
+
+                <!-- Daily Reset -->
 
                 <div
                     class="event-time-left event-daily-reset"

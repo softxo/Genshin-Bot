@@ -917,6 +917,9 @@ async def get_events_data(
                     "completed": notes["data"]["finished_task_num"],
                     "total": notes["data"]["total_task_num"],
                     "claimed_reward": notes["data"]["is_extra_task_reward_received"],
+                    "encounter_points": float(
+                        notes["data"]["daily_task"]["stored_attendance"]
+                    ),
                     "reset_time": get_daily_reset_timestamp(
                         selected_account["genshin_server"]
                     ),
