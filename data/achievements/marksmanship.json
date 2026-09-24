@@ -1,61 +1,68 @@
 {
-  "achievements": [
-    {
-      "id": "marksmanship_001",
-      "genshin_ids": [
-        82001
-      ],
-      "name": "Nothing Special, Just Practice",
-      "category": "Marksmanship",
-      "region": [],
-      "hidden": false,
-      "version": "1.0",
-      "tiers": [
+    "achievements": [
         {
-          "tier": 1,
-          "description": "Hit a falcon mid-flight with your bow.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "marksmanship_002",
-      "genshin_ids": [
-        82002
-      ],
-      "name": "Master Sniper",
-      "category": "Marksmanship",
-      "region": [],
-      "hidden": false,
-      "version": "1.0",
-      "tiers": [
+            "id": [
+                82001
+            ],
+            "name": "Nothing Special, Just Practice",
+            "achievementGroupId": 7,
+            "achievementGroupName": "Marksmanship",
+            "sortOrder": 2001,
+            "stages": 1,
+            "stage1": {
+                "title": "Nothing Special, Just Practice",
+                "ps5title": "Marksmanship: Nothing Special, Just Practice",
+                "description": "Hit a falcon mid-flight with your bow.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "1.0"
+        },
         {
-          "tier": 1,
-          "description": "Strike an opponent's weak point from afar with an Aimed Shot.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "marksmanship_003",
-      "genshin_ids": [
-        82003
-      ],
-      "name": "Der Freischütz",
-      "category": "Marksmanship",
-      "region": [],
-      "hidden": false,
-      "version": "1.0",
-      "tiers": [
+            "id": [
+                82002
+            ],
+            "name": "Master Sniper",
+            "achievementGroupId": 7,
+            "achievementGroupName": "Marksmanship",
+            "sortOrder": 2002,
+            "stages": 1,
+            "stage1": {
+                "title": "Master Sniper",
+                "description": "Strike an opponent's weak point from afar with an Aimed Shot.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "1.0"
+        },
         {
-          "tier": 1,
-          "description": "Strike an opponent's weak point from extremely far away with an Aimed Shot.",
-          "progress": 1,
-          "primogems": 5
+            "id": [
+                82003
+            ],
+            "name": "Der Freischütz",
+            "achievementGroupId": 7,
+            "achievementGroupName": "Marksmanship",
+            "sortOrder": 2003,
+            "stages": 1,
+            "stage1": {
+                "title": "Der Freischütz",
+                "description": "Strike an opponent's weak point from extremely far away with an Aimed Shot.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "1.0"
         }
-      ]
-    }
-  ]
+    ]
 }

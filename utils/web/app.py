@@ -1401,49 +1401,110 @@ async def achievements_data(
         cyrene_session
     )
 
-    achievements = load_achievements()
-    saved_progress = await load_progress(user_id)
+    if user_id is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated."
+        )
+
+    source_achievements = load_achievements()
+    saved_progress = await load_progress(
+        user_id
+    )
+
+    achievements = []
 
     categories = {}
 
     total_tiers = 0
     completed_tiers = 0
 
-    for achievement in achievements:
+    for source in source_achievements:
 
-        achievement_id = achievement.get("id")
-        category = achievement.get("category")
+        achievement_ids = source.get(
+            "id",
+            []
+        )
 
-        if not achievement_id or not category:
+        category = source.get(
+            "achievementGroupName"
+        )
+
+        stage_count = source.get(
+            "stages",
+            0
+        )
+
+        if not achievement_ids or not category:
             continue
 
-        tiers = achievement.get("tiers", [])
+        if not isinstance(
+            achievement_ids,
+            list
+        ):
+            continue
 
-        if category not in categories:
-            categories[category] = {
-                "total": 0,
-                "completed": 0,
-            }
+        if not isinstance(
+            stage_count,
+            int
+        ) or stage_count < 1:
+            continue
 
-        achievement_progress = saved_progress.get(
-            achievement_id,
-            {}
-        )
+        tiers = []
 
-        tier_progress = achievement_progress.get(
-            "tiers",
-            {}
-        )
+        for stage_number in range(
+            1,
+            stage_count + 1
+        ):
 
-        for tier in tiers:
-
-            tier_number = str(
-                tier.get("tier")
+            stage_key = (
+                f"stage{stage_number}"
             )
 
-            saved_tier = tier_progress.get(
-                tier_number,
-                {}
+            stage = source.get(
+                stage_key
+            )
+
+            if not isinstance(
+                stage,
+                dict
+            ):
+                continue
+
+            if stage_number > len(
+                achievement_ids
+            ):
+                continue
+
+            achievement_id = str(
+                achievement_ids[
+                    stage_number - 1
+                ]
+            )
+
+            achievement_progress = (
+                saved_progress.get(
+                    achievement_id,
+                    {}
+                )
+            )
+
+            tier_progress = (
+                achievement_progress.get(
+                    "tiers",
+                    {}
+                )
+            )
+
+            tier_key = str(
+                stage_number
+            )
+
+            saved_tier = (
+                tier_progress.get(
+                    tier_key,
+                    {}
+                )
             )
 
             completed = saved_tier.get(
@@ -1456,10 +1517,6 @@ async def achievements_data(
                 0
             )
 
-            progress = tier.get(
-                "progress"
-            )
-
             timestamp = saved_tier.get(
                 "timestamp"
             )
@@ -1468,18 +1525,82 @@ async def achievements_data(
                 "note"
             )
 
-            tier["progress"] = progress
-            tier["completed"] = completed
-            tier["current"] = current
-            tier["timestamp"] = timestamp
-            tier["note"] = note
+            reward = stage.get(
+                "reward",
+                {}
+            )
+
+            primogems = reward.get(
+                "count",
+                0
+            )
+
+            tiers.append({
+                "tier": stage_number,
+                "genshin_id": achievement_id,
+                "title": stage.get(
+                    "title",
+                    source.get(
+                        "name",
+                        ""
+                    )
+                ),
+                "description": stage.get(
+                    "description",
+                    ""
+                ),
+                "progress": stage.get(
+                    "progress"
+                ),
+                "primogems": primogems,
+                "completed": completed,
+                "current": current,
+                "timestamp": timestamp,
+                "note": note,
+            })
 
             total_tiers += 1
-            categories[category]["total"] += 1
 
             if completed:
                 completed_tiers += 1
-                categories[category]["completed"] += 1
+
+        if not tiers:
+            continue
+
+        frontend_achievement = {
+            "id": str(
+                achievement_ids[0]
+            ),
+            "name": source.get(
+                "name",
+                ""
+            ),
+            "category": category,
+            "version": source.get(
+                "version"
+            ),
+            "tiers": tiers,
+        }
+
+        achievements.append(
+            frontend_achievement
+        )
+
+        if category not in categories:
+            categories[category] = {
+                "total": 0,
+                "completed": 0,
+            }
+
+        categories[category]["total"] += len(
+            tiers
+        )
+
+        categories[category]["completed"] += sum(
+            1
+            for tier in tiers
+            if tier["completed"]
+        )
 
     return {
         "achievements": achievements,

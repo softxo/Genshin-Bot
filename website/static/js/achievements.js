@@ -122,7 +122,7 @@ window.initAchievements = function () {
                 const response =
                     await fetch(
                         `/api/achievements/${encodeURIComponent(
-                            achievement.id
+                            tier.genshin_id
                         )}/tiers/${tier.tier}/note`,
                         {
                             method: "PATCH",
@@ -2831,7 +2831,7 @@ window.initAchievements = function () {
                                     const response =
                                         await fetch(
                                             `/api/achievements/${encodeURIComponent(
-                                                achievement.id
+                                                tier.genshin_id
                                             )}/tiers/${tier.tier}/note`,
                                             {
                                                 method: "PATCH",
@@ -3132,7 +3132,7 @@ window.initAchievements = function () {
                 const response =
                     await fetch(
                         `/api/achievements/${encodeURIComponent(
-                            achievement.id
+                            achievementTier.genshin_id
                         )}/tiers/${achievementTier.tier}`,
                         {
                             method: "PATCH",

@@ -59,41 +59,62 @@ async def import_achievements(
 
     for achievement in achievements:
 
-        achievement_id = achievement.get(
-            "id"
-        )
-
-        genshin_ids = achievement.get(
-            "genshin_ids",
+        achievement_ids = achievement.get(
+            "id",
             []
         )
 
-        tiers = achievement.get(
-            "tiers",
-            []
+        stage_count = achievement.get(
+            "stages",
+            0
         )
 
-        if not isinstance(genshin_ids, list):
+        if not isinstance(
+            achievement_ids,
+            list
+        ):
             continue
 
-        if not isinstance(tiers, list):
+        if not isinstance(
+            stage_count,
+            int
+        ) or stage_count < 1:
             continue
 
-        for index, genshin_id in enumerate(
-            genshin_ids
+        for stage_number in range(
+            1,
+            stage_count + 1
         ):
 
-            if index >= len(tiers):
-                break
+            if stage_number > len(
+                achievement_ids
+            ):
+                continue
 
-            tier = tiers[index]
+            stage = achievement.get(
+                f"stage{stage_number}"
+            )
+
+            if not isinstance(
+                stage,
+                dict
+            ):
+                continue
+
+            genshin_id = achievement_ids[
+                stage_number - 1
+            ]
 
             achievement_map[
                 str(genshin_id)
             ] = {
-                "achievement_id": achievement_id,
-                "tier": tier.get("tier"),
-                "progress": tier.get("progress"),
+                "achievement_id": str(
+                    genshin_id
+                ),
+                "tier": stage_number,
+                "progress": stage.get(
+                    "progress"
+                ),
             }
 
     # --------------------------------

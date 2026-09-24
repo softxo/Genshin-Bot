@@ -1,9 +1,5 @@
-from utils.achievements.achievements import (
-    load_achievements,
-)
-from utils.achievements.progress import (
-    load_progress,
-)
+from utils.achievements.achievements import load_achievements
+from utils.achievements.progress import load_progress
 
 
 async def load_achievement_state(

@@ -1,137 +1,152 @@
 {
-  "achievements": [
-    {
-      "id": "travails_v_001",
-      "genshin_ids": [
-        80364
-      ],
-      "name": "Memory of Fire",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+    "achievements": [
         {
-          "tier": 1,
-          "description": "Obtain the power of Pyro.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_002",
-      "genshin_ids": [
-        80365
-      ],
-      "name": "Dance Into Night's Unfolding",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80364
+            ],
+            "name": "Memory of Fire",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 338,
+            "stages": 1,
+            "stage1": {
+                "title": "Memory of Fire",
+                "ps5title": "Pyro: Memory of Fire",
+                "description": "Obtain the power of Pyro.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"Mt. Lingmeng Gossip\" series.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_003",
-      "genshin_ids": [
-        80366
-      ],
-      "name": "Chakana's Dangling Bough",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80365
+            ],
+            "name": "Dance Into Night's Unfolding",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 339,
+            "stages": 1,
+            "stage1": {
+                "title": "Dance Into Night's Unfolding",
+                "description": "Collect the entire \"Mt. Lingmeng Gossip\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"Records of Hanan Pacha\" series.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_004",
-      "genshin_ids": [
-        80367
-      ],
-      "name": "Springside Reverie",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80366
+            ],
+            "name": "Chakana's Dangling Bough",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 340,
+            "stages": 1,
+            "stage1": {
+                "title": "Chakana's Dangling Bough",
+                "description": "Collect the entire \"Records of Hanan Pacha\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"Springs of Hidden Jade\" series.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_005",
-      "genshin_ids": [
-        80368
-      ],
-      "name": "Advent of the Hot Springs",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80367
+            ],
+            "name": "Springside Reverie",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 341,
+            "stages": 1,
+            "stage1": {
+                "title": "Springside Reverie",
+                "description": "Collect the entire \"Springs of Hidden Jade\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"Maawe and Monetoo\" series.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_006",
-      "genshin_ids": [
-        80369
-      ],
-      "name": "Volcanic Emblem: The Blazing Pins",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80368
+            ],
+            "name": "Advent of the Hot Springs",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 342,
+            "stages": 1,
+            "stage1": {
+                "title": "Advent of the Hot Springs",
+                "description": "Collect the entire \"Maawe and Monetoo\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"The Volcano Lord and the Shadow Pins\" series.",
-          "progress": 1,
-          "primogems": 5
-        }
-      ]
-    },
-    {
-      "id": "travails_v_007",
-      "genshin_ids": [
-        80370
-      ],
-      "name": "Dragonbolt Chronicles",
-      "category": "Mortal Travails: Series V",
-      "region": [],
-      "hidden": false,
-      "version": "5.3",
-      "tiers": [
+            "id": [
+                80369
+            ],
+            "name": "Volcanic Emblem: The Blazing Pins",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 343,
+            "stages": 1,
+            "stage1": {
+                "title": "Volcanic Emblem: The Blazing Pins",
+                "description": "Collect the entire \"The Volcano Lord and the Shadow Pins\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
+        },
         {
-          "tier": 1,
-          "description": "Collect the entire \"Fires of Autumn Twilight\" series.",
-          "progress": 1,
-          "primogems": 5
+            "id": [
+                80370
+            ],
+            "name": "Dragonbolt Chronicles",
+            "achievementGroupId": 57,
+            "achievementGroupName": "Mortal Travails: Series V",
+            "sortOrder": 344,
+            "stages": 1,
+            "stage1": {
+                "title": "Dragonbolt Chronicles",
+                "description": "Collect the entire \"Fires of Autumn Twilight\" series.",
+                "progress": 1,
+                "reward": {
+                    "id": 201,
+                    "name": "Primogem",
+                    "count": 5
+                }
+            },
+            "version": "5.3"
         }
-      ]
-    }
-  ]
+    ]
 }
