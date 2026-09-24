@@ -1389,40 +1389,40 @@
    ============================= */
 
 .event-encounter-points {
-    min-width: 54px;
-    height: 30px;
+    min-width: 56px;
+    height: 28px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 4px;
 
-    padding: 0 9px;
+    padding: 0 6px;
     margin-left: 10px;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
-    background: rgba(190, 175, 235, 0.35);
-
-    border: 1px solid rgba(150, 130, 205, 0.35);
+    background: rgba(150, 120, 220, 0.12);
+    border: 1px solid rgba(150, 120, 220, 0.22);
 
     box-sizing: border-box;
 }
 
 .event-encounter-points-icon {
-    width: 18px;
-    height: 18px;
+    width: 21px;
+    height: 21px;
 
     object-fit: contain;
-
     flex-shrink: 0;
+
+    transform: translateX(-1px);
 }
 
 .event-encounter-points-value {
-    color: #5a4a91;
+    color: #7656d6;
 
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
 
     line-height: 1;
     white-space: nowrap;
