@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const pageScripts = {
         "/planner": "/static/js/planner.js",
-        "/verify": "/static/js/verify.js",
+        "/verify": "/static/js/verification.js",
         "/events": "/static/js/events.js",
         "/settings": "/static/js/settings.js",
     };
 
     const pageStyles = {
         "/planner": "/static/css/planner.css",
-        "/verify": "/static/css/verify.css",
+        "/verify": "/static/css/verification.css",
         "/events": "/static/css/events.css",
         "/settings": "/static/css/settings.css",
     };
