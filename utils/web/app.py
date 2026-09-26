@@ -118,7 +118,7 @@ async def verify_page(
 
     return templates.TemplateResponse(
         request=request,
-        name="verify.html",
+        name="verification.html",
         context={
             "request": request,
             "next": next,
