@@ -1616,8 +1616,217 @@
     font-weight: 600;
 }
 
+
 /* =========================================================
-   14. RESPONSIVE — FEATURED CARDS
+   14. EVENTS OVERVIEW
+   =========================================================
+   Alternate account overview shown by the "Switch Layout"
+   control.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Overview Container
+   --------------------------------------------------------- */
+
+.events-overview {
+    margin-top: 28px;
+}
+
+
+/* ---------------------------------------------------------
+   Overview Tabs
+   --------------------------------------------------------- */
+
+.events-overview-tabs {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 16px;
+
+    padding: 5px;
+
+    width: fit-content;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+}
+
+
+.events-overview-tab {
+    padding: 8px 16px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.events-overview-tab:hover {
+    color: var(--text-primary);
+
+    background: var(--surface-hover);
+}
+
+
+.events-overview-tab.active {
+    color: var(--text-primary);
+
+    background: var(--card-background);
+
+    border-color: var(--border);
+}
+
+
+/* ---------------------------------------------------------
+   Overview Panels
+   --------------------------------------------------------- */
+
+.events-overview-panel {
+    display: none;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.events-overview-panel.active {
+    display: flex;
+}
+
+
+/* ---------------------------------------------------------
+   Overview Account Row
+   --------------------------------------------------------- */
+
+.overview-account-row {
+    min-height: 64px;
+
+    padding: 12px 20px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: var(--surface);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.overview-account-row:hover {
+    background: var(--surface-hover);
+
+    border-color: var(--accent);
+
+    transform: translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   Account Name
+   --------------------------------------------------------- */
+
+.overview-account-name {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.overview-account-name strong {
+    color: var(--text-primary);
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.overview-account-name span {
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* ---------------------------------------------------------
+   Account Status
+   --------------------------------------------------------- */
+
+.overview-account-status {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.overview-status {
+    padding: 6px 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--background);
+
+    color: var(--text-primary);
+
+    white-space: nowrap;
+}
+
+
+.overview-claimed {
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(93, 231, 151, 0.12);
+
+    color: #5de797;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   15. RESPONSIVE — FEATURED CARDS
    =========================================================
    Desktop:
        3 cards in a row.

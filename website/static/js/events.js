@@ -55,6 +55,45 @@ function initEvents() {
             }
         );
 
+
+        // Close after selecting an account.
+        const options =
+            dropdown.querySelectorAll(
+                ".custom-select-option"
+            );
+
+
+        options.forEach(option => {
+
+            option.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    const accountId =
+                        option.dataset.accountId;
+
+                    if (!accountId) {
+                        return;
+                    }
+
+
+                    dropdown.classList.remove(
+                        "open"
+                    );
+
+
+                    window.location.href =
+                        `/events?account_id=${accountId}`;
+
+                }
+            );
+
+        });
+
     }
 
 
@@ -139,17 +178,17 @@ function initEvents() {
                         }
 
 
-                        const expanded =
+                        const collapsed =
                             card.classList.toggle(
-                                "expanded"
+                                "collapsed"
                             );
 
 
                         toggle.setAttribute(
                             "aria-expanded",
-                            expanded
-                                ? "true"
-                                : "false"
+                            collapsed
+                                ? "false"
+                                : "true"
                         );
 
                     }
@@ -283,7 +322,8 @@ function initEvents() {
 
 
                 timer.classList.remove(
-                    "warning"
+                    "warning",
+                    "danger"
                 );
 
 
@@ -337,18 +377,27 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // WARNING STATE
+            // TIME STATUS
             // -----------------------------------------
 
-            if (originalRemaining <= 300) {
+            timer.classList.remove(
+                "warning",
+                "danger"
+            );
+
+
+            // Less than 1 day remaining.
+            if (originalRemaining < 86400) {
 
                 timer.classList.add(
-                    "warning"
+                    "danger"
                 );
 
-            } else {
 
-                timer.classList.remove(
+            // Less than 3 days remaining.
+            } else if (originalRemaining < 259200) {
+
+                timer.classList.add(
                     "warning"
                 );
 
@@ -405,7 +454,7 @@ function initEvents() {
             const expandedCards =
                 Array.from(
                     currentPage.querySelectorAll(
-                        ".event-featured-card.expanded"
+                        ".event-featured-card:not(.collapsed)"
                     )
                 ).map(card =>
                     card.dataset.eventType
@@ -516,8 +565,8 @@ function initEvents() {
                     }
 
 
-                    card.classList.add(
-                        "expanded"
+                    card.classList.remove(
+                        "collapsed"
                     );
 
 
