@@ -1,6 +1,6 @@
-import discord
+import discord  # type: ignore[import-not-found]
 from pathlib import Path
-from discord import Emoji
+from discord import Emoji  # type: ignore[import-not-found]
 from typing import Optional
 
 CHARACTER_ASSETS = Path("assets/characters")
@@ -19,6 +19,7 @@ TALENT_SUFFIXES = {
     "witch's homework": "WitchsHomework",
     "radiance": "Radiance"
 }
+
 # ================
 # EMOJI Helpers
 # ================

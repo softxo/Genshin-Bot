@@ -1,18 +1,32 @@
 function initEvents() {
 
-    let expirationRefreshTime = null;
+    // =========================================
+    // PAGE
+    // =========================================
+
+    const eventsPage =
+        document.querySelector(".events-page");
+
+    if (!eventsPage) {
+        return;
+    }
+
+
+    // =========================================
+    // ACCOUNT DROPDOWN
+    // =========================================
 
     function initialiseEventsDropdown() {
 
-        const select =
+        const dropdown =
             document.getElementById("events-account");
 
-        if (!select) {
+        if (!dropdown) {
             return;
         }
 
         const button =
-            select.querySelector(
+            dropdown.querySelector(
                 ".custom-select-button"
             );
 
@@ -20,76 +34,205 @@ function initEvents() {
             return;
         }
 
+
+        // Prevent duplicate listeners.
+        if (button.dataset.initialised === "true") {
+            return;
+        }
+
+        button.dataset.initialised = "true";
+
+
         button.addEventListener(
             "click",
-            event => {
+            (event) => {
 
+                event.preventDefault();
                 event.stopPropagation();
 
-                select.classList.toggle("open");
+                dropdown.classList.toggle("open");
 
             }
         );
+
+    }
+
+
+    // =========================================
+    // CLOSE ACCOUNT DROPDOWN
+    // =========================================
+
+    function initialiseDropdownClose() {
+
+        if (window.eventsDropdownCloseInitialised) {
+            return;
+        }
+
+        window.eventsDropdownCloseInitialised = true;
+
 
         document.addEventListener(
             "click",
-            () => {
+            (event) => {
 
-                select.classList.remove("open");
-
-            }
-        );
-    }
-
-
-    function initialiseEventFeatureToggles() {
-
-        const cards =
-            document.querySelectorAll(
-                ".event-featured-card"
-            );
-
-        cards.forEach(card => {
-
-            const button =
-                card.querySelector(
-                    ".event-featured-toggle"
-                );
-
-            if (!button) {
-                return;
-            }
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-                    const collapsed =
-                        card.classList.toggle(
-                            "collapsed"
-                        );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        String(!collapsed)
+                const dropdown =
+                    document.getElementById(
+                        "events-account"
                     );
 
-                    button.setAttribute(
-                        "aria-label",
-                        collapsed
-                            ? "Expand event"
-                            : "Collapse event"
+                if (!dropdown) {
+                    return;
+                }
+
+                if (!dropdown.contains(event.target)) {
+
+                    dropdown.classList.remove(
+                        "open"
                     );
 
                 }
-            );
 
-        });
+            }
+        );
 
     }
 
+
+    // =========================================
+    // FEATURED EVENT CARDS
+    // =========================================
+
+    function initialiseEventFeatureToggles() {
+
+        document
+            .querySelectorAll(
+                ".event-featured-toggle"
+            )
+            .forEach(toggle => {
+
+                if (
+                    toggle.dataset.initialised ===
+                    "true"
+                ) {
+                    return;
+                }
+
+                toggle.dataset.initialised =
+                    "true";
+
+
+                toggle.addEventListener(
+                    "click",
+                    (event) => {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+
+                        const card =
+                            toggle.closest(
+                                ".event-featured-card"
+                            );
+
+                        if (!card) {
+                            return;
+                        }
+
+
+                        const expanded =
+                            card.classList.toggle(
+                                "expanded"
+                            );
+
+
+                        toggle.setAttribute(
+                            "aria-expanded",
+                            expanded
+                                ? "true"
+                                : "false"
+                        );
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    // =========================================
+    // OVERVIEW TABS
+    // =========================================
+
+    function initialiseOverviewTabs() {
+
+        document
+            .querySelectorAll(
+                ".events-overview-tab"
+            )
+            .forEach(tab => {
+
+                if (
+                    tab.dataset.initialised ===
+                    "true"
+                ) {
+                    return;
+                }
+
+                tab.dataset.initialised =
+                    "true";
+
+
+                tab.addEventListener(
+                    "click",
+                    () => {
+
+                        const target =
+                            tab.dataset.overviewTab;
+
+                        if (!target) {
+                            return;
+                        }
+
+
+                        document
+                            .querySelectorAll(
+                                ".events-overview-tab"
+                            )
+                            .forEach(otherTab => {
+
+                                otherTab.classList.toggle(
+                                    "active",
+                                    otherTab === tab
+                                );
+
+                            });
+
+
+                        document
+                            .querySelectorAll(
+                                ".events-overview-panel"
+                            )
+                            .forEach(panel => {
+
+                                panel.classList.toggle(
+                                    "active",
+                                    panel.dataset.overviewPanel === target
+                                );
+
+                            });
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    // =========================================
+    // EVENT COUNTDOWN TIMERS
+    // =========================================
 
     function updateEventTimeLeft() {
 
@@ -111,125 +254,103 @@ function initEvents() {
                     timer.dataset.endTime
                 );
 
-            const remaining =
+            if (!endTime) {
+                return;
+            }
+
+
+            const originalRemaining =
                 endTime - now;
 
 
-            if (remaining <= 0) {
+            // -----------------------------------------
+            // EXPIRED
+            // -----------------------------------------
 
-                const isStygianReset =
-                    timer.classList.contains(
-                        "stygian-reset-timer"
-                    );
-
+            if (originalRemaining <= 0) {
 
                 timer.textContent =
-                    isStygianReset
+                    timer.classList.contains(
+                        "stygian-reset-timer"
+                    )
                         ? "Resetting..."
                         : "Updating...";
+
+
+                timer.classList.add(
+                    "expired"
+                );
 
 
                 timer.classList.remove(
                     "warning"
                 );
 
-                timer.classList.add(
-                    "danger"
-                );
-
-
-                if (
-                    expirationRefreshTime !== endTime &&
-                    typeof window.refreshEvents ===
-                        "function"
-                ) {
-
-                    expirationRefreshTime =
-                        endTime;
-
-                    window.refreshEvents();
-
-                }
 
                 return;
             }
 
 
+            // -----------------------------------------
+            // ACTIVE
+            // -----------------------------------------
+
+            timer.classList.remove(
+                "expired"
+            );
+
+
             const days =
                 Math.floor(
-                    remaining / 86400
+                    originalRemaining / 86400
                 );
 
             const hours =
                 Math.floor(
-                    (remaining % 86400) / 3600
+                    (originalRemaining % 86400) /
+                    3600
                 );
 
             const minutes =
                 Math.floor(
-                    (remaining % 3600) / 60
+                    (originalRemaining % 3600) /
+                    60
                 );
 
 
             if (days > 0) {
 
                 timer.textContent =
-                    `${days}d ${hours}h left`;
+                    `${days}d ${hours}h ${minutes}m`;
 
             } else if (hours > 0) {
 
                 timer.textContent =
-                    `${hours}h ${minutes}m left`;
+                    `${hours}h ${minutes}m`;
 
             } else {
 
                 timer.textContent =
-                    `${minutes}m left`;
+                    `${minutes}m`;
 
             }
 
 
-            timer.classList.remove(
-                "warning",
-                "danger"
-            );
+            // -----------------------------------------
+            // WARNING STATE
+            // -----------------------------------------
 
+            if (originalRemaining <= 300) {
 
-            if (
-                timer.classList.contains(
-                    "event-daily-reset"
-                )
-            ) {
-
-                if (remaining < 14400) {
-
-                    timer.classList.add(
-                        "danger"
-                    );
-
-                } else if (remaining < 54000) {
-
-                    timer.classList.add(
-                        "warning"
-                    );
-
-                }
+                timer.classList.add(
+                    "warning"
+                );
 
             } else {
 
-                if (remaining < 86400) {
-
-                    timer.classList.add(
-                        "danger"
-                    );
-
-                } else if (remaining < 259200) {
-
-                    timer.classList.add(
-                        "warning"
-                    );
-
-                }
+                timer.classList.remove(
+                    "warning"
+                );
 
             }
 
@@ -237,6 +358,10 @@ function initEvents() {
 
     }
 
+
+    // =========================================
+    // REFRESH EVENTS
+    // =========================================
 
     async function refreshEvents() {
 
@@ -249,61 +374,88 @@ function initEvents() {
 
         try {
 
-            const container =
+            const currentPage =
                 document.querySelector(
                     ".events-page"
                 );
 
-            if (!container) {
+            if (!currentPage) {
                 return;
             }
 
 
-            /*
-             * Remember which featured cards are currently expanded.
-             */
+            // -----------------------------------------
+            // Current page state
+            // -----------------------------------------
 
-            const expandedCards = [];
-
-            document
-                .querySelectorAll(
-                    ".event-featured-card"
-                )
-                .forEach((card, index) => {
-
-                    expandedCards[index] =
-                        !card.classList.contains(
-                            "collapsed"
-                        );
-
-                });
+            const isOverview =
+                currentPage.dataset.overview ===
+                "true";
 
 
-            /*
-             * Remember the current scroll position.
-             */
+            const accountId =
+                currentPage.dataset.accountId ||
+                "";
+
+
+            // -----------------------------------------
+            // Preserve UI state
+            // -----------------------------------------
+
+            const expandedCards =
+                Array.from(
+                    currentPage.querySelectorAll(
+                        ".event-featured-card.expanded"
+                    )
+                ).map(card =>
+                    card.dataset.eventType
+                );
+
+
+            const activeOverviewTab =
+                currentPage
+                    .querySelector(
+                        ".events-overview-tab.active"
+                    )
+                    ?.dataset.overviewTab ||
+                "daily";
+
 
             const scrollPosition =
                 window.scrollY;
 
 
-            /*
-             * Request fresh Events HTML.
-             */
+            // -----------------------------------------
+            // Build request
+            // -----------------------------------------
+
+            const params =
+                new URLSearchParams();
+
+
+            if (isOverview) {
+
+                params.set(
+                    "overview",
+                    "true"
+                );
+
+            }
+
+
+            if (accountId) {
+
+                params.set(
+                    "account_id",
+                    accountId
+                );
+
+            }
+
 
             const response =
                 await fetch(
-                    `/events/refresh?account_id=${
-                        document
-                            .getElementById(
-                                "daily-commissions"
-                            )
-                            ?.dataset.accountId || ""
-                    }`,
-                    {
-                        credentials: "same-origin",
-                        cache: "no-store",
-                    }
+                    `/events/refresh?${params.toString()}`
                 );
 
 
@@ -316,142 +468,115 @@ function initEvents() {
                 await response.text();
 
 
-            /*
-             * Parse the returned page without replacing the actual document.
-             */
-
             const parser =
                 new DOMParser();
 
-            const documentFromServer =
+
+            const documentHTML =
                 parser.parseFromString(
                     html,
                     "text/html"
                 );
 
 
-            const newFeatured =
-                documentFromServer.querySelector(
-                    ".events-featured"
-                );
-
-            const newEventsList =
-                documentFromServer.querySelector(
-                    ".events-list"
-                );
-
-            const newWishes =
-                documentFromServer.querySelector(
-                    ".events-wishes"
+            const newPage =
+                documentHTML.querySelector(
+                    ".events-page"
                 );
 
 
-            const currentFeatured =
-                container.querySelector(
-                    ".events-featured"
-                );
-
-            const currentEventsList =
-                container.querySelector(
-                    ".events-list"
-                );
-
-            const currentWishes =
-                container.querySelector(
-                    ".events-wishes"
-                );
-
-
-            if (
-                !newFeatured ||
-                !newEventsList ||
-                !newWishes ||
-                !currentFeatured ||
-                !currentEventsList ||
-                !currentWishes
-            ) {
-
+            if (!newPage) {
                 return;
-
             }
 
 
-            /*
-             * Replace only the dynamic Events content.
-             */
+            // -----------------------------------------
+            // Replace page
+            // -----------------------------------------
 
-            currentFeatured.replaceWith(
-                newFeatured
-            );
-
-            currentEventsList.replaceWith(
-                newEventsList
-            );
-
-            currentWishes.replaceWith(
-                newWishes
+            currentPage.replaceWith(
+                newPage
             );
 
 
-            /*
-             * Restore expanded/collapsed state.
-             */
+            // -----------------------------------------
+            // Restore expanded cards
+            // -----------------------------------------
 
-            document
-                .querySelectorAll(
-                    ".event-featured-card"
-                )
-                .forEach((card, index) => {
+            expandedCards.forEach(
+                eventType => {
 
-                    if (
-                        expandedCards[index]
-                    ) {
-
-                        card.classList.remove(
-                            "collapsed"
+                    const card =
+                        document.querySelector(
+                            `.event-featured-card[data-event-type="${eventType}"]`
                         );
 
-                        const button =
-                            card.querySelector(
-                                ".event-featured-toggle"
-                            );
+                    if (!card) {
+                        return;
+                    }
 
-                        if (button) {
 
-                            button.setAttribute(
-                                "aria-expanded",
-                                "true"
-                            );
+                    card.classList.add(
+                        "expanded"
+                    );
 
-                            button.setAttribute(
-                                "aria-label",
-                                "Collapse event"
-                            );
 
-                        }
+                    const toggle =
+                        card.querySelector(
+                            ".event-featured-toggle"
+                        );
+
+
+                    if (toggle) {
+
+                        toggle.setAttribute(
+                            "aria-expanded",
+                            "true"
+                        );
 
                     }
 
-                });
+                }
+            );
 
 
-            /*
-             * Re-bind the feature toggles after replacing the cards.
-             */
+            // -----------------------------------------
+            // Reinitialise controls
+            // -----------------------------------------
+
+            initialiseEventsDropdown();
 
             initialiseEventFeatureToggles();
 
-
-            /*
-             * Recalculate timers immediately.
-             */
+            initialiseOverviewTabs();
 
             updateEventTimeLeft();
 
 
-            /*
-             * Restore scroll position.
-             */
+            // -----------------------------------------
+            // Restore overview tab
+            // -----------------------------------------
+
+            if (isOverview) {
+
+                const activeTab =
+                    document.querySelector(
+                        `.events-overview-tab[data-overview-tab="${activeOverviewTab}"]`
+                    );
+
+
+                if (activeTab) {
+
+                    activeTab.click();
+
+                }
+
+            }
+
+
+            // -----------------------------------------
+            // Restore scroll position
+            // -----------------------------------------
 
             window.scrollTo(
                 0,
@@ -470,153 +595,91 @@ function initEvents() {
             window.eventsRefreshing =
                 false;
 
-            scheduleEventsRefresh();
-
         }
 
     }
 
 
-    /*
-     * Expose the refresh function before
-     * any timers can call it.
-     */
+    // =========================================
+    // GLOBAL REFRESH
+    // =========================================
 
     window.refreshEvents =
         refreshEvents;
 
 
+    // =========================================
+    // INITIALISE
+    // =========================================
+
     initialiseEventsDropdown();
 
+    initialiseDropdownClose();
+
     initialiseEventFeatureToggles();
+
+    initialiseOverviewTabs();
 
     updateEventTimeLeft();
 
 
-    /*
-     * Countdown updates every second.
-     */
+    // =========================================
+    // TIMER
+    // =========================================
 
-    if (window.eventsTimer) {
+    if (!window.eventsTimerInterval) {
 
-        clearInterval(
-            window.eventsTimer
-        );
+        window.eventsTimerInterval =
+            setInterval(
+                updateEventTimeLeft,
+                1000
+            );
 
     }
 
-    window.eventsTimer =
-        setInterval(
-            updateEventTimeLeft,
-            1000
-        );
 
+    // =========================================
+    // AUTOMATIC REFRESH
+    // =========================================
 
-        /*
-        * Adaptive event-data refreshing.
-        */
+    if (!window.eventsRefreshInterval) {
 
-    function scheduleEventsRefresh() {
-
-        if (window.eventsRefreshTimer) {
-
-            clearTimeout(
-                window.eventsRefreshTimer
-            );
-
-        }
-
-
-        const timers =
-            document.querySelectorAll(
-                ".event-time-left[data-end-time]"
-            );
-
-
-        const now =
-            Math.floor(
-                Date.now() / 1000
-            );
-
-
-        let nearExpiry = false;
-
-
-        timers.forEach(timer => {
-
-            const endTime =
-                Number(
-                    timer.dataset.endTime
-                );
-
-            const remaining =
-                endTime - now;
-
-
-            if (
-                remaining > 0 &&
-                remaining <= 300
-            ) {
-
-                nearExpiry = true;
-
-            }
-
-        });
-
-
-        /*
-        * Normal:
-        *     refresh every 60 seconds
-        *
-        * Near an event/reset:
-        *     refresh every 10 seconds
-        */
-
-        const delay =
-        nearExpiry
-            ? 10000
-            : 60000;
-
-
-        window.eventsRefreshTimer =
-            setTimeout(
+        window.eventsRefreshInterval =
+            setInterval(
                 refreshEvents,
-                delay
+                60000
             );
 
     }
 
 
-    /*
-    * Start adaptive refreshing.
-    */
+    // =========================================
+    // REFRESH WHEN TAB BECOMES VISIBLE
+    // =========================================
 
-    scheduleEventsRefresh();
+    if (!window.eventsVisibilityInitialised) {
+
+        window.eventsVisibilityInitialised =
+            true;
 
 
         document.addEventListener(
             "visibilitychange",
             () => {
-    
+
                 if (
                     document.visibilityState ===
                     "visible"
                 ) {
-    
-                    if (
-                        typeof window.refreshEvents ===
-                        "function"
-                    ) {
-    
-                        window.refreshEvents();
-    
-                    }
-    
+
+                    refreshEvents();
+
                 }
-    
+
             }
         );
+
+    }
 
 }
 

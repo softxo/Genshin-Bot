@@ -4,7 +4,11 @@
 
 {% block content %}
 
-<div class="page events-page">
+<div
+    class="page events-page"
+    data-overview="{{ 'true' if overview else 'false' }}"
+    data-account-id="{{ selected_account.id if selected_account else '' }}"
+>
 
     <section class="hero events-hero">
 
@@ -28,63 +32,91 @@
 
 
     {% if accounts %}
-    
-    <section class="events-section">
-    
+
+    <section class="events-section events-controls">
+
         <div class="section-header">
-    
+
             <div>
                 <h2>
-                    Account
+                    {% if overview %}
+                        Overview
+                    {% else %}
+                        Account
+                    {% endif %}
                 </h2>
             </div>
-    
-            <div class="events-account-selector">
-    
-                <div
-                    class="custom-select"
-                    id="events-account"
-                >
-    
-                    <button
-                        type="button"
-                        class="custom-select-button"
-                    >
-    
-                        <span class="custom-select-value">
-                            {{ selected_account.nickname }} — {{ selected_account.genshin_uid }}
-                        </span>
-    
-                        <span class="custom-select-arrow"></span>
-    
-                    </button>
-    
-                    <div class="custom-select-menu">
-    
-                        {% for account in accounts %}
-    
-                        <button
-                            type="button"
-                            class="custom-select-option{% if selected_account and account.id == selected_account.id %} selected{% endif %}"
-                            onclick="window.location.href='/events?account_id={{ account.id }}'"
+
+            <div class="events-controls-right">
+
+                {% if not overview %}
+
+                    <div class="events-account-selector">
+
+                        <div
+                            class="custom-select"
+                            id="events-account"
                         >
-                            {{ account.nickname }} — {{ account.genshin_uid }}
-                        </button>
-    
-                        {% endfor %}
-    
+
+                            <button
+                                class="custom-select-button"
+                                type="button"
+                            >
+
+                                <span class="custom-select-value">
+                                    {{ selected_account.nickname }}
+                                    —
+                                    {{ selected_account.genshin_uid }}
+                                </span>
+
+                                <span class="custom-select-arrow"></span>
+
+                            </button>
+
+                            <div class="custom-select-menu">
+
+                                {% for account in accounts %}
+
+                                    <button
+                                        class="custom-select-option
+                                        {% if selected_account.id == account.id %}
+                                            active
+                                        {% endif %}"
+                                        type="button"
+                                        onclick="window.location.href='/events?account_id={{ account.id }}'"
+                                    >
+                                        {{ account.nickname }}
+                                        —
+                                        {{ account.genshin_uid }}
+                                    </button>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
                     </div>
-    
-                </div>
-    
+
+                {% endif %}
+
+
+                <a
+                    class="events-layout-switch"
+                    href="{% if overview %}/events?account_id={{ selected_account.id }}{% else %}/events?overview=true&account_id={{ selected_account.id }}{% endif %}"
+                >
+                    Switch Layout
+                </a>
+
             </div>
-    
+
         </div>
-    
+
     </section>
-    
+
     {% endif %}
 
+    {% if not overview %}
 
     <section class="events-featured">
 
@@ -92,7 +124,10 @@
             SPIRAL ABYSS
             ============================= -->
 
-        <div class="event-featured-card collapsed">
+        <div 
+            class="event-featured-card collapsed"
+            data-event-type="abyss"
+        >
 
             <img
                 src="/static/images/events/Abyss.png"
@@ -324,7 +359,10 @@
             IMAGINARIUM THEATER
             ============================= -->
 
-        <div class="event-featured-card collapsed">
+        <div 
+            class="event-featured-card collapsed"
+            data-event-type="theater"
+        >
 
             <img
                 src="/static/images/events/IT.png"
@@ -540,7 +578,10 @@
             STYGIAN ONSLAUGHT
             ============================= -->
 
-        <div class="event-featured-card collapsed">
+        <div 
+            class="event-featured-card collapsed"
+            data-event-type="stygian"
+        >
 
             <img
                 src="/static/images/events/Stygian.png"
@@ -838,7 +879,6 @@
 
                 </div>
 
-
                 <div class="event-encounter-points">
 
                     <img
@@ -859,13 +899,10 @@
 
                 </div>
 
-                </div>
+            </div>
 
 
-                <div class="event-list-right">
-
-
-                <!-- Daily Commission Status -->
+            <div class="event-list-right">
 
                 <span
                     class="event-list-status"
@@ -893,9 +930,6 @@
 
                     {% endif %}
                 </span>
-
-
-                <!-- Daily Reset -->
 
                 <div
                     class="event-time-left event-daily-reset"
@@ -1119,6 +1153,236 @@
         {% endif %}
 
     </section>
+
+    {% endif %}
+
+    {% if overview %}
+
+    <section class="events-overview">
+
+        <div class="events-overview-tabs">
+
+            <button
+                class="events-overview-tab active"
+                type="button"
+                data-overview-tab="daily"
+            >
+                Daily
+            </button>
+
+            <button
+                class="events-overview-tab"
+                type="button"
+                data-overview-tab="trounce"
+            >
+                Trounce
+            </button>
+
+            <button
+                class="events-overview-tab"
+                type="button"
+                data-overview-tab="events"
+            >
+                Events
+            </button>
+
+            <button
+                class="events-overview-tab"
+                type="button"
+                data-overview-tab="wishes"
+            >
+                Wishes
+            </button>
+
+        </div>
+
+
+        <div
+            class="events-overview-panel active"
+            data-overview-panel="daily"
+        >
+
+            {% for item in overview_data %}
+
+                <div class="overview-account-row">
+
+                    <div class="overview-account-name">
+
+                        <strong>
+                            {{ item.account.nickname }}
+                        </strong>
+
+                        <span>
+                            {{ item.account.genshin_uid }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="overview-account-status">
+
+                        {% if item.daily.has_data %}
+
+                            <span class="overview-status">
+
+                                {{ item.daily.completed }}
+                                /
+                                {{ item.daily.total }}
+
+                            </span>
+
+                            {% if item.daily.claimed_reward %}
+
+                                <span class="overview-claimed">
+                                    Claimed
+                                </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <span>
+                                No Data
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div
+            class="events-overview-panel"
+            data-overview-panel="trounce"
+        >
+
+            {% for item in overview_data %}
+
+                <div class="overview-account-row">
+
+                    <div class="overview-account-name">
+
+                        <strong>
+                            {{ item.account.nickname }}
+                        </strong>
+
+                        <span>
+                            {{ item.account.genshin_uid }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="overview-account-status">
+
+                        {% if item.trounce.has_data %}
+
+                            {{ item.trounce.total - item.trounce.remaining }}
+                            /
+                            {{ item.trounce.total }}
+
+                        {% else %}
+
+                            No Data
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div
+            class="events-overview-panel"
+            data-overview-panel="events"
+        >
+
+            {% for item in overview_data %}
+
+                <div class="overview-account-row">
+
+                    <div class="overview-account-name">
+
+                        <strong>
+                            {{ item.account.nickname }}
+                        </strong>
+
+                        <span>
+                            {{ item.account.genshin_uid }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="overview-account-status">
+
+                        <span>
+                            Abyss
+                            {{ item.abyss.max_floor }}
+                        </span>
+
+                        <span>
+                            {{ item.abyss.total_stars }}
+                            ★
+                        </span>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div
+            class="events-overview-panel"
+            data-overview-panel="wishes"
+        >
+
+            {% for item in overview_data %}
+
+                <div class="overview-account-row">
+
+                    <div class="overview-account-name">
+
+                        <strong>
+                            {{ item.account.nickname }}
+                        </strong>
+
+                        <span>
+                            {{ item.account.genshin_uid }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="overview-account-status">
+
+                        {{ item.wish_banners | length }}
+
+                        active banner{% if item.wish_banners | length != 1 %}s{% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
 
 </div>
 
