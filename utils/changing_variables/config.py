@@ -1,5 +1,5 @@
 IT_ELEMENTS = (
     "Hydro",
-    "Electro",
-    "Dendro",
+    "Cryo",
+    "Anemo",
 )
