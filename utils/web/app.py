@@ -1123,16 +1123,15 @@ async def get_events_data(
 
     if overview:
 
-        overview_data = []
-
-        for account in accounts:
-
-            account_events = await get_single_account_events(
-                user_id,
-                account,
-            )
-
-            overview_data.append(account_events)
+        overview_data = await asyncio.gather(
+            *[
+                get_single_account_events(
+                    user_id,
+                    account,
+                )
+                for account in accounts
+            ]
+        )
 
 
         return {
