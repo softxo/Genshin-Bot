@@ -1,4 +1,5 @@
 import typing
+import asyncio
 import time
 import tempfile
 import re
@@ -8,20 +9,20 @@ from datetime import (
     timezone
 )
 from pathlib import Path
-from fastapi import Cookie # type: ignore[import-not-found]
-from fastapi import (  # type: ignore[import-not-found]
+from fastapi import Cookie
+from fastapi import (  
     FastAPI,
     HTTPException,
     Request
 )
-from fastapi.responses import (  # type: ignore[import-not-found]
+from fastapi.responses import (
     HTMLResponse,
     JSONResponse,
     RedirectResponse,
 )
-from fastapi.staticfiles import StaticFiles  # type: ignore[import-not-found]
-from fastapi.templating import Jinja2Templates  # type: ignore[import-not-found]
-from genshin.models.auth.geetest import ( # type: ignore[import-not-found]
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from genshin.models.auth.geetest import (
     SessionMMTv4,
     SessionMMTResult,
     SessionMMTv4Result,
@@ -686,28 +687,20 @@ async def get_single_account_events(
 
             async with client:
 
-                announcements = (
-                    await client.get_genshin_announcements()
-                )
-
-                event_calendar = (
-                    await client.get_genshin_event_calendar()
-                )
-
-                theater = (
-                    await client.get_imaginarium_theater()
-                )
-
-                abyss = (
-                    await client.get_genshin_spiral_abyss()
-                )
-
-                stygian = (
-                    await client.get_stygian_onslaught()
-                )
-
-                notes = (
-                    await client.get_genshin_notes()
+                (
+                    announcements,
+                    event_calendar,
+                    theater,
+                    abyss,
+                    stygian,
+                    notes,
+                ) = await asyncio.gather(
+                    client.get_genshin_announcements(),
+                    client.get_genshin_event_calendar(),
+                    client.get_imaginarium_theater(),
+                    client.get_genshin_spiral_abyss(),
+                    client.get_stygian_onslaught(),
+                    client.get_genshin_notes(),
                 )
 
 
