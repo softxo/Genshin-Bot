@@ -626,12 +626,31 @@ async def delete_planner_reminder(
     return {
         "success": True,
     }
+    
+
+# =========================================
+# EVENTS CACHE
+# =========================================
+
+EVENTS_CACHE_TTL = 30
+
+_events_cache = {}
 
 
 async def get_single_account_events(
     user_id: int,
     account: dict,
 ):
+    cache_key = account["genshin_uid"]
+
+    cached = _events_cache.get(cache_key)
+
+    if cached:
+        cache_age = time.monotonic() - cached["timestamp"]
+
+        if cache_age < EVENTS_CACHE_TTL:
+            return cached["data"]
+
     abyss_data = {
         "has_data": False,
         "max_floor": "—",
@@ -1080,7 +1099,7 @@ async def get_single_account_events(
         print("================================")
 
 
-    return {
+    result = {
         "account": account,
         "abyss": abyss_data,
         "theater": theater_data,
@@ -1089,6 +1108,13 @@ async def get_single_account_events(
         "trounce": trounce_data,
         "wish_banners": wish_banners,
     }
+
+    _events_cache[cache_key] = {
+        "timestamp": time.monotonic(),
+        "data": result,
+    }
+
+    return result
 
 
 async def get_events_data(
