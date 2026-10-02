@@ -13,6 +13,7 @@ class HoYoLABClient:
     ):
         self.credentials = credentials
         self.session: aiohttp.ClientSession | None = None
+        self.genshin_client: genshin.Client | None = None
 
     async def __aenter__(self):
         self.session = aiohttp.ClientSession(
@@ -29,6 +30,11 @@ class HoYoLABClient:
             }
         )
 
+        self.genshin_client = genshin.Client(
+            cookies=self.credentials.as_cookies(),
+            game=genshin.types.Game.GENSHIN,
+        )
+
         return self
 
     async def __aexit__(
@@ -39,6 +45,8 @@ class HoYoLABClient:
     ):
         if self.session:
             await self.session.close()
+
+        self.genshin_client = None
 
     async def get_game_roles(self) -> dict:
         if self.session is None:
@@ -97,29 +105,32 @@ class HoYoLABClient:
         )
 
     async def get_stygian_onslaught(self) -> list:
-        client = genshin.Client(
-            cookies=self.credentials.as_cookies()
-        )
+        if self.genshin_client is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
 
-        return await client.get_stygian_onslaught(
+        return await self.genshin_client.get_stygian_onslaught(
             raw=True
         )
 
     async def get_imaginarium_theater(self) -> dict:
-        client = genshin.Client(
-            cookies=self.credentials.as_cookies()
-        )
+        if self.genshin_client is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
 
-        return await client.get_imaginarium_theater(
+        return await self.genshin_client.get_imaginarium_theater(
             raw=True
         )
 
-    async def get_genshin_spiral_abyss(self) -> genshin.models.SpiralAbyss:
-        client = genshin.Client(
-            cookies=self.credentials.as_cookies()
-        )
+    async def get_genshin_spiral_abyss(self):
+        if self.genshin_client is None:
+            raise RuntimeError(
+                "HoYoLABClient must be used with 'async with'."
+            )
 
-        return await client.get_genshin_spiral_abyss()
+        return await self.genshin_client.get_genshin_spiral_abyss()
 
     async def get_genshin_banners(self):
         client = genshin.Client(
