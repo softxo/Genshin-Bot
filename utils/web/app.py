@@ -642,7 +642,12 @@ async def get_single_account_events(
     account: dict,
     include_featured: bool = True,
 ):
-    cache_key = account["genshin_uid"]
+    
+    # Keep Overview and full Events data in separate cache entries.
+    cache_key = (
+        account["genshin_uid"],
+        include_featured,
+    )
 
     cached = _events_cache.get(cache_key)
 
