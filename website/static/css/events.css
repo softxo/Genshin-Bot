@@ -57,11 +57,10 @@
 
 .events-controls-right {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 
-    align-items: flex-start;
-
-    gap: 12px;
+    gap: 10px;
 }
 
 
@@ -146,15 +145,6 @@
     align-items: center;
 
     gap: 10px;
-}
-
-.events-account-selector > label {
-    flex-shrink: 0;
-
-    color: var(--text-secondary);
-
-    font-size: 14px;
-    font-weight: 600;
 }
 
 
