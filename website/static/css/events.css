@@ -2136,9 +2136,11 @@
     }
 
     .overview-account-status {
-        width: 100%;
-
-        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        white-space: nowrap;
     }
 
     .events-featured {
