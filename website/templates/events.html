@@ -49,9 +49,23 @@
 
             <div class="events-controls-right">
 
+                <!-- Switch Layout -->
+                <a
+                    class="events-layout-switch"
+                    href="{% if overview %}/events?account_id={{ selected_account.id }}{% else %}/events?overview=true&account_id={{ selected_account.id }}{% endif %}"
+                >
+                    Switch Layout
+                </a>
+
+
                 {% if not overview %}
 
+                    <!-- Account Selector -->
                     <div class="events-account-selector">
+
+                        <label for="events-account">
+                            Account
+                        </label>
 
                         <div
                             class="custom-select"
@@ -99,14 +113,6 @@
                     </div>
 
                 {% endif %}
-
-
-                <a
-                    class="events-layout-switch"
-                    href="{% if overview %}/events?account_id={{ selected_account.id }}{% else %}/events?overview=true&account_id={{ selected_account.id }}{% endif %}"
-                >
-                    Switch Layout
-                </a>
 
             </div>
 

@@ -1,6 +1,6 @@
-import discord  # type: ignore[import-not-found]
+import discord
 from pathlib import Path
-from discord import Emoji  # type: ignore[import-not-found]
+from discord import Emoji
 from typing import Optional
 
 CHARACTER_ASSETS = Path("assets/characters")

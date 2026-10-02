@@ -723,12 +723,6 @@ async def get_single_account_events(
                 try:
                     result = await awaitable
 
-                    print(
-                        f"[Events API] {name} | "
-                        f"UID: {account['genshin_uid']} | "
-                        f"Time: {time.monotonic() - started:.2f}s"
-                    )
-
                     return result
 
                 except Exception as error:
