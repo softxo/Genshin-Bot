@@ -951,6 +951,13 @@ async def get_single_account_events(
             # =========================================
             # DAILY COMMISSIONS
             # =========================================
+            
+            print(
+                f"[Daily Debug] UID: {account['genshin_uid']} | "
+                f"finished_task_num={notes['data']['finished_task_num']} | "
+                f"total_task_num={notes['data']['total_task_num']} | "
+                f"is_extra_task_reward_received={notes['data']['is_extra_task_reward_received']}"
+            )
 
             daily_data = {
                 "has_data": True,
