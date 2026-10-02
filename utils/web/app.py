@@ -1103,28 +1103,27 @@ async def get_single_account_events(
             # IMAGINARIUM THEATER
             # =========================================
 
-            current_cycle = theater["data"][0]
+            if include_featured and theater:
+                current_cycle = theater["data"][0]
+                stat = current_cycle["stat"]
+                schedule = current_cycle["schedule"]
+                detail = current_cycle["detail"]
+                acts = detail["rounds_data"]
 
-            stat = current_cycle["stat"]
-            schedule = current_cycle["schedule"]
-            detail = current_cycle["detail"]
+                arcanums = sum(
+                    1
+                    for act in acts
+                    if act.get("is_tarot") is True
+                )
 
-            acts = detail["rounds_data"]
-
-            arcanums = sum(
-                1
-                for act in acts
-                if act.get("is_tarot") is True
-            )
-
-            theater_data = {
-                "has_data": stat["max_round_id"] > 0,
-                "best_round": stat["max_round_id"],
-                "arcanums": arcanums,
-                "medals": stat["medal_num"],
-                "end_time": schedule["end_time"],
-                "elements": IT_ELEMENTS,
-            }
+                theater_data = {
+                    "has_data": stat["max_round_id"] > 0,
+                    "best_round": stat["max_round_id"],
+                    "arcanums": arcanums,
+                    "medals": stat["medal_num"],
+                    "end_time": schedule["end_time"],
+                    "elements": IT_ELEMENTS,
+                }
 
 
     except Exception as error:
