@@ -1935,10 +1935,10 @@
 }
 
 .overview-daily-progress {
-    display: inline-flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 36px 100px;
     align-items: center;
-    flex-wrap: nowrap;
+    justify-content: end;
     gap: 8px;
     white-space: nowrap;
 }
@@ -1954,11 +1954,14 @@
 .overview-unclaimed {
     display: inline-flex;
     align-items: center;
-    flex: 0 0 auto;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100px;
     padding: 6px 10px;
     border-radius: 8px;
     white-space: nowrap;
     font-weight: 600;
+    flex-shrink: 0;
 }
 
 .overview-claimed {
