@@ -1931,12 +1931,13 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-shrink: 0;
 }
 
 .overview-daily-progress {
     display: inline-flex;
-    align-items: center;
     flex-direction: row;
+    align-items: center;
     flex-wrap: nowrap;
     gap: 8px;
     white-space: nowrap;
@@ -1945,6 +1946,7 @@
 .overview-status {
     display: inline-flex;
     align-items: center;
+    flex: 0 0 auto;
     white-space: nowrap;
 }
 
@@ -1952,16 +1954,11 @@
 .overview-unclaimed {
     display: inline-flex;
     align-items: center;
-
+    flex: 0 0 auto;
     padding: 6px 10px;
-
     border-radius: 8px;
-
     white-space: nowrap;
-
     font-weight: 600;
-
-    flex-shrink: 0;
 }
 
 .overview-claimed {
