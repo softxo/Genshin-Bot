@@ -640,6 +640,7 @@ _events_cache = {}
 async def get_single_account_events(
     user_id: int,
     account: dict,
+    include_featured: bool = True,
 ):
     cache_key = account["genshin_uid"]
 
@@ -736,14 +737,7 @@ async def get_single_account_events(
 
             async with client:
 
-                (
-                    announcements,
-                    event_calendar,
-                    theater,
-                    abyss,
-                    stygian,
-                    notes,
-                ) = await asyncio.gather(
+                requests = [
                     timed_event_request(
                         "Announcements",
                         client.get_genshin_announcements(),
@@ -753,22 +747,37 @@ async def get_single_account_events(
                         client.get_genshin_event_calendar(),
                     ),
                     timed_event_request(
-                        "Theater",
-                        client.get_imaginarium_theater(),
-                    ),
-                    timed_event_request(
                         "Abyss",
                         client.get_genshin_spiral_abyss(),
-                    ),
-                    timed_event_request(
-                        "Stygian",
-                        client.get_stygian_onslaught(),
                     ),
                     timed_event_request(
                         "Notes",
                         client.get_genshin_notes(),
                     ),
-                )
+                ]
+
+                if include_featured:
+                    requests.extend([
+                        timed_event_request(
+                            "Theater",
+                            client.get_imaginarium_theater(),
+                        ),
+                        timed_event_request(
+                            "Stygian",
+                            client.get_stygian_onslaught(),
+                        ),
+                    ])
+
+                results = await asyncio.gather(*requests)
+
+                announcements = results[0]
+                event_calendar = results[1]
+                abyss = results[2]
+                notes = results[3]
+
+                if include_featured:
+                    theater = results[4]
+                    stygian = results[5]
 
 
             # =========================================
@@ -1210,6 +1219,7 @@ async def get_events_data(
                 get_single_account_events(
                     user_id,
                     account,
+                    include_featured=False,
                 )
                 for account in accounts
             ]
