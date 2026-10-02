@@ -1925,6 +1925,20 @@
     white-space: nowrap;
 }
 
+/* =========================================
+   Overview Daily Status
+   ========================================= */
+
+.overview-unclaimed {
+    color: #e05252;
+    font-weight: 600;
+}
+
+.overview-unclaimed.ready {
+    color: #e39a3f;
+    font-weight: 600;
+}
+
 
 /* =========================================================
    15. RESPONSIVE — FEATURED CARDS
