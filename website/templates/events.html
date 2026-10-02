@@ -1220,42 +1220,25 @@
 
 
                     <div class="overview-account-status">
-
                         {% if item.daily.has_data %}
-
-                            <span class="overview-status">
-                                {{ item.daily.completed }}
-                                /
-                                {{ item.daily.total }}
-                            </span>
-
-                            {% if item.daily.claimed_reward %}
-
-                                <span class="overview-claimed">
-                                    Claimed
+                            <div class="overview-daily-progress">
+                                <span class="overview-status">
+                                    {{ item.daily.completed }}
+                                    /
+                                    {{ item.daily.total }}
                                 </span>
 
-                            {% else %}
-
-                                <span
-                                    class="overview-unclaimed
-                                    {% if item.daily.completed >= item.daily.total %}
-                                        ready
-                                    {% endif %}"
-                                >
-                                    Unclaimed
-                                </span>
-
-                            {% endif %}
-
+                                {% if item.daily.claimed_reward %}
+                                    <span class="overview-claimed">Claimed</span>
+                                {% else %}
+                                    <span class="overview-unclaimed {% if item.daily.completed >= item.daily.total %}ready{% endif %}">
+                                        Unclaimed
+                                    </span>
+                                {% endif %}
+                            </div>
                         {% else %}
-
-                            <span>
-                                No Data
-                            </span>
-
+                            <span>No Data</span>
                         {% endif %}
-
                     </div>
 
                 </div>
