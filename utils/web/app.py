@@ -650,6 +650,13 @@ async def get_single_account_events(
 
         if cache_age < EVENTS_CACHE_TTL:
             return cached["data"]
+        
+    fetch_started = time.monotonic()
+
+    print(
+        f"[Events] Fetch started | "
+        f"UID: {account['genshin_uid']}"
+    )
 
     abyss_data = {
         "has_data": False,
@@ -1108,6 +1115,14 @@ async def get_single_account_events(
         "trounce": trounce_data,
         "wish_banners": wish_banners,
     }
+    
+    elapsed = time.monotonic() - fetch_started
+
+    print(
+        f"[Events] Fetch completed | "
+        f"UID: {account['genshin_uid']} | "
+        f"Time: {elapsed:.2f}s"
+    )
 
     _events_cache[cache_key] = {
         "timestamp": time.monotonic(),
