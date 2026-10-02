@@ -1040,27 +1040,16 @@ async def get_single_account_events(
             # STYGIAN ONSLAUGHT
             # =========================================
 
-            if stygian:
-
+            if include_featured and stygian:
                 current_stygian = stygian[0]
-
-                record = (
-                    current_stygian["single"]["best"]
-                )
+                record = current_stygian["single"]["best"]
 
                 bosses = []
 
-                for challenge in (
-                    current_stygian["single"]["challenge"]
-                ):
-
+                for challenge in current_stygian["single"]["challenge"]:
                     characters = []
 
-                    for character in challenge.get(
-                        "teams",
-                        []
-                    ):
-
+                    for character in challenge.get("teams", []):
                         characters.append({
                             "name": character["name"],
                             "icon": character["image"],
@@ -1073,7 +1062,6 @@ async def get_single_account_events(
                         "characters": characters,
                     })
 
-
                 difficulty_icons = {
                     1: "SO_Diff_I.webp",
                     2: "SO_Diff_II.webp",
@@ -1083,16 +1071,13 @@ async def get_single_account_events(
                     6: "SO_Diff_VI.webp",
                 }
 
-
                 stygian_data = {
                     "has_data": current_stygian["single"]["has_data"],
                     "end_time": int(
                         current_stygian["schedule"]["end_time"]
                     ),
                     "difficulty": (
-                        record["difficulty"]
-                        if record
-                        else 0
+                        record["difficulty"] if record else 0
                     ),
                     "difficulty_icon": (
                         "SO_Diff_VI_180.webp"
@@ -1103,18 +1088,13 @@ async def get_single_account_events(
                         )
                         else (
                             difficulty_icons.get(
-                                record["difficulty"],
-                                ""
+                                record["difficulty"], ""
                             )
                             if record
                             else ""
                         )
                     ),
-                    "best_time": (
-                        record["second"]
-                        if record
-                        else 0
-                    ),
+                    "best_time": record["second"] if record else 0,
                     "bosses": bosses,
                 }
 
