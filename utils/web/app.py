@@ -710,6 +710,29 @@ async def get_single_account_events(
         )
 
         if client is not None:
+            
+            async def timed_event_request(name, awaitable):
+                started = time.monotonic()
+
+                try:
+                    result = await awaitable
+
+                    print(
+                        f"[Events API] {name} | "
+                        f"UID: {account['genshin_uid']} | "
+                        f"Time: {time.monotonic() - started:.2f}s"
+                    )
+
+                    return result
+
+                except Exception as error:
+                    print(
+                        f"[Events API] {name} FAILED | "
+                        f"UID: {account['genshin_uid']} | "
+                        f"Time: {time.monotonic() - started:.2f}s | "
+                        f"{type(error).__name__}: {error}"
+                    )
+                    raise
 
             async with client:
 
@@ -721,12 +744,30 @@ async def get_single_account_events(
                     stygian,
                     notes,
                 ) = await asyncio.gather(
-                    client.get_genshin_announcements(),
-                    client.get_genshin_event_calendar(),
-                    client.get_imaginarium_theater(),
-                    client.get_genshin_spiral_abyss(),
-                    client.get_stygian_onslaught(),
-                    client.get_genshin_notes(),
+                    timed_event_request(
+                        "Announcements",
+                        client.get_genshin_announcements(),
+                    ),
+                    timed_event_request(
+                        "Event Calendar",
+                        client.get_genshin_event_calendar(),
+                    ),
+                    timed_event_request(
+                        "Theater",
+                        client.get_imaginarium_theater(),
+                    ),
+                    timed_event_request(
+                        "Abyss",
+                        client.get_genshin_spiral_abyss(),
+                    ),
+                    timed_event_request(
+                        "Stygian",
+                        client.get_stygian_onslaught(),
+                    ),
+                    timed_event_request(
+                        "Notes",
+                        client.get_genshin_notes(),
+                    ),
                 )
 
 
