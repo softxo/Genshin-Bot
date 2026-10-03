@@ -416,46 +416,85 @@ function initEvents() {
             )
             .forEach(timer => {
 
-                const timestamp = Number(
+                let timestamp = Number(
                     timer.dataset.resinTimestamp
                 );
 
-                if (!timestamp) {
-                    timer.textContent = "Full";
-                    return;
-                }
-
-                const remaining = Math.max(
-                    0,
-                    timestamp - Math.floor(
+                const now =
+                    Math.floor(
                         Date.now() / 1000
-                    )
-                );
+                    );
 
-                if (remaining === 0) {
-                    timer.textContent = "Now";
+
+                // No timestamp means Resin is full.
+                if (!timestamp) {
+
+                    timer.textContent =
+                        "Full";
+
                     return;
+
                 }
 
-                const hours = Math.floor(
-                    remaining / 3600
-                );
 
-                const minutes = Math.floor(
-                    (remaining % 3600) / 60
-                );
+                // -----------------------------------------
+                // NEXT RESIN
+                // -----------------------------------------
 
-                const seconds = remaining % 60;
+                if (
+                    timer.dataset.resinKind ===
+                    "next" &&
+                    timestamp <= now
+                ) {
+
+                    // Each Resin takes 8 minutes.
+                    while (timestamp <= now) {
+
+                        timestamp += 480;
+
+                    }
+
+                    timer.dataset.resinTimestamp =
+                        String(timestamp);
+
+                }
+
+
+                const remaining =
+                    Math.max(
+                        0,
+                        timestamp - now
+                    );
+
+
+                const hours =
+                    Math.floor(
+                        remaining / 3600
+                    );
+
+                const minutes =
+                    Math.floor(
+                        (remaining % 3600) / 60
+                    );
+
+                const seconds =
+                    remaining % 60;
+
 
                 if (hours > 0) {
 
                     timer.textContent =
                         `${hours}h ${minutes}m`;
 
-                } else {
+                } else if (minutes > 0) {
 
                     timer.textContent =
                         `${minutes}m ${seconds}s`;
+
+                } else {
+
+                    timer.textContent =
+                        `${seconds}s`;
 
                 }
 

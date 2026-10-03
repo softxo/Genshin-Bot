@@ -1273,7 +1273,7 @@
                         {% if item.resin.has_data %}
                             <div class="overview-resin-value">
                                 <img
-                                    src="/static/images/Original_Resin.webp"
+                                    src="/static/images/misc/Original_Resin.webp"
                                     alt="Resin"
                                     class="overview-resin-icon"
                                 >
@@ -1290,6 +1290,7 @@
                                     Next:
                                     <span
                                         class="overview-resin-timer"
+                                        data-resin-kind="next"
                                         data-resin-timestamp="{{ item.resin.next_resin_at or '' }}"
                                     >
                                         {% if item.resin.next_resin_at %}
@@ -1304,6 +1305,7 @@
                                     Full:
                                     <span
                                         class="overview-resin-timer"
+                                        data-resin-kind="full"
                                         data-resin-timestamp="{{ item.resin.full_resin_at or '' }}"
                                     >
                                         {% if item.resin.full_resin_at %}
