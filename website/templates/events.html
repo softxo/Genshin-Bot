@@ -1162,7 +1162,7 @@
         <div class="events-overview-tabs">
 
             <button
-                class="events-overview-tab active"
+                class="events-overview-tab"
                 data-overview-tab="daily"
             >
                 Daily
@@ -1193,7 +1193,7 @@
 
 
         <div
-            class="events-overview-panel active"
+            class="events-overview-panel"
             data-overview-panel="daily"
         >
 
@@ -1279,9 +1279,8 @@
                                 >
 
                                 <strong>
-                                    {{ item.resin.current }}
-                                    /
-                                    {{ item.resin.maximum }}
+                                    <span class="resin-current">{{ item.resin.current }}</span>
+                                    <span class="resin-maximum">/ {{ item.resin.maximum }}</span>
                                 </strong>
                             </div>
 

@@ -205,66 +205,93 @@ function initEvents() {
 
     function initialiseOverviewTabs() {
 
-        document
-            .querySelectorAll(
-                ".events-overview-tab"
-            )
-            .forEach(tab => {
+        const tabs = document.querySelectorAll(
+            ".events-overview-tab"
+        );
 
-                if (
-                    tab.dataset.initialised ===
-                    "true"
-                ) {
-                    return;
-                }
-
-                tab.dataset.initialised =
-                    "true";
+        const panels = document.querySelectorAll(
+            ".events-overview-panel"
+        );
 
 
-                tab.addEventListener(
-                    "click",
-                    () => {
+        function activateTab(target) {
 
-                        const target =
-                            tab.dataset.overviewTab;
+            tabs.forEach(tab => {
 
-                        if (!target) {
-                            return;
-                        }
-
-
-                        document
-                            .querySelectorAll(
-                                ".events-overview-tab"
-                            )
-                            .forEach(otherTab => {
-
-                                otherTab.classList.toggle(
-                                    "active",
-                                    otherTab === tab
-                                );
-
-                            });
-
-
-                        document
-                            .querySelectorAll(
-                                ".events-overview-panel"
-                            )
-                            .forEach(panel => {
-
-                                panel.classList.toggle(
-                                    "active",
-                                    panel.dataset.overviewPanel === target
-                                );
-
-                            });
-
-                    }
+                tab.classList.toggle(
+                    "active",
+                    tab.dataset.overviewTab === target
                 );
 
             });
+
+            panels.forEach(panel => {
+
+                panel.classList.toggle(
+                    "active",
+                    panel.dataset.overviewPanel === target
+                );
+
+            });
+
+        }
+
+
+        tabs.forEach(tab => {
+
+            if (
+                tab.dataset.initialised === "true"
+            ) {
+                return;
+            }
+
+            tab.dataset.initialised = "true";
+
+
+            tab.addEventListener(
+                "click",
+                () => {
+
+                    const target =
+                        tab.dataset.overviewTab;
+
+                    if (!target) {
+                        return;
+                    }
+
+                    // Save the selected tab.
+                    localStorage.setItem(
+                        "cyreneOverviewTab",
+                        target
+                    );
+
+                    activateTab(target);
+
+                }
+            );
+
+        });
+
+
+        // Restore the previously selected tab.
+        const savedTab =
+            localStorage.getItem(
+                "cyreneOverviewTab"
+            );
+
+        const savedTabExists = Array.from(
+            tabs
+        ).some(
+            tab =>
+                tab.dataset.overviewTab === savedTab
+        );
+
+
+        activateTab(
+            savedTabExists
+                ? savedTab
+                : "daily"
+        );
 
     }
 
