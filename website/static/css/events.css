@@ -755,16 +755,48 @@
 
 
 /* Less than 3 days remaining. */
-.event-time-left.warning {
+.event-daily-reset.warning {
     background: rgba(180, 120, 40, 0.65);
     border-color: rgba(230, 170, 70, 0.45);
 }
 
 
 /* Less than 1 day remaining. */
-.event-time-left.danger {
+.event-daily-reset.danger {
     background: rgba(180, 55, 65, 0.7);
     border-color: rgba(235, 90, 100, 0.5);
+}
+
+.event-daily-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: max-content;
+    min-width: 90px;
+    height: 32px;
+
+    padding: 0 11px;
+
+    box-sizing: border-box;
+
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    background: rgba(20, 20, 30, 0.65);
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+
+    flex: 0 0 auto;
+
+    position: static;
 }
 
 
@@ -1272,7 +1304,12 @@
 .event-list-item {
     min-height: 60px;
 
+    width: 100%;
+    min-width: 0;
+
     padding: 10px 20px;
+
+    box-sizing: border-box;
 
     display: flex;
     align-items: center;
@@ -1305,7 +1342,7 @@
 }
 
 .event-list-item.completed .event-list-status {
-    color: #5de797
+    color: #5de797;
 }
 
 
@@ -1317,6 +1354,7 @@
     display: flex;
     align-items: center;
 
+    flex: 1 1 auto;
     min-width: 0;
 }
 
@@ -1413,6 +1451,7 @@
    --------------------------------------------------------- */
 
 .event-list-name {
+    flex: 1 1 auto;
     min-width: 0;
 
     color: var(--text-primary);
@@ -1425,20 +1464,53 @@
     text-overflow: ellipsis;
 }
 
-
 /* ---------------------------------------------------------
    Activity List — Right Side
    --------------------------------------------------------- */
 
 .event-list-right {
-    margin-left: 20px;
+    margin-left: 12px;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content max-content;
     align-items: center;
+    column-gap: 12px;
 
-    gap: 12px;
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: 0;
 
-    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.event-list-right .event-list-status {
+    position: static;
+    grid-column: 1;
+    grid-row: 1;
+
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+.event-daily-item .event-list-status.claimed,
+.event-daily-item .event-list-status.not-claimed {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+.event-list-right .event-time-left {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+
+    width: max-content;
+    min-width: 90px;
+
+    margin: 0;
+
+    box-sizing: border-box;
 }
 
 .event-list-status {
@@ -1462,12 +1534,41 @@
    Daily Commission Status
    --------------------------------------------------------- */
 
+.event-list-status.claimed,
+.event-list-status.not-claimed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+
+    height: 32px;
+
+    padding: 6px 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    flex: 0 0 100px;
+}
+
 .event-list-status.claimed {
-    color: #6fd38a;
+    background: rgba(93, 231, 151, 0.12);
+    color: #5de797;
 }
 
 .event-list-status.not-claimed {
-    color: #e87979;
+    background: rgba(224, 82, 82, 0.12);
+    color: #e05252;
 }
 
 /*
@@ -1490,42 +1591,53 @@
    ============================= */
 
 .event-encounter-points {
-    min-width: 56px;
-    height: 28px;
-
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-
-    padding: 0 6px;
-    margin-left: 10px;
-
-    border-radius: 7px;
-
-    background: rgba(150, 120, 220, 0.12);
-    border: 1px solid rgba(150, 120, 220, 0.22);
 
     box-sizing: border-box;
+
+    width: 82px;
+    height: 32px;
+
+    padding: 4px 8px;
+
+    gap: 3px;
+
+    margin-left: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(117, 90, 190, 0.12);
+
+    color: #9d82e6;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
 }
 
 .event-encounter-points-icon {
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
 
     object-fit: contain;
-    flex-shrink: 0;
 
-    transform: translateX(-1px);
+    flex-shrink: 0;
 }
 
 .event-encounter-points-value {
-    color: #7656d6;
+    color: #9d82e6;
 
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
 
     line-height: 1;
+
     white-space: nowrap;
 }
 
@@ -1875,10 +1987,9 @@
 
 .overview-account-name span {
     color: var(--text-secondary);
-
+    opacity: 0.6;
     font-size: 13px;
 }
-
 
 /* ---------------------------------------------------------
    Account Status
@@ -1935,11 +2046,12 @@
 }
 
 .overview-daily-progress {
-    display: grid;
-    grid-template-columns: 36px 100px;
+    display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
+
     gap: 8px;
+
     white-space: nowrap;
 }
 
@@ -1977,6 +2089,103 @@
 .overview-unclaimed.ready {
     background: rgba(227, 154, 63, 0.12);
     color: #e39a3f;
+}
+
+/* =========================================
+   Overview Encounter Points
+   ========================================= */
+
+.overview-encounter-points {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    width: 82px;
+    height: 32px;
+
+    padding: 4px 8px;
+
+    gap: 3px;
+
+    border-radius: 8px;
+
+    background: rgba(117, 90, 190, 0.12);
+
+    color: #9d82e6;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+}
+
+.overview-encounter-points-icon {
+    width: 25px;
+    height: 25px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================
+   OVERVIEW RESIN
+   ========================================= */
+
+.overview-resin-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.overview-resin-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 100px;
+    height: 36px;
+    padding: 4px 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: rgba(117, 90, 190, 0.12);
+    color: #9d82e6;
+    white-space: nowrap;
+}
+
+.overview-resin-value strong {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.overview-resin-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.overview-resin-countdowns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 145px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.overview-resin-timer {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
 }
 
 

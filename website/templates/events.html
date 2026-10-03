@@ -905,29 +905,28 @@
             <div class="event-list-right">
 
                 <span
-                    class="event-list-status"
+                    class="event-list-status
+                    {% if daily and daily.has_data and daily.completed >= daily.total %}
+                        {% if daily.claimed_reward %}
+                            claimed
+                        {% else %}
+                            not-claimed
+                        {% endif %}
+                    {% endif %}"
                     id="daily-commissions-status"
                 >
                     {% if daily and daily.has_data %}
-
                         {% if daily.completed >= daily.total %}
-
                             {% if daily.claimed_reward %}
                                 Claimed
                             {% else %}
                                 Not Claimed
                             {% endif %}
-
                         {% else %}
-
                             {{ daily.completed }} / {{ daily.total }}
-
                         {% endif %}
-
                     {% else %}
-
                         —
-
                     {% endif %}
                 </span>
 
@@ -1164,7 +1163,6 @@
 
             <button
                 class="events-overview-tab active"
-                type="button"
                 data-overview-tab="daily"
             >
                 Daily
@@ -1172,7 +1170,13 @@
 
             <button
                 class="events-overview-tab"
-                type="button"
+                data-overview-tab="resin"
+            >
+                Resin
+            </button>
+
+            <button
+                class="events-overview-tab"
                 data-overview-tab="trounce"
             >
                 Trounce
@@ -1180,18 +1184,9 @@
 
             <button
                 class="events-overview-tab"
-                type="button"
                 data-overview-tab="events"
             >
                 Events
-            </button>
-
-            <button
-                class="events-overview-tab"
-                type="button"
-                data-overview-tab="wishes"
-            >
-                Wishes
             </button>
 
         </div>
@@ -1221,15 +1216,32 @@
 
                     <div class="overview-account-status">
                         {% if item.daily.has_data %}
-                            <span class="overview-status">{{ item.daily.completed }}/{{ item.daily.total }}</span>
 
-                            {% if item.daily.claimed_reward %}
-                                <span class="overview-claimed">Claimed</span>
-                            {% else %}
-                                <span class="overview-unclaimed {% if item.daily.completed >= item.daily.total %}ready{% endif %}">
-                                    Unclaimed
+                            <div class="overview-daily-progress">
+
+                                <div class="overview-encounter-points">
+                                    <img
+                                        src="/static/images/events/daily_commissions/encounter_points.png"
+                                        alt="Encounter Points"
+                                        class="overview-encounter-points-icon"
+                                    >
+                                    <span>{{ item.daily.encounter_points }}</span>
+                                </div>
+
+                                <span class="overview-status">
+                                    {{ item.daily.completed }}/{{ item.daily.total }}
                                 </span>
-                            {% endif %}
+
+                                {% if item.daily.claimed_reward %}
+                                    <span class="overview-claimed">Claimed</span>
+                                {% else %}
+                                    <span class="overview-unclaimed {% if item.daily.completed >= item.daily.total %}ready{% endif %}">
+                                        Unclaimed
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
                         {% else %}
                             <span>No Data</span>
                         {% endif %}
@@ -1239,6 +1251,75 @@
 
             {% endfor %}
 
+        </div>
+
+
+        <div
+            class="events-overview-panel"
+            data-overview-panel="resin"
+        >
+            {% for item in overview_data %}
+                <div class="overview-account-row">
+                    <div class="overview-account-name">
+                        <strong>
+                            {{ item.account.nickname }}
+                        </strong>
+                        <span>
+                            {{ item.account.genshin_uid }}
+                        </span>
+                    </div>
+
+                    <div class="overview-resin-status">
+                        {% if item.resin.has_data %}
+                            <div class="overview-resin-value">
+                                <img
+                                    src="/static/images/Original_Resin.webp"
+                                    alt="Resin"
+                                    class="overview-resin-icon"
+                                >
+
+                                <strong>
+                                    {{ item.resin.current }}
+                                    /
+                                    {{ item.resin.maximum }}
+                                </strong>
+                            </div>
+
+                            <div class="overview-resin-countdowns">
+                                <span>
+                                    Next:
+                                    <span
+                                        class="overview-resin-timer"
+                                        data-resin-timestamp="{{ item.resin.next_resin_at or '' }}"
+                                    >
+                                        {% if item.resin.next_resin_at %}
+                                            Calculating...
+                                        {% else %}
+                                            Full
+                                        {% endif %}
+                                    </span>
+                                </span>
+
+                                <span>
+                                    Full:
+                                    <span
+                                        class="overview-resin-timer"
+                                        data-resin-timestamp="{{ item.resin.full_resin_at or '' }}"
+                                    >
+                                        {% if item.resin.full_resin_at %}
+                                            Calculating...
+                                        {% else %}
+                                            Full
+                                        {% endif %}
+                                    </span>
+                                </span>
+                            </div>
+                        {% else %}
+                            <span>No Data</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
 
 

@@ -376,9 +376,9 @@ function initEvents() {
             }
 
 
-            // -----------------------------------------
+            // =========================================
             // TIME STATUS
-            // -----------------------------------------
+            // =========================================
 
             timer.classList.remove(
                 "warning",
@@ -405,7 +405,64 @@ function initEvents() {
 
         });
 
+
+        // =========================================
+        // OVERVIEW RESIN COUNTDOWNS
+        // =========================================
+
+        document
+            .querySelectorAll(
+                ".overview-resin-timer[data-resin-timestamp]"
+            )
+            .forEach(timer => {
+
+                const timestamp = Number(
+                    timer.dataset.resinTimestamp
+                );
+
+                if (!timestamp) {
+                    timer.textContent = "Full";
+                    return;
+                }
+
+                const remaining = Math.max(
+                    0,
+                    timestamp - Math.floor(
+                        Date.now() / 1000
+                    )
+                );
+
+                if (remaining === 0) {
+                    timer.textContent = "Now";
+                    return;
+                }
+
+                const hours = Math.floor(
+                    remaining / 3600
+                );
+
+                const minutes = Math.floor(
+                    (remaining % 3600) / 60
+                );
+
+                const seconds = remaining % 60;
+
+                if (hours > 0) {
+
+                    timer.textContent =
+                        `${hours}h ${minutes}m`;
+
+                } else {
+
+                    timer.textContent =
+                        `${minutes}m ${seconds}s`;
+
+                }
+
+            });
+
     }
+
 
 
     // =========================================

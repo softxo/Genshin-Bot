@@ -691,6 +691,14 @@ async def get_single_account_events(
         "encounter_points": 0,
         "reset_time": 0,
     }
+    
+    resin_data = {
+        "has_data": False,
+        "current": 0,
+        "maximum": 200,
+        "next_resin_at": None,
+        "full_resin_at": None,
+    }
 
     trounce_data = {
         "has_data": False,
@@ -959,6 +967,47 @@ async def get_single_account_events(
                     account["genshin_server"]
                 ),
             }
+            
+            
+            # =========================================
+            # RESIN
+            # =========================================
+
+            notes_data = notes["data"]
+
+            current_resin = notes_data["current_resin"]
+            maximum_resin = 200
+            recovery_seconds = int(
+                notes_data["resin_recovery_time"]
+            )
+
+            now_timestamp = int(time.time())
+
+            if current_resin >= maximum_resin:
+                next_resin_at = None
+                full_resin_at = None
+            else:
+                remaining_resin = (
+                    maximum_resin - current_resin
+                )
+
+                next_resin_at = (
+                    now_timestamp
+                    + recovery_seconds
+                    - ((remaining_resin - 1) * 480)
+                )
+
+                full_resin_at = (
+                    now_timestamp + recovery_seconds
+                )
+
+            resin_data = {
+                "has_data": True,
+                "current": current_resin,
+                "maximum": maximum_resin,
+                "next_resin_at": next_resin_at,
+                "full_resin_at": full_resin_at,
+            }
 
 
             # =========================================
@@ -1134,6 +1183,7 @@ async def get_single_account_events(
         "stygian": stygian_data,
         "daily": daily_data,
         "trounce": trounce_data,
+        "resin": resin_data,
         "wish_banners": wish_banners,
     }
 
