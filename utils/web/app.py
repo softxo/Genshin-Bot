@@ -1632,6 +1632,22 @@ async def update_event_activity_check(
 
     accounts = await get_accounts(user_id)
 
+    print("===== ACTIVITY CHECK DEBUG =====")
+    print(f"User ID: {user_id}")
+    print(f"Requested account ID: {account_id}")
+    print(
+        "Current accounts:",
+        [
+            {
+                "id": account["id"],
+                "uid": account["genshin_uid"],
+                "nickname": account["nickname"],
+            }
+            for account in accounts
+        ],
+    )
+    print("================================")
+
     account = next(
         (
             account
