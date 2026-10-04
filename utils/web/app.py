@@ -1636,12 +1636,23 @@ async def update_event_activity_check(
         (
             account
             for account in accounts
-            if account["id"] == account_id
+            if int(account["id"]) == account_id
         ),
         None,
     )
 
     if account is None:
+        print("===== ACTIVITY CHECK ACCOUNT ERROR =====")
+        print(f"User ID: {user_id}")
+        print(f"Requested account ID: {account_id}")
+        print(
+            "Available account IDs:",
+            [account["id"] for account in accounts]
+        )
+        print("Activity type:", activity_type)
+        print("Checked:", checked)
+        print("=========================================")
+
         return JSONResponse(
             {
                 "success": False,

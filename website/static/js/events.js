@@ -579,11 +579,22 @@ function initEvents() {
                         }
                     );
 
-                    const data = await response.json();
+                    const responseText = await response.text();
+
+                    let data;
+
+                    try {
+                        data = JSON.parse(responseText);
+                    } catch {
+                        throw new Error(
+                            `Server returned ${response.status}: ${responseText}`
+                        );
+                    }
 
                     if (!response.ok || !data.success) {
                         throw new Error(
-                            data.error || "Failed to save activity check."
+                            data.error ||
+                            `Failed to save activity check (${response.status}).`
                         );
                     }
 
