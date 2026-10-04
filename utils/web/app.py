@@ -1555,8 +1555,13 @@ async def refresh_events(
 @app.post("/api/events/activity-check")
 async def update_event_activity_check(
     request: Request,
+    cyrene_session: str | None = Cookie(default=None),
 ):
-    if not request.session.get("user_id"):
+    user_id = await get_authenticated_user(
+        cyrene_session
+    )
+
+    if user_id is None:
         return JSONResponse(
             {
                 "success": False,
@@ -1564,8 +1569,6 @@ async def update_event_activity_check(
             },
             status_code=401,
         )
-
-    user_id = int(request.session["user_id"])
 
     try:
         data = await request.json()
@@ -1679,18 +1682,21 @@ async def update_event_activity_check(
     # INVALIDATE EVENTS CACHE
     # =========================================
 
-    cache_key_full = (
-        account["genshin_uid"],
-        True,
+    _events_cache.pop(
+        (
+            account["genshin_uid"],
+            True,
+        ),
+        None,
     )
 
-    cache_key_overview = (
-        account["genshin_uid"],
-        False,
+    _events_cache.pop(
+        (
+            account["genshin_uid"],
+            False,
+        ),
+        None,
     )
-
-    _events_cache.pop(cache_key_full, None)
-    _events_cache.pop(cache_key_overview, None)
 
     return JSONResponse(
         {
