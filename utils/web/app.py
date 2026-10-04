@@ -674,6 +674,8 @@ async def get_single_account_events(
     
     # Keep Overview and full Events data in separate cache entries.
     cache_key = (
+        user_id,
+        account["id"],
         account["genshin_uid"],
         include_featured,
     )
@@ -685,6 +687,16 @@ async def get_single_account_events(
 
         if cache_age < EVENTS_CACHE_TTL:
             return cached["data"]
+        
+        cached_account = cached["data"].get("account", {})
+        
+        if cached_account.get("id") != account.get("id"):
+            print(
+                "[Events Cache] STALE ACCOUNT ID | "
+                f"UID: {account['genshin_uid']} | "
+                f"Cached ID: {cached_account.get('id')} | "
+                f"Current ID: {account.get('id')}"
+            )
 
     abyss_data = {
         "has_data": False,
@@ -1632,22 +1644,6 @@ async def update_event_activity_check(
 
     accounts = await get_accounts(user_id)
 
-    print("===== ACTIVITY CHECK DEBUG =====")
-    print(f"User ID: {user_id}")
-    print(f"Requested account ID: {account_id}")
-    print(
-        "Current accounts:",
-        [
-            {
-                "id": account["id"],
-                "uid": account["genshin_uid"],
-                "nickname": account["nickname"],
-            }
-            for account in accounts
-        ],
-    )
-    print("================================")
-
     account = next(
         (
             account
@@ -1658,16 +1654,6 @@ async def update_event_activity_check(
     )
 
     if account is None:
-        print("===== ACTIVITY CHECK ACCOUNT ERROR =====")
-        print(f"User ID: {user_id}")
-        print(f"Requested account ID: {account_id}")
-        print(
-            "Available account IDs:",
-            [account["id"] for account in accounts]
-        )
-        print("Activity type:", activity_type)
-        print("Checked:", checked)
-        print("=========================================")
 
         return JSONResponse(
             {
@@ -1709,30 +1695,25 @@ async def update_event_activity_check(
     # INVALIDATE EVENTS CACHE
     # =========================================
 
-    _events_cache.pop(
-        (
-            account["genshin_uid"],
-            True,
-        ),
-        None,
-    )
+    for include_featured in (True, False):
+        _events_cache.pop(
+            (
+                user_id,
+                account["id"],
+                account["genshin_uid"],
+                include_featured,
+            ),
+            None,
+        )
 
-    _events_cache.pop(
-        (
-            account["genshin_uid"],
-            False,
-        ),
-        None,
-    )
-
-    return JSONResponse(
-        {
-            "success": True,
-            "checked": checked,
-            "activity_type": activity_type,
-            "period_key": period_key,
-        }
-    )
+        return JSONResponse(
+            {
+                "success": True,
+                "checked": checked,
+                "activity_type": activity_type,
+                "period_key": period_key,
+            }
+        )
 
 
 @app.get("/api/events/daily")
