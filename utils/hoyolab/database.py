@@ -191,6 +191,52 @@ async def initialise_database() -> None:
                 )
             """
         )
+        
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS event_activity_checks (
+                id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                discord_user_id BIGINT NOT NULL,
+
+                genshin_uid TEXT NOT NULL,
+
+                activity_type TEXT NOT NULL,
+
+                period_key TEXT NOT NULL,
+
+                checked BOOLEAN NOT NULL DEFAULT FALSE,
+
+                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+                UNIQUE(
+                    discord_user_id,
+                    genshin_uid,
+                    activity_type,
+                    period_key
+                )
+            )
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_event_activity_checks_user
+                ON event_activity_checks(discord_user_id)
+            """
+        )
+
+        await connection.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_event_activity_checks_account
+                ON event_activity_checks(
+                    discord_user_id,
+                    genshin_uid
+                )
+            """
+        )
 
         await connection.execute(
             """
@@ -727,6 +773,129 @@ async def get_account(
         "created_at": row["created_at"],
         "updated_at": row["updated_at"]
     }
+    
+
+async def get_event_activity_check(
+    discord_user_id: int,
+    genshin_uid: str,
+    activity_type: str,
+    period_key: str,
+) -> bool | None:
+
+    async with get_pool().connection() as connection:
+
+        result = await connection.execute(
+            """
+            SELECT checked
+            FROM event_activity_checks
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
+            AND activity_type = %s
+            AND period_key = %s
+            LIMIT 1
+            """,
+            (
+                discord_user_id,
+                genshin_uid,
+                activity_type,
+                period_key,
+            )
+        )
+
+        row = await result.fetchone()
+
+    if row is None:
+        return None
+
+    return bool(row["checked"])
+
+
+async def set_event_activity_check(
+    discord_user_id: int,
+    genshin_uid: str,
+    activity_type: str,
+    period_key: str,
+    checked: bool,
+) -> bool:
+
+    async with get_pool().connection() as connection:
+
+        await connection.execute(
+            """
+            INSERT INTO event_activity_checks (
+                discord_user_id,
+                genshin_uid,
+                activity_type,
+                period_key,
+                checked
+            )
+            VALUES (
+                %s, %s, %s, %s, %s
+            )
+
+            ON CONFLICT (
+                discord_user_id,
+                genshin_uid,
+                activity_type,
+                period_key
+            )
+
+            DO UPDATE SET
+                checked = EXCLUDED.checked,
+                updated_at = NOW()
+            """,
+            (
+                discord_user_id,
+                genshin_uid,
+                activity_type,
+                period_key,
+                checked,
+            )
+        )
+
+    return True
+
+
+async def get_event_activity_checks(
+    discord_user_id: int,
+    genshin_uid: str,
+    daily_period_key: str,
+    trounce_period_key: str,
+) -> dict[str, bool | None]:
+
+    async with get_pool().connection() as connection:
+
+        result = await connection.execute(
+            """
+            SELECT activity_type, checked
+            FROM event_activity_checks
+            WHERE discord_user_id = %s
+            AND genshin_uid = %s
+            AND (
+                (activity_type = 'daily_commissions' AND period_key = %s)
+                OR
+                (activity_type = 'trounce_domains' AND period_key = %s)
+            )
+            """,
+            (
+                discord_user_id,
+                genshin_uid,
+                daily_period_key,
+                trounce_period_key,
+            )
+        )
+
+        rows = await result.fetchall()
+
+    checks = {
+        "daily_commissions": None,
+        "trounce_domains": None,
+    }
+
+    for row in rows:
+        checks[row["activity_type"]] = bool(row["checked"])
+
+    return checks
 
 
 async def create_reminder(

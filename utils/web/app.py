@@ -46,6 +46,8 @@ from utils.hoyolab.database import (
     update_reminder,
     delete_reminder,
     update_achievement_tier,
+    get_event_activity_checks,
+    set_event_activity_check,
 )
 from utils.hoyolab.account_client import get_account_client
 from utils.hoyolab.daily_note import get_resin
@@ -627,6 +629,33 @@ async def delete_planner_reminder(
         "success": True,
     }
     
+    
+def get_event_activity_period_keys(
+    genshin_server: str,
+) -> tuple[str, str]:
+    """
+    Return the current Daily Commissions and Trounce Domains period keys for a Genshin server.
+    """
+
+    daily_reset = get_daily_reset_timestamp(genshin_server)
+    weekly_reset = get_weekly_reset_timestamp(genshin_server)
+
+    # The reset timestamp is the NEXT reset, so subtract one period to get the period that is currently active.
+    daily_period_timestamp = daily_reset - 86400
+    weekly_period_timestamp = weekly_reset - (7 * 86400)
+
+    daily_period_key = datetime.fromtimestamp(
+        daily_period_timestamp,
+        tz=timezone.utc,
+    ).strftime("%Y-%m-%d")
+
+    weekly_period_key = datetime.fromtimestamp(
+        weekly_period_timestamp,
+        tz=timezone.utc,
+    ).strftime("%G-W%V")
+
+    return daily_period_key, weekly_period_key
+    
 
 # =========================================
 # EVENTS CACHE
@@ -690,6 +719,7 @@ async def get_single_account_events(
         "claimed_reward": False,
         "encounter_points": 0,
         "reset_time": 0,
+        "manual_checked": None,
     }
     
     resin_data = {
@@ -705,6 +735,7 @@ async def get_single_account_events(
         "remaining": 0,
         "total": 3,
         "reset_time": 0,
+        "manual_checked": None,
     }
 
     wish_banners = []
@@ -1026,6 +1057,52 @@ async def get_single_account_events(
                     account["genshin_server"]
                 ),
             }
+            
+            # =========================================
+            # ACTIVITY CHECKMARKS
+            # =========================================
+
+            daily_period_key, weekly_period_key = (
+                get_event_activity_period_keys(
+                    account["genshin_server"]
+                )
+            )
+
+            activity_checks = await get_event_activity_checks(
+                user_id,
+                account["genshin_uid"],
+                daily_period_key,
+                weekly_period_key,
+            )
+
+            daily_data["manual_checked"] = (
+                activity_checks["daily_commissions"]
+            )
+
+            trounce_data["manual_checked"] = (
+                activity_checks["trounce_domains"]
+            )
+            
+            daily_automatic_checked = (
+                daily_data["completed"] >= daily_data["total"]
+                and daily_data["claimed_reward"]
+            )
+
+            trounce_automatic_checked = (
+                trounce_data["remaining"] <= 0
+            )
+
+            daily_data["checked"] = (
+                daily_automatic_checked
+                if daily_data["manual_checked"] is None
+                else daily_data["manual_checked"]
+            )
+
+            trounce_data["checked"] = (
+                trounce_automatic_checked
+                if trounce_data["manual_checked"] is None
+                else trounce_data["manual_checked"]
+            )
 
 
             # =========================================
@@ -1472,6 +1549,156 @@ async def refresh_events(
             "request": request,
             **events_data,
         },
+    )
+    
+
+@app.post("/api/events/activity-check")
+async def update_event_activity_check(
+    request: Request,
+):
+    if not request.session.get("user_id"):
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Not authenticated.",
+            },
+            status_code=401,
+        )
+
+    user_id = int(request.session["user_id"])
+
+    try:
+        data = await request.json()
+    except Exception:
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Invalid request.",
+            },
+            status_code=400,
+        )
+
+    account_id = data.get("account_id")
+    activity_type = data.get("activity_type")
+    checked = data.get("checked")
+
+    if account_id is None:
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Missing account ID.",
+            },
+            status_code=400,
+        )
+
+    if activity_type not in {
+        "daily_commissions",
+        "trounce_domains",
+    }:
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Invalid activity type.",
+            },
+            status_code=400,
+        )
+
+    if not isinstance(checked, bool):
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Invalid checkmark state.",
+            },
+            status_code=400,
+        )
+
+    try:
+        account_id = int(account_id)
+    except (TypeError, ValueError):
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Invalid account ID.",
+            },
+            status_code=400,
+        )
+
+    # =========================================
+    # VERIFY ACCOUNT OWNERSHIP
+    # =========================================
+
+    accounts = await get_accounts(user_id)
+
+    account = next(
+        (
+            account
+            for account in accounts
+            if account["id"] == account_id
+        ),
+        None,
+    )
+
+    if account is None:
+        return JSONResponse(
+            {
+                "success": False,
+                "error": "Account not found.",
+            },
+            status_code=404,
+        )
+
+    # =========================================
+    # DETERMINE CURRENT PERIOD
+    # =========================================
+
+    daily_period_key, weekly_period_key = (
+        get_event_activity_period_keys(
+            account["genshin_server"]
+        )
+    )
+
+    period_key = (
+        daily_period_key
+        if activity_type == "daily_commissions"
+        else weekly_period_key
+    )
+
+    # =========================================
+    # SAVE CHECKMARK
+    # =========================================
+
+    await set_event_activity_check(
+        user_id,
+        account["genshin_uid"],
+        activity_type,
+        period_key,
+        checked,
+    )
+
+    # =========================================
+    # INVALIDATE EVENTS CACHE
+    # =========================================
+
+    cache_key_full = (
+        account["genshin_uid"],
+        True,
+    )
+
+    cache_key_overview = (
+        account["genshin_uid"],
+        False,
+    )
+
+    _events_cache.pop(cache_key_full, None)
+    _events_cache.pop(cache_key_overview, None)
+
+    return JSONResponse(
+        {
+            "success": True,
+            "checked": checked,
+            "activity_type": activity_type,
+            "period_key": period_key,
+        }
     )
 
 

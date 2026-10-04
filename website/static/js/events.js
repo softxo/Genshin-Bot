@@ -216,6 +216,9 @@ function initEvents() {
 
         function activateTab(target) {
 
+            document.documentElement.dataset.overviewTab =
+                target;
+
             tabs.forEach(tab => {
 
                 tab.classList.toggle(
@@ -531,6 +534,93 @@ function initEvents() {
 
 
 
+    function initialiseActivityCheckmarks() {
+        document.querySelectorAll(".event-checkmark[data-activity-type]").forEach(checkmark => {
+            if (checkmark.dataset.initialised === "true") return;
+
+            checkmark.dataset.initialised = "true";
+
+            checkmark.addEventListener("click", async event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const accountId = checkmark.dataset.accountId;
+                const activityType = checkmark.dataset.activityType;
+
+                if (!accountId || !activityType) {
+                    return;
+                }
+
+                const currentlyChecked =
+                    checkmark.getAttribute("aria-pressed") === "true";
+
+                const newChecked = !currentlyChecked;
+
+                // Prevent duplicate clicks while saving.
+                if (checkmark.dataset.saving === "true") {
+                    return;
+                }
+
+                checkmark.dataset.saving = "true";
+
+                try {
+                    const response = await fetch(
+                        "/api/events/activity-check",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                account_id: Number(accountId),
+                                activity_type: activityType,
+                                checked: newChecked,
+                            }),
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(
+                            data.error || "Failed to save activity check."
+                        );
+                    }
+
+                    checkmark.setAttribute(
+                        "aria-pressed",
+                        String(data.checked)
+                    );
+
+                    checkmark.classList.toggle(
+                        "event-checkmark-empty",
+                        !data.checked
+                    );
+
+                    const row = checkmark.closest(".event-list-item");
+
+                    if (row) {
+                        row.classList.toggle(
+                            "completed",
+                            data.checked
+                        );
+                    }
+
+                } catch (error) {
+                    console.error(
+                        "Failed to update activity checkmark:",
+                        error
+                    );
+
+                } finally {
+                    delete checkmark.dataset.saving;
+                }
+            });
+        });
+    }
+
+
+
     // =========================================
     // REFRESH EVENTS
     // =========================================
@@ -722,6 +812,8 @@ function initEvents() {
 
             initialiseOverviewTabs();
 
+            initialiseActivityCheckmarks();
+            
             updateEventTimeLeft();
 
 
@@ -791,6 +883,8 @@ function initEvents() {
     initialiseEventFeatureToggles();
 
     initialiseOverviewTabs();
+
+    initialiseActivityCheckmarks();
 
     updateEventTimeLeft();
 

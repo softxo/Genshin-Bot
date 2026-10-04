@@ -846,9 +846,9 @@
 
         <div
             class="event-list-item event-daily-item
-            {% if daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward %}
+            {% if daily and daily.checked %}
                 completed
-            {% endif %}"
+            {% endif %}
             id="daily-commissions"
             data-account-id="{{ selected_account.id if selected_account else '' }}"
         >
@@ -857,10 +857,15 @@
 
                 <div class="event-list-check">
 
-                    <span
+                    <button
+                        type="button"
                         id="daily-commissions-check"
-                        class="event-checkmark{% if not (daily and daily.has_data and daily.completed >= daily.total and daily.claimed_reward) %} event-checkmark-empty{% endif %}"
-                    ></span>
+                        class="event-checkmark{% if not daily.checked %} event-checkmark-empty{% endif %}"
+                        data-activity-type="daily_commissions"
+                        data-account-id="{{ selected_account.id if selected_account else '' }}"
+                        aria-label="Mark Daily Commissions as complete"
+                        aria-pressed="{{ 'true' if daily.checked else 'false' }}"
+                    ></button>
 
                 </div>
 
@@ -947,9 +952,9 @@
 
         <div
             class="event-list-item event-trounce-item
-            {% if trounce and trounce.has_data and trounce.remaining == 0 %}
+            {% if trounce and trounce.checked %}
                 completed
-            {% endif %}"
+            {% endif %}
             id="trounce-domains"
         >
             
@@ -957,9 +962,15 @@
 
                 <div class="event-list-check">
 
-                    <span
-                        class="event-checkmark{% if not (trounce and trounce.has_data and trounce.remaining == 0) %} event-checkmark-empty{% endif %}"
-                    ></span>
+                    <button
+                        type="button"
+                        id="trounce-domains-check"
+                        class="event-checkmark{% if not trounce.checked %} event-checkmark-empty{% endif %}"
+                        data-activity-type="trounce_domains"
+                        data-account-id="{{ selected_account.id if selected_account else '' }}"
+                        aria-label="Mark Trounce Domains as complete"
+                        aria-pressed="{{ 'true' if trounce.checked else 'false' }}"
+                    ></button>
 
                 </div>
 
