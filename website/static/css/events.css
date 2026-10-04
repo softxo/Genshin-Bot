@@ -2214,23 +2214,6 @@
     color: #608dac;
 }
 
-html[data-overview-tab="resin"]
-.events-overview-tab[data-overview-tab="daily"],
-html[data-overview-tab="trounce"]
-.events-overview-tab[data-overview-tab="daily"],
-html[data-overview-tab="events"]
-.events-overview-tab[data-overview-tab="daily"] {
-    display: none;
-}
-
-html[data-overview-tab="resin"]
-.events-overview-panel[data-overview-panel="daily"],
-html[data-overview-tab="trounce"]
-.events-overview-panel[data-overview-panel="daily"],
-html[data-overview-tab="events"]
-.events-overview-panel[data-overview-panel="daily"] {
-    display: none;
-}
 
 /* =========================================================
    15. RESPONSIVE — FEATURED CARDS
