@@ -1226,36 +1226,65 @@
 
 
                     <div class="overview-account-status">
+
                         {% if item.daily.has_data %}
 
                             <div class="overview-daily-progress">
 
                                 <div class="overview-encounter-points">
+
                                     <img
                                         src="/static/images/events/daily_commissions/encounter_points.png"
                                         alt="Encounter Points"
                                         class="overview-encounter-points-icon"
                                     >
-                                    <span>{{ item.daily.encounter_points }}</span>
+
+                                    <span>
+                                        {{ item.daily.encounter_points }}
+                                    </span>
+
                                 </div>
 
+
                                 <span class="overview-status">
+
                                     {{ item.daily.completed }}/{{ item.daily.total }}
+
                                 </span>
 
+
                                 {% if item.daily.claimed_reward %}
-                                    <span class="overview-claimed">Claimed</span>
+
+                                    <span class="overview-claimed">
+                                        Claimed
+                                    </span>
+
                                 {% else %}
+
                                     <span class="overview-unclaimed {% if item.daily.completed >= item.daily.total %}ready{% endif %}">
                                         Unclaimed
                                     </span>
+
                                 {% endif %}
+
+
+                                <button
+                                    type="button"
+                                    class="event-checkmark{% if not item.daily.checked %} event-checkmark-empty{% endif %}"
+                                    data-activity-type="daily_commissions"
+                                    data-account-id="{{ item.account.id }}"
+                                    aria-label="Mark Daily Commissions complete for {{ item.account.nickname }}"
+                                    aria-pressed="{{ 'true' if item.daily.checked else 'false' }}"
+                                ></button>
 
                             </div>
 
                         {% else %}
+
                             <span>No Data</span>
+
                         {% endif %}
+
                     </div>
 
                 </div>
@@ -1361,13 +1390,26 @@
 
                         {% if item.trounce.has_data %}
 
-                            {{ item.trounce.total - item.trounce.remaining }}
-                            /
-                            {{ item.trounce.total }}
+                            <span class="overview-status">
+
+                                {{ item.trounce.total - item.trounce.remaining }}
+                                /
+                                {{ item.trounce.total }}
+
+                            </span>
+
+                            <button
+                                type="button"
+                                class="event-checkmark{% if not item.trounce.checked %} event-checkmark-empty{% endif %}"
+                                data-activity-type="trounce_domains"
+                                data-account-id="{{ item.account.id }}"
+                                aria-label="Mark Trounce Domains complete for {{ item.account.nickname }}"
+                                aria-pressed="{{ 'true' if item.trounce.checked else 'false' }}"
+                            ></button>
 
                         {% else %}
 
-                            No Data
+                            <span>No Data</span>
 
                         {% endif %}
 
