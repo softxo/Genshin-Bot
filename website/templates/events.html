@@ -860,11 +860,11 @@
                     <button
                         type="button"
                         id="daily-commissions-check"
-                        class="event-checkmark{% if not daily.checked %} event-checkmark-empty{% endif %}"
+                        class="event-checkmark{% if not (daily and daily.checked) %} event-checkmark-empty{% endif %}"
                         data-activity-type="daily_commissions"
                         data-account-id="{{ selected_account.id if selected_account else '' }}"
-                        aria-label="Mark Daily Commissions as complete"
-                        aria-pressed="{{ 'true' if daily.checked else 'false' }}"
+                        aria-label="Mark Daily Commissions complete"
+                        aria-pressed="{{ 'true' if daily and daily.checked else 'false' }}"
                     ></button>
 
                 </div>

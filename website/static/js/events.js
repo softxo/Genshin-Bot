@@ -813,7 +813,7 @@ function initEvents() {
             initialiseOverviewTabs();
 
             initialiseActivityCheckmarks();
-            
+
             updateEventTimeLeft();
 
 
