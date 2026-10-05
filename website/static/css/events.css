@@ -1143,13 +1143,18 @@
 }
 
 .stygian-boss strong {
-    height: 32px;
+    width: 100%;
     max-width: 100%;
     min-width: 0;
+
+    min-height: 32px;
+    height: 32px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    box-sizing: border-box;
 
     overflow: hidden;
 
@@ -1164,7 +1169,13 @@
 
     opacity: 0.7;
 
+    /*
+     * Allow long boss names to wrap onto two lines.
+     * Words themselves will never be split in half.
+     */
     white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .stygian-boss-icon {
