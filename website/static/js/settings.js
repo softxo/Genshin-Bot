@@ -10,57 +10,58 @@ function initSettings() {
 
 
     // =========================================
-    // ANIMATIONS
+    // HOVER EFFECTS
     // =========================================
 
     const toggle =
-        document.getElementById("animations-toggle");
+        document.getElementById("hover-effects-toggle");
 
     if (!toggle) {
         return;
     }
 
-    const savedAnimations =
-        localStorage.getItem("animations");
+    const savedHoverEffects =
+        localStorage.getItem("hoverEffects");
 
-    // Animations are enabled by default.
-    const animationsEnabled =
-        savedAnimations !== "false";
+    // Hover effects are enabled by default.
+    const hoverEffectsEnabled =
+        savedHoverEffects !== "false";
 
-    applyAnimationsSetting(animationsEnabled);
+    applyHoverEffectsSetting(hoverEffectsEnabled);
 
 
     toggle.addEventListener("click", () => {
 
         const currentlyEnabled =
-            document.documentElement.dataset.animations !== "off";
+            document.documentElement.dataset.hoverEffects !== "off";
 
-        applyAnimationsSetting(!currentlyEnabled);
+        applyHoverEffectsSetting(!currentlyEnabled);
 
     });
 }
 
 
 /* =========================================================
-   ANIMATIONS SETTING
+   HOVER EFFECTS SETTING
    ========================================================= */
 
-function applyAnimationsSetting(enabled) {
+function applyHoverEffectsSetting(enabled) {
 
     const toggle =
-        document.getElementById("animations-toggle");
+        document.getElementById("hover-effects-toggle");
 
     if (enabled) {
 
-        document.documentElement.dataset.animations = "on";
+        document.documentElement.dataset.hoverEffects = "on";
 
         localStorage.setItem(
-            "animations",
+            "hoverEffects",
             "true"
         );
 
         if (toggle) {
             toggle.classList.add("active");
+
             toggle.setAttribute(
                 "aria-pressed",
                 "true"
@@ -69,15 +70,16 @@ function applyAnimationsSetting(enabled) {
 
     } else {
 
-        document.documentElement.dataset.animations = "off";
+        document.documentElement.dataset.hoverEffects = "off";
 
         localStorage.setItem(
-            "animations",
+            "hoverEffects",
             "false"
         );
 
         if (toggle) {
             toggle.classList.remove("active");
+
             toggle.setAttribute(
                 "aria-pressed",
                 "false"

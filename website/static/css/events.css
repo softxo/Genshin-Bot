@@ -1410,11 +1410,9 @@
 
 .event-list-item:hover {
     background: var(--surface-hover);
-
     border-color: var(--accent);
-
-    box-shadow:
-        0 7px 22px rgba(0, 0, 0, 0.10);
+    transform: translateY(-1px);
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.10);
 }
 
 .event-list-item.completed .event-list-status {
@@ -2863,4 +2861,74 @@
 
         font-size: 10px;
     }
+}
+
+
+/* =========================================================
+   HOVER EFFECT PREFERENCE
+   ========================================================= */
+
+/*
+   The Hover Effects setting controls only the physical
+   floating / scaling movement of interactive elements.
+
+   Colour, border, background and shadow hover states
+   remain active regardless of the setting.
+*/
+
+
+/* ---------------------------------------------------------
+   Featured Event Cards
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .event-featured-card:hover {
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   Activity List
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .event-list-item:hover {
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   Checkmarks
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .event-checkmark:hover,
+html[data-hover-effects="off"] .event-checkmark:active {
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   Featured Card Toggle
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .event-featured-toggle:hover,
+html[data-hover-effects="off"] .event-featured-toggle:active {
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   Layout Switch
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .events-layout-switch:hover,
+html[data-hover-effects="off"] .events-layout-switch:active {
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   Overview Rows
+   --------------------------------------------------------- */
+
+html[data-hover-effects="off"] .overview-account-row:hover {
+    transform: none;
 }
