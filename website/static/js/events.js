@@ -184,8 +184,9 @@ function initEvents() {
                         section.dataset.accountCategory;
 
                     const visible =
-                        category === "all" ||
-                        sectionCategory === category;
+                        category === "all"
+                            ? !section.classList.contains("events-account-empty")
+                            : sectionCategory === category;
 
                     section.hidden = !visible;
 
