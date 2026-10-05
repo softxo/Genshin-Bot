@@ -30,10 +30,9 @@
 
     </section>
 
-
     {% if accounts %}
 
-        <section class="events-section events-controls">
+    <section class="events-section events-controls">
 
         {% if not overview %}
 
@@ -41,7 +40,7 @@
 
                 <button
                     type="button"
-                    class="events-account-tab active"
+                    class="events-account-tab {% if request.query_params.get('tab', 'all') == 'all' %}active{% endif %}"
                     data-account-tab="all"
                 >
                     All
@@ -49,7 +48,7 @@
 
                 <button
                     type="button"
-                    class="events-account-tab"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'permanent' %}active{% endif %}"
                     data-account-tab="permanent"
                 >
                     Permanent
@@ -57,7 +56,15 @@
 
                 <button
                     type="button"
-                    class="events-account-tab"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'wishes' %}active{% endif %}"
+                    data-account-tab="wishes"
+                >
+                    Wishes
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'endgame' %}active{% endif %}"
                     data-account-tab="endgame"
                 >
                     Endgame
@@ -65,7 +72,7 @@
 
                 <button
                     type="button"
-                    class="events-account-tab"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'events' %}active{% endif %}"
                     data-account-tab="events"
                 >
                     Events
@@ -73,7 +80,7 @@
 
                 <button
                     type="button"
-                    class="events-account-tab"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'recurring' %}active{% endif %}"
                     data-account-tab="recurring"
                 >
                     Recurring
@@ -81,7 +88,7 @@
 
                 <button
                     type="button"
-                    class="events-account-tab"
+                    class="events-account-tab {% if request.query_params.get('tab') == 'custom' %}active{% endif %}"
                     data-account-tab="custom"
                 >
                     Custom
@@ -153,7 +160,6 @@
                             class="custom-select-button"
                             type="button"
                         >
-
                             <span class="custom-select-value">
                                 {{ selected_account.nickname }}
                                 —
@@ -161,7 +167,6 @@
                             </span>
 
                             <span class="custom-select-arrow"></span>
-
                         </button>
 
 

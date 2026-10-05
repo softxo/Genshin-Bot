@@ -100,11 +100,19 @@ function initEvents() {
                     );
 
 
-                    // Navigate to the selected
-                    // account while keeping the
-                    // account layout.
+                    // Navigate to the selected account while
+                    // preserving the currently selected category.
+                    const currentTab =
+                        document.querySelector(
+                            ".events-account-tab.active"
+                        )?.dataset.accountTab ||
+                        localStorage.getItem(
+                            "cyreneAccountEventTab"
+                        ) ||
+                        "all";
+
                     window.location.href =
-                        `/events?account_id=${accountId}`;
+                        `/events?account_id=${accountId}&tab=${encodeURIComponent(currentTab)}`;
 
                 }
             );
@@ -286,23 +294,31 @@ function initEvents() {
         // Restore Previously Selected Category
         // -----------------------------------------
 
+        const urlCategory =
+            new URLSearchParams(
+                window.location.search
+            ).get("tab");
+
         const savedCategory =
             localStorage.getItem(
                 "cyreneAccountEventTab"
             );
 
+        const categoryToActivate =
+            urlCategory ||
+            savedCategory ||
+            "all";
 
-        const savedCategoryExists =
+        const categoryExists =
             Array.from(tabs).some(
                 tab =>
                     tab.dataset.accountTab ===
-                    savedCategory
+                    categoryToActivate
             );
 
-
         activateCategory(
-            savedCategoryExists
-                ? savedCategory
+            categoryExists
+                ? categoryToActivate
                 : "all"
         );
 
