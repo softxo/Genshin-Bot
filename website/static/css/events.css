@@ -309,6 +309,10 @@
     margin-top: 28px;
 }
 
+.event-featured-card.collapsed {
+    height: 140px;
+}
+
 .event-featured-card {
     position: relative;
 
@@ -627,6 +631,142 @@
         opacity 0.2s ease,
         transform 0.25s ease,
         margin-top 0.25s ease;
+}
+
+/* ---------------------------------------------------------
+   Expanded / Collapsed Content States
+   ---------------------------------------------------------
+   Expanded cards show the full event panel.
+   Collapsed cards show only the compact summary.
+   --------------------------------------------------------- */
+
+
+/* Compact summary is hidden by default */
+
+.event-featured-collapsed {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Expanded State
+   --------------------------------------------------------- */
+
+.event-featured-card:not(.collapsed) .event-featured-collapsed {
+    display: none;
+}
+
+.event-featured-card:not(.collapsed) .event-featured-panel {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+
+/* ---------------------------------------------------------
+   Collapsed State
+   --------------------------------------------------------- */
+
+.event-featured-card.collapsed .event-featured-collapsed {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    margin-top: 28px;
+
+    gap: 18px;
+
+    box-sizing: border-box;
+}
+
+.event-featured-card.collapsed .event-featured-panel {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Collapsed Summary Statistics
+   --------------------------------------------------------- */
+
+.event-collapsed-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-width: 0;
+
+    flex: 1 1 0;
+
+    text-align: center;
+}
+
+.event-collapsed-stat .event-stat-label {
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.7px;
+    line-height: 1.2;
+}
+
+.event-collapsed-stat > strong {
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.event-collapsed-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-height: 30px;
+
+    color: #ffffff;
+
+    white-space: nowrap;
+}
+
+.event-collapsed-value strong {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.event-collapsed-value img {
+    width: 28px;
+    height: 28px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Toggle Arrow State
+   --------------------------------------------------------- */
+
+.event-featured-card.collapsed .event-toggle-icon {
+    transform:
+        translateY(-1px)
+        rotate(45deg);
+}
+
+.event-featured-card:not(.collapsed) .event-toggle-icon {
+    transform:
+        translateY(2px)
+        rotate(225deg);
 }
 
 
