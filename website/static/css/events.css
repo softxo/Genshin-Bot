@@ -309,31 +309,27 @@
     margin-top: 28px;
 }
 
-.event-featured-card.collapsed {
-    height: 140px;
-}
-
 .event-featured-card {
     position: relative;
-
-    height: 470px;
-
+    height: 450px;
     overflow: hidden;
-
     box-sizing: border-box;
 
     border-radius: 16px;
     border: 1px solid var(--glass-border);
-
     background: var(--card-bg);
 
     cursor: pointer;
 
     transition:
-        height 0.2s ease,
+        height 0.25s ease,
         transform 0.2s ease,
         border-color 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+.event-featured-card.collapsed {
+    height: 135px;
 }
 
 .event-featured-card:hover {
@@ -427,9 +423,19 @@
     flex-direction: column;
 
     justify-content: flex-start;
+
+    /*
+     * Keep the header at a fixed position.
+     * The content below it is allowed to change
+     * without affecting the header's position.
+     */
 }
 
 .event-featured-header {
+    position: relative;
+
+    flex: 0 0 32px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -468,11 +474,9 @@
 }
 
 .event-featured-icon {
-    width: 37px;
-    height: 37px;
-
-    flex-shrink: 0;
-
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
@@ -489,8 +493,46 @@
 
 
 /* =========================================================
-   6. FEATURED EVENT TOGGLE
+   6. FEATURED EVENT CONTENT/TOGGLE
    ========================================================= */
+
+.event-featured-panel {
+    position: absolute;
+
+    top: 64px;
+    left: 8px;
+    right: 8px;
+    bottom: 16px;
+
+    height: 350px;
+
+    margin: 0;
+    padding: 4px 20px 20px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    background: rgba(20, 20, 30, 0.38);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease;
+}
 
 .event-featured-toggle {
     width: 32px;
@@ -596,55 +638,39 @@
     color: #ffffff;
 }
 
-
 /* =========================================================
-   7. FEATURED EVENT CONTENT
+   FEATURED CARD COLLAPSE / EXPANSION
    ========================================================= */
 
-.event-featured-panel {
-    flex: 0 0 auto;
+.event-featured-collapsed {
+    position: absolute;
 
-    height: 340px;
+    /*
+     * Positioned relative to .event-featured-content.
+     * The content container already begins 24px from the
+     * card edge, so 44px puts the summary comfortably
+     * beneath the header without pushing it too low.
+     */
+    top: 44px;
+    right: 16px;
+    left: 16px;
 
-    margin-top: 0;
-    padding: 4px 20px 20px;
+    width: auto;
 
-    box-sizing: border-box;
+    display: grid;
 
-    overflow: hidden;
+    justify-content: center;
+    align-items: stretch;
 
-    display: flex;
-    flex-direction: column;
+    opacity: 0;
 
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    transform: translateY(-6px);
 
-    background: rgba(20, 20, 30, 0.38);
-
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-
-    opacity: 1;
-    transform: translateY(0);
+    pointer-events: none;
 
     transition:
-        opacity 0.2s ease,
-        transform 0.25s ease,
-        margin-top 0.25s ease;
-}
-
-/* ---------------------------------------------------------
-   Expanded / Collapsed Content States
-   ---------------------------------------------------------
-   Expanded cards show the full event panel.
-   Collapsed cards show only the compact summary.
-   --------------------------------------------------------- */
-
-
-/* Compact summary is hidden by default */
-
-.event-featured-collapsed {
-    display: none;
+        opacity 0.18s ease,
+        transform 0.18s ease;
 }
 
 
@@ -652,15 +678,20 @@
    Expanded State
    --------------------------------------------------------- */
 
-.event-featured-card:not(.collapsed) .event-featured-collapsed {
-    display: none;
+.event-featured-card:not(.collapsed) .event-featured-panel {
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
 }
 
-.event-featured-card:not(.collapsed) .event-featured-panel {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+.event-featured-card:not(.collapsed) .event-featured-collapsed {
+    opacity: 0;
+
+    transform: translateY(-6px);
+
+    pointer-events: none;
 }
 
 
@@ -668,72 +699,113 @@
    Collapsed State
    --------------------------------------------------------- */
 
+.event-featured-card.collapsed .event-featured-panel {
+    opacity: 0;
+
+    transform: translateY(8px);
+
+    pointer-events: none;
+}
+
 .event-featured-card.collapsed .event-featured-collapsed {
-    display: flex;
-    align-items: center;
+    opacity: 1;
 
-    width: 100%;
+    transform: translateY(0);
 
-    margin-top: 28px;
+    pointer-events: auto;
+}
 
-    gap: 18px;
+
+/* =========================================================
+   COLLAPSED SUMMARY LAYOUT
+   ========================================================= */
+
+.event-featured-card.collapsed .event-featured-collapsed {
+    grid-template-columns:
+        repeat(2, minmax(0, 200px));
+
+    gap: 14px;
 
     box-sizing: border-box;
 }
 
-.event-featured-card.collapsed .event-featured-panel {
-    display: none;
+.event-featured-card[data-event-type="theater"].collapsed
+.event-featured-collapsed,
+
+.event-featured-card[data-event-type="stygian"].collapsed
+.event-featured-collapsed {
+    grid-template-columns:
+        minmax(0, 300px);
 }
 
 
-/* ---------------------------------------------------------
-   Collapsed Summary Statistics
-   --------------------------------------------------------- */
+/* =========================================================
+   COLLAPSED SUMMARY BOX
+   ========================================================= */
 
 .event-collapsed-stat {
+    min-width: 0;
+
+    height: 54px;
+
+    padding: 7px 18px;
+
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
-    gap: 6px;
+    gap: 3px;
 
-    min-width: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
-    flex: 1 1 0;
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
     text-align: center;
 }
 
 .event-collapsed-stat .event-stat-label {
-    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.70);
 
     font-size: 10px;
     font-weight: 600;
 
-    letter-spacing: 0.7px;
-    line-height: 1.2;
+    letter-spacing: 0.65px;
+    line-height: 1.1;
+
+    text-align: center;
 }
 
 .event-collapsed-stat > strong {
-    color: #ffffff;
+    color: #fff;
 
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
 
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .event-collapsed-value {
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     gap: 6px;
 
-    min-height: 30px;
+    min-height: 24px;
 
-    color: #ffffff;
+    color: #fff;
 
     white-space: nowrap;
 }
@@ -741,11 +813,13 @@
 .event-collapsed-value strong {
     font-size: 16px;
     font-weight: 700;
+
+    line-height: 1.1;
 }
 
 .event-collapsed-value img {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
 
     object-fit: contain;
 
@@ -753,9 +827,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   Toggle Arrow State
-   --------------------------------------------------------- */
+/* =========================================================
+   TOGGLE ICON
+   ========================================================= */
 
 .event-featured-card.collapsed .event-toggle-icon {
     transform:
@@ -1071,6 +1145,7 @@
 .stygian-boss strong {
     height: 32px;
     max-width: 100%;
+    min-width: 0;
 
     display: flex;
     align-items: center;
@@ -1078,7 +1153,7 @@
 
     overflow: hidden;
 
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 600;
 
     line-height: 11px;
@@ -1088,6 +1163,8 @@
     letter-spacing: 0.3px;
 
     opacity: 0.7;
+
+    white-space: normal;
 }
 
 .stygian-boss-icon {
@@ -2519,7 +2596,7 @@
     }
 
     .event-featured-card {
-        height: 540px;
+        height: 450px;
     }
 
     .event-featured-content {
@@ -2530,9 +2607,13 @@
     }
 
     .event-featured-panel {
-        height: 370px;
+        top: 60px;
+        right: 3px;
+        bottom: 16px;
+        left: 3px;
 
-        padding: 4px 16px 16px;
+        height: 350px;
+        padding: 8px 18px 18px;
     }
 
     .event-featured-name {
@@ -2588,7 +2669,7 @@
     /* Collapsed Cards */
 
     .event-featured-card.collapsed {
-        height: 140px;
+        height: 128px;
     }
 
     .event-featured-card.collapsed .event-featured-content {
@@ -2623,9 +2704,11 @@
     }
 
     .event-featured-card.collapsed .event-featured-collapsed {
-        margin-top: 23px;
+        top: 40px;
 
-        gap: 10px;
+        margin-top: 0;
+
+        gap: 12px;
     }
 }
 
@@ -2775,6 +2858,10 @@
     }
 
     .event-featured-panel {
+        top: 54px;
+        left: 14px;
+        right: 14px;
+
         height: 350px;
 
         padding: 4px 14px 14px;
@@ -2784,7 +2871,7 @@
     /* Collapsed Card */
 
     .event-featured-card.collapsed {
-        height: 140px;
+        height: 120px;
 
         min-height: 0;
     }
@@ -2814,11 +2901,12 @@
     }
 
     .event-featured-card.collapsed .event-featured-collapsed {
-        margin-top: 10px;
+        top: 38px;
 
-        gap: 8px;
+        margin-top: 0;
+
+        gap: 10px;
     }
-
 
     /* Featured Header */
 

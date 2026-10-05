@@ -935,6 +935,25 @@ function initEvents() {
 
     }
 
+    function fitStygianBossNames() {
+    document
+        .querySelectorAll(".stygian-boss strong")
+        .forEach(name => {
+            const maxSize = 10;
+            const minSize = 7;
+
+            name.style.fontSize = `${maxSize}px`;
+
+            while (
+                name.scrollWidth > name.clientWidth &&
+                parseFloat(name.style.fontSize) > minSize
+            ) {
+                name.style.fontSize =
+                    `${parseFloat(name.style.fontSize) - 0.5}px`;
+            }
+        });
+}
+
 
     // =========================================
     // REFRESH EVENTS
@@ -1258,6 +1277,8 @@ function initEvents() {
     initialiseActivityCheckmarks();
 
     updateEventTimeLeft();
+
+    fitStygianBossNames();
 
 
     // =========================================
