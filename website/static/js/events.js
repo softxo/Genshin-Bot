@@ -151,16 +151,12 @@ function initEvents() {
         }
 
         const tabs =
-            eventsPage.querySelectorAll(
-                ".events-account-tab"
-            );
+            eventsPage.querySelectorAll(".events-account-tab");
 
         const sections =
-            eventsPage.querySelectorAll(
-                "[data-account-category]"
-            );
+            eventsPage.querySelectorAll("[data-account-category]");
 
-        if (!tabs.length) {
+        if (!tabs.length || !sections.length) {
             return;
         }
 
@@ -171,24 +167,52 @@ function initEvents() {
                 const category =
                     tab.dataset.accountTab;
 
+
+                // =============================
+                // ACTIVE TAB
+                // =============================
+
                 tabs.forEach(item => {
+
                     item.classList.toggle(
                         "active",
                         item === tab
                     );
+
                 });
+
+
+                // =============================
+                // CONTENT
+                // =============================
 
                 sections.forEach(section => {
 
                     const sectionCategory =
                         section.dataset.accountCategory;
 
-                    const visible =
-                        category === "all"
-                            ? !section.classList.contains("events-account-empty")
-                            : sectionCategory === category;
+                    const isEmptyState =
+                        section.classList.contains(
+                            "events-account-empty"
+                        );
 
-                    section.hidden = !visible;
+
+                    if (category === "all") {
+
+                        // "All" shows actual content,
+                        // but not placeholder empty states.
+
+                        section.hidden =
+                            isEmptyState;
+
+                        return;
+                    }
+
+
+                    // Show only the selected category.
+
+                    section.hidden =
+                        sectionCategory !== category;
 
                 });
 
@@ -197,8 +221,6 @@ function initEvents() {
         });
 
     }
-
-    initialiseAccountTabs();
 
 
     // =========================================
@@ -899,15 +921,12 @@ function initEvents() {
             if (isOverview) {
 
                 const activeTab =
-                    document.querySelector(
-                        `.events-overview-tab[data-overview-tab="${activeOverviewTab}"]`
+                    eventsPage.querySelector(
+                        ".events-account-tab.active"
                     );
 
-
                 if (activeTab) {
-
                     activeTab.click();
-
                 }
 
             }
