@@ -138,6 +138,69 @@ function initEvents() {
 
 
     // =========================================
+    // ACCOUNT TABS
+    // =========================================
+
+    function initialiseAccountTabs() {
+
+        const eventsPage =
+            document.querySelector(".events-page");
+
+        if (!eventsPage) {
+            return;
+        }
+
+        const tabs =
+            eventsPage.querySelectorAll(
+                ".events-account-tab"
+            );
+
+        const sections =
+            eventsPage.querySelectorAll(
+                "[data-account-category]"
+            );
+
+        if (!tabs.length) {
+            return;
+        }
+
+        tabs.forEach(tab => {
+
+            tab.addEventListener("click", () => {
+
+                const category =
+                    tab.dataset.accountTab;
+
+                tabs.forEach(item => {
+                    item.classList.toggle(
+                        "active",
+                        item === tab
+                    );
+                });
+
+                sections.forEach(section => {
+
+                    const sectionCategory =
+                        section.dataset.accountCategory;
+
+                    const visible =
+                        category === "all" ||
+                        sectionCategory === category;
+
+                    section.hidden = !visible;
+
+                });
+
+            });
+
+        });
+
+    }
+
+    initialiseAccountTabs();
+
+
+    // =========================================
     // FEATURED EVENT CARDS
     // =========================================
 

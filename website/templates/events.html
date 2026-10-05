@@ -118,7 +118,71 @@
 
     {% if not overview %}
 
-    <section class="events-featured">
+    <section class="events-account-tabs">
+
+        <button
+            type="button"
+            class="events-account-tab active"
+            data-account-tab="all"
+        >
+            All
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="permanent"
+        >
+            Permanent
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="endgame"
+        >
+            Endgame
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="wishes"
+        >
+            Wishes
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="events"
+        >
+            Events
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="recurring"
+        >
+            Recurring
+        </button>
+
+        <button
+            type="button"
+            class="events-account-tab"
+            data-account-tab="custom"
+        >
+            Custom
+        </button>
+
+    </section>
+
+
+    <section
+        class="events-featured"
+        data-account-category="endgame"
+    >
 
         <!-- =============================
             SPIRAL ABYSS
@@ -829,7 +893,10 @@
         DAILY ACTIVITIES
         ============================= -->
 
-    <section class="events-list">
+    <section
+        class="events-list"
+        data-account-category="permanent"
+    >
 
         <div class="events-list-header">
 
@@ -1023,7 +1090,10 @@
 
     </section>
 
-    <section class="events-wishes">
+    <section
+        class="events-wishes"
+        data-account-category="wishes"
+    >
 
         <div class="events-list-header">
             <h2>
@@ -1161,6 +1231,68 @@
             </div>
 
         {% endif %}
+
+    </section>
+
+    <section
+        class="events-account-empty"
+        data-account-category="events"
+        hidden
+    >
+
+        <div class="events-account-empty-content">
+
+            <span class="events-account-empty-title">
+                No Events
+            </span>
+
+            <span class="events-account-empty-description">
+                Limited-time events will appear here.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="events-account-empty"
+        data-account-category="recurring"
+        hidden
+    >
+
+        <div class="events-account-empty-content">
+
+            <span class="events-account-empty-title">
+                No Recurring Activities
+            </span>
+
+            <span class="events-account-empty-description">
+                Recurring activities will appear here.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="events-account-empty"
+        data-account-category="custom"
+        hidden
+    >
+
+        <div class="events-account-empty-content">
+
+            <span class="events-account-empty-title">
+                No Custom Activities
+            </span>
+
+            <span class="events-account-empty-description">
+                Custom activity layouts will appear here.
+            </span>
+
+        </div>
 
     </section>
 

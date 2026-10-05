@@ -2035,6 +2035,105 @@
 
 
 /* =========================================================
+   ACCOUNT LAYOUT TABS
+   ========================================================= */
+
+.events-account-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: fit-content;
+
+    margin-top: 28px;
+    margin-bottom: 20px;
+
+    padding: 5px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+}
+
+
+.events-account-tab {
+    padding: 8px 16px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.events-account-tab:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+}
+
+
+.events-account-tab.active {
+    background: var(--card-background);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+
+.events-account-tabs + .events-featured {
+    margin-top: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Empty Categories
+   --------------------------------------------------------- */
+
+.events-featured[hidden],
+.events-list[hidden],
+.events-wishes[hidden] {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 650px) {
+
+    .events-account-tabs {
+        width: 100%;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    .events-account-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .events-account-tab {
+        flex: 0 0 auto;
+        padding: 8px 13px;
+    }
+}
+
+
+/* =========================================================
    14. EVENTS OVERVIEW
    =========================================================
    Alternate account overview shown by the "Switch Layout"
