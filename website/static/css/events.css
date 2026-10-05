@@ -47,139 +47,55 @@
 
 
 /* =========================================================
-   2. EVENTS CONTROLS
-   =========================================================
-   Account layout:
-       [ Category Tabs ] [ Account Selector ] [ Switch Layout ]
-
-   Overview layout:
-       [ Overview Tabs ] [ Switch Layout ]
+   EVENTS CONTROLS
    ========================================================= */
 
 .events-controls {
-    margin-bottom: 0;
-}
-
-.events-controls-right {
-    width: 100%;
-
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-
-    gap: 10px;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
 }
 
 
-/* ---------------------------------------------------------
-   Category Tabs
-   --------------------------------------------------------- */
+/* =========================================================
+   ACCOUNT / OVERVIEW TABS
+   ========================================================= */
 
 .events-account-tabs,
 .events-overview-tabs {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+}
 
-    gap: 4px;
 
-    width: fit-content;
+/* =========================================================
+   RIGHT-SIDE CONTROLS
+   ========================================================= */
 
-    margin: 0;
-    padding: 4px;
-
-    box-sizing: border-box;
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
-
-    background: var(--surface);
-
+.events-controls-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-left: auto;
     flex-shrink: 0;
 }
 
 
-/* ---------------------------------------------------------
-   Individual Tabs
-   --------------------------------------------------------- */
-
-.events-account-tab,
-.events-overview-tab {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 32px;
-
-    padding: 7px 13px;
-
-    box-sizing: border-box;
-
-    border: 1px solid transparent;
-    border-radius: 8px;
-
-    background: transparent;
-
-    color: var(--text-secondary);
-
-    font-size: 13px;
-    font-weight: 600;
-
-    line-height: 1;
-    white-space: nowrap;
-
-    cursor: pointer;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        color 0.18s ease;
-}
-
-
-/* ---------------------------------------------------------
-   Tab Hover
-   --------------------------------------------------------- */
-
-.events-account-tab:hover,
-.events-overview-tab:hover {
-    background: var(--surface-hover);
-
-    color: var(--text-primary);
-}
-
-
-/* ---------------------------------------------------------
-   Active Tab
-   --------------------------------------------------------- */
-
-.events-account-tab.active,
-.events-overview-tab.active {
-    background: var(--card-background);
-
-    border-color: var(--border);
-
-    color: var(--text-primary);
-
-    box-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-
-/* ---------------------------------------------------------
-   Account Selector
-   --------------------------------------------------------- */
+/* =========================================================
+   ACCOUNT SELECTOR
+   ========================================================= */
 
 .events-account-selector {
     display: flex;
     align-items: center;
-
-    flex: 0 0 auto;
+    gap: 10px;
 }
-
-
-/* ---------------------------------------------------------
-   Account Dropdown
-   --------------------------------------------------------- */
 
 .events-account-selector .custom-select {
     min-width: 260px;
@@ -188,7 +104,6 @@
 .events-account-selector .custom-select-button:focus,
 .events-account-selector .custom-select.open .custom-select-button {
     border-color: var(--accent);
-
     box-shadow:
         0 0 0 1px color-mix(
             in srgb,
@@ -198,39 +113,31 @@
 }
 
 
-/* ---------------------------------------------------------
-   Layout Switch
-   --------------------------------------------------------- */
+/* =========================================================
+   SWITCH LAYOUT
+   ========================================================= */
 
 .events-layout-switch {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     min-height: 36px;
-
-    padding: 0 16px;
-
+    padding: 0 14px;
     box-sizing: border-box;
 
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 9px;
 
     background: var(--surface);
-
     color: var(--text-secondary);
 
     font-size: 13px;
     font-weight: 600;
-
     line-height: 1;
+
     text-decoration: none;
-
     white-space: nowrap;
-
     cursor: pointer;
-
-    flex: 0 0 auto;
 
     transition:
         background 0.18s ease,
@@ -242,9 +149,7 @@
 
 .events-layout-switch:hover {
     background: var(--surface-hover);
-
     border-color: var(--accent);
-
     color: var(--accent);
 
     transform: translateY(-1px);
@@ -255,7 +160,6 @@
 
 .events-layout-switch:active {
     transform: translateY(0);
-
     box-shadow: none;
 }
 
@@ -1094,17 +998,19 @@
 
     gap: 10px;
 
-    margin-top: 12px;
-    padding-top: 10px;
+    margin-top: 9px;
+    padding-top: 0;
 
     box-sizing: border-box;
 }
 
 .stygian-teams-box {
-    min-height: 145px;
+    width: 100%;
+    height: 205px;
+    min-height: 205px;
+    flex-shrink: 0;
 
-    padding: 10px 14px;
-
+    padding: 14px 18px;
     box-sizing: border-box;
 
     display: flex;
@@ -1112,7 +1018,6 @@
 
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-
     background: rgba(255, 255, 255, 0.06);
 }
 
@@ -1120,14 +1025,11 @@
     width: 100%;
 
     display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    grid-template-columns:
-        repeat(3, 1fr);
+    gap: 14px;
 
-    gap: 8px;
-
-    align-items: center;
-
+    align-items: start;
     text-align: center;
 }
 
@@ -1147,8 +1049,8 @@
     max-width: 100%;
     min-width: 0;
 
-    min-height: 32px;
     height: 32px;
+    min-height: 32px;
 
     display: flex;
     align-items: center;
@@ -1156,7 +1058,7 @@
 
     box-sizing: border-box;
 
-    overflow: hidden;
+    padding: 0 1px;
 
     font-size: 10px;
     font-weight: 600;
@@ -1165,51 +1067,74 @@
 
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.25px;
 
     opacity: 0.7;
 
-    /*
-     * Allow long boss names to wrap onto two lines.
-     * Words themselves will never be split in half.
-     */
     white-space: normal;
+
+    overflow: visible;
+
     overflow-wrap: normal;
     word-break: normal;
 }
 
-.stygian-boss-icon {
-    width: 55px;
-    height: 55px;
+/*
+ * Medium-length boss names.
+ */
 
-    object-fit: contain;
+.stygian-boss strong.boss-name-medium {
+    font-size: 9px;
+    line-height: 10px;
+}
+
+/*
+ * Long boss names.
+ */
+
+.stygian-boss strong.boss-name-small {
+    font-size: 8px;
+    line-height: 9px;
+    letter-spacing: 0.1px;
+}
+
+/*
+ * Very long boss names.
+ */
+
+.stygian-boss strong.boss-name-tiny {
+    font-size: 7px;
+    line-height: 8px;
+    letter-spacing: 0;
 }
 
 .stygian-boss-time {
     font-size: 13px;
     font-weight: 600;
+    transform: translateY(10px);
+}
+
+.stygian-boss-icon {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    transform: translateY(10px);
 }
 
 .stygian-team {
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-direction: row;
     flex-wrap: nowrap;
-
     gap: 3px;
-
     width: auto;
-
     margin-top: 10px;
     padding: 5px 6px;
-
     box-sizing: border-box;
-
     border-radius: 8px;
-
     background: rgba(255, 255, 255, 0.06);
+    transform: translateY(10px);
 }
 
 .stygian-character-icon {
@@ -1432,30 +1357,30 @@
 
 .abyss-teams {
     flex: 1;
-
     display: flex;
     flex-direction: column;
-
     justify-content: center;
-
     gap: 10px;
-
     margin-top: 12px;
-
     min-height: 0;
 }
 
 .abyss-teams-box {
+    width: 100%;
+    height: 205px;
+    min-height: 205px;
+    flex-shrink: 0;
+
     display: flex;
     flex-direction: column;
-
+    justify-content: center;
     gap: 8px;
 
-    padding: 8px 10px;
+    padding: 12px 10px;
+    box-sizing: border-box;
 
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-
     background: rgba(255, 255, 255, 0.06);
 }
 
@@ -1463,11 +1388,9 @@
     width: 100%;
     min-width: 0;
     min-height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 10px;
 }
 
@@ -2631,6 +2554,11 @@
         font-size: 23px;
     }
 
+    .event-featured-card[data-event-type="stygian"] .event-featured-panel {
+        left: 0;
+        right: 0;
+    }
+
 
     /* Abyss */
 
@@ -3087,7 +3015,8 @@
     /* Stygian Onslaught */
 
     .stygian-teams-box {
-        min-height: 135px;
+        height: 165px;
+        min-height: 165px;
 
         padding: 8px 6px;
     }

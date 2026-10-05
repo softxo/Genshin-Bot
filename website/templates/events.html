@@ -33,80 +33,114 @@
 
     {% if accounts %}
 
-    <section class="events-section events-controls">
+        <section class="events-section events-controls">
+
+        {% if not overview %}
+
+            <div class="events-account-tabs">
+
+                <button
+                    type="button"
+                    class="events-account-tab active"
+                    data-account-tab="all"
+                >
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab"
+                    data-account-tab="permanent"
+                >
+                    Permanent
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab"
+                    data-account-tab="endgame"
+                >
+                    Endgame
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab"
+                    data-account-tab="events"
+                >
+                    Events
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab"
+                    data-account-tab="recurring"
+                >
+                    Recurring
+                </button>
+
+                <button
+                    type="button"
+                    class="events-account-tab"
+                    data-account-tab="custom"
+                >
+                    Custom
+                </button>
+
+            </div>
+
+        {% else %}
+
+            <div class="events-overview-tabs">
+
+                <button
+                    type="button"
+                    class="events-overview-tab active"
+                    data-overview-tab="daily"
+                >
+                    Daily
+                </button>
+
+                <button
+                    type="button"
+                    class="events-overview-tab"
+                    data-overview-tab="resin"
+                >
+                    Resin
+                </button>
+
+                <button
+                    type="button"
+                    class="events-overview-tab"
+                    data-overview-tab="trounce"
+                >
+                    Trounce
+                </button>
+
+                <button
+                    type="button"
+                    class="events-overview-tab"
+                    data-overview-tab="events"
+                >
+                    Events
+                </button>
+
+                <button
+                    type="button"
+                    class="events-overview-tab"
+                    data-overview-tab="wishes"
+                >
+                    Wishes
+                </button>
+
+            </div>
+
+        {% endif %}
+
 
         <div class="events-controls-right">
 
             {% if not overview %}
-
-                <div class="events-account-tabs">
-
-                    <button
-                        type="button"
-                        class="events-account-tab active"
-                        data-account-tab="all"
-                    >
-                        All
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="permanent"
-                    >
-                        Permanent
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="endgame"
-                    >
-                        Endgame
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="wishes"
-                    >
-                        Wishes
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="events"
-                    >
-                        Events
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-overview-tab"
-                        data-overview-tab="wishes"
-                    >
-                        Wishes
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="recurring"
-                    >
-                        Recurring
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-account-tab"
-                        data-account-tab="custom"
-                    >
-                        Custom
-                    </button>
-
-                </div>
-
 
                 <div class="events-account-selector">
 
@@ -130,6 +164,7 @@
 
                         </button>
 
+
                         <div class="custom-select-menu">
 
                             {% for account in accounts %}
@@ -152,52 +187,6 @@
                         </div>
 
                     </div>
-
-                </div>
-
-            {% else %}
-
-                <div class="events-overview-tabs">
-
-                    <button
-                        type="button"
-                        class="events-overview-tab active"
-                        data-overview-tab="daily"
-                    >
-                        Daily
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-overview-tab"
-                        data-overview-tab="resin"
-                    >
-                        Resin
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-overview-tab"
-                        data-overview-tab="trounce"
-                    >
-                        Trounce
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-overview-tab"
-                        data-overview-tab="events"
-                    >
-                        Events
-                    </button>
-
-                    <button
-                        type="button"
-                        class="events-overview-tab"
-                        data-overview-tab="wishes"
-                    >
-                        Wishes
-                    </button>
 
                 </div>
 

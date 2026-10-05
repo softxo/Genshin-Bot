@@ -1,3 +1,19 @@
+function initialiseHoverEffects() {
+
+    const savedHoverEffects =
+        localStorage.getItem("hoverEffects");
+
+    const hoverEffectsEnabled =
+        savedHoverEffects !== "false";
+
+    document.documentElement.dataset.hoverEffects =
+        hoverEffectsEnabled
+            ? "on"
+            : "off";
+}
+
+initialiseHoverEffects();
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const mainContent = document.querySelector(".main-content");
