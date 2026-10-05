@@ -4,7 +4,7 @@ function initEvents() {
     // PAGE
     // =========================================
 
-    const eventsPage =
+    let eventsPage =
         document.querySelector(".events-page");
 
     if (!eventsPage) {
@@ -45,7 +45,7 @@ function initEvents() {
 
         button.addEventListener(
             "click",
-            (event) => {
+            event => {
 
                 event.preventDefault();
                 event.stopPropagation();
@@ -56,7 +56,10 @@ function initEvents() {
         );
 
 
-        // Close after selecting an account.
+        // -----------------------------------------
+        // Account Options
+        // -----------------------------------------
+
         const options =
             dropdown.querySelectorAll(
                 ".custom-select-option"
@@ -64,6 +67,16 @@ function initEvents() {
 
 
         options.forEach(option => {
+
+            if (
+                option.dataset.initialised ===
+                "true"
+            ) {
+                return;
+            }
+
+            option.dataset.initialised = "true";
+
 
             option.addEventListener(
                 "click",
@@ -81,11 +94,15 @@ function initEvents() {
                     }
 
 
+                    // Close immediately.
                     dropdown.classList.remove(
                         "open"
                     );
 
 
+                    // Navigate to the selected
+                    // account while keeping the
+                    // account layout.
                     window.location.href =
                         `/events?account_id=${accountId}`;
 
@@ -112,7 +129,7 @@ function initEvents() {
 
         document.addEventListener(
             "click",
-            (event) => {
+            event => {
 
                 const dropdown =
                     document.getElementById(
@@ -143,82 +160,151 @@ function initEvents() {
 
     function initialiseAccountTabs() {
 
-        const eventsPage =
+        const page =
             document.querySelector(".events-page");
 
-        if (!eventsPage) {
+        if (!page) {
             return;
         }
 
+
         const tabs =
-            eventsPage.querySelectorAll(".events-account-tab");
+            page.querySelectorAll(
+                ".events-account-tab"
+            );
 
         const sections =
-            eventsPage.querySelectorAll("[data-account-category]");
+            page.querySelectorAll(
+                "[data-account-category]"
+            );
 
         if (!tabs.length || !sections.length) {
             return;
         }
 
-        tabs.forEach(tab => {
 
-            tab.addEventListener("click", () => {
+        // -----------------------------------------
+        // Activate Category
+        // -----------------------------------------
 
-                const category =
-                    tab.dataset.accountTab;
+        function activateCategory(category) {
 
+            tabs.forEach(tab => {
 
-                // =============================
-                // ACTIVE TAB
-                // =============================
-
-                tabs.forEach(item => {
-
-                    item.classList.toggle(
-                        "active",
-                        item === tab
-                    );
-
-                });
-
-
-                // =============================
-                // CONTENT
-                // =============================
-
-                sections.forEach(section => {
-
-                    const sectionCategory =
-                        section.dataset.accountCategory;
-
-                    const isEmptyState =
-                        section.classList.contains(
-                            "events-account-empty"
-                        );
-
-
-                    if (category === "all") {
-
-                        // "All" shows actual content,
-                        // but not placeholder empty states.
-
-                        section.hidden =
-                            isEmptyState;
-
-                        return;
-                    }
-
-
-                    // Show only the selected category.
-
-                    section.hidden =
-                        sectionCategory !== category;
-
-                });
+                tab.classList.toggle(
+                    "active",
+                    tab.dataset.accountTab === category
+                );
 
             });
 
+
+            sections.forEach(section => {
+
+                const sectionCategory =
+                    section.dataset.accountCategory;
+
+                const isEmptyState =
+                    section.classList.contains(
+                        "events-account-empty"
+                    );
+
+
+                // ---------------------------------
+                // ALL
+                // ---------------------------------
+
+                if (category === "all") {
+
+                    // Show actual content.
+                    // Hide placeholder states.
+                    section.hidden =
+                        isEmptyState;
+
+                    return;
+                }
+
+
+                // ---------------------------------
+                // CATEGORY
+                // ---------------------------------
+
+                section.hidden =
+                    sectionCategory !== category;
+
+            });
+
+
+            // Save the selected category so
+            // automatic refreshes can restore it.
+            localStorage.setItem(
+                "cyreneAccountEventTab",
+                category
+            );
+
+        }
+
+
+        // -----------------------------------------
+        // Listeners
+        // -----------------------------------------
+
+        tabs.forEach(tab => {
+
+            if (
+                tab.dataset.initialised ===
+                "true"
+            ) {
+                return;
+            }
+
+            tab.dataset.initialised = "true";
+
+
+            tab.addEventListener(
+                "click",
+                () => {
+
+                    const category =
+                        tab.dataset.accountTab;
+
+                    if (!category) {
+                        return;
+                    }
+
+                    activateCategory(
+                        category
+                    );
+
+                }
+            );
+
         });
+
+
+        // -----------------------------------------
+        // Restore Previously Selected Category
+        // -----------------------------------------
+
+        const savedCategory =
+            localStorage.getItem(
+                "cyreneAccountEventTab"
+            );
+
+
+        const savedCategoryExists =
+            Array.from(tabs).some(
+                tab =>
+                    tab.dataset.accountTab ===
+                    savedCategory
+            );
+
+
+        activateCategory(
+            savedCategoryExists
+                ? savedCategory
+                : "all"
+        );
 
     }
 
@@ -248,7 +334,7 @@ function initEvents() {
 
                 toggle.addEventListener(
                     "click",
-                    (event) => {
+                    event => {
 
                         event.preventDefault();
                         event.stopPropagation();
@@ -291,34 +377,59 @@ function initEvents() {
 
     function initialiseOverviewTabs() {
 
-        const tabs = document.querySelectorAll(
-            ".events-overview-tab"
-        );
+        const page =
+            document.querySelector(
+                ".events-page"
+            );
 
-        const panels = document.querySelectorAll(
-            ".events-overview-panel"
-        );
+        if (!page) {
+            return;
+        }
 
+
+        const tabs =
+            page.querySelectorAll(
+                ".events-overview-tab"
+            );
+
+        const panels =
+            page.querySelectorAll(
+                ".events-overview-panel"
+            );
+
+
+        if (!tabs.length || !panels.length) {
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Activate Overview Tab
+        // -----------------------------------------
 
         function activateTab(target) {
 
             document.documentElement.dataset.overviewTab =
                 target;
 
+
             tabs.forEach(tab => {
 
                 tab.classList.toggle(
                     "active",
-                    tab.dataset.overviewTab === target
+                    tab.dataset.overviewTab ===
+                    target
                 );
 
             });
+
 
             panels.forEach(panel => {
 
                 panel.classList.toggle(
                     "active",
-                    panel.dataset.overviewPanel === target
+                    panel.dataset.overviewPanel ===
+                    target
                 );
 
             });
@@ -326,10 +437,15 @@ function initEvents() {
         }
 
 
+        // -----------------------------------------
+        // Listeners
+        // -----------------------------------------
+
         tabs.forEach(tab => {
 
             if (
-                tab.dataset.initialised === "true"
+                tab.dataset.initialised ===
+                "true"
             ) {
                 return;
             }
@@ -348,13 +464,16 @@ function initEvents() {
                         return;
                     }
 
-                    // Save the selected tab.
+
                     localStorage.setItem(
                         "cyreneOverviewTab",
                         target
                     );
 
-                    activateTab(target);
+
+                    activateTab(
+                        target
+                    );
 
                 }
             );
@@ -362,18 +481,22 @@ function initEvents() {
         });
 
 
-        // Restore the previously selected tab.
+        // -----------------------------------------
+        // Restore Previously Selected Tab
+        // -----------------------------------------
+
         const savedTab =
             localStorage.getItem(
                 "cyreneOverviewTab"
             );
 
-        const savedTabExists = Array.from(
-            tabs
-        ).some(
-            tab =>
-                tab.dataset.overviewTab === savedTab
-        );
+
+        const savedTabExists =
+            Array.from(tabs).some(
+                tab =>
+                    tab.dataset.overviewTab ===
+                    savedTab
+            );
 
 
         activateTab(
@@ -532,17 +655,21 @@ function initEvents() {
             )
             .forEach(timer => {
 
-                let timestamp = Number(
-                    timer.dataset.resinTimestamp
-                );
+                let timestamp =
+                    Number(
+                        timer.dataset.resinTimestamp
+                    );
 
-                const now =
+                const currentTime =
                     Math.floor(
                         Date.now() / 1000
                     );
 
 
-                // No timestamp means Resin is full.
+                // -----------------------------------------
+                // FULL RESIN
+                // -----------------------------------------
+
                 if (!timestamp) {
 
                     timer.textContent =
@@ -560,11 +687,13 @@ function initEvents() {
                 if (
                     timer.dataset.resinKind ===
                     "next" &&
-                    timestamp <= now
+                    timestamp <= currentTime
                 ) {
 
                     // Each Resin takes 8 minutes.
-                    while (timestamp <= now) {
+                    while (
+                        timestamp <= currentTime
+                    ) {
 
                         timestamp += 480;
 
@@ -579,7 +708,7 @@ function initEvents() {
                 const remaining =
                     Math.max(
                         0,
-                        timestamp - now
+                        timestamp - currentTime
                     );
 
 
@@ -619,103 +748,192 @@ function initEvents() {
     }
 
 
+    // =========================================
+    // ACTIVITY CHECKMARKS
+    // =========================================
 
     function initialiseActivityCheckmarks() {
-        document.querySelectorAll(".event-checkmark[data-activity-type]").forEach(checkmark => {
-            if (checkmark.dataset.initialised === "true") return;
 
-            checkmark.dataset.initialised = "true";
+        document
+            .querySelectorAll(
+                ".event-checkmark[data-activity-type]"
+            )
+            .forEach(checkmark => {
 
-            checkmark.addEventListener("click", async event => {
-                event.preventDefault();
-                event.stopPropagation();
-
-                const accountId = checkmark.dataset.accountId;
-                const activityType = checkmark.dataset.activityType;
-
-                if (!accountId || !activityType) {
+                if (
+                    checkmark.dataset.initialised ===
+                    "true"
+                ) {
                     return;
                 }
 
-                const currentlyChecked =
-                    checkmark.getAttribute("aria-pressed") === "true";
+                checkmark.dataset.initialised =
+                    "true";
 
-                const newChecked = !currentlyChecked;
 
-                // Prevent duplicate clicks while saving.
-                if (checkmark.dataset.saving === "true") {
-                    return;
-                }
+                checkmark.addEventListener(
+                    "click",
+                    async event => {
 
-                checkmark.dataset.saving = "true";
+                        event.preventDefault();
+                        event.stopPropagation();
 
-                try {
-                    const response = await fetch(
-                        "/api/events/activity-check",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                account_id: Number(accountId),
-                                activity_type: activityType,
-                                checked: newChecked,
-                            }),
+
+                        const accountId =
+                            checkmark.dataset.accountId;
+
+                        const activityType =
+                            checkmark.dataset.activityType;
+
+
+                        if (
+                            !accountId ||
+                            !activityType
+                        ) {
+                            return;
                         }
-                    );
 
-                    const responseText = await response.text();
 
-                    let data;
+                        const currentlyChecked =
+                            checkmark.getAttribute(
+                                "aria-pressed"
+                            ) === "true";
 
-                    try {
-                        data = JSON.parse(responseText);
-                    } catch {
-                        throw new Error(
-                            `Server returned ${response.status}: ${responseText}`
-                        );
+
+                        const newChecked =
+                            !currentlyChecked;
+
+
+                        // Prevent duplicate clicks
+                        // while the request is saving.
+                        if (
+                            checkmark.dataset.saving ===
+                            "true"
+                        ) {
+                            return;
+                        }
+
+
+                        checkmark.dataset.saving =
+                            "true";
+
+
+                        try {
+
+                            const response =
+                                await fetch(
+                                    "/api/events/activity-check",
+                                    {
+                                        method: "POST",
+
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json",
+                                        },
+
+                                        body:
+                                            JSON.stringify({
+                                                account_id:
+                                                    Number(
+                                                        accountId
+                                                    ),
+
+                                                activity_type:
+                                                    activityType,
+
+                                                checked:
+                                                    newChecked,
+                                            }),
+                                    }
+                                );
+
+
+                            const responseText =
+                                await response.text();
+
+
+                            let data;
+
+
+                            try {
+
+                                data =
+                                    JSON.parse(
+                                        responseText
+                                    );
+
+                            } catch {
+
+                                throw new Error(
+                                    `Server returned ${response.status}: ${responseText}`
+                                );
+
+                            }
+
+
+                            if (
+                                !response.ok ||
+                                !data.success
+                            ) {
+
+                                throw new Error(
+                                    data.error ||
+                                    `Failed to save activity check (${response.status}).`
+                                );
+
+                            }
+
+
+                            checkmark.setAttribute(
+                                "aria-pressed",
+                                String(
+                                    data.checked
+                                )
+                            );
+
+
+                            checkmark.classList.toggle(
+                                "event-checkmark-empty",
+                                !data.checked
+                            );
+
+
+                            const row =
+                                checkmark.closest(
+                                    ".event-list-item"
+                                );
+
+
+                            if (row) {
+
+                                row.classList.toggle(
+                                    "completed",
+                                    data.checked
+                                );
+
+                            }
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "Failed to update activity checkmark:",
+                                error
+                            );
+
+
+                        } finally {
+
+                            delete checkmark.dataset.saving;
+
+                        }
+
                     }
+                );
 
-                    if (!response.ok || !data.success) {
-                        throw new Error(
-                            data.error ||
-                            `Failed to save activity check (${response.status}).`
-                        );
-                    }
-
-                    checkmark.setAttribute(
-                        "aria-pressed",
-                        String(data.checked)
-                    );
-
-                    checkmark.classList.toggle(
-                        "event-checkmark-empty",
-                        !data.checked
-                    );
-
-                    const row = checkmark.closest(".event-list-item");
-
-                    if (row) {
-                        row.classList.toggle(
-                            "completed",
-                            data.checked
-                        );
-                    }
-
-                } catch (error) {
-                    console.error(
-                        "Failed to update activity checkmark:",
-                        error
-                    );
-
-                } finally {
-                    delete checkmark.dataset.saving;
-                }
             });
-        });
-    }
 
+    }
 
 
     // =========================================
@@ -744,7 +962,7 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Current page state
+            // Current Page State
             // -----------------------------------------
 
             const isOverview =
@@ -758,7 +976,7 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Preserve UI state
+            // Preserve UI State
             // -----------------------------------------
 
             const expandedCards =
@@ -766,9 +984,22 @@ function initEvents() {
                     currentPage.querySelectorAll(
                         ".event-featured-card:not(.collapsed)"
                     )
-                ).map(card =>
-                    card.dataset.eventType
+                ).map(
+                    card =>
+                        card.dataset.eventType
                 );
+
+
+            const activeAccountTab =
+                currentPage
+                    .querySelector(
+                        ".events-account-tab.active"
+                    )
+                    ?.dataset.accountTab ||
+                localStorage.getItem(
+                    "cyreneAccountEventTab"
+                ) ||
+                "all";
 
 
             const activeOverviewTab =
@@ -777,6 +1008,9 @@ function initEvents() {
                         ".events-overview-tab.active"
                     )
                     ?.dataset.overviewTab ||
+                localStorage.getItem(
+                    "cyreneOverviewTab"
+                ) ||
                 "daily";
 
 
@@ -785,7 +1019,7 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Build request
+            // Build Request
             // -----------------------------------------
 
             const params =
@@ -850,7 +1084,7 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Replace page
+            // Replace Page
             // -----------------------------------------
 
             currentPage.replaceWith(
@@ -858,15 +1092,29 @@ function initEvents() {
             );
 
 
+            // IMPORTANT:
+            // The old eventsPage reference is no
+            // longer valid after replaceWith().
+            eventsPage =
+                document.querySelector(
+                    ".events-page"
+                );
+
+
+            if (!eventsPage) {
+                return;
+            }
+
+
             // -----------------------------------------
-            // Restore expanded cards
+            // Restore Expanded Cards
             // -----------------------------------------
 
             expandedCards.forEach(
                 eventType => {
 
                     const card =
-                        document.querySelector(
+                        eventsPage.querySelector(
                             `.event-featured-card[data-event-type="${eventType}"]`
                         );
 
@@ -900,10 +1148,12 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Reinitialise controls
+            // Reinitialise Controls
             // -----------------------------------------
 
             initialiseEventsDropdown();
+
+            initialiseAccountTabs();
 
             initialiseEventFeatureToggles();
 
@@ -915,31 +1165,56 @@ function initEvents() {
 
 
             // -----------------------------------------
-            // Restore overview tab
+            // Restore Account Category
             // -----------------------------------------
 
-            if (isOverview) {
+            if (!isOverview) {
 
-                const activeTab =
+                const accountTab =
                     eventsPage.querySelector(
-                        ".events-account-tab.active"
+                        `.events-account-tab[data-account-tab="${activeAccountTab}"]`
                     );
 
-                if (activeTab) {
-                    activeTab.click();
+
+                if (accountTab) {
+
+                    accountTab.click();
+
                 }
 
             }
 
 
             // -----------------------------------------
-            // Restore scroll position
+            // Restore Overview Category
+            // -----------------------------------------
+
+            if (isOverview) {
+
+                const overviewTab =
+                    eventsPage.querySelector(
+                        `.events-overview-tab[data-overview-tab="${activeOverviewTab}"]`
+                    );
+
+
+                if (overviewTab) {
+
+                    overviewTab.click();
+
+                }
+
+            }
+
+
+            // -----------------------------------------
+            // Restore Scroll Position
             // -----------------------------------------
 
             window.scrollTo(
                 0,
                 scrollPosition
             );
+
 
         } catch (error) {
 
@@ -973,6 +1248,8 @@ function initEvents() {
     initialiseEventsDropdown();
 
     initialiseDropdownClose();
+
+    initialiseAccountTabs();
 
     initialiseEventFeatureToggles();
 

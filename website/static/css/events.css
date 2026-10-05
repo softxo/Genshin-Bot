@@ -4,19 +4,23 @@
    Styles specific to the /events page.
 
    Sections:
-   1. Events Header
-   2. Account Selector
-   3. Featured Event Cards
-   4. Featured Card Header
-   5. Featured Card Toggle
-   6. Featured Card Content / Panels
-   7. Collapsed Card State
-   8. Event Time Status
-   9. Stygian Onslaught
+   1.  Events Header
+   2.  Events Controls
+   3.  Featured Event Cards
+   4.  Featured Card Header
+   5.  Featured Card Toggle
+   6.  Featured Event Content
+   7.  Collapsed Featured Card
+   8.  Event Time Status
+   9.  Stygian Onslaught
    10. Imaginarium Theater
    11. Spiral Abyss
    12. Activity List
-   13. Responsive Layout
+   13. Current Wishes
+   14. Account Layout Tabs
+   15. Events Overview
+   16. Responsive Layout
+   17. Hover Effect Preference
    ========================================================= */
 
 
@@ -43,24 +47,154 @@
 
 
 /* =========================================================
-   2. ACCOUNT SELECTOR
+   2. EVENTS CONTROLS
+   =========================================================
+   Account layout:
+       [ Category Tabs ] [ Account Selector ] [ Switch Layout ]
+
+   Overview layout:
+       [ Overview Tabs ] [ Switch Layout ]
    ========================================================= */
 
-/*
-   Account controls sit below the Events header.
-
-   Layout:
-       [ Switch Layout ]
-
-       Account [ Account Selector ]
-*/
+.events-controls {
+    margin-bottom: 0;
+}
 
 .events-controls-right {
+    width: 100%;
+
     display: flex;
     align-items: center;
     justify-content: flex-end;
 
     gap: 10px;
+}
+
+
+/* ---------------------------------------------------------
+   Category Tabs
+   --------------------------------------------------------- */
+
+.events-account-tabs,
+.events-overview-tabs {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    width: fit-content;
+
+    margin: 0;
+    padding: 4px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+
+    flex-shrink: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Individual Tabs
+   --------------------------------------------------------- */
+
+.events-account-tab,
+.events-overview-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 32px;
+
+    padding: 7px 13px;
+
+    box-sizing: border-box;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+
+/* ---------------------------------------------------------
+   Tab Hover
+   --------------------------------------------------------- */
+
+.events-account-tab:hover,
+.events-overview-tab:hover {
+    background: var(--surface-hover);
+
+    color: var(--text-primary);
+}
+
+
+/* ---------------------------------------------------------
+   Active Tab
+   --------------------------------------------------------- */
+
+.events-account-tab.active,
+.events-overview-tab.active {
+    background: var(--card-background);
+
+    border-color: var(--border);
+
+    color: var(--text-primary);
+
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ---------------------------------------------------------
+   Account Selector
+   --------------------------------------------------------- */
+
+.events-account-selector {
+    display: flex;
+    align-items: center;
+
+    flex: 0 0 auto;
+}
+
+
+/* ---------------------------------------------------------
+   Account Dropdown
+   --------------------------------------------------------- */
+
+.events-account-selector .custom-select {
+    min-width: 260px;
+}
+
+.events-account-selector .custom-select-button:focus,
+.events-account-selector .custom-select.open .custom-select-button {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 1px color-mix(
+            in srgb,
+            var(--accent) 15%,
+            transparent
+        );
 }
 
 
@@ -83,6 +217,7 @@
     border-radius: 999px;
 
     background: var(--surface);
+
     color: var(--text-secondary);
 
     font-size: 13px;
@@ -94,6 +229,8 @@
     white-space: nowrap;
 
     cursor: pointer;
+
+    flex: 0 0 auto;
 
     transition:
         background 0.18s ease,
@@ -136,39 +273,6 @@
 }
 
 
-/* ---------------------------------------------------------
-   Account Row
-   --------------------------------------------------------- */
-
-.events-account-selector {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-}
-
-
-/* ---------------------------------------------------------
-   Account Dropdown
-   --------------------------------------------------------- */
-
-.events-account-selector .custom-select {
-    min-width: 260px;
-}
-
-.events-account-selector .custom-select-button:focus,
-.events-account-selector .custom-select.open .custom-select-button {
-    border-color: var(--accent);
-
-    box-shadow:
-        0 0 0 1px color-mix(
-            in srgb,
-            var(--accent) 15%,
-            transparent
-        );
-}
-
-
 /* =========================================================
    3. EVENTS SECTIONS
    ========================================================= */
@@ -192,20 +296,16 @@
 
 /* =========================================================
    4. FEATURED EVENT CARDS
-   =========================================================
-   The three large cards at the top of the Events page:
-   - Stygian Onslaught
-   - Spiral Abyss
-   - Imaginarium Theater
-
-   The cards can be expanded/collapsed independently.
    ========================================================= */
 
 .events-featured {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
 
     gap: 20px;
+
     margin-top: 28px;
 }
 
@@ -272,6 +372,7 @@
 
 .event-featured-image {
     position: absolute;
+
     inset: -8px;
 
     width: calc(100% + 16px);
@@ -290,6 +391,7 @@
 
 .event-featured-overlay {
     position: absolute;
+
     inset: 0;
 
     background:
@@ -476,15 +578,14 @@
 
     color: rgba(255, 255, 255, 0.90);
 
-    transform: translateY(-2px) rotate(45deg);
+    transform:
+        translateY(-2px)
+        rotate(45deg);
 
     transition:
         color 0.15s ease,
         transform 0.2s ease;
 }
-
-
-/* Hover */
 
 .event-featured-toggle:hover .event-toggle-icon,
 .custom-select-button:hover .event-toggle-icon {
@@ -496,7 +597,6 @@
    7. FEATURED EVENT CONTENT
    ========================================================= */
 
-/* Main information panel inside each featured card. */
 .event-featured-panel {
     flex: 0 0 auto;
 
@@ -605,151 +705,7 @@
 
 
 /* =========================================================
-   8. COLLAPSED FEATURED CARD
-   ========================================================= */
-
-/*
-   When a card is collapsed:
-   - The large panel disappears.
-   - The card becomes a compact summary.
-   - The summary becomes visible.
-*/
-
-.event-featured-card.collapsed {
-    height: 115px;
-}
-
-.event-featured-card.collapsed .event-featured-content {
-    top: 16px;
-    right: 24px;
-    bottom: 16px;
-    left: 24px;
-}
-
-.event-featured-card.collapsed .event-featured-name {
-    line-height: 30px;
-}
-
-.event-featured-card.collapsed .event-featured-header-right {
-    height: 30px;
-}
-
-
-/* ---------------------------------------------------------
-   Collapsed Main Panel
-   --------------------------------------------------------- */
-
-.event-featured-card.collapsed .event-featured-panel {
-    margin-top: 0;
-
-    opacity: 0;
-    transform: translateY(-10px);
-
-    pointer-events: none;
-}
-
-
-/* ---------------------------------------------------------
-   Collapsed Summary
-   --------------------------------------------------------- */
-
-.event-featured-collapsed {
-    display: flex;
-
-    width: 100%;
-
-    margin-top: 6px;
-
-    gap: 10px;
-
-    opacity: 0;
-    transform: translateY(8px);
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.25s ease;
-}
-
-.event-featured-card.collapsed .event-featured-collapsed {
-    opacity: 1;
-
-    transform: translateY(0);
-
-    pointer-events: auto;
-}
-
-
-/* ---------------------------------------------------------
-   Collapsed Summary Stat
-   --------------------------------------------------------- */
-
-.event-collapsed-stat {
-    flex: 1;
-
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 1px;
-
-    padding: 6px 12px;
-
-    box-sizing: border-box;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    background: rgba(255, 255, 255, 0.035);
-}
-
-.event-collapsed-stat .event-stat-label {
-    margin: 0;
-
-    line-height: 14px;
-
-    text-align: center;
-}
-
-.event-collapsed-stat > strong {
-    font-size: 16px;
-    font-weight: 600;
-
-    line-height: 18px;
-
-    text-align: center;
-}
-
-.event-collapsed-value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 6px;
-
-    min-height: 20px;
-
-    font-size: 16px;
-    line-height: 20px;
-}
-
-.event-collapsed-value img {
-    width: 20px;
-    height: 20px;
-
-    object-fit: contain;
-}
-
-/* =========================================================
-   9. EVENT TIME LEFT
-   =========================================================
-   Pill-shaped status badge shown in the top-right of
-   featured cards and activity rows.
+   8. EVENT TIME STATUS
    ========================================================= */
 
 .event-time-left {
@@ -796,7 +752,41 @@
 
 
 /* ---------------------------------------------------------
-   Timer Status
+   Warning — Less Than 3 Days
+   --------------------------------------------------------- */
+
+.event-time-left.warning,
+.event-daily-reset.warning {
+    background: rgba(230, 155, 45, 0.30);
+
+    border-color: rgba(255, 190, 70, 0.65);
+
+    color: #ffe5ad;
+
+    box-shadow:
+        0 3px 12px rgba(230, 155, 45, 0.18);
+}
+
+
+/* ---------------------------------------------------------
+   Danger — Less Than 1 Day
+   --------------------------------------------------------- */
+
+.event-time-left.danger,
+.event-daily-reset.danger {
+    background: rgba(220, 55, 65, 0.34);
+
+    border-color: rgba(255, 105, 115, 0.68);
+
+    color: #ffe0e3;
+
+    box-shadow:
+        0 3px 12px rgba(220, 55, 65, 0.20);
+}
+
+
+/* ---------------------------------------------------------
+   Daily Reset Timer
    --------------------------------------------------------- */
 
 .event-daily-reset {
@@ -847,40 +837,8 @@
 }
 
 
-/* ---------------------------------------------------------
-   Warning — Less Than 3 Days
-   --------------------------------------------------------- */
-
-.event-daily-reset.warning {
-    background: rgba(230, 155, 45, 0.30);
-
-    border-color: rgba(255, 190, 70, 0.65);
-
-    color: #ffe5ad;
-
-    box-shadow:
-        0 3px 12px rgba(230, 155, 45, 0.18);
-}
-
-
-/* ---------------------------------------------------------
-   Danger — Less Than 1 Day
-   --------------------------------------------------------- */
-
-.event-daily-reset.danger {
-    background: rgba(220, 55, 65, 0.34);
-
-    border-color: rgba(255, 105, 115, 0.68);
-
-    color: #ffe0e3;
-
-    box-shadow:
-        0 3px 12px rgba(220, 55, 65, 0.20);
-}
-
-
 /* =========================================================
-   10. STYGIAN ONSLAUGHT
+   9. STYGIAN ONSLAUGHT
    ========================================================= */
 
 .stygian-best-record {
@@ -913,11 +871,6 @@
     font-size: 18px;
     font-weight: 600;
 }
-
-
-/* ---------------------------------------------------------
-   Stygian Bosses / Teams
-   --------------------------------------------------------- */
 
 .stygian-bosses {
     width: 100%;
@@ -954,7 +907,8 @@
 
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 8px;
 
@@ -1053,7 +1007,7 @@
 
 
 /* =========================================================
-   11. IMAGINARIUM THEATER
+   10. IMAGINARIUM THEATER
    ========================================================= */
 
 .it-best-record {
@@ -1140,6 +1094,7 @@
 
 .it-stella-inactive {
     opacity: 0.25;
+
     filter: grayscale(1);
 }
 
@@ -1201,13 +1156,14 @@
 
 
 /* =========================================================
-   12. SPIRAL ABYSS
+   11. SPIRAL ABYSS
    ========================================================= */
 
 .abyss-summary {
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap: 20px;
 
@@ -1245,11 +1201,6 @@
 
     object-fit: contain;
 }
-
-
-/* ---------------------------------------------------------
-   Abyss Teams
-   --------------------------------------------------------- */
 
 .abyss-teams {
     flex: 1;
@@ -1355,7 +1306,7 @@
 
 
 /* =========================================================
-   13. ACTIVITY LIST
+   12. ACTIVITY LIST
    ========================================================= */
 
 .events-list {
@@ -1374,11 +1325,6 @@
     font-size: 22px;
     font-weight: 700;
 }
-
-
-/* ---------------------------------------------------------
-   Activity List Item
-   --------------------------------------------------------- */
 
 .event-list-item {
     min-height: 60px;
@@ -1405,30 +1351,31 @@
     transition:
         background 0.2s ease,
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
 .event-list-item:hover {
     background: var(--surface-hover);
+
     border-color: var(--accent);
+
     transform: translateY(-1px);
-    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.10);
+
+    box-shadow:
+        0 7px 22px rgba(0, 0, 0, 0.10);
 }
 
 .event-list-item.completed .event-list-status {
     color: #5de797;
 }
 
-
-/* ---------------------------------------------------------
-   Activity List — Left Side
-   --------------------------------------------------------- */
-
 .event-list-left {
     display: flex;
     align-items: center;
 
     flex: 1 1 auto;
+
     min-width: 0;
 }
 
@@ -1481,11 +1428,6 @@
         box-shadow .15s ease;
 }
 
-
-/* ---------------------------------------------------------
-   Completed
-   --------------------------------------------------------- */
-
 .event-checkmark:not(.event-checkmark-empty) {
     border-color: var(--accent);
 
@@ -1494,15 +1436,11 @@
     color: var(--background);
 }
 
-
-/* ---------------------------------------------------------
-   Checkmark Icon
-   --------------------------------------------------------- */
-
 .event-checkmark:not(.event-checkmark-empty)::after {
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     width: 100%;
@@ -1510,37 +1448,30 @@
 
     background-color: currentColor;
 
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4 4L19 7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    -webkit-mask:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4 4L19 7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
         center / 18px 18px no-repeat;
 
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4 4L19 7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    mask:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4 4L19 7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
         center / 18px 18px no-repeat;
 }
-
-
-/* ---------------------------------------------------------
-   Hover
-   --------------------------------------------------------- */
 
 .event-checkmark:hover {
     border-color: var(--accent);
 
-    background: color-mix(
-        in srgb,
-        var(--accent) 10%,
-        rgba(255, 255, 255, 0.06)
-    );
+    background:
+        color-mix(
+            in srgb,
+            var(--accent) 10%,
+            rgba(255, 255, 255, 0.06)
+        );
 
     transform: scale(1.05);
 
     box-shadow:
         0 3px 8px rgba(0, 0, 0, 0.18);
 }
-
-
-/* ---------------------------------------------------------
-   Completed Hover
-   --------------------------------------------------------- */
 
 .event-checkmark:not(.event-checkmark-empty):hover {
     border-color: var(--accent);
@@ -1551,19 +1482,9 @@
         0 3px 10px rgba(0, 0, 0, 0.20);
 }
 
-
-/* ---------------------------------------------------------
-   Active
-   --------------------------------------------------------- */
-
 .event-checkmark:active {
     transform: scale(0.95);
 }
-
-
-/* ---------------------------------------------------------
-   Keyboard Focus
-   --------------------------------------------------------- */
 
 .event-checkmark:focus-visible {
     outline: 2px solid var(--accent);
@@ -1602,6 +1523,7 @@
 
 .event-list-name {
     flex: 1 1 auto;
+
     min-width: 0;
 
     color: var(--text-primary);
@@ -1614,20 +1536,27 @@
     text-overflow: ellipsis;
 }
 
+
 /* ---------------------------------------------------------
-   Activity List — Right Side
+   Activity Right Side
    --------------------------------------------------------- */
 
 .event-list-right {
     margin-left: 12px;
 
     display: grid;
-    grid-template-columns: max-content max-content;
+
+    grid-template-columns:
+        max-content max-content;
+
     align-items: center;
+
     column-gap: 12px;
 
     flex: 0 0 auto;
+
     width: max-content;
+
     min-width: 0;
 
     white-space: nowrap;
@@ -1635,6 +1564,7 @@
 
 .event-list-right .event-list-status {
     position: static;
+
     grid-column: 1;
     grid-row: 1;
 
@@ -1688,6 +1618,7 @@
     font-weight: 600;
 
     line-height: 1;
+
     white-space: nowrap;
 
     flex-shrink: 0;
@@ -1759,12 +1690,6 @@
     color: #f07171;
 }
 
-
-/*
-   Completed dailies use the pink completion state.
-   This intentionally stays subtle rather than turning
-   the entire card bright pink.
-*/
 .event-daily-item.completed,
 .event-trounce-item.completed {
     background: rgba(232, 137, 181, 0.18);
@@ -1775,9 +1700,10 @@
         0 0 16px rgba(232, 137, 181, 0.08);
 }
 
-/* =============================
-   Daily - Encounter Points
-   ============================= */
+
+/* ---------------------------------------------------------
+   Encounter Points
+   --------------------------------------------------------- */
 
 .event-encounter-points {
     display: inline-flex;
@@ -1827,7 +1753,9 @@
 .event-encounter-points-icon {
     width: 25px;
     height: 25px;
+
     object-fit: contain;
+
     flex-shrink: 0;
 
     transform: translateX(-3px);
@@ -1846,17 +1774,19 @@
     transform: translateX(-2px);
 }
 
-/* ====================================
-   Trounce Domains
-   ====================================*/
+
+/* =========================================================
+   TROUNCE DOMAINS
+   ========================================================= */
 
 .event-trounce-item {
     margin-top: 10px;
 }
 
-/* ================================
-   Current Wishes
-   ================================ */
+
+/* =========================================================
+   13. CURRENT WISHES
+   ========================================================= */
 
 .events-wishes {
     margin-bottom: 32px;
@@ -1864,12 +1794,16 @@
 
 .wish-banners {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
     gap: 20px;
 }
 
 .wish-banner-card {
     position: relative;
+
     min-height: 360px;
 
     overflow: hidden;
@@ -1883,6 +1817,7 @@
 
 .wish-banner-image {
     position: absolute;
+
     inset: 0;
 
     width: 100%;
@@ -1895,6 +1830,7 @@
 
 .wish-banner-overlay {
     position: absolute;
+
     inset: 0;
 
     background:
@@ -1916,6 +1852,7 @@
 
     display: flex;
     flex-direction: column;
+
     justify-content: flex-end;
 
     padding: 28px;
@@ -2009,9 +1946,9 @@
 }
 
 
-/* ================================
-   WISH BANNERS — EMPTY STATE
-   ================================ */
+/* ---------------------------------------------------------
+   Empty Wish State
+   --------------------------------------------------------- */
 
 .wish-banners-empty {
     min-height: 140px;
@@ -2025,6 +1962,7 @@
     border-radius: 16px;
 
     background: var(--card-background);
+
     border: 1px solid var(--border);
 
     color: var(--text-secondary);
@@ -2035,178 +1973,35 @@
 
 
 /* =========================================================
-   ACCOUNT LAYOUT TABS
+   14. ACCOUNT LAYOUT TABS
    ========================================================= */
 
-.events-account-tabs {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/*
+   Category visibility is controlled by JavaScript using
+   [data-account-category].
 
-    width: fit-content;
+   Permanent currently contains:
+   - Daily Commissions
+   - Trounce Domains
 
-    margin-top: 28px;
-    margin-bottom: 20px;
-
-    padding: 5px;
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
-
-    background: var(--surface);
-}
-
-
-.events-account-tab {
-    padding: 8px 16px;
-
-    border: 1px solid transparent;
-    border-radius: 8px;
-
-    background: transparent;
-
-    color: var(--text-secondary);
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-
-.events-account-tab:hover {
-    background: var(--surface-hover);
-    color: var(--text-primary);
-}
-
-
-.events-account-tab.active {
-    background: var(--card-background);
-    border-color: var(--border);
-    color: var(--text-primary);
-}
-
-
-.events-account-tabs + .events-featured {
-    margin-top: 0;
-}
-
-
-/* ---------------------------------------------------------
-   Empty Categories
-   --------------------------------------------------------- */
+   Therefore there is intentionally no empty Permanent
+   state here.
+*/
 
 .events-featured[hidden],
 .events-list[hidden],
-.events-wishes[hidden] {
+.events-wishes[hidden],
+.events-account-empty[hidden] {
     display: none;
 }
 
 
-/* ---------------------------------------------------------
-   Mobile
-   --------------------------------------------------------- */
-
-@media (max-width: 650px) {
-
-    .events-account-tabs {
-        width: 100%;
-
-        overflow-x: auto;
-
-        scrollbar-width: none;
-    }
-
-    .events-account-tabs::-webkit-scrollbar {
-        display: none;
-    }
-
-    .events-account-tab {
-        flex: 0 0 auto;
-        padding: 8px 13px;
-    }
-}
-
-
 /* =========================================================
-   14. EVENTS OVERVIEW
-   =========================================================
-   Alternate account overview shown by the "Switch Layout"
-   control.
+   15. EVENTS OVERVIEW
    ========================================================= */
-
-
-/* ---------------------------------------------------------
-   Overview Container
-   --------------------------------------------------------- */
 
 .events-overview {
     margin-top: 28px;
-}
-
-
-/* ---------------------------------------------------------
-   Overview Tabs
-   --------------------------------------------------------- */
-
-.events-overview-tabs {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-
-    margin-bottom: 16px;
-
-    padding: 5px;
-
-    width: fit-content;
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
-
-    background: var(--surface);
-}
-
-
-.events-overview-tab {
-    padding: 8px 16px;
-
-    border: 1px solid transparent;
-    border-radius: 8px;
-
-    background: transparent;
-    color: var(--text-secondary);
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-
-.events-overview-tab:hover {
-    color: var(--text-primary);
-
-    background: var(--surface-hover);
-}
-
-
-.events-overview-tab.active {
-    color: var(--text-primary);
-
-    background: var(--card-background);
-
-    border-color: var(--border);
 }
 
 
@@ -2221,7 +2016,6 @@
 
     gap: 10px;
 }
-
 
 .events-overview-panel.active {
     display: flex;
@@ -2256,7 +2050,6 @@
         transform 0.2s ease;
 }
 
-
 .overview-account-row:hover {
     background: var(--surface-hover);
 
@@ -2279,7 +2072,6 @@
     gap: 3px;
 }
 
-
 .overview-account-name strong {
     color: var(--text-primary);
 
@@ -2287,12 +2079,14 @@
     font-weight: 600;
 }
 
-
 .overview-account-name span {
     color: var(--text-secondary);
+
     opacity: 0.6;
+
     font-size: 13px;
 }
+
 
 /* ---------------------------------------------------------
    Account Status
@@ -2300,7 +2094,6 @@
 
 .overview-account-status {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: flex-end;
 
@@ -2316,7 +2109,6 @@
 
     white-space: nowrap;
 }
-
 
 .overview-status {
     display: inline-flex;
@@ -2341,6 +2133,7 @@
     font-weight: 600;
 
     line-height: 1;
+
     white-space: nowrap;
 
     flex-shrink: 0;
@@ -2360,16 +2153,9 @@
 }
 
 
-/* =========================================
-   Overview Daily Status
-   ========================================= */
-
-.overview-account-status {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
-}
+/* =========================================================
+   OVERVIEW DAILY STATUS
+   ========================================================= */
 
 .overview-daily-progress {
     display: flex;
@@ -2428,9 +2214,9 @@
 }
 
 
-/* =========================================
-   Overview Encounter Points
-   ========================================= */
+/* =========================================================
+   OVERVIEW ENCOUNTER POINTS
+   ========================================================= */
 
 .overview-encounter-points {
     display: inline-flex;
@@ -2486,9 +2272,9 @@
 }
 
 
-/* =========================================
+/* =========================================================
    OVERVIEW RESIN
-   ========================================= */
+   ========================================================= */
 
 .overview-resin-status {
     display: flex;
@@ -2498,12 +2284,10 @@
     gap: 16px;
 
     flex: 0 0 auto;
+
     min-width: 0;
 
     margin-left: auto;
-    margin-right: 0;
-
-    transform: translateX(60px);
 }
 
 .overview-resin-value {
@@ -2516,16 +2300,19 @@
     width: 120px;
     min-width: 120px;
     max-width: 120px;
+
     height: 36px;
 
     padding: 4px 10px;
 
     box-sizing: border-box;
+
     flex: 0 0 120px;
 
     border-radius: 8px;
 
     background: rgba(77, 166, 225, 0.14);
+
     color: #78c5f5;
 
     white-space: nowrap;
@@ -2539,7 +2326,9 @@
 .overview-resin-icon {
     width: 26px;
     height: 26px;
+
     object-fit: contain;
+
     flex-shrink: 0;
 }
 
@@ -2547,15 +2336,21 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     gap: 4px;
+
     min-width: 145px;
+
     color: var(--text-secondary);
+
     font-size: 12px;
 }
 
 .overview-resin-timer {
     color: var(--text-primary);
+
     font-weight: 600;
+
     font-variant-numeric: tabular-nums;
 }
 
@@ -2569,23 +2364,7 @@
 
 
 /* =========================================================
-   15. RESPONSIVE — FEATURED CARDS
-   =========================================================
-   Desktop:
-       3 cards in a row.
-
-   <= 1350px:
-       Cards become taller because their contents have less
-       horizontal space.
-
-   <= 1150px:
-       Cards stack into a single column.
-
-   <= 650px:
-       Mobile-specific spacing and typography.
-
-   <= 480px:
-       Small-phone adjustments.
+   16. RESPONSIVE LAYOUT
    ========================================================= */
 
 
@@ -2690,6 +2469,7 @@
 
     .event-featured-card.collapsed .event-featured-header-right {
         height: 30px;
+
         gap: 10px;
     }
 
@@ -2704,16 +2484,42 @@
 
     .event-featured-card.collapsed .event-featured-collapsed {
         margin-top: 23px;
+
         gap: 10px;
     }
 }
 
 
 /* ---------------------------------------------------------
-   Narrow Desktop / Tablet
+   Controls — Narrow Desktop
    --------------------------------------------------------- */
 
 @media (max-width: 1150px) {
+
+    .events-controls-right {
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .events-account-tabs,
+    .events-overview-tabs {
+        max-width: 100%;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    .events-account-tabs::-webkit-scrollbar,
+    .events-overview-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .events-account-tab,
+    .events-overview-tab {
+        flex: 0 0 auto;
+    }
 
     .events-featured {
         grid-template-columns: 1fr;
@@ -2727,27 +2533,59 @@
 
 @media (max-width: 650px) {
 
+    .events-controls-right {
+        align-items: stretch;
+
+        justify-content: flex-start;
+
+        gap: 8px;
+    }
+
+    .events-account-tabs,
     .events-overview-tabs {
         width: 100%;
+        max-width: 100%;
 
         overflow-x: auto;
 
         scrollbar-width: none;
     }
 
+    .events-account-tabs::-webkit-scrollbar,
     .events-overview-tabs::-webkit-scrollbar {
         display: none;
     }
 
+    .events-account-tab,
     .events-overview-tab {
         flex: 0 0 auto;
 
         padding: 8px 13px;
     }
 
+    .events-account-selector {
+        flex: 1 1 auto;
+
+        min-width: 0;
+    }
+
+    .events-account-selector .custom-select {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .events-layout-switch {
+        flex: 0 0 auto;
+    }
+
+
+    /* Overview Rows */
+
     .overview-account-row {
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 10px;
     }
 
@@ -2755,24 +2593,35 @@
         width: 100%;
 
         display: flex;
-        flex-direction: row;
+
         align-items: center;
         justify-content: flex-start;
 
         gap: 8px;
 
         flex-wrap: nowrap;
+
         white-space: nowrap;
     }
+
+    .overview-resin-status {
+        width: 100%;
+
+        margin-left: 0;
+
+        justify-content: flex-start;
+
+        transform: none;
+    }
+
+
+    /* Featured Cards */
 
     .events-featured {
         grid-template-columns: 1fr;
 
         gap: 18px;
     }
-
-
-    /* Expanded Card */
 
     .event-featured-card:not(.collapsed) {
         height: 520px;
@@ -2796,6 +2645,7 @@
 
     .event-featured-card.collapsed {
         height: 140px;
+
         min-height: 0;
     }
 
@@ -2830,7 +2680,7 @@
     }
 
 
-    /* Header */
+    /* Featured Header */
 
     .event-featured-header {
         gap: 8px;
@@ -2852,6 +2702,7 @@
 
     .event-time-left {
         min-width: 88px;
+
         height: 30px;
 
         padding: 0 11px;
@@ -2865,6 +2716,53 @@
         width: 32px;
         height: 32px;
     }
+
+
+    /* Activity List */
+
+    .event-list-item {
+        padding: 10px 14px;
+    }
+
+    .event-list-name {
+        font-size: 16px;
+    }
+
+    .event-list-right {
+        gap: 8px;
+    }
+
+    .event-list-right .event-time-left {
+        width: 88px;
+        min-width: 88px;
+        max-width: 88px;
+    }
+
+    .event-daily-item .event-list-status.claimed,
+    .event-daily-item .event-list-status.not-claimed {
+        width: 90px;
+        min-width: 90px;
+        max-width: 90px;
+    }
+
+    .event-list-status.claimed,
+    .event-list-status.not-claimed {
+        flex-basis: 90px;
+    }
+
+    .event-encounter-points {
+        width: 76px;
+
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+
+    /* Wishes */
+
+    .wish-banners {
+        grid-template-columns: 1fr;
+    }
 }
 
 
@@ -2874,8 +2772,25 @@
 
 @media (max-width: 480px) {
 
+    .events-layout-switch {
+        width: 100%;
+    }
+
+    .events-account-selector {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .events-controls-right {
+        flex-direction: column;
+    }
+
+
+    /* Featured Cards */
+
     .event-featured-card:not(.collapsed) {
         height: auto;
+
         min-height: 470px;
     }
 
@@ -2960,73 +2875,58 @@
 
         font-size: 10px;
     }
+
+
+    /* Activity Rows */
+
+    .event-list-item {
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .event-list-left {
+        min-width: 0;
+    }
+
+    .event-list-right {
+        flex-shrink: 0;
+    }
 }
 
 
 /* =========================================================
-   HOVER EFFECT PREFERENCE
-   ========================================================= */
-
-/*
-   The Hover Effects setting controls only the physical
-   floating / scaling movement of interactive elements.
+   17. HOVER EFFECT PREFERENCE
+   =========================================================
+   The Hover Effects setting controls only physical
+   movement/scaling.
 
    Colour, border, background and shadow hover states
-   remain active regardless of the setting.
-*/
-
-
-/* ---------------------------------------------------------
-   Featured Event Cards
-   --------------------------------------------------------- */
+   remain active.
+   ========================================================= */
 
 html[data-hover-effects="off"] .event-featured-card:hover {
     transform: none;
 }
 
-
-/* ---------------------------------------------------------
-   Activity List
-   --------------------------------------------------------- */
-
 html[data-hover-effects="off"] .event-list-item:hover {
     transform: none;
 }
-
-
-/* ---------------------------------------------------------
-   Checkmarks
-   --------------------------------------------------------- */
 
 html[data-hover-effects="off"] .event-checkmark:hover,
 html[data-hover-effects="off"] .event-checkmark:active {
     transform: none;
 }
 
-
-/* ---------------------------------------------------------
-   Featured Card Toggle
-   --------------------------------------------------------- */
-
 html[data-hover-effects="off"] .event-featured-toggle:hover,
 html[data-hover-effects="off"] .event-featured-toggle:active {
     transform: none;
 }
 
-
-/* ---------------------------------------------------------
-   Layout Switch
-   --------------------------------------------------------- */
-
 html[data-hover-effects="off"] .events-layout-switch:hover,
 html[data-hover-effects="off"] .events-layout-switch:active {
     transform: none;
 }
-
-
-/* ---------------------------------------------------------
-   Overview Rows
-   --------------------------------------------------------- */
 
 html[data-hover-effects="off"] .overview-account-row:hover {
     transform: none;
