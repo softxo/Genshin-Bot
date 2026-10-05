@@ -213,3 +213,165 @@
 
     transform: scale(1);
 }
+
+
+/* =============================
+   ANIMATIONS SETTING
+   ============================= */
+
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--background);
+}
+
+
+.settings-toggle-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+}
+
+
+.settings-toggle-info strong {
+    font-size: 14px;
+}
+
+
+.settings-toggle-info span {
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   Toggle
+   --------------------------------------------------------- */
+
+.settings-toggle-switch {
+    position: relative;
+
+    width: 46px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: 1px solid var(--border);
+
+    border-radius: 999px;
+
+    background: var(--surface-hover);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.settings-toggle-switch::after {
+    content: "";
+
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: var(--text-muted);
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* ---------------------------------------------------------
+   Enabled
+   --------------------------------------------------------- */
+
+.settings-toggle-switch.active {
+    border-color: var(--accent);
+
+    background: color-mix(
+        in srgb,
+        var(--accent) 18%,
+        var(--surface)
+    );
+}
+
+
+.settings-toggle-switch.active::after {
+    background: var(--accent);
+
+    transform: translateX(20px);
+}
+
+
+/* ---------------------------------------------------------
+   Hover / Focus
+   --------------------------------------------------------- */
+
+.settings-toggle-switch:hover {
+    border-color: var(--accent);
+}
+
+
+.settings-toggle-switch:focus-visible {
+    outline: none;
+
+    box-shadow:
+        0 0 0 2px color-mix(
+            in srgb,
+            var(--accent) 20%,
+            transparent
+        );
+}
+
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 650px) {
+    .settings-toggle {
+        padding: 13px;
+    }
+
+    .settings-toggle-switch {
+        width: 44px;
+        height: 25px;
+    }
+
+    .settings-toggle-switch::after {
+        width: 17px;
+        height: 17px;
+    }
+
+    .settings-toggle-switch.active::after {
+        transform: translateX(19px);
+    }
+}

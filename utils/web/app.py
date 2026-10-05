@@ -687,16 +687,6 @@ async def get_single_account_events(
 
         if cache_age < EVENTS_CACHE_TTL:
             return cached["data"]
-        
-        cached_account = cached["data"].get("account", {})
-        
-        if cached_account.get("id") != account.get("id"):
-            print(
-                "[Events Cache] STALE ACCOUNT ID | "
-                f"UID: {account['genshin_uid']} | "
-                f"Cached ID: {cached_account.get('id')} | "
-                f"Current ID: {account.get('id')}"
-            )
 
     abyss_data = {
         "has_data": False,

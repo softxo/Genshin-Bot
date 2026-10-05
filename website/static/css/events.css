@@ -75,12 +75,12 @@
 
     min-height: 36px;
 
-    padding: 0 14px;
+    padding: 0 16px;
 
     box-sizing: border-box;
 
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 999px;
 
     background: var(--surface);
     color: var(--text-secondary);
@@ -387,8 +387,8 @@
    ========================================================= */
 
 .event-featured-toggle {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 
     flex-shrink: 0;
 
@@ -400,23 +400,60 @@
 
     box-sizing: border-box;
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
 
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--text);
+    background: rgba(255, 255, 255, 0.10);
+
+    color: rgba(255, 255, 255, 0.90);
 
     cursor: pointer;
 
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+
     transition:
         background 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .event-featured-toggle:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.17);
 
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.35);
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.event-featured-toggle:active {
+    transform: translateY(0);
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.event-featured-toggle:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 2px color-mix(
+            in srgb,
+            var(--accent) 25%,
+            transparent
+        );
 }
 
 
@@ -437,13 +474,13 @@
     border-right: 2px solid currentColor;
     border-bottom: 2px solid currentColor;
 
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.90);
 
     transform: translateY(-2px) rotate(45deg);
 
     transition:
         color 0.15s ease,
-        transform 0.15s ease;
+        transform 0.2s ease;
 }
 
 
@@ -451,7 +488,7 @@
 
 .event-featured-toggle:hover .event-toggle-icon,
 .custom-select-button:hover .event-toggle-icon {
-    color: var(--accent);
+    color: #ffffff;
 }
 
 
@@ -708,33 +745,33 @@
     object-fit: contain;
 }
 
-
 /* =========================================================
    9. EVENT TIME LEFT
    =========================================================
-   The status badge shown in the top-right of featured cards.
+   Pill-shaped status badge shown in the top-right of
+   featured cards and activity rows.
    ========================================================= */
 
 .event-time-left {
     flex-shrink: 0;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    min-width: 90px;
+    min-width: 96px;
     height: 32px;
 
-    padding: 0 11px;
+    padding: 0 13px;
 
     box-sizing: border-box;
 
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
 
-    background: rgba(20, 20, 30, 0.65);
+    background: rgba(255, 255, 255, 0.10);
 
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.92);
 
     font-size: 12px;
     font-weight: 600;
@@ -744,59 +781,101 @@
     text-align: center;
     white-space: nowrap;
 
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
 
     transition:
         background 0.2s ease,
         border-color 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-/* Less than 3 days remaining. */
-.event-daily-reset.warning {
-    background: rgba(180, 120, 40, 0.65);
-    border-color: rgba(230, 170, 70, 0.45);
-}
-
-
-/* Less than 1 day remaining. */
-.event-daily-reset.danger {
-    background: rgba(180, 55, 65, 0.7);
-    border-color: rgba(235, 90, 100, 0.5);
-}
+/* ---------------------------------------------------------
+   Timer Status
+   --------------------------------------------------------- */
 
 .event-daily-reset {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    width: max-content;
-    min-width: 90px;
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+
     height: 32px;
 
-    padding: 0 11px;
+    padding: 0 13px;
 
     box-sizing: border-box;
 
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
 
-    background: rgba(20, 20, 30, 0.65);
+    background: rgba(255, 255, 255, 0.10);
 
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.92);
 
     font-size: 12px;
     font-weight: 600;
 
     line-height: 1;
+
     text-align: center;
     white-space: nowrap;
 
-    flex: 0 0 auto;
+    flex: 0 0 96px;
 
     position: static;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ---------------------------------------------------------
+   Warning — Less Than 3 Days
+   --------------------------------------------------------- */
+
+.event-daily-reset.warning {
+    background: rgba(230, 155, 45, 0.30);
+
+    border-color: rgba(255, 190, 70, 0.65);
+
+    color: #ffe5ad;
+
+    box-shadow:
+        0 3px 12px rgba(230, 155, 45, 0.18);
+}
+
+
+/* ---------------------------------------------------------
+   Danger — Less Than 1 Day
+   --------------------------------------------------------- */
+
+.event-daily-reset.danger {
+    background: rgba(220, 55, 65, 0.34);
+
+    border-color: rgba(255, 105, 115, 0.68);
+
+    color: #ffe0e3;
+
+    box-shadow:
+        0 3px 12px rgba(220, 55, 65, 0.20);
 }
 
 
@@ -1326,7 +1405,6 @@
     transition:
         background 0.2s ease,
         border-color 0.2s ease,
-        transform 0.2s ease,
         box-shadow 0.2s ease;
 }
 
@@ -1334,8 +1412,6 @@
     background: var(--surface-hover);
 
     border-color: var(--accent);
-
-    transform: translateY(-1px);
 
     box-shadow:
         0 7px 22px rgba(0, 0, 0, 0.10);
@@ -1368,20 +1444,27 @@
     flex: 0 0 auto;
 }
 
+
+/* ---------------------------------------------------------
+   Activity Checkmark
+   --------------------------------------------------------- */
+
 .event-checkmark {
     position: relative;
 
     width: 24px;
     height: 24px;
+
     flex: 0 0 24px;
 
     margin-left: 4px;
     padding: 0;
 
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 50%;
 
-    background: transparent;
+    background: rgba(255, 255, 255, 0.06);
+
     color: var(--text-muted);
 
     appearance: none;
@@ -1389,18 +1472,34 @@
 
     cursor: pointer;
 
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.12);
+
     transition:
         background .15s ease,
         border-color .15s ease,
         color .15s ease,
-        transform .15s ease;
+        transform .15s ease,
+        box-shadow .15s ease;
 }
+
+
+/* ---------------------------------------------------------
+   Completed
+   --------------------------------------------------------- */
 
 .event-checkmark:not(.event-checkmark-empty) {
     border-color: var(--accent);
+
     background: var(--accent);
+
     color: var(--background);
 }
+
+
+/* ---------------------------------------------------------
+   Checkmark Icon
+   --------------------------------------------------------- */
 
 .event-checkmark:not(.event-checkmark-empty)::after {
     content: "";
@@ -1420,14 +1519,53 @@
         center / 18px 18px no-repeat;
 }
 
+
+/* ---------------------------------------------------------
+   Hover
+   --------------------------------------------------------- */
+
 .event-checkmark:hover {
     border-color: var(--accent);
+
+    background: color-mix(
+        in srgb,
+        var(--accent) 10%,
+        rgba(255, 255, 255, 0.06)
+    );
+
     transform: scale(1.05);
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.18);
 }
+
+
+/* ---------------------------------------------------------
+   Completed Hover
+   --------------------------------------------------------- */
+
+.event-checkmark:not(.event-checkmark-empty):hover {
+    border-color: var(--accent);
+
+    background: var(--accent);
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.20);
+}
+
+
+/* ---------------------------------------------------------
+   Active
+   --------------------------------------------------------- */
 
 .event-checkmark:active {
     transform: scale(0.95);
 }
+
+
+/* ---------------------------------------------------------
+   Keyboard Focus
+   --------------------------------------------------------- */
 
 .event-checkmark:focus-visible {
     outline: 2px solid var(--accent);
@@ -1516,11 +1654,13 @@
 
 .event-list-right .event-time-left {
     position: static;
+
     grid-column: 2;
     grid-row: 1;
 
-    width: max-content;
-    min-width: 90px;
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
 
     margin: 0;
 
@@ -1528,25 +1668,50 @@
 }
 
 .event-list-status {
-    padding: 6px 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    box-sizing: border-box;
 
-    background: var(--background);
+    min-width: 64px;
+    height: 32px;
 
-    color: var(--text-secondary);
+    padding: 6px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+
+    background: rgba(0, 0, 0, 0.28);
+
+    color: rgba(255, 255, 255, 0.78);
 
     font-size: 14px;
     font-weight: 600;
 
+    line-height: 1;
     white-space: nowrap;
+
+    flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.event-list-status:hover {
+    background: rgba(0, 0, 0, 0.38);
+
+    border-color: rgba(255, 255, 255, 0.16);
+
+    color: rgba(255, 255, 255, 0.90);
 }
 
 
-/* ---------------------------------------------------------
-   Daily Commission Status
-   --------------------------------------------------------- */
+/* =========================================================
+   DAILY COMMISSION STATUS
+   ========================================================= */
 
 .event-list-status.claimed,
 .event-list-status.not-claimed {
@@ -1562,10 +1727,10 @@
 
     height: 32px;
 
-    padding: 6px 10px;
+    padding: 6px 12px;
 
-    border: none;
-    border-radius: 8px;
+    border: 1px solid transparent;
+    border-radius: 999px;
 
     font-size: 14px;
     font-weight: 600;
@@ -1573,17 +1738,29 @@
     white-space: nowrap;
 
     flex: 0 0 100px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .event-list-status.claimed {
-    background: rgba(93, 231, 151, 0.12);
-    color: #5de797;
+    background: rgba(93, 231, 151, 0.16);
+
+    border-color: rgba(93, 231, 151, 0.32);
+
+    color: #72eea2;
 }
 
 .event-list-status.not-claimed {
-    background: rgba(224, 82, 82, 0.12);
-    color: #e05252;
+    background: rgba(224, 82, 82, 0.16);
+
+    border-color: rgba(224, 82, 82, 0.32);
+
+    color: #f07171;
 }
+
 
 /*
    Completed dailies use the pink completion state.
@@ -1614,18 +1791,18 @@
     width: 82px;
     height: 32px;
 
-    padding: 4px 8px;
+    padding: 4px 10px;
 
-    gap: 3px;
+    gap: 0;
 
     margin-left: 10px;
 
-    border: none;
-    border-radius: 8px;
+    border: 1px solid rgba(157, 130, 230, 0.28);
+    border-radius: 999px;
 
-    background: rgba(117, 90, 190, 0.12);
+    background: rgba(117, 90, 190, 0.16);
 
-    color: #9d82e6;
+    color: #a88eea;
 
     font-size: 14px;
     font-weight: 700;
@@ -1633,19 +1810,33 @@
     white-space: nowrap;
 
     flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.event-encounter-points:hover {
+    background: rgba(117, 90, 190, 0.22);
+
+    border-color: rgba(157, 130, 230, 0.42);
+
+    box-shadow:
+        0 3px 10px rgba(117, 90, 190, 0.12);
 }
 
 .event-encounter-points-icon {
     width: 25px;
     height: 25px;
-
     object-fit: contain;
-
     flex-shrink: 0;
+
+    transform: translateX(-3px);
 }
 
 .event-encounter-points-value {
-    color: #9d82e6;
+    color: #a88eea;
 
     font-size: 14px;
     font-weight: 700;
@@ -1653,6 +1844,8 @@
     line-height: 1;
 
     white-space: nowrap;
+
+    transform: translateX(-2px);
 }
 
 /* ====================================
@@ -1662,7 +1855,6 @@
 .event-trounce-item {
     margin-top: 10px;
 }
-
 
 /* ================================
    Current Wishes
@@ -2032,19 +2224,42 @@
 .overview-status {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
 
-    padding: 6px 10px;
+    box-sizing: border-box;
 
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    min-width: 64px;
+    height: 32px;
 
-    background: var(--background);
+    padding: 6px 12px;
 
-    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
 
+    background: rgba(0, 0, 0, 0.28);
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1;
     white-space: nowrap;
 
     flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.overview-status:hover {
+    background: rgba(0, 0, 0, 0.38);
+
+    border-color: rgba(255, 255, 255, 0.16);
+
+    color: rgba(255, 255, 255, 0.90);
 }
 
 
@@ -2069,41 +2284,52 @@
     white-space: nowrap;
 }
 
-.overview-status {
-    display: inline-flex;
-    align-items: center;
-    flex: 0 0 auto;
-    white-space: nowrap;
-}
-
 .overview-claimed,
 .overview-unclaimed {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     box-sizing: border-box;
+
     width: 100px;
-    padding: 6px 10px;
-    border-radius: 8px;
+    height: 32px;
+
+    padding: 6px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
     white-space: nowrap;
     font-weight: 600;
+
     flex-shrink: 0;
 }
 
 .overview-claimed {
-    background: rgba(93, 231, 151, 0.12);
-    color: #5de797;
+    background: rgba(93, 231, 151, 0.16);
+
+    border-color: rgba(93, 231, 151, 0.32);
+
+    color: #72eea2;
 }
 
 .overview-unclaimed {
-    background: rgba(224, 82, 82, 0.12);
-    color: #e05252;
+    background: rgba(224, 82, 82, 0.16);
+
+    border-color: rgba(224, 82, 82, 0.32);
+
+    color: #f07171;
 }
 
 .overview-unclaimed.ready {
-    background: rgba(227, 154, 63, 0.12);
-    color: #e39a3f;
+    background: rgba(227, 154, 63, 0.20);
+
+    border-color: rgba(227, 154, 63, 0.38);
+
+    color: #f0ad5a;
 }
+
 
 /* =========================================
    Overview Encounter Points
@@ -2119,15 +2345,16 @@
     width: 82px;
     height: 32px;
 
-    padding: 4px 8px;
+    padding: 4px 10px;
 
-    gap: 3px;
+    gap: 0;
 
-    border-radius: 8px;
+    border: 1px solid rgba(157, 130, 230, 0.28);
+    border-radius: 999px;
 
-    background: rgba(117, 90, 190, 0.12);
+    background: rgba(117, 90, 190, 0.16);
 
-    color: #9d82e6;
+    color: #a88eea;
 
     font-size: 14px;
     font-weight: 700;
@@ -2144,6 +2371,21 @@
     object-fit: contain;
 
     flex-shrink: 0;
+
+    transform: translateX(-2px);
+}
+
+.overview-encounter-points-value {
+    color: #a88eea;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    transform: translateX(-2px);
 }
 
 
@@ -2512,17 +2754,19 @@
     /* Time Badge */
 
     .event-time-left {
-        min-width: 82px;
+        min-width: 88px;
         height: 30px;
 
-        padding: 0 8px;
+        padding: 0 11px;
+
+        border-radius: 999px;
 
         font-size: 11px;
     }
 
     .event-featured-toggle {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
     }
 }
 
