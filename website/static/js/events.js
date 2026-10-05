@@ -304,24 +304,53 @@ function initEvents() {
                 "cyreneAccountEventTab"
             );
 
-        const categoryToActivate =
+        const categoryToRestore =
             urlCategory ||
             savedCategory ||
             "all";
+
 
         const categoryExists =
             Array.from(tabs).some(
                 tab =>
                     tab.dataset.accountTab ===
-                    categoryToActivate
+                    categoryToRestore
             );
 
-        activateCategory(
-            categoryExists
-                ? categoryToActivate
-                : "all"
-        );
 
+        if (categoryExists) {
+
+            const serverActiveTab =
+                page.querySelector(
+                    ".events-account-tab.active"
+                )?.dataset.accountTab;
+
+
+            if (
+                serverActiveTab !==
+                categoryToRestore
+            ) {
+
+                activateCategory(
+                    categoryToRestore
+                );
+
+            } else {
+
+                // Keep localStorage in sync without
+                // changing the already-rendered page.
+                localStorage.setItem(
+                    "cyreneAccountEventTab",
+                    categoryToRestore
+                );
+
+            }
+
+        } else {
+
+            activateCategory("all");
+
+        }
     }
 
 

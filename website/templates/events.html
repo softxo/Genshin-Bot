@@ -216,6 +216,7 @@
         <section
             class="events-featured"
             data-account-category="endgame"
+            {% if request.query_params.get('tab', 'all') not in ['all', 'endgame'] %}hidden{% endif %}
         >
 
             <!-- =============================
@@ -930,6 +931,7 @@
         <section
             class="events-list"
             data-account-category="permanent"
+            {% if request.query_params.get('tab', 'all') not in ['all', 'permanent'] %}hidden{% endif %}
         >
 
             <div class="events-list-header">
@@ -1127,6 +1129,7 @@
         <section
             class="events-wishes"
             data-account-category="wishes"
+            {% if request.query_params.get('tab', 'all') not in ['all', 'wishes'] %}hidden{% endif %}
         >
 
             <div class="events-list-header">
@@ -1271,7 +1274,7 @@
         <section
             class="events-account-empty"
             data-account-category="events"
-            hidden
+            {% if request.query_params.get('tab', 'all') != 'events' %}hidden{% endif %}
         >
 
             <div class="events-account-empty-content">
@@ -1292,7 +1295,7 @@
         <section
             class="events-account-empty"
             data-account-category="recurring"
-            hidden
+            {% if request.query_params.get('tab', 'all') != 'recurring' %}hidden{% endif %}
         >
 
             <div class="events-account-empty-content">
@@ -1313,7 +1316,7 @@
         <section
             class="events-account-empty"
             data-account-category="custom"
-            hidden
+            {% if request.query_params.get('tab', 'all') != 'custom' %}hidden{% endif %}
         >
 
             <div class="events-account-empty-content">
