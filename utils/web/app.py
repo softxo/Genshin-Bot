@@ -1879,8 +1879,15 @@ async def daily_events_data(
 
         daily_progress = min(
             4,
-            daily_commissions + int(encounter_points)
+            daily_commissions + encounter_points
         )
+
+        print("===== DAILY DEBUG =====")
+        print(f"UID: {account['genshin_uid']}")
+        print(f"daily_commissions: {daily_commissions}")
+        print(f"encounter_points: {encounter_points}")
+        print(f"daily_progress: {daily_progress}")
+        print("=======================")
 
         return {
             "success": True,
