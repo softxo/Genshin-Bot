@@ -1958,6 +1958,56 @@
     color: rgba(255, 255, 255, 0.90);
 }
 
+.event-list-status-divider {
+    margin: 0 2px;
+    opacity: 0.45;
+}
+
+.event-list-status-with-claim {
+    white-space: nowrap;
+}
+
+.event-list-status-with-claim .event-list-status-claim {
+    white-space: nowrap;
+}
+
+/* =========================================
+   DAILY COMMISSION REWARD STATES
+   ========================================= */
+
+/* 4/4 — nothing claimed */
+.event-list-status-with-claim.unclaimed {
+    min-width: 150px !important;
+    width: 150px !important;
+    max-width: 150px !important;
+
+    color: #ef5350;
+    border-color: rgba(239, 83, 80, 0.30);
+    background: rgba(239, 83, 80, 0.08);
+}
+
+/* 4/4 — Handbook claimed only */
+.event-list-status-with-claim.handbook-claimed {
+    min-width: 130px !important;
+    width: 130px !important;
+    max-width: 130px !important;
+
+    color: #f2c94c;
+    border-color: rgba(242, 201, 76, 0.30);
+    background: rgba(242, 201, 76, 0.08);
+}
+
+/* 4/4 — Katheryne reward claimed */
+.event-list-status-with-claim.claimed {
+    min-width: 130px !important;
+    width: 130px !important;
+    max-width: 130px !important;
+
+    color: #66bb6a;
+    border-color: rgba(102, 187, 106, 0.30);
+    background: rgba(102, 187, 106, 0.08);
+}
+
 
 /* =========================================================
    DAILY COMMISSION STATUS

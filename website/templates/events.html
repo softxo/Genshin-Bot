@@ -1015,26 +1015,33 @@
                     <span
                         class="event-list-status
                         {% if daily and daily.has_data and daily.completed >= daily.total %}
-                            {% if daily.claimed_reward %}
-                                claimed
-                            {% else %}
-                                not-claimed
-                            {% endif %}
+                            event-list-status-with-claim
+                            {{ daily.reward_state }}
                         {% endif %}"
                         id="daily-commissions-status"
                     >
                         {% if daily and daily.has_data %}
+
+                            {{ daily.completed }} / {{ daily.total }}
+
                             {% if daily.completed >= daily.total %}
-                                {% if daily.claimed_reward %}
-                                    Claimed
-                                {% else %}
-                                    Not Claimed
-                                {% endif %}
-                            {% else %}
-                                {{ daily.completed }} / {{ daily.total }}
+
+                                <span class="event-list-status-divider">&nbsp;|&nbsp;</span>
+
+                                <span class="event-list-status-claim">
+                                    {% if daily.reward_state == "unclaimed" %}
+                                        Unclaimed
+                                    {% else %}
+                                        Claimed
+                                    {% endif %}
+                                </span>
+
                             {% endif %}
+
                         {% else %}
+
                             —
+
                         {% endif %}
                     </span>
 

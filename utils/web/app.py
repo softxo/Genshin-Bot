@@ -719,6 +719,7 @@ async def get_single_account_events(
         "completed": 0,
         "total": 4,
         "claimed_reward": False,
+        "handbook_claimed": False,
         "encounter_points": 0,
         "reset_time": 0,
         "manual_checked": None,
@@ -996,7 +997,8 @@ async def get_single_account_events(
                 notes_data["daily_task"]["stored_attendance"]
             )
 
-            # Daily Commissions and Encounter Points both fulfil the same 4 daily commission slots.
+            # Daily Commissions and Encounter Points both fulfil
+            # the same 4 daily commission slots.
             #
             # Example:
             #   2 commissions + 2 EP = 4/4
@@ -1008,6 +1010,25 @@ async def get_single_account_events(
                 int(daily_commissions + encounter_points)
             )
 
+            daily_task = notes_data["daily_task"]
+
+            # The Handbook/Encounter Point reward is considered
+            # claimed when its attendance reward has been taken.
+            handbook_claimed = any(
+                reward.get("status")
+                == "AttendanceRewardStatusTakenAward"
+                for reward in daily_task.get(
+                    "attendance_rewards",
+                    []
+                )
+            )
+
+            # This is the final Daily Commission reward claimed
+            # from Katheryne.
+            katheryne_claimed = bool(
+                notes_data["is_extra_task_reward_received"]
+            )
+
             daily_data = {
                 "has_data": True,
 
@@ -1016,9 +1037,11 @@ async def get_single_account_events(
 
                 "total": 4,
 
-                "claimed_reward": (
-                    notes_data["is_extra_task_reward_received"]
-                ),
+                # Keep the existing name for compatibility.
+                "claimed_reward": katheryne_claimed,
+
+                # Separate Handbook reward state.
+                "handbook_claimed": handbook_claimed,
 
                 # Keep the individual values available as well.
                 "daily_commissions": daily_commissions,
@@ -1028,6 +1051,18 @@ async def get_single_account_events(
                     account["genshin_server"]
                 ),
             }
+            
+            if daily_progress < 4:
+                daily_data["reward_state"] = "unclaimed"
+
+            elif katheryne_claimed:
+                daily_data["reward_state"] = "claimed"
+
+            elif handbook_claimed:
+                daily_data["reward_state"] = "handbook-claimed"
+
+            else:
+                daily_data["reward_state"] = "unclaimed"
             
             
             # =========================================
