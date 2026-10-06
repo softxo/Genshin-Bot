@@ -986,16 +986,44 @@ async def get_single_account_events(
             # DAILY COMMISSIONS
             # =========================================
 
+            notes_data = notes["data"]
+
+            daily_commissions = int(
+                notes_data["finished_task_num"]
+            )
+
+            encounter_points = float(
+                notes_data["daily_task"]["stored_attendance"]
+            )
+
+            # Daily Commissions and Encounter Points both fulfil the same 4 daily commission slots.
+            #
+            # Example:
+            #   2 commissions + 2 EP = 4/4
+            #   0 commissions + 4 EP = 4/4
+            #
+            # Never allow the combined value to exceed 4.
+            daily_progress = min(
+                4,
+                int(daily_commissions + encounter_points)
+            )
+
             daily_data = {
                 "has_data": True,
-                "completed": notes["data"]["finished_task_num"],
-                "total": notes["data"]["total_task_num"],
+
+                # Combined Daily Commission + Encounter Point progress.
+                "completed": daily_progress,
+
+                "total": 4,
+
                 "claimed_reward": (
-                    notes["data"]["is_extra_task_reward_received"]
+                    notes_data["is_extra_task_reward_received"]
                 ),
-                "encounter_points": float(
-                    notes["data"]["daily_task"]["stored_attendance"]
-                ),
+
+                # Keep the individual values available as well.
+                "daily_commissions": daily_commissions,
+                "encounter_points": encounter_points,
+
                 "reset_time": get_daily_reset_timestamp(
                     account["genshin_server"]
                 ),
@@ -1765,11 +1793,35 @@ async def daily_events_data(
 
         data = notes["data"]
 
+        daily_commissions = int(
+            data["finished_task_num"]
+        )
+
+        encounter_points = float(
+            data["daily_task"]["stored_attendance"]
+        )
+
+        daily_progress = min(
+            4,
+            int(daily_commissions + encounter_points)
+        )
+
         return {
             "success": True,
-            "completed": data["finished_task_num"],
-            "total": data["total_task_num"],
-            "claimed_reward": data["is_extra_task_reward_received"],
+
+            # Combined Daily Commission + Encounter Point progress.
+            "completed": daily_progress,
+
+            "total": 4,
+
+            "claimed_reward": (
+                data["is_extra_task_reward_received"]
+            ),
+
+            # Individual values remain available if the frontend needs them later.
+            "daily_commissions": daily_commissions,
+            "encounter_points": encounter_points,
+
             "reset_time": get_daily_reset_timestamp(
                 selected_account["genshin_server"]
             ),
