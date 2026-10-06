@@ -990,30 +990,32 @@ async def get_single_account_events(
             notes_data = notes["data"]
 
             daily_commissions = int(
-                notes_data["finished_task_num"]
+                notes_data.get("finished_task_num", 0)
+            )
+
+            daily_task = notes_data.get(
+                "daily_task",
+                {}
             )
 
             encounter_points = float(
-                notes_data["daily_task"]["stored_attendance"]
+                daily_task.get("stored_attendance", 0)
             )
 
-            # Daily Commissions and Encounter Points both fulfil
-            # the same 4 daily commission slots.
+            # Daily Commissions and Encounter Points both contribute
+            # towards the four daily slots.
             #
-            # Example:
+            # Examples:
+            #   0 commissions + 0 EP = 0/4
+            #   2 commissions + 0 EP = 2/4
             #   2 commissions + 2 EP = 4/4
             #   0 commissions + 4 EP = 4/4
-            #
-            # Never allow the combined value to exceed 4.
+            #   4 commissions + 0 EP = 4/4
             daily_progress = min(
                 4,
-                int(daily_commissions + encounter_points)
+                daily_commissions + int(encounter_points)
             )
 
-            daily_task = notes_data["daily_task"]
-
-            # The Handbook/Encounter Point reward is considered
-            # claimed when its attendance reward has been taken.
             handbook_claimed = any(
                 reward.get("status")
                 == "AttendanceRewardStatusTakenAward"
@@ -1023,28 +1025,28 @@ async def get_single_account_events(
                 )
             )
 
-            # This is the final Daily Commission reward claimed
-            # from Katheryne.
             katheryne_claimed = bool(
-                notes_data["is_extra_task_reward_received"]
+                notes_data.get(
+                    "is_extra_task_reward_received",
+                    False
+                )
             )
 
             daily_data = {
                 "has_data": True,
 
-                # Combined Daily Commission + Encounter Point progress.
                 "completed": daily_progress,
 
                 "total": 4,
 
-                # Keep the existing name for compatibility.
+                # Katheryne / overall reward.
                 "claimed_reward": katheryne_claimed,
 
-                # Separate Handbook reward state.
+                # Handbook / Encounter Point reward.
                 "handbook_claimed": handbook_claimed,
 
-                # Keep the individual values available as well.
                 "daily_commissions": daily_commissions,
+
                 "encounter_points": encounter_points,
 
                 "reset_time": get_daily_reset_timestamp(
@@ -1829,16 +1831,21 @@ async def daily_events_data(
         data = notes["data"]
 
         daily_commissions = int(
-            data["finished_task_num"]
+            data.get("finished_task_num", 0)
+        )
+
+        daily_task = data.get(
+            "daily_task",
+            {}
         )
 
         encounter_points = float(
-            data["daily_task"]["stored_attendance"]
+            daily_task.get("stored_attendance", 0)
         )
 
         daily_progress = min(
             4,
-            int(daily_commissions + encounter_points)
+            daily_commissions + int(encounter_points)
         )
 
         return {
