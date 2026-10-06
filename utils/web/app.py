@@ -989,41 +989,68 @@ async def get_single_account_events(
 
             notes_data = notes["data"]
 
-            daily_commissions = int(
-                notes_data.get("finished_task_num", 0)
-            )
-
             daily_task = notes_data.get(
                 "daily_task",
                 {}
             )
 
-            encounter_points = float(
-                daily_task.get("stored_attendance", 0)
+            daily_commissions = int(
+                notes_data.get("finished_task_num", 0)
             )
 
-            # Daily Commissions and Encounter Points both contribute
-            # towards the four daily slots.
+            # The daily task reward statuses represent the actual
+            # four Daily Commission slots.
+            task_rewards = daily_task.get(
+                "task_rewards",
+                []
+            )
+
+            # Count slots that have actually been completed.
             #
-            # Examples:
-            #   0 commissions + 0 EP = 0/4
-            #   2 commissions + 0 EP = 2/4
-            #   2 commissions + 2 EP = 4/4
-            #   0 commissions + 4 EP = 4/4
-            #   4 commissions + 0 EP = 4/4
-            daily_progress = min(
-                4,
-                daily_commissions + int(encounter_points)
+            # TaskRewardStatusFinished = completed
+            # TaskRewardStatusTakenAward = completed + claimed
+            completed_task_slots = sum(
+                1
+                for reward in task_rewards
+                if reward.get("status") in {
+                    "TaskRewardStatusFinished",
+                    "TaskRewardStatusTakenAward",
+                }
+            )
+
+            # Fallback to finished_task_num if the task reward
+            # list is unavailable.
+            if not task_rewards:
+                daily_progress = min(
+                    4,
+                    daily_commissions
+                )
+            else:
+                daily_progress = min(
+                    4,
+                    completed_task_slots
+                )
+
+
+            # -----------------------------------------
+            # HANDBOOK / ENCOUNTER POINT REWARD
+            # -----------------------------------------
+
+            attendance_rewards = daily_task.get(
+                "attendance_rewards",
+                []
             )
 
             handbook_claimed = any(
                 reward.get("status")
                 == "AttendanceRewardStatusTakenAward"
-                for reward in daily_task.get(
-                    "attendance_rewards",
-                    []
-                )
+                for reward in attendance_rewards
             )
+
+
+            # -----------------------------------------
+            # KATHERYNE / OVERALL REWARD
+            # -----------------------------------------
 
             katheryne_claimed = bool(
                 notes_data.get(
@@ -1031,6 +1058,7 @@ async def get_single_account_events(
                     False
                 )
             )
+
 
             daily_data = {
                 "has_data": True,
@@ -1047,23 +1075,39 @@ async def get_single_account_events(
 
                 "daily_commissions": daily_commissions,
 
-                "encounter_points": encounter_points,
+                # Keep this for reference, but DO NOT use it
+                # as daily progress.
+                "encounter_points": float(
+                    daily_task.get(
+                        "stored_attendance",
+                        0
+                    )
+                ),
 
                 "reset_time": get_daily_reset_timestamp(
                     account["genshin_server"]
                 ),
             }
-            
+
+
+            # -----------------------------------------
+            # REWARD STATE
+            # -----------------------------------------
+
             if daily_progress < 4:
+
                 daily_data["reward_state"] = "unclaimed"
 
             elif katheryne_claimed:
+
                 daily_data["reward_state"] = "claimed"
 
             elif handbook_claimed:
+
                 daily_data["reward_state"] = "handbook-claimed"
 
             else:
+
                 daily_data["reward_state"] = "unclaimed"
             
             
