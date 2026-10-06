@@ -1007,13 +1007,12 @@ async def get_single_account_events(
             daily_progress = min(
                 4,
                 int(
-                    notes_data.get(
-                        "finished_task_num",
+                    daily_task.get(
+                        "finished_num",
                         0
                     )
                 )
             )
-
 
             # -----------------------------------------
             # HANDBOOK / ENCOUNTER POINT REWARD
