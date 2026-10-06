@@ -994,42 +994,25 @@ async def get_single_account_events(
                 {}
             )
 
-            daily_commissions = int(
-                notes_data.get("finished_task_num", 0)
-            )
-
-            # The daily task reward statuses represent the actual
-            # four Daily Commission slots.
-            task_rewards = daily_task.get(
-                "task_rewards",
-                []
-            )
-
-            # Count slots that have actually been completed.
+            # HoYoLAB already provides the actual current
+            # Daily Commission / Encounter Point progress
+            # through finished_task_num.
             #
-            # TaskRewardStatusFinished = completed
-            # TaskRewardStatusTakenAward = completed + claimed
-            completed_task_slots = sum(
-                1
-                for reward in task_rewards
-                if reward.get("status") in {
-                    "TaskRewardStatusFinished",
-                    "TaskRewardStatusTakenAward",
-                }
+            # Do NOT add stored_attendance here.
+            #
+            # Examples:
+            #   0 commissions + 0 EP = 0/4
+            #   2 commissions + 2 EP = 4/4
+            #   4 commissions + 0 EP = 4/4
+            daily_progress = min(
+                4,
+                int(
+                    notes_data.get(
+                        "finished_task_num",
+                        0
+                    )
+                )
             )
-
-            # Fallback to finished_task_num if the task reward
-            # list is unavailable.
-            if not task_rewards:
-                daily_progress = min(
-                    4,
-                    daily_commissions
-                )
-            else:
-                daily_progress = min(
-                    4,
-                    completed_task_slots
-                )
 
 
             # -----------------------------------------
@@ -1073,10 +1056,15 @@ async def get_single_account_events(
                 # Handbook / Encounter Point reward.
                 "handbook_claimed": handbook_claimed,
 
-                "daily_commissions": daily_commissions,
+                "daily_commissions": int(
+                    notes_data.get(
+                        "finished_task_num",
+                        0
+                    )
+                ),
 
-                # Keep this for reference, but DO NOT use it
-                # as daily progress.
+                # Keep the stored Encounter Point value available,
+                # but DO NOT use it for daily_progress.
                 "encounter_points": float(
                     daily_task.get(
                         "stored_attendance",
