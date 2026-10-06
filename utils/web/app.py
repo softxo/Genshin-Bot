@@ -1006,28 +1006,10 @@ async def get_single_account_events(
                 []
             )
 
-            encounter_points = sum(
-                1
-                for reward in attendance_rewards
-                if reward.get("status")
-                in (
-                    "AttendanceRewardStatusWaitTaken",
-                    "AttendanceRewardStatusTakenAward",
-                )
-            )
-
-            print("===== DAILY PROGRESS DEBUG START =====")
-            print(f"UID: {account['genshin_uid']}")
-            print(f"daily_commissions = {daily_commissions}")
-            print(f"encounter_points = {encounter_points}")
-
             daily_progress = min(
                 4,
-                daily_commissions + encounter_points
+                daily_commissions
             )
-
-            print(f"daily_progress = {daily_progress}")
-            print("===== DAILY PROGRESS DEBUG END =====")
 
             # -----------------------------------------
             # HANDBOOK / ENCOUNTER POINT REWARD
