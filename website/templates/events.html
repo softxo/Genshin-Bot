@@ -1014,7 +1014,7 @@
 
                     <span
                         class="event-list-status event-list-status-with-claim
-                        {% if daily and daily.has_data %}
+                        {% if daily and daily.has_data and daily.completed >= daily.total %}
                             {{ daily.reward_state }}
                         {% endif %}"
                         id="daily-commissions-status"
@@ -1026,7 +1026,7 @@
                             <span class="event-list-status-divider">&nbsp;|&nbsp;</span>
 
                             <span class="event-list-status-claim">
-                                {% if daily.reward_state == "claimed" %}
+                                {% if daily.reward_state in ["claimed", "handbook-claimed"] %}
                                     Claimed
                                 {% else %}
                                     Unclaimed
