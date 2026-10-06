@@ -1088,11 +1088,7 @@ async def get_single_account_events(
             # REWARD STATE
             # -----------------------------------------
 
-            if daily_progress < 4:
-
-                daily_data["reward_state"] = "unclaimed"
-
-            elif katheryne_claimed:
+            if katheryne_claimed:
 
                 daily_data["reward_state"] = "claimed"
 

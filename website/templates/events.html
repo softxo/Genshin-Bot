@@ -1013,9 +1013,8 @@
                 <div class="event-list-right">
 
                     <span
-                        class="event-list-status
-                        {% if daily and daily.has_data and daily.completed >= daily.total %}
-                            event-list-status-with-claim
+                        class="event-list-status event-list-status-with-claim
+                        {% if daily and daily.has_data %}
                             {{ daily.reward_state }}
                         {% endif %}"
                         id="daily-commissions-status"
@@ -1024,19 +1023,15 @@
 
                             {{ daily.completed }} / {{ daily.total }}
 
-                            {% if daily.completed >= daily.total %}
+                            <span class="event-list-status-divider">&nbsp;|&nbsp;</span>
 
-                                <span class="event-list-status-divider">&nbsp;|&nbsp;</span>
-
-                                <span class="event-list-status-claim">
-                                    {% if daily.reward_state == "unclaimed" %}
-                                        Unclaimed
-                                    {% else %}
-                                        Claimed
-                                    {% endif %}
-                                </span>
-
-                            {% endif %}
+                            <span class="event-list-status-claim">
+                                {% if daily.reward_state == "claimed" %}
+                                    Claimed
+                                {% else %}
+                                    Unclaimed
+                                {% endif %}
+                            </span>
 
                         {% else %}
 
@@ -1352,58 +1347,49 @@
         >
 
             {% for item in overview_data %}
-
-                <div class="overview-account-row">
+                <div class="overview-account-row overview-daily-row">
 
                     <div class="overview-account-name">
-
-                        <strong>
-                            {{ item.account.nickname }}
-                        </strong>
-
-                        <span>
-                            {{ item.account.genshin_uid }}
-                        </span>
-
+                        <strong>{{ item.account.nickname }}</strong>
+                        <span>{{ item.account.genshin_uid }}</span>
                     </div>
 
-                    <div class="overview-account-status">
+                    {% if item.daily.has_data %}
 
-                        {% if item.daily.has_data %}
+                        <div class="overview-encounter-points">
+                            <img
+                                src="/static/images/events/daily_commissions/encounter_points.png"
+                                alt="Encounter Points"
+                                class="overview-encounter-points-icon"
+                            >
+
+                            <span class="overview-encounter-points-value">
+                                {{ item.daily.encounter_points }}
+                            </span>
+                        </div>
+
+                        <div class="overview-account-status">
 
                             <div class="overview-daily-progress">
 
-                                <div class="overview-encounter-points">
+                                <span
+                                    class="event-list-status event-list-status-with-claim
+                                    {% if item.daily.has_data and item.daily.completed >= item.daily.total %}
+                                        {{ item.daily.reward_state }}
+                                    {% endif %}"
+                                >
+                                    {{ item.daily.completed }} / {{ item.daily.total }}
 
-                                    <img
-                                        src="/static/images/events/daily_commissions/encounter_points.png"
-                                        alt="Encounter Points"
-                                        class="overview-encounter-points-icon"
-                                    >
+                                    <span class="event-list-status-divider">&nbsp;|&nbsp;</span>
 
-                                    <span class="overview-encounter-points-value">
-                                        {{ item.daily.encounter_points }}
+                                    <span class="event-list-status-claim">
+                                        {% if item.daily.reward_state in ["claimed", "handbook-claimed"] %}
+                                            Claimed
+                                        {% else %}
+                                            Unclaimed
+                                        {% endif %}
                                     </span>
-
-                                </div>
-
-                                <span class="overview-status">
-                                    {{ item.daily.completed }}/{{ item.daily.total }}
                                 </span>
-
-                                {% if item.daily.claimed_reward %}
-
-                                    <span class="overview-claimed">
-                                        Claimed
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="overview-unclaimed {% if item.daily.completed >= item.daily.total %}ready{% endif %}">
-                                        Unclaimed
-                                    </span>
-
-                                {% endif %}
 
                                 <button
                                     type="button"
@@ -1416,16 +1402,21 @@
 
                             </div>
 
-                        {% else %}
+                        </div>
 
+                    {% else %}
+
+                        <div class="overview-encounter-points overview-encounter-points-empty">
+                            —
+                        </div>
+
+                        <div class="overview-account-status">
                             <span>No Data</span>
+                        </div>
 
-                        {% endif %}
-
-                    </div>
+                    {% endif %}
 
                 </div>
-
             {% endfor %}
 
         </div>

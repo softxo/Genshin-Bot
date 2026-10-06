@@ -1975,12 +1975,18 @@
    DAILY COMMISSION REWARD STATES
    ========================================= */
 
+.event-list-status-with-claim.unclaimed,
+.event-list-status-with-claim.handbook-claimed,
+.event-list-status-with-claim.claimed {
+    width: 135px !important;
+    min-width: 135px !important;
+    max-width: 135px !important;
+
+    box-sizing: border-box;
+}
+
 /* 4/4 — nothing claimed */
 .event-list-status-with-claim.unclaimed {
-    min-width: 150px !important;
-    width: 150px !important;
-    max-width: 150px !important;
-
     color: #ef5350;
     border-color: rgba(239, 83, 80, 0.30);
     background: rgba(239, 83, 80, 0.08);
@@ -1988,10 +1994,6 @@
 
 /* 4/4 — Handbook claimed only */
 .event-list-status-with-claim.handbook-claimed {
-    min-width: 130px !important;
-    width: 130px !important;
-    max-width: 130px !important;
-
     color: #f2c94c;
     border-color: rgba(242, 201, 76, 0.30);
     background: rgba(242, 201, 76, 0.08);
@@ -1999,10 +2001,6 @@
 
 /* 4/4 — Katheryne reward claimed */
 .event-list-status-with-claim.claimed {
-    min-width: 130px !important;
-    width: 130px !important;
-    max-width: 130px !important;
-
     color: #66bb6a;
     border-color: rgba(102, 187, 106, 0.30);
     background: rgba(102, 187, 106, 0.08);
@@ -3318,4 +3316,67 @@ html[data-hover-effects="off"] .events-layout-switch:active {
 
 html[data-hover-effects="off"] .overview-account-row:hover {
     transform: none;
+}
+
+/* =========================================================
+   DAILY OVERVIEW — FIXED ENCOUNTER POINT COLUMN
+   ========================================================= */
+
+.events-overview-panel[data-overview-panel="daily"] .overview-daily-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+}
+
+
+/* Account name occupies the available space */
+
+.events-overview-panel[data-overview-panel="daily"] .overview-account-name {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+
+/* Encounter Points gets one fixed horizontal position */
+
+.events-overview-panel[data-overview-panel="daily"] .overview-encounter-points {
+    position: absolute;
+    left: calc(100% - 284px);
+
+    width: 82px;
+    min-width: 82px;
+    max-width: 82px;
+
+    box-sizing: border-box;
+}
+
+
+/* Status/checkmark stays on the right */
+
+.events-overview-panel[data-overview-panel="daily"] .overview-account-status {
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+/* =========================================================
+   DAILY OVERVIEW — STATUS PILL
+   ========================================================= */
+
+.events-overview-panel[data-overview-panel="daily"]
+.event-list-status-with-claim {
+    width: 135px;
+    min-width: 135px;
+    max-width: 135px;
+    box-sizing: border-box;
+}
+
+
+/* Incomplete progress remains completely neutral */
+
+.events-overview-panel[data-overview-panel="daily"]
+.event-list-status-with-claim:not(.unclaimed):not(.handbook-claimed):not(.claimed) {
+    color: var(--text-secondary);
+    border-color: var(--border);
+    background: var(--surface);
 }
