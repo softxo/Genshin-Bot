@@ -988,49 +988,37 @@ async def get_single_account_events(
             # =========================================
 
             notes_data = notes["data"]
-            
-            print("\n========== DAILY DEBUG ==========")
-            print("Account:", account["genshin_uid"])
-            print("finished_task_num:", notes_data.get("finished_task_num"))
-            print("total_task_num:", notes_data.get("total_task_num"))
-            print("is_extra_task_reward_received:",
-                notes_data.get("is_extra_task_reward_received"))
-
-            daily_task_debug = notes_data.get("daily_task", {})
-
-            print("daily_task:", daily_task_debug)
-            print("daily_task.finished_num:",
-                daily_task_debug.get("finished_num"))
-            print("daily_task.total_num:",
-                daily_task_debug.get("total_num"))
-            print("daily_task.stored_attendance:",
-                daily_task_debug.get("stored_attendance"))
-
-            print("================================\n")
 
             daily_task = notes_data.get(
                 "daily_task",
                 {}
             )
 
-            # HoYoLAB already provides the actual current
-            # Daily Commission / Encounter Point progress
-            # through finished_task_num.
-            #
-            # Do NOT add stored_attendance here.
-            #
-            # Examples:
-            #   0 commissions + 0 EP = 0/4
-            #   2 commissions + 2 EP = 4/4
-            #   4 commissions + 0 EP = 4/4
+            daily_commissions = int(
+                notes_data.get(
+                    "finished_task_num",
+                    0
+                )
+            )
+
+            attendance_rewards = daily_task.get(
+                "attendance_rewards",
+                []
+            )
+
+            encounter_points = sum(
+                1
+                for reward in attendance_rewards
+                if reward.get("status")
+                in (
+                    "AttendanceRewardStatusWaitTaken",
+                    "AttendanceRewardStatusTakenAward",
+                )
+            )
+
             daily_progress = min(
                 4,
-                int(
-                    daily_task.get(
-                        "finished_num",
-                        0
-                    )
-                )
+                daily_commissions + encounter_points
             )
 
             # -----------------------------------------
