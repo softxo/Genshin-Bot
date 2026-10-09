@@ -1541,6 +1541,7 @@
         </div>
 
 
+        
         <div
             class="events-overview-panel"
             data-overview-panel="events"
@@ -1548,31 +1549,137 @@
 
             {% for item in overview_data %}
 
-                <div class="overview-account-row">
+                <div class="overview-account-row overview-endgame-row">
 
                     <div class="overview-account-name">
 
-                        <strong>
-                            {{ item.account.nickname }}
-                        </strong>
+                        <strong>{{ item.account.nickname }}</strong>
 
-                        <span>
-                            {{ item.account.genshin_uid }}
-                        </span>
+                        <span>{{ item.account.genshin_uid }}</span>
 
                     </div>
 
-                    <div class="overview-account-status">
+                    <div class="overview-endgame-cards">
 
-                        <span>
-                            Abyss
-                            {{ item.abyss.max_floor }}
-                        </span>
+                        <!-- SPIRAL ABYSS -->
 
-                        <span>
-                            {{ item.abyss.total_stars }}
-                            ★
-                        </span>
+                        <div class="overview-endgame-card overview-abyss-card">
+
+                            <div class="overview-endgame-card-heading">
+                                <img
+                                    src="/static/images/events/spiral_abyss/Spiral_Abyss.webp"
+                                    alt=""
+                                >
+                                <span>Abyss</span>
+                            </div>
+
+                            <div class="overview-endgame-card-value">
+
+                                {% if item.abyss.has_data %}
+                                    <strong>{{ item.abyss.max_floor }}</strong>
+
+                                    <span class="overview-endgame-divider">|</span>
+
+                                    <strong>
+                                        {{ item.abyss.total_stars }}
+                                        <span class="overview-abyss-star">★</span>
+                                    </strong>
+                                {% else %}
+                                    <span class="overview-endgame-no-data">No Record</span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- IMAGINARIUM THEATER -->
+
+                        <div class="overview-endgame-card overview-theater-card">
+
+                            <div class="overview-endgame-card-heading">
+                                <img
+                                    src="/static/images/events/imaginarium_theater/Imaginarium_Theater.webp"
+                                    alt=""
+                                >
+                                <span>Imaginarium Theatre</span>
+                            </div>
+
+                            <div class="overview-endgame-card-value">
+
+                                {% if item.theater.has_data %}
+
+                                    <strong>Act {{ item.theater.best_round }}</strong>
+
+                                    <span class="overview-endgame-divider">|</span>
+
+                                    <strong>
+                                        {{ item.theater.medals }}
+                                        stellas
+                                    </strong>
+
+                                {% else %}
+                                    <span class="overview-endgame-no-data">No Record</span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STYGIAN ONSLAUGHT -->
+
+                        <div class="overview-endgame-card overview-stygian-card">
+
+                            <div class="overview-endgame-card-heading">
+                                <img
+                                    src="/static/images/events/stygian_onslaught/Stygian_Onslaught.webp"
+                                    alt=""
+                                >
+                                <span>Stygian Onslaught</span>
+                            </div>
+
+                            <div class="overview-endgame-card-value">
+
+                                {% if item.stygian.has_data %}
+
+                                    {% if item.stygian.difficulty_icon %}
+                                        <img
+                                            src="/static/images/events/stygian_onslaught/{{ item.stygian.difficulty_icon }}"
+                                            alt=""
+                                            class="overview-stygian-difficulty-icon"
+                                        >
+                                    {% endif %}
+
+                                    <strong>
+                                        {% if item.stygian.difficulty == 1 %}
+                                            Easy
+                                        {% elif item.stygian.difficulty == 2 %}
+                                            Normal
+                                        {% elif item.stygian.difficulty == 3 %}
+                                            Hard
+                                        {% elif item.stygian.difficulty == 4 %}
+                                            Menacing
+                                        {% elif item.stygian.difficulty == 5 %}
+                                            Fearless
+                                        {% elif item.stygian.difficulty == 6 %}
+                                            Dire
+                                        {% else %}
+                                            Difficulty {{ item.stygian.difficulty }}
+                                        {% endif %}
+                                    </strong>
+
+                                    <span class="overview-endgame-divider">|</span>
+
+                                    <strong>{{ item.stygian.best_time }}s</strong>
+
+                                {% else %}
+                                    <span class="overview-endgame-no-data">No Record</span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -1588,35 +1695,140 @@
             data-overview-panel="wishes"
         >
 
+            {% set banner_data = namespace(items=[]) %}
+
             {% for item in overview_data %}
+                {% if not banner_data.items and item.wish_banners %}
+                    {% set banner_data.items = item.wish_banners %}
+                {% endif %}
+            {% endfor %}
 
-                <div class="overview-account-row">
+            {% if banner_data.items %}
 
-                    <div class="overview-account-name">
+                <div class="events-list-header">
+                    <h2>Current Wishes</h2>
+                </div>
 
-                        <strong>
-                            {{ item.account.nickname }}
-                        </strong>
+                <div class="wish-banners">
 
-                        <span>
-                            {{ item.account.genshin_uid }}
-                        </span>
+                    {% for banner in banner_data.items %}
 
-                    </div>
+                        {% if banner.banner_type in [301, 400, 302] %}
 
-                    <div class="overview-account-status">
+                            <div class="wish-banner-card">
 
-                        {{ item.wish_banners | length }}
+                                <img 
+                                    src="{{ banner.image }}"
+                                    alt="{{ banner.title }}"
+                                    class="wish-banner-image"
+                                >
 
-                        active banner{% if item.wish_banners | length != 1 %}s{% endif %}
+                                <div class="wish-banner-overlay"></div>
 
-                    </div>
+                                <div class="wish-banner-content">
+
+                                    <div class="wish-banner-type">
+                                        {% if banner.banner_type == 302 %}
+                                            Weapon Event Wish
+                                        {% else %}
+                                            Character Event Wish
+                                        {% endif %}
+                                    </div>
+
+                                    <h3 class="wish-banner-title">
+                                        {{ banner.title
+                                            | replace("Event Event Wish ", "")
+                                            | replace("Event Wish ", "")
+                                        }}
+                                    </h3>
+
+                                    {% if banner.r5_up_items %}
+
+                                        <div class="wish-banner-featured">
+
+                                            <span class="wish-banner-label">5★</span>
+
+                                            <div class="wish-banner-items">
+
+                                                {% for item in banner.r5_up_items %}
+
+                                                    <div class="wish-banner-item">
+
+                                                        <img
+                                                            src="{{ item.icon }}"
+                                                            alt="{{ item.name }}"
+                                                            title="{{ item.name }}"
+                                                        >
+
+                                                        <span>{{ item.name }}</span>
+
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    {% if banner.r4_up_items %}
+
+                                        <div class="wish-banner-featured wish-banner-four-star">
+
+                                            <span class="wish-banner-label">4★</span>
+
+                                            <div class="wish-banner-items">
+
+                                                {% for item in banner.r4_up_items %}
+
+                                                    <div class="wish-banner-item">
+
+                                                        <img
+                                                            src="{{ item.icon }}"
+                                                            alt="{{ item.name }}"
+                                                            title="{{ item.name }}"
+                                                        >
+
+                                                        <span>{{ item.name }}</span>
+
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endif %}
+
+                                    <div
+                                        class="wish-banner-time event-time-left"
+                                        data-end-time="{{ banner.end_time }}"
+                                    >
+                                        Calculating...
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endfor %}
 
                 </div>
 
-            {% endfor %}
+            {% else %}
+
+                <div class="wish-banners-empty">
+                    No Active Banners
+                </div>
+
+            {% endif %}
 
         </div>
+
 
     </section>
 

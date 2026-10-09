@@ -1400,7 +1400,7 @@ async def get_events_data(
                 get_single_account_events(
                     user_id,
                     account,
-                    include_featured=False,
+                    include_featured=True,
                 )
                 for account in accounts
             ]

@@ -5,12 +5,12 @@
 
    Sections:
    1.  Events Header
-   2.  Events Controls
-   3.  Featured Event Cards
-   4.  Featured Card Header
-   5.  Featured Card Toggle
-   6.  Featured Event Content
-   7.  Collapsed Featured Card
+   2.  Events Controls and Tabs
+   3.  Events Sections
+   4.  Featured Event Cards
+   5.  Featured Card Header
+   6.  Featured Event Content and Toggle
+   7.  Collapsed Card Layout
    8.  Event Time Status
    9.  Stygian Onslaught
    10. Imaginarium Theater
@@ -3379,4 +3379,141 @@ html[data-hover-effects="off"] .overview-account-row:hover {
     color: var(--text-secondary);
     border-color: var(--border);
     background: var(--surface);
+}
+
+
+/* =========================================================
+   OVERVIEW EVENTS — ENDGAME CARDS
+   ========================================================= */
+
+.overview-endgame-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+    align-items: center;
+    gap: 20px;
+}
+
+.overview-endgame-row .overview-account-name {
+    min-width: 0;
+}
+
+.overview-endgame-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    min-width: 0;
+}
+
+.overview-endgame-card {
+    min-width: 0;
+    min-height: 92px;
+    padding: 12px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+
+    text-align: center;
+}
+
+.overview-endgame-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+}
+
+.overview-endgame-card-header img {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    object-fit: contain;
+}
+
+.overview-endgame-card-header strong {
+    min-width: 0;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.overview-endgame-card-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.overview-endgame-card-value img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.overview-endgame-card-empty {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   OVERVIEW WISHES — REUSE MAIN BANNER CARDS
+   ========================================================= */
+
+.events-overview-panel[data-overview-panel="wishes"] {
+    gap: 16px;
+}
+
+.events-overview-panel[data-overview-panel="wishes"] .wish-banners {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.events-overview-panel[data-overview-panel="wishes"] .wish-banner-card {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   OVERVIEW ENDGAME — RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+    .overview-endgame-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .overview-endgame-row .overview-account-name {
+        width: 100%;
+    }
+}
+
+@media (max-width: 650px) {
+    .overview-endgame-cards {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .overview-endgame-card {
+        min-height: 76px;
+    }
+
+    .events-overview-panel[data-overview-panel="wishes"] .wish-banners {
+        grid-template-columns: 1fr;
+    }
 }
