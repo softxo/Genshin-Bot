@@ -832,6 +832,12 @@ async def get_single_account_events(
 
             try:
                 for event in event_calendar.events:
+                    
+                    print(
+                        "[Dire Prestige DEBUG]",
+                        "event =", event.name,
+                        "| stygian_detail =", getattr(event, "stygian_detail", "FIELD MISSING"),
+                    )
 
                     if event.stygian_detail is None:
                         continue
