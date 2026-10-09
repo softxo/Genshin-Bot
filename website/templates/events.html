@@ -80,14 +80,6 @@
 
                 <button
                     type="button"
-                    class="events-account-tab {% if request.query_params.get('tab') == 'recurring' %}active{% endif %}"
-                    data-account-tab="recurring"
-                >
-                    Recurring
-                </button>
-
-                <button
-                    type="button"
                     class="events-account-tab {% if request.query_params.get('tab') == 'custom' %}active{% endif %}"
                     data-account-tab="custom"
                 >
@@ -1292,28 +1284,6 @@
             </div>
 
         </section>
-
-
-        <section
-            class="events-account-empty"
-            data-account-category="recurring"
-            {% if request.query_params.get('tab', 'all') != 'recurring' %}hidden{% endif %}
-        >
-
-            <div class="events-account-empty-content">
-
-                <span class="events-account-empty-title">
-                    No Recurring Activities
-                </span>
-
-                <span class="events-account-empty-description">
-                    Recurring activities will appear here.
-                </span>
-
-            </div>
-
-        </section>
-
 
         <section
             class="events-account-empty"

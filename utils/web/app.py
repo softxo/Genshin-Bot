@@ -1251,10 +1251,6 @@ async def get_single_account_events(
 
             if include_featured and stygian:
                 current_stygian = stygian[0]
-
-                print("===== STYGIAN RAW DATA =====")
-                print(current_stygian)
-                print("===== END STYGIAN RAW DATA =====")
                 record = current_stygian["single"]["best"]
 
                 bosses = []
