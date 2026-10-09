@@ -119,9 +119,9 @@
                 <button
                     type="button"
                     class="events-overview-tab"
-                    data-overview-tab="events"
+                    data-overview-tab="endgame"
                 >
-                    Events
+                    Endgame
                 </button>
 
                 <button
@@ -1542,21 +1542,18 @@
 
 
         
+        
         <div
             class="events-overview-panel"
-            data-overview-panel="events"
+            data-overview-panel="endgame"
         >
-
             {% for item in overview_data %}
 
                 <div class="overview-account-row overview-endgame-row">
 
                     <div class="overview-account-name">
-
                         <strong>{{ item.account.nickname }}</strong>
-
                         <span>{{ item.account.genshin_uid }}</span>
-
                     </div>
 
                     <div class="overview-endgame-cards">
@@ -1565,27 +1562,36 @@
 
                         <div class="overview-endgame-card overview-abyss-card">
 
-                            <div class="overview-endgame-card-heading">
+                            <div class="overview-endgame-card-header">
                                 <img
                                     src="/static/images/events/spiral_abyss/Spiral_Abyss.webp"
                                     alt=""
                                 >
-                                <span>Abyss</span>
+                                <strong>Abyss</strong>
                             </div>
 
                             <div class="overview-endgame-card-value">
 
                                 {% if item.abyss.has_data %}
+
                                     <strong>{{ item.abyss.max_floor }}</strong>
 
-                                    <span class="overview-endgame-divider">|</span>
+                                    <span class="overview-endgame-separator">|</span>
 
-                                    <strong>
-                                        {{ item.abyss.total_stars }}
-                                        <span class="overview-abyss-star">★</span>
-                                    </strong>
+                                    <strong>{{ item.abyss.total_stars }}</strong>
+
+                                    <img
+                                        src="/static/images/events/spiral_abyss/Abyssal_Star.webp"
+                                        alt="Abyssal Stars"
+                                        title="Abyssal Stars"
+                                    >
+
                                 {% else %}
-                                    <span class="overview-endgame-no-data">No Record</span>
+
+                                    <span class="overview-endgame-card-empty">
+                                        No Record
+                                    </span>
+
                                 {% endif %}
 
                             </div>
@@ -1597,29 +1603,42 @@
 
                         <div class="overview-endgame-card overview-theater-card">
 
-                            <div class="overview-endgame-card-heading">
+                            <div class="overview-endgame-card-header">
                                 <img
                                     src="/static/images/events/imaginarium_theater/Imaginarium_Theater.webp"
                                     alt=""
                                 >
-                                <span>Imaginarium Theatre</span>
+                                <strong>Theater</strong>
                             </div>
 
                             <div class="overview-endgame-card-value">
 
-                                {% if item.theater.has_data %}
+                                {% if item.theater.best_round > 0 %}
+
+                                    <img
+                                        src="/static/images/events/imaginarium_theater/IT_Act_{{ item.theater.best_round }}.webp"
+                                        alt="Act {{ item.theater.best_round }}"
+                                        title="Act {{ item.theater.best_round }}"
+                                    >
 
                                     <strong>Act {{ item.theater.best_round }}</strong>
 
-                                    <span class="overview-endgame-divider">|</span>
+                                    <span class="overview-endgame-separator">|</span>
 
-                                    <strong>
-                                        {{ item.theater.medals }}
-                                        stellas
-                                    </strong>
+                                    <strong>{{ item.theater.medals }}</strong>
+
+                                    <img
+                                        src="/static/images/events/imaginarium_theater/IT_Stella.webp"
+                                        alt="Stellas"
+                                        title="Stellas"
+                                    >
 
                                 {% else %}
-                                    <span class="overview-endgame-no-data">No Record</span>
+
+                                    <span class="overview-endgame-card-empty">
+                                        No Record
+                                    </span>
+
                                 {% endif %}
 
                             </div>
@@ -1631,12 +1650,12 @@
 
                         <div class="overview-endgame-card overview-stygian-card">
 
-                            <div class="overview-endgame-card-heading">
+                            <div class="overview-endgame-card-header">
                                 <img
                                     src="/static/images/events/stygian_onslaught/Stygian_Onslaught.webp"
                                     alt=""
                                 >
-                                <span>Stygian Onslaught</span>
+                                <strong>Stygian</strong>
                             </div>
 
                             <div class="overview-endgame-card-value">
@@ -1647,7 +1666,7 @@
                                         <img
                                             src="/static/images/events/stygian_onslaught/{{ item.stygian.difficulty_icon }}"
                                             alt=""
-                                            class="overview-stygian-difficulty-icon"
+                                            title="Difficulty"
                                         >
                                     {% endif %}
 
@@ -1669,12 +1688,16 @@
                                         {% endif %}
                                     </strong>
 
-                                    <span class="overview-endgame-divider">|</span>
+                                    <span class="overview-endgame-separator">|</span>
 
                                     <strong>{{ item.stygian.best_time }}s</strong>
 
                                 {% else %}
-                                    <span class="overview-endgame-no-data">No Record</span>
+
+                                    <span class="overview-endgame-card-empty">
+                                        No Record
+                                    </span>
+
                                 {% endif %}
 
                             </div>
@@ -1686,8 +1709,8 @@
                 </div>
 
             {% endfor %}
-
         </div>
+
 
 
         <div
