@@ -908,6 +908,81 @@
 
                         {% endif %}
 
+                        
+                        <!-- =============================
+                            DIRE PRESTIGE
+                            ============================= -->
+
+                        {% if stygian.dire_prestige.available %}
+
+                            <div class="stygian-dire-prestige">
+
+                                <div class="stygian-dire-prestige-header">
+
+                                    <div class="stygian-dire-prestige-title">
+                                        <strong>Dire Prestige</strong>
+
+                                        <span>
+                                            Disturbance Outbreak
+                                        </span>
+                                    </div>
+
+                                    <span class="stygian-dire-prestige-status {% if stygian.dire_prestige.active %}active{% else %}inactive{% endif %}">
+                                        {% if stygian.dire_prestige.active %}
+                                            Active
+                                        {% else %}
+                                            Inactive
+                                        {% endif %}
+                                    </span>
+
+                                </div>
+
+                                {% if stygian.dire_prestige.active %}
+
+                                    <div class="stygian-dire-prestige-progress">
+
+                                        <div class="stygian-dire-prestige-progress-labels">
+
+                                            <span>Progress</span>
+
+                                            <strong>
+                                                {{ stygian.dire_prestige.progress }}
+                                                /
+                                                {{ stygian.dire_prestige.max_progress }}
+                                            </strong>
+
+                                        </div>
+
+                                        <div
+                                            class="stygian-dire-prestige-track"
+                                            role="progressbar"
+                                            aria-label="Dire Prestige progress"
+                                            aria-valuemin="0"
+                                            aria-valuemax="{{ stygian.dire_prestige.max_progress }}"
+                                            aria-valuenow="{{ stygian.dire_prestige.progress }}"
+                                        >
+
+                                            <div
+                                                class="stygian-dire-prestige-fill"
+                                                style="width: {{ ((stygian.dire_prestige.progress / stygian.dire_prestige.max_progress) * 100) if stygian.dire_prestige.max_progress > 0 else 0 }}%;"
+                                            ></div>
+
+                                        </div>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <p class="stygian-dire-prestige-message">
+                                        Disturbance Outbreak is not currently active.
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
                     </div>
 
                 </div>
@@ -1127,9 +1202,7 @@
         >
 
             <div class="events-list-header">
-                <h2>
-                    Current Wishes
-                </h2>
+                <h2>Event Wishes</h2>
             </div>
 
             {% if wish_banners %}
@@ -1727,10 +1800,6 @@
             {% endfor %}
 
             {% if banner_data.items %}
-
-                <div class="events-list-header">
-                    <h2>Current Wishes</h2>
-                </div>
 
                 <div class="wish-banners">
 

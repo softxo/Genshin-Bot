@@ -712,6 +712,12 @@ async def get_single_account_events(
         "difficulty_icon": "",
         "best_time": 0,
         "bosses": [],
+        "dire_prestige": {
+            "available": False,
+            "active": False,
+            "progress": 0,
+            "max_progress": 0,
+        },
     }
 
     daily_data = {
@@ -812,6 +818,49 @@ async def get_single_account_events(
                 if include_featured:
                     theater = results[4]
                     stygian = results[5]
+                    
+            # =========================================
+            # DIRE PRESTIGE / DISTURBANCE OUTBREAK
+            # =========================================
+
+            dire_prestige_data = {
+                "available": False,
+                "active": False,
+                "progress": 0,
+                "max_progress": 0,
+            }
+
+            try:
+                for event in event_calendar.events:
+
+                    if event.stygian_detail is None:
+                        continue
+
+                    # A Stygian event exists in the calendar.
+                    dire_prestige_data["available"] = True
+
+                    outbreak = (
+                        event.stygian_detail.disturbance_outbreak
+                    )
+
+                    if outbreak is None:
+                        continue
+
+                    # Disturbance Outbreak is active.
+                    dire_prestige_data.update({
+                        "active": True,
+                        "progress": outbreak.progress,
+                        "max_progress": outbreak.max_progress,
+                    })
+
+                    break
+
+            except Exception as error:
+                print(
+                    f"[Events API] Dire Prestige FAILED | "
+                    f"UID: {account['genshin_uid']} | "
+                    f"{type(error).__name__}: {error}"
+                )
 
 
             # =========================================
@@ -1306,6 +1355,9 @@ async def get_single_account_events(
                     "best_time": record["second"] if record else 0,
                     "bosses": bosses,
                 }
+                
+            # Attach Dire Prestige data after the Stygian dictionary has been fully constructed.
+            stygian_data["dire_prestige"] = dire_prestige_data
 
 
             # =========================================
@@ -1469,6 +1521,12 @@ async def get_events_data(
             "difficulty_icon": "",
             "best_time": 0,
             "bosses": [],
+            "dire_prestige": {
+                "available": False,
+                "active": False,
+                "progress": 0,
+                "max_progress": 0,
+            },
         },
         "daily": {
             "has_data": False,
