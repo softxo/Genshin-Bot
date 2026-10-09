@@ -832,12 +832,6 @@ async def get_single_account_events(
 
             try:
                 for event in event_calendar.events:
-                    
-                    print(
-                        "[Dire Prestige DEBUG]",
-                        "event =", event.name,
-                        "| stygian_detail =", getattr(event, "stygian_detail", "FIELD MISSING"),
-                    )
 
                     if event.stygian_detail is None:
                         continue
@@ -1364,6 +1358,11 @@ async def get_single_account_events(
                 
             # Attach Dire Prestige data after the Stygian dictionary has been fully constructed.
             stygian_data["dire_prestige"] = dire_prestige_data
+            
+            print(
+                "[Dire Prestige DATA]",
+                stygian_data.get("dire_prestige"),
+            )
 
 
             # =========================================
