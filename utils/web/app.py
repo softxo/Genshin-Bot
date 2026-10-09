@@ -1358,12 +1358,6 @@ async def get_single_account_events(
                 
             # Attach Dire Prestige data after the Stygian dictionary has been fully constructed.
             stygian_data["dire_prestige"] = dire_prestige_data
-            
-            print(
-                "[Dire Prestige DATA]",
-                stygian_data.get("dire_prestige"),
-            )
-
 
             # =========================================
             # IMAGINARIUM THEATER

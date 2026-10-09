@@ -809,9 +809,10 @@
 .event-featured-card[data-event-type="stygian"].collapsed
 .event-featured-collapsed {
     grid-template-columns:
-        minmax(0, 300px);
-}
+        repeat(2, minmax(0, 1fr));
 
+    gap: 12px;
+}
 
 /* =========================================================
    COLLAPSED SUMMARY BOX
@@ -3881,4 +3882,78 @@ html[data-hover-effects="off"] .overview-account-row:hover {
     .stygian-dire-prestige-header {
         gap: 10px;
     }
+}
+
+/* =========================================================
+   FIX — STYGIAN DIRE PRESTIGE VISIBILITY
+   Prevent the tracker from collapsing into a thin strip.
+   ========================================================= */
+
+.event-featured-panel:has(.stygian-dire-prestige) {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.event-featured-panel .stygian-dire-prestige {
+    display: block;
+    position: relative;
+
+    flex: 0 0 auto;
+    flex-shrink: 0;
+
+    width: 100%;
+    min-height: 100px;
+    height: auto;
+
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Keep the progress bar at its intended height. */
+
+.stygian-dire-prestige-track {
+    display: block;
+    flex: 0 0 9px;
+    min-height: 9px;
+    box-sizing: border-box;
+}
+
+.stygian-dire-prestige-fill {
+    display: block;
+    min-height: 100%;
+}
+
+
+/* =========================================================
+   STYGIAN — TWO COLLAPSED SUMMARY BOXES
+   ========================================================= */
+
+.event-featured-card[data-event-type="stygian"] .event-featured-collapsed {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.event-featured-card[data-event-type="stygian"] .event-collapsed-stat {
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.event-featured-card[data-event-type="stygian"] .event-collapsed-value {
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   IMAGINARIUM THEATER — COLLAPSED STELLA ICON
+   ========================================================= */
+
+.event-featured-card[data-event-type="theater"]
+.event-collapsed-value .it-stella {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
 }

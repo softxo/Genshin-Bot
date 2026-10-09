@@ -503,11 +503,14 @@
                     </div>
 
 
+                    
                     <!-- =============================
                         COLLAPSED SUMMARY
                         ============================= -->
 
                     <div class="event-featured-collapsed">
+
+                        <!-- BEST RECORD -->
 
                         <div class="event-collapsed-stat">
 
@@ -531,9 +534,41 @@
 
                                 {% else %}
 
+                                    <strong>—</strong>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STELLAS EARNED -->
+
+                        <div class="event-collapsed-stat">
+
+                            <span class="event-stat-label">
+                                Stellas Earned
+                            </span>
+
+                            <div class="event-collapsed-value">
+
+                                {% if theater and theater.best_round > 0 %}
+
+                                    <img
+                                        src="/static/images/events/imaginarium_theater/IT_Stella.webp"
+                                        alt="Stellas"
+                                        title="Stellas Earned"
+                                        class="it-stella"
+                                    >
+
                                     <strong>
-                                        —
+                                        {{ theater.medals }}
                                     </strong>
+
+                                {% else %}
+
+                                    <strong>—</strong>
 
                                 {% endif %}
 
@@ -721,11 +756,14 @@
                     </div>
 
 
+                    
                     <!-- =============================
                         COLLAPSED SUMMARY
                         ============================= -->
 
                     <div class="event-featured-collapsed">
+
+                        <!-- BEST RECORD -->
 
                         <div class="event-collapsed-stat">
 
@@ -738,13 +776,11 @@
                                 {% if stygian.has_data %}
 
                                     {% if stygian.difficulty_icon %}
-
                                         <img
                                             src="/static/images/events/stygian_onslaught/{{ stygian.difficulty_icon }}"
                                             alt="Difficulty {{ stygian.difficulty }}"
                                             class="stygian-difficulty-icon"
                                         >
-
                                     {% endif %}
 
                                     <strong>
@@ -775,9 +811,46 @@
 
                                 {% else %}
 
+                                    <strong>—</strong>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DIRE PRESTIGE -->
+
+                        <div class="event-collapsed-stat">
+
+                            <span class="event-stat-label">
+                                Dire Prestige
+                            </span>
+
+                            <div class="event-collapsed-value">
+
+                                {% if stygian.dire_prestige.available and stygian.dire_prestige.active %}
+
+                                    <img
+                                        src="/static/images/events/stygian_onslaught/Dire_Prestige.png"
+                                        alt="Dire Prestige"
+                                        title="Dire Prestige"
+                                    >
+
                                     <strong>
-                                        —
+                                        {{ stygian.dire_prestige.progress }}
+                                        /
+                                        {{ stygian.dire_prestige.max_progress }}
                                     </strong>
+
+                                {% elif stygian.dire_prestige.available %}
+
+                                    <strong>Inactive</strong>
+
+                                {% else %}
+
+                                    <strong>—</strong>
 
                                 {% endif %}
 
@@ -1771,6 +1844,30 @@
                                         No Record
                                     </span>
 
+                                {% endif %}
+
+                                {% if item.stygian.dire_prestige.available %}
+                                    <div class="stygian-dire-prestige">
+                                        <div class="stygian-dire-prestige-header">
+                                            <span class="stygian-dire-prestige-title">
+                                                Dire Prestige
+                                            </span>
+                                        </div>
+
+                                        {% if item.stygian.dire_prestige.active %}
+                                            <div class="stygian-dire-prestige-progress">
+                                                <span class="stygian-dire-prestige-value">
+                                                    {{ item.stygian.dire_prestige.progress }}
+                                                    /
+                                                    {{ item.stygian.dire_prestige.max_progress }}
+                                                </span>
+                                            </div>
+                                        {% else %}
+                                            <div class="stygian-dire-prestige-inactive">
+                                                No active Dire Prestige progress
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
 
                             </div>
