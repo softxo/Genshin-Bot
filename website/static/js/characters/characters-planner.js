@@ -76,6 +76,9 @@ function initCharacterPlanner() {
     const currentWeaponNameElement = editor.querySelector(
         "[data-planner-current-weapon-name]"
     );
+    const currentWeaponIcon = editor.querySelector(
+        "[data-planner-weapon-icon]"
+    );
     const currentWeaponLevelElement = editor.querySelector(
         "[data-planner-current-weapon-level]"
     );
@@ -85,12 +88,6 @@ function initCharacterPlanner() {
     );
     const progressionPanels = Array.from(
         form.querySelectorAll("[data-planner-panel]")
-    );
-    const talentTabs = Array.from(
-        form.querySelectorAll("[data-planner-talent-tab]")
-    );
-    const talentPanels = Array.from(
-        form.querySelectorAll("[data-planner-talent-panel]")
     );
 
     if (
@@ -494,32 +491,9 @@ function initCharacterPlanner() {
         });
     }
 
-    function activateTalentTab(index) {
-        const selected = String(index);
-
-        talentTabs.forEach(tab => {
-            const active =
-                tab.dataset.plannerTalentTab === selected;
-
-            tab.classList.toggle("is-active", active);
-            tab.setAttribute("aria-selected", String(active));
-        });
-
-        talentPanels.forEach(panel => {
-            panel.hidden =
-                panel.dataset.plannerTalentPanel !== selected;
-        });
-    }
-
     progressionTabs.forEach(tab => {
         tab.addEventListener("click", () => {
             activateProgressionTab(tab.dataset.plannerTab);
-        });
-    });
-
-    talentTabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            activateTalentTab(tab.dataset.plannerTalentTab);
         });
     });
 
@@ -550,6 +524,12 @@ function initCharacterPlanner() {
                 element.textContent = "Loading…";
             }
         });
+
+        if (currentWeaponIcon) {
+            currentWeaponIcon.removeAttribute("src");
+            currentWeaponIcon.alt = "";
+            currentWeaponIcon.hidden = true;
+        }
     }
 
     function setCurrentProgressionUnavailable() {
@@ -575,6 +555,12 @@ function initCharacterPlanner() {
                 element.textContent = "Unavailable";
             }
         });
+
+        if (currentWeaponIcon) {
+            currentWeaponIcon.removeAttribute("src");
+            currentWeaponIcon.alt = "";
+            currentWeaponIcon.hidden = true;
+        }
     }
 
     async function loadCurrentProgression(plan, requestId) {
@@ -644,6 +630,20 @@ function initCharacterPlanner() {
             if (currentWeaponNameElement) {
                 currentWeaponNameElement.textContent =
                     weapon?.name || "Weapon data unavailable";
+            }
+
+            if (currentWeaponIcon) {
+                if (weapon?.icon) {
+                    currentWeaponIcon.src = weapon.icon;
+                    currentWeaponIcon.alt = weapon.name
+                        ? `${weapon.name} icon`
+                        : "Equipped weapon";
+                    currentWeaponIcon.hidden = false;
+                } else {
+                    currentWeaponIcon.removeAttribute("src");
+                    currentWeaponIcon.alt = "";
+                    currentWeaponIcon.hidden = true;
+                }
             }
 
             if (currentWeaponLevelElement) {
@@ -752,7 +752,6 @@ function initCharacterPlanner() {
 
         resetGoalCosts();
         activateProgressionTab("level");
-        activateTalentTab(1);
 
         showModal(editor, editorDialog);
 

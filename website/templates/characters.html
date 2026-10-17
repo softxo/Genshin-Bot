@@ -613,6 +613,7 @@
             </section>
         </div>
 
+        
         <!-- CHARACTER PROGRESSION PLANNER -->
         <div
             class="planner-editor"
@@ -629,85 +630,207 @@
                 aria-labelledby="planner-editor-title"
                 tabindex="-1"
             >
-                <button
-                    type="button"
-                    class="planner-editor-close"
-                    data-planner-editor-close
-                    aria-label="Close planner"
-                >&times;</button>
-
+                <!-- CHARACTER HEADER -->
                 <header class="planner-editor-header">
-                    <img src="" alt="" data-planner-editor-icon>
+                    <img
+                        class="planner-editor-character-icon"
+                        src=""
+                        alt=""
+                        data-planner-editor-icon
+                    >
 
-                    <div>
+                    <div class="planner-editor-identity">
                         <h2 id="planner-editor-title">Character Plan</h2>
                         <p data-planner-editor-subtitle></p>
                     </div>
+
+                    <button
+                        type="button"
+                        class="planner-editor-close"
+                        data-planner-editor-close
+                        aria-label="Close planner"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </header>
 
-                <form data-planner-form>
-                    <section class="planner-editor-section planner-details">
-                        <h3>Plan Details</h3>
-
-                        <label for="planner-notes">Notes</label>
-                        <textarea
-                            id="planner-notes"
-                            name="notes"
-                            rows="2"
-                            data-planner-notes
-                            placeholder="Build goals, priorities, or reminders..."
-                        ></textarea>
-
-                        <label for="planner-constellation">
-                            Target Constellation
+                <form class="planner-editor-form" data-planner-form>
+                    <!-- NOTES AND CONSTELLATION -->
+                    <div class="planner-editor-meta">
+                        <label class="planner-notes-field" for="planner-notes">
+                            <span>Notes</span>
+                            <textarea
+                                id="planner-notes"
+                                name="notes"
+                                rows="2"
+                                data-planner-notes
+                                placeholder="Build goals, priorities, reminders..."
+                            ></textarea>
                         </label>
-                        <select
-                            id="planner-constellation"
-                            name="constellation"
-                            data-planner-constellation
-                        >
-                            {% for constellation in range(7) %}
-                            <option value="{{ constellation }}">
-                                C{{ constellation }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </section>
 
-                    <nav class="planner-progression-tabs"
-                        aria-label="Progression category">
-                        <button type="button"
-                                class="planner-tab is-active"
-                                data-planner-tab="level"
-                                aria-selected="true">
-                            Level
-                        </button>
-                        <button type="button"
-                                class="planner-tab"
-                                data-planner-tab="talents"
-                                aria-selected="false">
-                            Talents
-                        </button>
-                        <button type="button"
-                                class="planner-tab"
-                                data-planner-tab="weapon"
-                                aria-selected="false">
-                            Weapon
-                        </button>
+                        <label class="planner-constellation-field"
+                            for="planner-constellation">
+                            <span>Constellation</span>
+                            <select
+                                id="planner-constellation"
+                                name="constellation"
+                                data-planner-constellation
+                            >
+                                {% for constellation in range(7) %}
+                                <option value="{{ constellation }}">
+                                    C{{ constellation }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+
+                    <!-- MAIN PROGRESSION TABS -->
+                    <nav
+                        class="planner-progression-tabs"
+                        aria-label="Progression category"
+                    >
+                        <button
+                            type="button"
+                            class="planner-tab is-active"
+                            data-planner-tab="level"
+                            aria-selected="true"
+                        >Level</button>
+
+                        <button
+                            type="button"
+                            class="planner-tab"
+                            data-planner-tab="talents"
+                            aria-selected="false"
+                        >Talents</button>
+
+                        <button
+                            type="button"
+                            class="planner-tab"
+                            data-planner-tab="weapon"
+                            aria-selected="false"
+                        >Weapon</button>
                     </nav>
 
                     <!-- CHARACTER LEVEL -->
-                    <section class="planner-progression-panel"
-                            data-planner-panel="level">
-                        <div class="planner-panel-heading">
-                            <h3>Character Level</h3>
-                            <p>Current progression and your target level.</p>
+                    <section
+                        class="planner-progression-panel"
+                        data-planner-panel="level"
+                    >
+                        <div class="planner-level-comparison">
+                            <div class="planner-level-value">
+                                <span>Current Level</span>
+                                <strong data-planner-current-level>—</strong>
+                            </div>
+
+                            <span class="planner-level-arrow" aria-hidden="true">→</span>
+
+                            <label class="planner-level-value" for="planner-level">
+                                <span>Goal Level</span>
+                                <select
+                                    id="planner-level"
+                                    name="level"
+                                    data-planner-level
+                                >
+                                    {% for level in [20, 40, 50, 60, 70, 80, 90] %}
+                                    <option
+                                        value="{{ level }}"
+                                        {% if level == 90 %}selected{% endif %}
+                                    >Level {{ level }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </div>
+
+                        <section class="planner-goal-cost">
+                            <h3>Goal Cost</h3>
+                            <div data-planner-cost="level">
+                                <p>Material calculations aren't connected yet.</p>
+                            </div>
+                        </section>
+                    </section>
+
+                    <!-- TALENTS: ALL THREE VISIBLE TOGETHER -->
+                    <section
+                        class="planner-progression-panel"
+                        data-planner-panel="talents"
+                        hidden
+                    >
+                        <div class="planner-talent-grid">
+                            {% for talent in [
+                                "Normal Attack",
+                                "Elemental Skill",
+                                "Elemental Burst"
+                            ] %}
+                            <div
+                                class="planner-talent-panel"
+                                data-planner-talent-panel="{{ loop.index }}"
+                            >
+                                <h3>{{ talent }}</h3>
+
+                                <div class="planner-talent-levels">
+                                    <div class="planner-talent-current">
+                                        <span>Current</span>
+                                        <strong
+                                            data-planner-current-talent="{{ loop.index }}"
+                                        >—</strong>
+                                    </div>
+
+                                    <span aria-hidden="true">→</span>
+
+                                    <label for="planner-talent-{{ loop.index }}">
+                                        <span>Goal</span>
+                                        <select
+                                            id="planner-talent-{{ loop.index }}"
+                                            name="talent-{{ loop.index }}"
+                                            data-planner-talent="{{ loop.index }}"
+                                        >
+                                            {% for level in range(1, 11) %}
+                                            <option
+                                                value="{{ level }}"
+                                                {% if level == 10 %}selected{% endif %}
+                                            >{{ level }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <section class="planner-goal-cost">
+                            <h3>Goal Cost</h3>
+                            <div data-planner-cost="talents">
+                                <p>Material calculations aren't connected yet.</p>
+                            </div>
+                        </section>
+                    </section>
+
+                    <!-- WEAPON -->
+                    <section
+                        class="planner-progression-panel"
+                        data-planner-panel="weapon"
+                        hidden
+                    >
+                        <div class="planner-weapon-identity">
+                            <img
+                                src=""
+                                alt=""
+                                data-planner-weapon-icon
+                                hidden
+                            >
+                            <div>
+                                <h3 data-planner-current-weapon-name>
+                                    Equipped Weapon
+                                </h3>
+                                <p>Weapon progression</p>
+                            </div>
                         </div>
 
                         <div class="planner-level-comparison">
                             <div class="planner-level-value">
-                                <span>Current level</span>
-                                <strong data-planner-current-level>—</strong>
+                                <span>Current Level</span>
+                                <strong data-planner-current-weapon-level>—</strong>
                             </div>
 
                             <span class="planner-level-arrow" aria-hidden="true">
@@ -715,170 +838,48 @@
                             </span>
 
                             <label class="planner-level-value"
-                                for="planner-level">
-                                <span>Target level</span>
-                                <select id="planner-level"
-                                        name="level"
-                                        data-planner-level>
-                                    {% for level in [20, 40, 50, 60, 70, 80, 90] %}
-                                    <option value="{{ level }}"
-                                            {% if level == 90 %}selected{% endif %}>
-                                        Level {{ level }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </label>
-                        </div>
-
-                        <div class="planner-goal-cost">
-                            <h3>Goal Cost</h3>
-                            <div data-planner-cost="level">
-                                <p>Material calculations aren't connected yet.</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- TALENTS -->
-                    <section class="planner-progression-panel"
-                            data-planner-panel="talents"
-                            hidden>
-                        <div class="planner-panel-heading">
-                            <h3>Talent Levels</h3>
-                            <p>Choose a talent to set its target level.</p>
-                        </div>
-
-                        <nav class="planner-talent-tabs"
-                            aria-label="Talent">
-                            <button type="button"
-                                    class="planner-talent-tab is-active"
-                                    data-planner-talent-tab="1"
-                                    aria-selected="true">
-                                Normal Attack
-                            </button>
-                            <button type="button"
-                                    class="planner-talent-tab"
-                                    data-planner-talent-tab="2"
-                                    aria-selected="false">
-                                Elemental Skill
-                            </button>
-                            <button type="button"
-                                    class="planner-talent-tab"
-                                    data-planner-talent-tab="3"
-                                    aria-selected="false">
-                                Elemental Burst
-                            </button>
-                        </nav>
-
-                        {% for talent in [
-                            "Normal Attack",
-                            "Elemental Skill",
-                            "Elemental Burst"
-                        ] %}
-                        <div class="planner-talent-panel"
-                            data-planner-talent-panel="{{ loop.index }}"
-                            {% if loop.index != 1 %}hidden{% endif %}>
-                            <h4>{{ talent }}</h4>
-
-                            <div class="planner-level-comparison">
-                                <div class="planner-level-value">
-                                    <span>Current level</span>
-                                    <strong
-                                        data-planner-current-talent="{{ loop.index }}"
-                                    >—</strong>
-                                </div>
-
-                                <span class="planner-level-arrow"
-                                    aria-hidden="true">→</span>
-
-                                <label class="planner-level-value"
-                                    for="planner-talent-{{ loop.index }}">
-                                    <span>Target level</span>
-                                    <select
-                                        id="planner-talent-{{ loop.index }}"
-                                        name="talent-{{ loop.index }}"
-                                        data-planner-talent="{{ loop.index }}"
-                                    >
-                                        {% for level in range(1, 11) %}
-                                        <option value="{{ level }}"
-                                                {% if level == 10 %}selected{% endif %}>
-                                            Level {{ level }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-                        {% endfor %}
-
-                        <div class="planner-goal-cost">
-                            <h3>Goal Cost</h3>
-                            <div data-planner-cost="talents">
-                                <p>Material calculations aren't connected yet.</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- WEAPON -->
-                    <section class="planner-progression-panel"
-                            data-planner-panel="weapon"
-                            hidden>
-                        <div class="planner-panel-heading">
-                            <h3>Weapon</h3>
-                            <p data-planner-current-weapon-name>
-                                Loading equipped weapon…
-                            </p>
-                        </div>
-
-                        <div class="planner-level-comparison">
-                            <div class="planner-level-value">
-                                <span>Current level</span>
-                                <strong data-planner-current-weapon-level>—</strong>
-                            </div>
-
-                            <span class="planner-level-arrow"
-                                aria-hidden="true">→</span>
-
-                            <label class="planner-level-value"
                                 for="planner-weapon-level">
-                                <span>Target level</span>
+                                <span>Goal Level</span>
                                 <select
                                     id="planner-weapon-level"
                                     name="weapon_level"
                                     data-planner-weapon-level
                                 >
                                     {% for level in [20, 40, 50, 60, 70, 80, 90] %}
-                                    <option value="{{ level }}"
-                                            {% if level == 90 %}selected{% endif %}>
-                                        Level {{ level }}
-                                    </option>
+                                    <option
+                                        value="{{ level }}"
+                                        {% if level == 90 %}selected{% endif %}
+                                    >Level {{ level }}</option>
                                     {% endfor %}
                                 </select>
                             </label>
                         </div>
 
-                        <div class="planner-goal-cost">
+                        <section class="planner-goal-cost">
                             <h3>Goal Cost</h3>
                             <div data-planner-cost="weapon">
                                 <p>Material calculations aren't connected yet.</p>
                             </div>
-                        </div>
+                        </section>
                     </section>
 
+                    <!-- ACTIONS -->
                     <footer class="planner-editor-actions">
-                        <button type="button"
-                                class="planner-secondary-button"
-                                data-planner-editor-close>
-                            Close
-                        </button>
-                        <button type="submit"
-                                class="planner-save-button"
-                                data-planner-save>
-                            Save Plan
-                        </button>
+                        <button
+                            type="button"
+                            class="planner-secondary-button"
+                            data-planner-editor-close
+                        >Cancel</button>
+
+                        <button
+                            type="submit"
+                            class="planner-save-button"
+                            data-planner-save
+                        >Save Plan</button>
                     </footer>
                 </form>
             </section>
         </div>
 
-</div>
+    </div>
 {% endblock %}
